@@ -1,0 +1,12 @@
+meta_scraper:
+  sources:
+    - url: "https://www.metatft.com/comps"
+      name: metatft
+    - url: "https://tactics.tools/comps"
+      name: tactics_tools
+  max_comps: 50
+  request_delay_s: 2.0   # be polite to servers
+
+vod_downloader:
+  output_dir: "data/raw/vods"
+  quality: "1080p"

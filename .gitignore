@@ -1,0 +1,23 @@
+# Large data — never commit raw VODs or frames
+data/raw/
+data/processed/state_vectors/
+data/datasets/
+
+# Model weights
+assets/*.pt
+assets/*.pth
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db

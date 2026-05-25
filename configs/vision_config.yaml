@@ -1,0 +1,25 @@
+# Vision pipeline configuration
+# All pixel regions assume 1920x1080 source resolution.
+
+source_resolution: [1920, 1080]
+frame_sample_fps: 1.0   # frames to extract per second of VOD
+
+ocr:
+  regions:
+    gold:   [870, 1020, 80, 30]   # x, y, w, h
+    hp:     [20,  60,   60, 25]
+    level:  [45,  990,  30, 20]
+    stage:  [860, 15,   100, 22]
+  tesseract_config: "--psm 7 -c tessedit_char_whitelist=0123456789-."
+
+champion_detector:
+  weights: "assets/yolo_tft.pt"   # path to trained YOLOv8 weights
+  conf_threshold: 0.50
+  # Region vertical split ratios (fraction of frame height)
+  board_max_ratio: 0.60
+  bench_max_ratio: 0.80
+
+template_matching:
+  item_dir: "assets/templates/items"
+  augment_dir: "assets/templates/ui"
+  confidence_threshold: 0.82

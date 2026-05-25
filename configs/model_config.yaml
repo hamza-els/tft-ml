@@ -1,0 +1,24 @@
+# Model architecture configuration (filled in as each module is built)
+
+macro_engine:
+  architecture: transformer   # sequence model over state vectors
+  hidden_dim: 256
+  num_heads: 4
+  num_layers: 4
+  dropout: 0.1
+
+win_predictor:
+  architecture: siamese_mlp
+  embedding_dim: 128
+  hidden_layers: [256, 128, 64]
+
+target_comp:
+  embedding_dim: 64
+  similarity_metric: cosine
+
+training:
+  train_split: 0.80
+  seed: 42
+  batch_size: 64
+  learning_rate: 1e-4
+  epochs: 50
