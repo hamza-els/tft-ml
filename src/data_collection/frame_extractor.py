@@ -1,48 +1,126 @@
 """
 Extract frames from TFT VOD video files at a configurable interval.
-Outputs frames to data/raw/frames/{video_name}/.
+Uses ffmpeg via imageio-ffmpeg (bundled binary, no PATH setup needed).
 """
 
-import cv2
+import subprocess
 from pathlib import Path
+
+import imageio_ffmpeg
+from tqdm import tqdm
+
+
+def _ffmpeg() -> str:
+    return imageio_ffmpeg.get_ffmpeg_exe()
+
+
+def _get_duration_sec(video_path: str) -> float | None:
+    """Return video duration in seconds by parsing ffmpeg's stderr output."""
+    result = subprocess.run(
+        [_ffmpeg(), "-i", video_path, "-hide_banner"],
+        capture_output=True, text=True,
+    )
+    for line in result.stderr.splitlines():
+        if "Duration:" in line:
+            parts = line.strip().split("Duration:")[1].split(",")[0].strip()
+            h, m, s = parts.split(":")
+            return int(h) * 3600 + int(m) * 60 + float(s)
+    return None
 
 
 def extract_frames(video_path: str, output_dir: str, fps: float = 1.0) -> list[str]:
     """
-    Sample frames from a video at the given rate (frames per second of source video).
+    Sample frames from a video at the given rate using ffmpeg.
 
     Args:
         video_path: Path to the input .mp4 / .mkv file.
-        output_dir: Directory to write extracted frame PNGs.
+        output_dir: Directory to write extracted frames (saved as JPEG).
         fps: How many frames to extract per second of video. Default 1.0.
 
     Returns:
         List of file paths for the saved frames.
     """
-    cap = cv2.VideoCapture(video_path)
-    if not cap.isOpened():
-        raise IOError(f"Cannot open video: {video_path}")
-
-    source_fps = cap.get(cv2.CAP_PROP_FPS)
-    frame_interval = max(1, int(source_fps / fps))
-
     out_dir = Path(output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
+    out_pattern = str(out_dir / "frame_%06d.jpg")
 
-    saved = []
-    frame_idx = 0
-    saved_idx = 0
+    duration = _get_duration_sec(video_path)
+    expected_frames = int((duration or 0) * fps)
 
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
-        if frame_idx % frame_interval == 0:
-            out_path = out_dir / f"frame_{saved_idx:06d}.png"
-            cv2.imwrite(str(out_path), frame)
-            saved.append(str(out_path))
-            saved_idx += 1
-        frame_idx += 1
+    cmd = [
+        _ffmpeg(), "-y",
+        "-i", video_path,
+        "-vf", f"fps={fps}",
+        "-q:v", "2",
+        "-hide_banner",
+        "-loglevel", "warning",
+        "-progress", "pipe:1",  # write progress key=value to stdout
+        "-nostats",
+        out_pattern,
+    ]
 
-    cap.release()
+    process = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+
+    bar = tqdm(
+        total=expected_frames,
+        desc=f"  Extracting frames",
+        unit="frame",
+        dynamic_ncols=True,
+    )
+
+    last_frame = 0
+    for line in process.stdout:
+        line = line.strip()
+        if line.startswith("frame="):
+            try:
+                current_frame = int(line.split("=")[1])
+                bar.update(current_frame - last_frame)
+                last_frame = current_frame
+            except ValueError:
+                pass
+
+    process.wait()
+    bar.close()
+
+    if process.returncode != 0:
+        err = process.stderr.read()
+        raise RuntimeError(f"ffmpeg failed:\n{err}")
+
+    saved = sorted(str(p) for p in out_dir.glob("frame_*.jpg"))
     return saved
+
+
+def extract_single_frame(video_path: str, timestamp_sec: float, output_path: str) -> str:
+    """
+    Extract one frame at a specific timestamp. Useful for grabbing template images.
+
+    Args:
+        timestamp_sec: Time in seconds (e.g. 125.0 = 2 min 5 sec).
+        output_path: Full path for the output file (e.g. 'assets/templates/ui/level/6.jpg').
+
+    Returns:
+        Output file path.
+    """
+    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+
+    cmd = [
+        _ffmpeg(), "-y",
+        "-ss", str(timestamp_sec),
+        "-i", video_path,
+        "-frames:v", "1",
+        "-q:v", "2",
+        "-hide_banner",
+        "-loglevel", "warning",
+        output_path,
+    ]
+
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode != 0:
+        raise RuntimeError(f"ffmpeg failed:\n{result.stderr}")
+
+    return output_path

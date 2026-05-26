@@ -5,8 +5,12 @@ Usage:
     python scripts/scrape_meta.py [--max-comps 50]
 """
 
-import argparse
+import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+import argparse
+
 from src.data_collection.meta_scraper import scrape_metatft
 
 

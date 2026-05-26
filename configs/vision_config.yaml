@@ -5,12 +5,17 @@ source_resolution: [1920, 1080]
 frame_sample_fps: 1.0   # frames to extract per second of VOD
 
 ocr:
+  # All regions are (x, y, w, h) for 1920x1080 — calibrate against real frames
   regions:
-    gold:   [870, 1020, 80, 30]   # x, y, w, h
-    hp:     [20,  60,   60, 25]
-    level:  [45,  990,  30, 20]
+    gold:   [870, 1020, 80,  30]
+    hp:     [20,  60,   60,  25]
+    level:  [45,  990,  30,  20]
     stage:  [860, 15,   100, 22]
-  tesseract_config: "--psm 7 -c tessedit_char_whitelist=0123456789-."
+    streak: [820, 1020, 40,  20]   # number only; icon color determines win/loss sign
+    xp:     [75,  995,  60,  18]   # text format "X / Y"
+
+  # Regions checked for game/lobby detection in game_splitter.py
+  hud_detection_regions: [gold, hp]
 
 champion_detector:
   weights: "assets/yolo_tft.pt"   # path to trained YOLOv8 weights

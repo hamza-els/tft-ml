@@ -1,6 +1,8 @@
 # Core vision
 opencv-python>=4.9
-pytesseract>=0.3.10
+easyocr>=1.7
+imageio>=2.34
+imageio-ffmpeg>=0.5
 ultralytics>=8.2        # YOLOv8
 
 # Data collection

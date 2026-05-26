@@ -21,3 +21,10 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# Google Drive sync metadata (prevents Drive/git conflicts)
+desktop.ini
+Icon\r
+.gdoc
+.gsheet
+.gslides
