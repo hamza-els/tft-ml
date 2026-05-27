@@ -4,6 +4,7 @@ Uses ffmpeg via imageio-ffmpeg (bundled binary, no PATH setup needed).
 """
 
 import subprocess
+import threading
 from pathlib import Path
 
 import imageio_ffmpeg
@@ -28,7 +29,7 @@ def _get_duration_sec(video_path: str) -> float | None:
     return None
 
 
-def extract_frames(video_path: str, output_dir: str, fps: float = 1.0) -> list[str]:
+def extract_frames(video_path: str, output_dir: str, fps: float = 1.0, quiet: bool = False, on_progress=None) -> list[str]:
     """
     Sample frames from a video at the given rate using ffmpeg.
 
@@ -66,11 +67,22 @@ def extract_frames(video_path: str, output_dir: str, fps: float = 1.0) -> list[s
         text=True,
     )
 
+    # Drain stderr in a background thread to prevent the OS pipe buffer (~64 KB)
+    # from filling up and deadlocking ffmpeg before it can write more stdout progress.
+    stderr_lines: list[str] = []
+    def _drain_stderr():
+        for line in process.stderr:
+            stderr_lines.append(line)
+    threading.Thread(target=_drain_stderr, daemon=True).start()
+
     bar = tqdm(
         total=expected_frames,
         desc=f"  Extracting frames",
         unit="frame",
         dynamic_ncols=True,
+        disable=quiet,
+        smoothing=0,       # ETA from cumulative average, not recent window
+        mininterval=1.0,   # redraw at most once per second
     )
 
     last_frame = 0
@@ -81,6 +93,8 @@ def extract_frames(video_path: str, output_dir: str, fps: float = 1.0) -> list[s
                 current_frame = int(line.split("=")[1])
                 bar.update(current_frame - last_frame)
                 last_frame = current_frame
+                if on_progress and current_frame % 200 == 0:
+                    on_progress(current_frame)
             except ValueError:
                 pass
 
@@ -88,8 +102,7 @@ def extract_frames(video_path: str, output_dir: str, fps: float = 1.0) -> list[s
     bar.close()
 
     if process.returncode != 0:
-        err = process.stderr.read()
-        raise RuntimeError(f"ffmpeg failed:\n{err}")
+        raise RuntimeError(f"ffmpeg failed:\n{''.join(stderr_lines)}")
 
     saved = sorted(str(p) for p in out_dir.glob("frame_*.jpg"))
     return saved

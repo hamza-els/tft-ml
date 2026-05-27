@@ -49,6 +49,7 @@ def deduplicate_frames(
     frame_dir: str,
     threshold: float = CHANGE_THRESHOLD,
     dry_run: bool = False,
+    quiet: bool = False,
 ) -> tuple[int, int]:
     """
     Remove near-duplicate frames from a directory of extracted JPEGs.
@@ -70,7 +71,8 @@ def deduplicate_frames(
     deleted = 0
     reference: np.ndarray | None = None
 
-    for path in tqdm(paths, desc="Deduplicating", unit="frame", dynamic_ncols=True):
+    for path in tqdm(paths, desc="Deduplicating", unit="frame", dynamic_ncols=True, disable=quiet,
+                     smoothing=0, mininterval=1.0):
         frame = cv2.imread(str(path))
         if frame is None:
             continue
