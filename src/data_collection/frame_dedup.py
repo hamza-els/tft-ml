@@ -19,9 +19,10 @@ from tqdm import tqdm
 # Only watch areas that change when a player takes an action.
 # Combat visuals are deliberately excluded — we don't want combat density.
 WATCH_REGIONS: dict[str, tuple[int, int, int, int]] = {
-    "gold":  (870, 1020, 80,  30),
-    "shop":  (500, 940,  920, 110),   # full shop row
-    "bench": (200, 860,  1100, 70),   # bench units
+    "gold":  (950, 878, 39, 29),
+    "shop":  (478, 927, 1000, 144),   # full shop row
+    "bench": (379, 697, 1031, 128),   # bench units
+    "items" : (0, 249, 59, 532)    
 }
 
 # How different a region must look to count as a meaningful change.

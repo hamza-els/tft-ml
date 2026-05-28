@@ -1,33 +1,33 @@
 """
 OCR pipeline for extracting static UI values from TFT frames.
-Reads gold, HP, level, stage, and round from fixed pixel regions.
+Reads gold, HP, level, stage, round, streak, and XP from fixed pixel regions.
 
-All crop regions assume 1920x1080 source resolution.
-If your VODs are a different resolution, update REGIONS in configs/vision_config.yaml.
+Regions are loaded from configs/vision_config.yaml (all assume 1920x1080).
 """
 
 import re
+from pathlib import Path
 
 import cv2
 import easyocr
 import numpy as np
+import yaml
 
 
-# Pixel crops for 1920x1080 — (x, y, w, h)
-# TODO: Calibrate ALL regions against actual VOD screenshots before trusting these.
-REGIONS: dict[str, tuple[int, int, int, int]] = {
-    "gold":   (870, 1020, 80,  30),
-    "hp":     (20,  60,   60,  25),
-    "level":  (45,  990,  30,  20),
-    "stage":  (860, 15,   100, 22),
-    # Streak: positive = win streak (flames icon), negative = loss streak (ice icon).
-    # OCR reads the number only; the sign must be inferred from icon color separately.
-    # TODO: calibrate x,y,w,h once real frames are available
-    "streak": (820, 1020, 40,  20),
-    # XP is displayed as a progress bar, not text, so we read the numeric label
-    # "X / Y" shown beside the bar (e.g. "0 / 4"). Both values extracted below.
-    # TODO: calibrate x,y,w,h once real frames are available
-    "xp":     (75,  995,  60,  18),
+def _load_regions() -> dict[str, tuple[int, int, int, int]]:
+    config_path = Path(__file__).resolve().parents[2] / "configs" / "vision_config.yaml"
+    with open(config_path) as f:
+        cfg = yaml.safe_load(f)
+    return {k: tuple(v) for k, v in cfg["ocr"]["regions"].items()}
+
+
+REGIONS: dict[str, tuple[int, int, int, int]] = _load_regions()
+
+# Per-region OCR allowlists
+_ALLOWLIST: dict[str, str] = {
+    "stage":  "0123456789-",   # reads "3-2"
+    "xp":     "0123456789/",   # reads "2 / 6"
+    "default":"0123456789.",
 }
 
 _reader: easyocr.Reader | None = None
@@ -40,15 +40,17 @@ def _get_reader() -> easyocr.Reader:
     return _reader
 
 
+def crop_region(frame: np.ndarray, region: tuple[int, int, int, int]) -> np.ndarray:
+    x, y, w, h = region
+    return frame[y:y + h, x:x + w]
+
+
 def extract_ui_values(frame: np.ndarray) -> dict[str, float | None]:
     """
     Run OCR on a single frame and return parsed UI values.
 
-    Args:
-        frame: BGR image array (from cv2.imread or frame_extractor).
-
-    Returns:
-        Dict with keys matching REGIONS; values are parsed floats or None.
+    Keys returned:
+        gold, hp, level, stage, round, streak, xp_current, xp_needed
     """
     reader = _get_reader()
     results: dict[str, float | None] = {}
@@ -56,9 +58,25 @@ def extract_ui_values(frame: np.ndarray) -> dict[str, float | None]:
     for key, (x, y, w, h) in REGIONS.items():
         crop = frame[y:y + h, x:x + w]
         gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
-        detections = reader.readtext(gray, allowlist="0123456789.", detail=0)
-        text = detections[0] if detections else ""
-        results[key] = _parse_number(text)
+        # Upscale small crops — EasyOCR accuracy drops on tiny text
+        if gray.shape[0] < 40:
+            scale = 40 / gray.shape[0]
+            gray = cv2.resize(gray, None, fx=scale, fy=scale,
+                              interpolation=cv2.INTER_CUBIC)
+        allowlist = _ALLOWLIST.get(key, _ALLOWLIST["default"])
+        detections = reader.readtext(gray, allowlist=allowlist, detail=0)
+        text = detections[0].strip() if detections else ""
+
+        if key == "stage":
+            parsed = parse_stage(text)
+            results["stage"] = float(parsed[0]) if parsed else None
+            results["round"] = float(parsed[1]) if parsed else None
+        elif key == "xp":
+            parsed = parse_xp(text)
+            results["xp_current"] = float(parsed[0]) if parsed else None
+            results["xp_needed"]  = float(parsed[1]) if parsed else None
+        else:
+            results[key] = _parse_number(text)
 
     return results
 
@@ -66,6 +84,17 @@ def extract_ui_values(frame: np.ndarray) -> dict[str, float | None]:
 def _parse_number(text: str) -> float | None:
     match = re.search(r"[\d.]+", text)
     return float(match.group()) if match else None
+
+
+def parse_stage(text: str) -> tuple[int, int] | None:
+    """
+    Parse stage text like '3-2' into (stage, round).
+    Also handles '3.2' in case OCR reads the dash as a dot.
+    """
+    match = re.search(r"(\d+)[^0-9](\d+)", text)
+    if match:
+        return int(match.group(1)), int(match.group(2))
+    return None
 
 
 def parse_xp(text: str) -> tuple[int, int] | None:

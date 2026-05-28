@@ -30,7 +30,7 @@ from src.data_collection.frame_dedup import deduplicate_frames
 
 
 URLS_FILE  = Path("data/raw/urls.txt")
-VOD_DIR    = Path("data/raw/vods")
+VOD_DIR    = Path.home() / "tft_vods_temp"    # local — never inside Google Drive folder
 LOCAL_TEMP = Path.home() / "tft_frames_temp"
 FORMAT     = "bestvideo[height<=1080][vcodec^=avc]+bestaudio/best"
 W          = 60
@@ -115,11 +115,20 @@ def process_url(
         print(f"  {url}")
         _divider("═")
 
+    # ── Already done? ─────────────────────────────────────────────
+    video_id = url.rstrip("/").split("=")[-1].split("/")[-1]
+    local_dir = LOCAL_TEMP / video_id
+    if local_dir.exists() and any(local_dir.glob("frame_*.jpg")):
+        n = sum(1 for _ in local_dir.glob("frame_*.jpg"))
+        tqdm.write(f"  ↩ VOD {idx}/{total} — {video_id} — already extracted ({n:,} frames), skipping")
+        _bar_update(overall_bar, desc=f"VOD {idx}/{total} — skipped (done)", increment=1)
+        return True
+
     t_start = time.time()
 
     # ── Step 1: Download ──────────────────────────────────────────
     _bar_update(overall_bar, desc=f"VOD {idx}/{total} — downloading")
-    log(f"\n  [ 1 / 4 ]  Downloading VOD")
+    log(f"\n  [ 1 / 3 ]  Downloading VOD")
     vod_path = download(url, VOD_DIR, ffmpeg, fragments)
     if vod_path is None:
         tqdm.write(f"  VOD {idx} — download failed, skipping.")
@@ -129,7 +138,6 @@ def process_url(
 
     # ── Step 2: Extract to LOCAL disk ─────────────────────────────
     _bar_update(overall_bar, desc=f"VOD {idx}/{total} — extracting")
-    local_dir = LOCAL_TEMP / vod_path.stem
     log(f"\n  [ 2 / 3 ]  Extracting frames → local disk")
 
     def _extract_progress(n: int):
@@ -190,9 +198,11 @@ def main():
     _divider("═")
     print(f"  TFT Pipeline  |  {total} VOD(s)  |  {args.fps}fps  |  "
           f"workers={workers}  |  dedup={dedup}")
-    print(f"  Frames saved: {LOCAL_TEMP}")
+    print(f"  VODs (temp):  {VOD_DIR}")
+    print(f"  Frames:       {LOCAL_TEMP}")
     _divider("═")
 
+    VOD_DIR.mkdir(parents=True, exist_ok=True)
     LOCAL_TEMP.mkdir(parents=True, exist_ok=True)
     _prevent_sleep()
     failed = []
