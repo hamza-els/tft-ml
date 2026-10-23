@@ -38,10 +38,14 @@ def _region_diff(a: np.ndarray, b: np.ndarray, region: tuple[int, int, int, int]
     return float(np.mean(np.abs(crop_a - crop_b)))
 
 
-def _has_changed(frame: np.ndarray, reference: np.ndarray) -> bool:
+def _has_changed(
+    frame: np.ndarray,
+    reference: np.ndarray,
+    threshold: float = CHANGE_THRESHOLD,
+) -> bool:
     """Return True if any watched region differs enough from the reference frame."""
     return any(
-        _region_diff(frame, reference, region) > CHANGE_THRESHOLD
+        _region_diff(frame, reference, region) > threshold
         for region in WATCH_REGIONS.values()
     )
 
@@ -78,7 +82,7 @@ def deduplicate_frames(
         if frame is None:
             continue
 
-        if reference is None or _has_changed(frame, reference):
+        if reference is None or _has_changed(frame, reference, threshold):
             reference = frame
             kept += 1
         else:

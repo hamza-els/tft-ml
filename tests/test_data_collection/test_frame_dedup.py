@@ -1,10 +1,19 @@
 """
 Tests for frame_dedup.py — change detection and deduplication logic.
 
+Frames here are synthetic: flat 1080p fills with specific WATCH_REGIONS
+painted in. This keeps the suite independent of extracted footage, which is
+deleted between sets, and lets each test assert an exact expected outcome.
+
+A real-footage smoke test is included at the bottom, skipped unless
+TFT_TEST_FRAME_DIR points at a folder of extracted frames.
+
 Usage:
-    python -m pytest tests/test_data_collection/test_frame_dedup.py -v -s
+    python -m pytest tests/test_data_collection/test_frame_dedup.py -v
+    TFT_TEST_FRAME_DIR=~/tft_frames_temp/VOD_ID python -m pytest tests/ -v
 """
 
+import os
 import shutil
 import sys
 from pathlib import Path
@@ -22,142 +31,229 @@ from src.data_collection.frame_dedup import (
     deduplicate_frames,
 )
 
-FRAME_DIR = Path(r"C:\Users\hamza\tft_frames_temp\z5wIgSE3K38")
+FRAME_SHAPE = (1080, 1920, 3)
 
-# Two frames close together (2fps → ~0.5s apart, likely similar during combat/idle)
-FRAME_A = FRAME_DIR / "frame_006383.jpg"
-FRAME_B = FRAME_DIR / "frame_006384.jpg"
-
-# Two frames far apart — almost certainly different game state
-FRAME_EARLY = FRAME_DIR / "frame_000001.jpg"
-FRAME_LATE  = FRAME_DIR / "frame_015722.jpg"
+# A board area clear of every WATCH_REGION. Stands in for combat animation,
+# which must never on its own count as a change.
+# Guarded by test_combat_region_is_outside_every_watch_region.
+COMBAT_REGION = (700, 300, 500, 300)
 
 
-@pytest.fixture(scope="session")
-def frame_a():
-    assert FRAME_A.exists(), f"Frame not found: {FRAME_A}"
-    img = cv2.imread(str(FRAME_A))
-    assert img is not None
-    return img
+# ── Helpers ───────────────────────────────────────────────────────────────────
 
-@pytest.fixture(scope="session")
-def frame_b():
-    assert FRAME_B.exists(), f"Frame not found: {FRAME_B}"
-    img = cv2.imread(str(FRAME_B))
-    assert img is not None
-    return img
+def _blank(value: int = 0) -> np.ndarray:
+    """A 1080p BGR frame filled with a uniform value."""
+    return np.full(FRAME_SHAPE, value, dtype=np.uint8)
 
-@pytest.fixture(scope="session")
-def frame_early():
-    assert FRAME_EARLY.exists(), f"Frame not found: {FRAME_EARLY}"
-    img = cv2.imread(str(FRAME_EARLY))
-    assert img is not None
-    return img
 
-@pytest.fixture(scope="session")
-def frame_late():
-    assert FRAME_LATE.exists(), f"Frame not found: {FRAME_LATE}"
-    img = cv2.imread(str(FRAME_LATE))
-    assert img is not None
-    return img
+def _fill(frame: np.ndarray, region: tuple[int, int, int, int], value: int) -> np.ndarray:
+    """Copy of frame with region (x, y, w, h) painted a uniform value."""
+    x, y, w, h = region
+    out = frame.copy()
+    out[y:y + h, x:x + w] = value
+    return out
+
+
+def _overlaps(a: tuple[int, int, int, int], b: tuple[int, int, int, int]) -> bool:
+    ax, ay, aw, ah = a
+    bx, by, bw, bh = b
+    return ax < bx + bw and bx < ax + aw and ay < by + bh and by < ay + ah
+
+
+def _write(dir_path: Path, frames: list[np.ndarray]) -> None:
+    """Write frames as frame_000000.jpg ... at max quality (flat fills stay exact)."""
+    for i, frame in enumerate(frames):
+        cv2.imwrite(str(dir_path / f"frame_{i:06d}.jpg"), frame,
+                    [cv2.IMWRITE_JPEG_QUALITY, 100])
+
+
+def _gold_series(values: list[int]) -> list[np.ndarray]:
+    """Frames identical except for the gold region, set to each value in turn."""
+    base = _blank(0)
+    return [_fill(base, WATCH_REGIONS["gold"], v) for v in values]
 
 
 # ── _region_diff ──────────────────────────────────────────────────────────────
 
-def test_region_diff_identical_is_zero(frame_a):
-    """Comparing a frame with itself must give 0 diff for every region."""
+def test_region_diff_identical_is_zero():
+    frame = _blank(30)
     for name, region in WATCH_REGIONS.items():
-        diff = _region_diff(frame_a, frame_a, region)
-        assert diff == 0.0, f"Region '{name}': expected 0, got {diff}"
+        assert _region_diff(frame, frame, region) == 0.0, f"{name} differed from itself"
 
 
-def test_region_diff_is_nonnegative(frame_a, frame_b):
-    for name, region in WATCH_REGIONS.items():
-        diff = _region_diff(frame_a, frame_b, region)
-        assert diff >= 0.0, f"Region '{name}': diff is negative ({diff})"
+def test_region_diff_is_symmetric():
+    a = _blank(0)
+    b = _fill(a, WATCH_REGIONS["gold"], 40)
+    region = WATCH_REGIONS["gold"]
+    assert _region_diff(a, b, region) == _region_diff(b, a, region)
 
 
-def test_region_diff_prints_all(frame_a, frame_b):
-    """Print per-region diffs so you can eyeball whether regions are calibrated."""
-    print("\n  ── Region diffs (frame_006383 vs frame_006384) ──")
-    for name, region in WATCH_REGIONS.items():
-        diff = _region_diff(frame_a, frame_b, region)
-        flag = "CHANGE" if diff > CHANGE_THRESHOLD else "same  "
-        print(f"    {flag}  {name:<8}  diff={diff:.2f}  (threshold={CHANGE_THRESHOLD})")
+def test_region_diff_matches_known_magnitude():
+    """Filling a whole region with +40 should give a mean absolute diff of 40."""
+    a = _blank(0)
+    b = _fill(a, WATCH_REGIONS["gold"], 40)
+    assert _region_diff(a, b, WATCH_REGIONS["gold"]) == pytest.approx(40.0)
 
 
-def test_distant_frames_differ_in_at_least_one_region(frame_early, frame_late):
-    """Frames 15,000 apart should differ in at least one watched region."""
-    diffs = {name: _region_diff(frame_early, frame_late, region)
-             for name, region in WATCH_REGIONS.items()}
-    print("\n  ── Region diffs (frame_000001 vs frame_015722) ──")
-    for name, diff in diffs.items():
-        print(f"    {name:<8}  diff={diff:.2f}")
-    assert any(d > CHANGE_THRESHOLD for d in diffs.values()), (
-        "Early and late frames look identical in all regions — "
-        "regions may be miscalibrated (e.g. pointing at a static background)"
-    )
+def test_region_diff_ignores_changes_outside_the_region():
+    a = _blank(0)
+    b = _fill(a, COMBAT_REGION, 255)
+    assert _region_diff(a, b, WATCH_REGIONS["gold"]) == 0.0
 
 
 # ── _has_changed ──────────────────────────────────────────────────────────────
 
-def test_identical_frame_not_changed(frame_a):
-    assert not _has_changed(frame_a, frame_a), (
-        "A frame compared with itself should never be marked as changed"
-    )
+def test_identical_frames_not_changed():
+    frame = _blank(30)
+    assert not _has_changed(frame, frame)
 
 
-def test_early_vs_late_is_changed(frame_early, frame_late):
-    """Frames far apart should almost always be marked as changed."""
-    assert _has_changed(frame_early, frame_late), (
-        "Frames 15,000 apart were not marked as changed — "
-        "regions may be pointing at static parts of the UI"
-    )
+@pytest.mark.parametrize("name", list(WATCH_REGIONS))
+def test_change_in_each_watch_region_is_detected(name):
+    """Every configured region must actually drive the decision — no dead regions."""
+    ref = _blank(0)
+    frame = _fill(ref, WATCH_REGIONS[name], 60)
+    assert _has_changed(frame, ref), f"a change in the {name!r} region went undetected"
 
 
-def test_consecutive_frames_print_verdict(frame_a, frame_b):
-    changed = _has_changed(frame_b, frame_a)
-    print(f"\n  frame_006383 → frame_006384: {'CHANGED' if changed else 'duplicate (would be removed)'}")
+def test_combat_region_is_outside_every_watch_region():
+    """Guard: keeps the combat-exclusion test honest if regions are recalibrated."""
+    for name, region in WATCH_REGIONS.items():
+        assert not _overlaps(COMBAT_REGION, region), (
+            f"COMBAT_REGION now overlaps the {name!r} watch region — "
+            "pick a different board area for the exclusion tests"
+        )
+
+
+def test_change_outside_watch_regions_is_ignored():
+    """Combat animation alone must not count as a change — that is the whole design."""
+    ref = _blank(0)
+    frame = _fill(ref, COMBAT_REGION, 255)
+    assert not _has_changed(frame, ref)
+
+
+def test_threshold_boundary():
+    ref = _blank(0)
+    frame = _fill(ref, WATCH_REGIONS["gold"], 20)   # diff of exactly 20
+    assert _has_changed(frame, ref, threshold=10.0)
+    assert not _has_changed(frame, ref, threshold=30.0)
+
+
+def test_threshold_argument_is_respected():
+    """Regression: _has_changed once hardcoded CHANGE_THRESHOLD and ignored the arg."""
+    ref = _blank(0)
+    frame = _fill(ref, WATCH_REGIONS["gold"], int(CHANGE_THRESHOLD * 2))
+    assert _has_changed(frame, ref, threshold=CHANGE_THRESHOLD)
+    assert not _has_changed(frame, ref, threshold=CHANGE_THRESHOLD * 10)
 
 
 # ── deduplicate_frames ────────────────────────────────────────────────────────
 
-def test_dry_run_deletes_nothing(tmp_path):
-    """dry_run=True must not delete any files."""
-    # Copy a small slice of frames into a temp dir
-    sample = sorted(FRAME_DIR.glob("frame_006*.jpg"))[:20]
+def test_empty_directory_returns_zeros(tmp_path):
+    assert deduplicate_frames(str(tmp_path), quiet=True) == (0, 0)
+
+
+def test_identical_frames_keep_exactly_one(tmp_path):
+    _write(tmp_path, [_blank(0) for _ in range(10)])
+    kept, deleted = deduplicate_frames(str(tmp_path), quiet=True)
+    assert (kept, deleted) == (1, 9)
+    assert len(list(tmp_path.glob("frame_*.jpg"))) == 1
+
+
+def test_distinct_frames_are_all_kept(tmp_path):
+    _write(tmp_path, _gold_series([0, 60, 120, 180]))
+    kept, deleted = deduplicate_frames(str(tmp_path), quiet=True)
+    assert (kept, deleted) == (4, 0)
+
+
+def test_counts_sum_to_total_and_match_disk(tmp_path):
+    _write(tmp_path, _gold_series([0, 0, 60, 60, 120]))
+    kept, deleted = deduplicate_frames(str(tmp_path), quiet=True)
+    assert kept + deleted == 5
+    assert len(list(tmp_path.glob("frame_*.jpg"))) == kept
+
+
+def test_dry_run_deletes_nothing_but_reports_real_counts(tmp_path):
+    _write(tmp_path, _gold_series([0, 0, 60, 60, 120]))
+    before = {p.name for p in tmp_path.glob("frame_*.jpg")}
+
+    dry = deduplicate_frames(str(tmp_path), dry_run=True, quiet=True)
+    after = {p.name for p in tmp_path.glob("frame_*.jpg")}
+    assert before == after, "dry_run modified the directory"
+
+    wet = deduplicate_frames(str(tmp_path), quiet=True)
+    assert dry == wet, "dry_run reported different counts than the real run"
+
+
+def test_reference_is_last_kept_not_previous_frame(tmp_path):
+    """
+    Gold drifts by 6 per frame with a threshold of 10. Against the previous
+    frame nothing ever changes; against the last *kept* frame every second one
+    does. Locks in the accumulate-drift behaviour.
+    """
+    _write(tmp_path, _gold_series([0, 6, 12, 18, 24]))
+    kept, deleted = deduplicate_frames(str(tmp_path), threshold=10.0, quiet=True)
+    assert (kept, deleted) == (3, 2), (
+        "expected frames 0, 2 and 4 to be kept — dedup may be comparing "
+        "against the previous frame instead of the last kept one"
+    )
+
+
+def test_threshold_changes_outcome_end_to_end(tmp_path):
+    """Regression: the threshold argument was accepted but never forwarded."""
+    _write(tmp_path, _gold_series([0, 20, 40, 60]))
+
+    sensitive = deduplicate_frames(str(tmp_path), threshold=10.0, dry_run=True, quiet=True)
+    blunt = deduplicate_frames(str(tmp_path), threshold=99.0, dry_run=True, quiet=True)
+
+    assert sensitive == (4, 0)
+    assert blunt == (1, 3)
+
+
+def test_non_frame_files_are_untouched(tmp_path):
+    _write(tmp_path, [_blank(0) for _ in range(3)])
+    (tmp_path / "notes.txt").write_text("keep me")
+    (tmp_path / "thumb.png").write_bytes(b"\x89PNG\r\n\x1a\n")
+
+    deduplicate_frames(str(tmp_path), quiet=True)
+
+    assert (tmp_path / "notes.txt").read_text() == "keep me"
+    assert (tmp_path / "thumb.png").exists()
+
+
+def test_unreadable_frame_is_skipped_without_crashing(tmp_path):
+    """A truncated JPEG should not abort a multi-hour dedup run."""
+    _write(tmp_path, _gold_series([0, 60]))
+    (tmp_path / "frame_000099.jpg").write_bytes(b"not a jpeg")
+
+    kept, deleted = deduplicate_frames(str(tmp_path), quiet=True)
+
+    assert kept == 2
+    assert (tmp_path / "frame_000099.jpg").exists(), "unreadable frame was deleted"
+    assert kept + deleted == 2, "unreadable frames are skipped, not counted"
+
+
+# ── Optional: real-footage smoke test ─────────────────────────────────────────
+# Point TFT_TEST_FRAME_DIR at an extracted VOD folder to exercise dedup against
+# genuine gameplay, e.g. ~/tft_frames_temp/VOD_ID
+
+_REAL_DIR = os.environ.get("TFT_TEST_FRAME_DIR", "")
+
+requires_real_frames = pytest.mark.skipif(
+    not (_REAL_DIR and Path(_REAL_DIR).expanduser().is_dir()),
+    reason="set TFT_TEST_FRAME_DIR to a folder of extracted frames",
+)
+
+
+@requires_real_frames
+def test_dedup_reduces_count_on_real_footage(tmp_path):
+    sample = sorted(Path(_REAL_DIR).expanduser().glob("frame_*.jpg"))[:200]
+    assert sample, f"no frame_*.jpg in {_REAL_DIR}"
     for f in sample:
         shutil.copy(f, tmp_path / f.name)
 
-    before = set(tmp_path.glob("frame_*.jpg"))
-    kept, deleted = deduplicate_frames(str(tmp_path), dry_run=True, quiet=True)
-    after = set(tmp_path.glob("frame_*.jpg"))
+    kept, deleted = deduplicate_frames(str(tmp_path), quiet=True)
 
-    assert before == after, "dry_run deleted files — it must not modify the directory"
     assert kept + deleted == len(sample)
-
-
-def test_dedup_reduces_count(tmp_path):
-    """Dedup on a real slice should remove at least some frames."""
-    sample = sorted(FRAME_DIR.glob("frame_006*.jpg"))[:30]
-    for f in sample:
-        shutil.copy(f, tmp_path / f.name)
-
-    kept, deleted = deduplicate_frames(str(tmp_path), quiet=True)
-    remaining = list(tmp_path.glob("frame_*.jpg"))
-
-    print(f"\n  30 frames → kept {kept}, deleted {deleted}")
-    assert kept + deleted == len(sample), "kept + deleted should equal total input"
-    assert len(remaining) == kept, "files on disk should match kept count"
-
-
-def test_dedup_keeps_at_least_one(tmp_path):
-    """Even a run of identical frames must keep at least one."""
-    # Duplicate the same frame 10 times
-    src = FRAME_A
-    for i in range(10):
-        shutil.copy(src, tmp_path / f"frame_{i:06d}.jpg")
-
-    kept, deleted = deduplicate_frames(str(tmp_path), quiet=True)
-    assert kept == 1, f"Expected 1 kept for 10 identical frames, got {kept}"
-    assert deleted == 9
+    assert len(list(tmp_path.glob("frame_*.jpg"))) == kept
+    assert deleted > 0, "no frames removed from real footage — threshold may be too high"
