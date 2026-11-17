@@ -1,5 +1,12 @@
 """
-OCR pipeline tests against a real extracted frame.
+OCR pipeline tests against two real frames kept in tests/fixtures/.
+
+  frame_030059.jpg — mid game (stage 5-6), shop open, normal stage-bar layout
+  frame_010313.jpg — stage 1-3, stage bar in its shifted stage-1 position
+
+Both are from the HUD layout configs/vision_config.yaml is calibrated for.
+If these fail after recalibrating for a different stream, replace the
+fixtures and expected values with frames from that stream.
 
 Usage:
     python -m pytest tests/test_vision/test_ocr_pipeline.py -v -s
@@ -12,92 +19,104 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 import cv2
 import pytest
 
-from src.vision.ocr_pipeline import extract_ui_values
+from src.vision.hud import HudDetector
+from src.vision.ocr_pipeline import extract_ui_values, pick_hp, read_hp, read_shop
 
-# ── Sample frame ──────────────────────────────────────────────────────────────
-SAMPLE_FRAME = Path(r"C:\Users\hamza\tft_frames_temp\z5wIgSE3K38\frame_006383.jpg")
+FIXTURES = Path(__file__).resolve().parents[1] / "fixtures"
 
 
-@pytest.fixture(scope="session")
-def frame():
-    assert SAMPLE_FRAME.exists(), (
-        f"Sample frame not found: {SAMPLE_FRAME}\n"
-        "Update SAMPLE_FRAME to any extracted frame path."
-    )
-    img = cv2.imread(str(SAMPLE_FRAME))
-    assert img is not None, "cv2.imread returned None — file may be corrupt"
+def _load(name: str):
+    img = cv2.imread(str(FIXTURES / name))
+    assert img is not None, f"fixture missing: {name}"
     return img
 
 
 @pytest.fixture(scope="session")
-def ocr_results(frame):
-    """Run OCR once for the whole session — EasyOCR is slow to initialise."""
-    return extract_ui_values(frame)
+def mid_game():
+    return _load("frame_030059.jpg")
 
 
-# ── Tests ─────────────────────────────────────────────────────────────────────
-
-def test_ocr_runs_without_error(frame):
-    result = extract_ui_values(frame)
-    assert isinstance(result, dict)
+@pytest.fixture(scope="session")
+def stage_one():
+    return _load("frame_010313.jpg")
 
 
-def test_ocr_returns_expected_keys(ocr_results):
-    expected = {"gold", "hp", "level", "stage", "round", "streak", "xp_current", "xp_needed"}
-    assert expected == set(ocr_results.keys())
+# ── HUD detection ─────────────────────────────────────────────────────────────
+
+def test_hud_found_in_both_layouts(mid_game, stage_one):
+    hud = HudDetector()
+    mid, early = hud.detect(mid_game), hud.detect(stage_one)
+    assert mid.stage_visible and mid.shop_visible and not mid.stage_one_layout
+    assert early.stage_visible and early.shop_visible and early.stage_one_layout
 
 
-def test_gold(ocr_results):
-    gold = ocr_results["gold"]
-    print(f"\n  gold = {gold}")
-    assert gold is not None, "Gold OCR returned None — check region in vision_config.yaml"
-    assert 0 <= gold <= 100, f"Gold out of range: {gold}"
-    assert gold == int(gold), f"Gold should be a whole number, got {gold}"
+def test_hud_absent_on_blank_frame(mid_game):
+    blank = mid_game * 0
+    state = HudDetector().detect(blank)
+    assert not state.stage_visible and not state.shop_visible
 
 
-def test_hp(ocr_results):
-    hp = ocr_results["hp"]
-    print(f"\n  hp = {hp}")
-    assert hp is not None, "HP OCR returned None — check region in vision_config.yaml"
-    assert 0 < hp <= 100, f"HP out of range: {hp}"
+# ── Scalar OCR ────────────────────────────────────────────────────────────────
+
+def test_ui_values_mid_game(mid_game):
+    values = extract_ui_values(mid_game)
+    print(f"\n  {values}")
+    assert values == {
+        "gold": 1, "hp": 51, "level": 9, "stage": 5, "round": 6,
+        "streak": 4, "xp_current": 2, "xp_needed": 68,
+    }
 
 
-def test_level(ocr_results):
-    level = ocr_results["level"]
-    print(f"\n  level = {level}")
-    assert level is not None, "Level OCR returned None — check region in vision_config.yaml"
-    assert 1 <= level <= 9, f"Level out of range: {level}"
-    assert level == int(level), f"Level should be a whole number, got {level}"
+def test_ui_values_stage_one_layout(stage_one):
+    values = extract_ui_values(stage_one)
+    print(f"\n  {values}")
+    assert values == {
+        "gold": 0, "hp": 100, "level": 2, "stage": 1, "round": 3,
+        "streak": 0, "xp_current": 0, "xp_needed": 2,
+    }
 
 
-def test_stage(ocr_results):
-    stage = ocr_results["stage"]
-    round_ = ocr_results["round"]
-    print(f"\n  stage = {stage}  round = {round_}")
-    assert stage is not None, "Stage OCR returned None — check region in vision_config.yaml"
-    assert 1 <= stage <= 7, f"Stage out of range: {stage}"
-    assert round_ is not None, "Round OCR returned None — stage text may not contain '-'"
-    assert 1 <= round_ <= 7, f"Round out of range: {round_}"
+def test_ui_values_blank_frame_are_none(mid_game):
+    values = extract_ui_values(mid_game * 0)
+    assert set(values.values()) == {None}
 
 
-def test_streak(ocr_results):
-    streak = ocr_results["streak"]
-    print(f"\n  streak = {streak}")
-    if streak is not None:
-        assert 0 <= streak <= 15, f"Streak out of range: {streak}"
+# ── HP ────────────────────────────────────────────────────────────────────────
+
+def test_read_hp_other_players(stage_one):
+    own, others = read_hp(stage_one)
+    assert own == 100
+    assert others == [100.0] * 7
 
 
-def test_xp(ocr_results):
-    xp_cur = ocr_results["xp_current"]
-    xp_need = ocr_results["xp_needed"]
-    print(f"\n  xp = {xp_cur} / {xp_need}")
-    if xp_cur is not None and xp_need is not None:
-        assert 0 <= xp_cur <= xp_need, f"XP current > needed: {xp_cur} / {xp_need}"
-        assert xp_need <= 84, f"XP needed out of range: {xp_need}"
+def test_pick_hp_rejects_junk_sharing_a_row():
+    boxes = [
+        ((1782, 189, 30, 18), "82", 0.69),   # clipped player name on another player's row
+        ((1832, 193, 20, 12), "26", 0.73),
+        ((1791, 433, 30, 22), "23", 1.0),    # own HP: large, no small number on its row
+        ((1832, 523, 20, 13), "20", 0.99),
+        ((1770, 601, 30, 16), "510", 0.19),  # junk: not a valid HP, low confidence
+    ]
+    assert pick_hp(boxes) == (23.0, [26.0, 20.0])
 
 
-def test_print_all_results(ocr_results):
-    print("\n  ── OCR results ──────────────────")
-    for k, v in ocr_results.items():
-        print(f"    {k:<12} {v}")
-    print("  ─────────────────────────────────")
+def test_pick_hp_none_when_own_row_missing():
+    assert pick_hp([((1832, 193, 20, 12), "26", 0.9)]) == (None, [26.0])
+
+
+# ── Shop ──────────────────────────────────────────────────────────────────────
+
+def test_read_shop(mid_game, stage_one):
+    assert read_shop(mid_game) == ["Morgana", "Malphite", "Shen", "Draven", None]
+    assert read_shop(stage_one) == [None, None, "Ornn", "Cinderling", "Pebbles"]
+
+
+# ── Augment bar ───────────────────────────────────────────────────────────────
+
+def test_augment_bar(mid_game, stage_one):
+    from src.vision.augments import AugmentReader
+    reader = AugmentReader()
+    assert reader.count(mid_game) == 3
+    assert [a.tier for a in reader.read(mid_game)] == ["gold", "gold", "gold"]
+    assert reader.count(stage_one) == 0          # no augment picked yet in stage 1
+    assert reader.count(mid_game * 0) == 0       # an all-black frame is not a bar

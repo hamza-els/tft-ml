@@ -1,0 +1,1169 @@
+{
+ "set": "TFTSet18",
+ "source": "https://raw.communitydragon.org/latest/cdragon/tft/en_us.json",
+ "champions": {
+  "Ahri": {
+   "api_name": "DA_18_Ahri",
+   "cost": 4,
+   "traits": [
+    "Blossom",
+    "Spellweaver"
+   ],
+   "hp": 850.0,
+   "attack_damage": 40.0,
+   "armor": 40.0,
+   "range": 4.0
+  },
+  "Akali": {
+   "api_name": "DA_18_Akali_AD",
+   "cost": 1,
+   "traits": [
+    "Inferno",
+    "Adaptor",
+    "Ravager"
+   ],
+   "hp": 650.0,
+   "attack_damage": 40.0,
+   "armor": 35.0,
+   "range": 1.0
+  },
+  "Alistar": {
+   "api_name": "DA_18_Alistar",
+   "cost": 2,
+   "traits": [
+    "Elderwood",
+    "Brawler"
+   ],
+   "hp": 950.0,
+   "attack_damage": 50.0,
+   "armor": 45.0,
+   "range": 1.0
+  },
+  "Alune": {
+   "api_name": "DA_18_Alune",
+   "cost": 5,
+   "traits": [
+    "Attuned",
+    "Lunar",
+    "Spellweaver"
+   ],
+   "hp": 900.0,
+   "attack_damage": 40.0,
+   "armor": 45.0,
+   "range": 4.0
+  },
+  "Amumu": {
+   "api_name": "DA_Amumu18",
+   "cost": 4,
+   "traits": [
+    "Inferno",
+    "Juggernaut"
+   ],
+   "hp": 1300.0,
+   "attack_damage": 70.0,
+   "armor": 60.0,
+   "range": 1.0
+  },
+  "Aphelios": {
+   "api_name": "DA_18_Aphelios",
+   "cost": 4,
+   "traits": [
+    "Lunar",
+    "Rapidfire"
+   ],
+   "hp": 850.0,
+   "attack_damage": 60.0,
+   "armor": 40.0,
+   "range": 4.0
+  },
+  "Ashe": {
+   "api_name": "DA_18_Ashe",
+   "cost": 5,
+   "traits": [
+    "Blossom",
+    "Hunter"
+   ],
+   "hp": 900.0,
+   "attack_damage": 75.0,
+   "armor": 45.0,
+   "range": 6.0
+  },
+  "Azir": {
+   "api_name": "DA_18_Azir",
+   "cost": 3,
+   "traits": [
+    "Blackthorn",
+    "Executioner",
+    "Summoner"
+   ],
+   "hp": 650.0,
+   "attack_damage": 30.0,
+   "armor": 35.0,
+   "range": 4.0
+  },
+  "Brambleback": {
+   "api_name": "DA_Brambleback18",
+   "cost": 4,
+   "traits": [
+    "Riftbeast",
+    "Ravager"
+   ],
+   "hp": 1100.0,
+   "attack_damage": 120.0,
+   "armor": 65.0,
+   "range": 1.0
+  },
+  "Caitlyn": {
+   "api_name": "DA_18_Caitlyn",
+   "cost": 2,
+   "traits": [
+    "Coven",
+    "Hunter"
+   ],
+   "hp": 550.0,
+   "attack_damage": 50.0,
+   "armor": 30.0,
+   "range": 4.0
+  },
+  "Camille": {
+   "api_name": "DA_18_Camille",
+   "cost": 1,
+   "traits": [
+    "Coven",
+    "Ravager"
+   ],
+   "hp": 700.0,
+   "attack_damage": 40.0,
+   "armor": 40.0,
+   "range": 1.0
+  },
+  "Cassiopeia": {
+   "api_name": "DA_18_Cassiopeia",
+   "cost": 3,
+   "traits": [
+    "Coven",
+    "Spellweaver"
+   ],
+   "hp": 650.0,
+   "attack_damage": 30.0,
+   "armor": 35.0,
+   "range": 4.0
+  },
+  "Cinderling": {
+   "api_name": "DA_Cinderling18",
+   "cost": 1,
+   "traits": [
+    "Riftbeast",
+    "Hunter"
+   ],
+   "hp": 500.0,
+   "attack_damage": 40.0,
+   "armor": 25.0,
+   "range": 4.0
+  },
+  "Diana": {
+   "api_name": "DA_18_Diana",
+   "cost": 3,
+   "traits": [
+    "Lunar",
+    "Ravager",
+    "Vanguard"
+   ],
+   "hp": 850.0,
+   "attack_damage": 30.0,
+   "armor": 50.0,
+   "range": 1.0
+  },
+  "Draven": {
+   "api_name": "DA_Draven18",
+   "cost": 5,
+   "traits": [
+    "Bounty Seeker"
+   ],
+   "hp": 900.0,
+   "attack_damage": 48.0,
+   "armor": 45.0,
+   "range": 6.0
+  },
+  "Elder Dragon": {
+   "api_name": "DA_18_ElderDragon",
+   "cost": 5,
+   "traits": [
+    "Apex Predator",
+    "Riftbeast"
+   ],
+   "hp": 1800.0,
+   "attack_damage": 125.0,
+   "armor": 75.0,
+   "range": 2.0
+  },
+  "Elise": {
+   "api_name": "DA_18_Elise",
+   "cost": 2,
+   "traits": [
+    "Coven",
+    "Vanguard"
+   ],
+   "hp": 900.0,
+   "attack_damage": 20.0,
+   "armor": 45.0,
+   "range": 1.0
+  },
+  "Ezreal": {
+   "api_name": "DA_18_Ezreal",
+   "cost": 4,
+   "traits": [
+    "Elderwood",
+    "Executioner"
+   ],
+   "hp": 850.0,
+   "attack_damage": 45.0,
+   "armor": 40.0,
+   "range": 4.0
+  },
+  "Fiddlesticks": {
+   "api_name": "DA_Fiddlesticks18",
+   "cost": 3,
+   "traits": [
+    "Flora Fatalis",
+    "Defender",
+    "Spellweaver"
+   ],
+   "hp": 1000.0,
+   "attack_damage": 50.0,
+   "armor": 55.0,
+   "range": 1.0
+  },
+  "Gnar": {
+   "api_name": "DA_18_GnarSmall",
+   "cost": 5,
+   "traits": [
+    "Elderwood",
+    "Sprykin",
+    "Brawler"
+   ],
+   "hp": 900.0,
+   "attack_damage": 100.0,
+   "armor": 55.0,
+   "range": 2.0
+  },
+  "Gromp": {
+   "api_name": "DA_Gromp18_AP",
+   "cost": 2,
+   "traits": [
+    "Riftbeast",
+    "Adaptor"
+   ],
+   "hp": 550.0,
+   "attack_damage": 30.0,
+   "armor": 30.0,
+   "range": 4.0
+  },
+  "Hecarim": {
+   "api_name": "DA_18_Hecarim",
+   "cost": 3,
+   "traits": [
+    "Elderwood",
+    "Vanguard"
+   ],
+   "hp": 1100.0,
+   "attack_damage": 50.0,
+   "armor": 50.0,
+   "range": 1.0
+  },
+  "Ivern": {
+   "api_name": "DA_18_Ivern",
+   "cost": 5,
+   "traits": [
+    "Greenfather"
+   ],
+   "hp": 1000.0,
+   "attack_damage": 60.0,
+   "armor": 55.0,
+   "range": 3.0
+  },
+  "Karma": {
+   "api_name": "DA_Karma18",
+   "cost": 1,
+   "traits": [
+    "Blossom",
+    "Spellweaver"
+   ],
+   "hp": 500.0,
+   "attack_damage": 25.0,
+   "armor": 25.0,
+   "range": 4.0
+  },
+  "Kayle": {
+   "api_name": "DA_18_Kayle",
+   "cost": 2,
+   "traits": [
+    "Solar",
+    "Rapidfire"
+   ],
+   "hp": 550.0,
+   "attack_damage": null,
+   "armor": 30.0,
+   "range": 4.0
+  },
+  "Kennen": {
+   "api_name": "DA_18_Kennen",
+   "cost": 5,
+   "traits": [
+    "Inferno",
+    "Executioner"
+   ],
+   "hp": 1200.0,
+   "attack_damage": 50.0,
+   "armor": 60.0,
+   "range": 2.0
+  },
+  "Kha'Zix": {
+   "api_name": "DA_18_KhaZix",
+   "cost": 3,
+   "traits": [
+    "Rival"
+   ],
+   "hp": 950.0,
+   "attack_damage": 40.0,
+   "armor": 55.0,
+   "range": 1.0
+  },
+  "Kobuko": {
+   "api_name": "DA_18_Kobuko",
+   "cost": 1,
+   "traits": [
+    "Sprykin",
+    "Brawler"
+   ],
+   "hp": 700.0,
+   "attack_damage": 55.0,
+   "armor": 40.0,
+   "range": 1.0
+  },
+  "Kog'Maw": {
+   "api_name": "DA_KogMaw18_AD",
+   "cost": 3,
+   "traits": [
+    "Caustic",
+    "Adaptor",
+    "Invoker"
+   ],
+   "hp": 650.0,
+   "attack_damage": 40.0,
+   "armor": 35.0,
+   "range": 4.0
+  },
+  "Krug": {
+   "api_name": "DA_Krug18",
+   "cost": 3,
+   "traits": [
+    "Riftbeast",
+    "Brawler"
+   ],
+   "hp": 1100.0,
+   "attack_damage": 55.0,
+   "armor": 40.0,
+   "range": 1.0
+  },
+  "LeBlanc": {
+   "api_name": "DA_18_LeBlanc",
+   "cost": 2,
+   "traits": [
+    "Elderwood",
+    "Spellweaver"
+   ],
+   "hp": 550.0,
+   "attack_damage": 30.0,
+   "armor": 30.0,
+   "range": 4.0
+  },
+  "Leona": {
+   "api_name": "DA_18_Leona",
+   "cost": 1,
+   "traits": [
+    "Solar",
+    "Defender"
+   ],
+   "hp": 750.0,
+   "attack_damage": 50.0,
+   "armor": 40.0,
+   "range": 1.0
+  },
+  "Lillia": {
+   "api_name": "DA_18_Lillia",
+   "cost": 4,
+   "traits": [
+    "Fae",
+    "Defender"
+   ],
+   "hp": 1300.0,
+   "attack_damage": 40.0,
+   "armor": 60.0,
+   "range": 1.0
+  },
+  "Lux": {
+   "api_name": "DA_Lux18_Base",
+   "cost": 5,
+   "traits": [
+    "Avatar"
+   ],
+   "hp": 900.0,
+   "attack_damage": 40.0,
+   "armor": 40.0,
+   "range": 6.0
+  },
+  "Lux (Blackthorn)": {
+   "api_name": "DA_Lux18_Blackthorn",
+   "cost": 5,
+   "traits": [
+    "Blackthorn",
+    "Avatar"
+   ],
+   "hp": 900.0,
+   "attack_damage": 40.0,
+   "armor": 45.0,
+   "range": 6.0
+  },
+  "Lux (Blossom)": {
+   "api_name": "DA_Lux18_Blossom",
+   "cost": 5,
+   "traits": [
+    "Blossom",
+    "Avatar"
+   ],
+   "hp": 900.0,
+   "attack_damage": 40.0,
+   "armor": 45.0,
+   "range": 6.0
+  },
+  "Lux (Coven)": {
+   "api_name": "DA_18_Lux_Coven",
+   "cost": 5,
+   "traits": [
+    "Coven",
+    "Avatar"
+   ],
+   "hp": 900.0,
+   "attack_damage": 40.0,
+   "armor": 45.0,
+   "range": 6.0
+  },
+  "Lux (Elderwood)": {
+   "api_name": "DA_18_Lux_Elderwood",
+   "cost": 5,
+   "traits": [
+    "Elderwood",
+    "Avatar"
+   ],
+   "hp": 900.0,
+   "attack_damage": 40.0,
+   "armor": 45.0,
+   "range": 6.0
+  },
+  "Lux (Fae)": {
+   "api_name": "DA_18_Lux_Fae",
+   "cost": 5,
+   "traits": [
+    "Fae",
+    "Avatar"
+   ],
+   "hp": 900.0,
+   "attack_damage": 40.0,
+   "armor": 45.0,
+   "range": 6.0
+  },
+  "Lux (Inferno)": {
+   "api_name": "DA_18_Lux_Inferno",
+   "cost": 5,
+   "traits": [
+    "Inferno",
+    "Avatar"
+   ],
+   "hp": 900.0,
+   "attack_damage": 40.0,
+   "armor": 45.0,
+   "range": 6.0
+  },
+  "Lux (Lunar)": {
+   "api_name": "DA_18_Lux_Moonbeam",
+   "cost": 5,
+   "traits": [
+    "Lunar",
+    "Avatar"
+   ],
+   "hp": 900.0,
+   "attack_damage": 40.0,
+   "armor": 45.0,
+   "range": 6.0
+  },
+  "Lux (Primal)": {
+   "api_name": "DA_18_Lux_Primal",
+   "cost": 5,
+   "traits": [
+    "Primal",
+    "Avatar"
+   ],
+   "hp": 900.0,
+   "attack_damage": 40.0,
+   "armor": 45.0,
+   "range": 6.0
+  },
+  "Lux (Solar)": {
+   "api_name": "DA_18_Lux_Sunbeam",
+   "cost": 5,
+   "traits": [
+    "Solar",
+    "Avatar"
+   ],
+   "hp": 900.0,
+   "attack_damage": 40.0,
+   "armor": 45.0,
+   "range": 6.0
+  },
+  "Malphite": {
+   "api_name": "DA_18_Malphite",
+   "cost": 4,
+   "traits": [
+    "Blackthorn",
+    "Monolith"
+   ],
+   "hp": 1300.0,
+   "attack_damage": 70.0,
+   "armor": 70.0,
+   "range": 1.0
+  },
+  "Mama Beak": {
+   "api_name": "DA_CrimsonRaptor18",
+   "cost": 3,
+   "traits": [
+    "Riftbeast",
+    "Summoner",
+    "Rapidfire"
+   ],
+   "hp": 650.0,
+   "attack_damage": 60.0,
+   "armor": 35.0,
+   "range": 4.0
+  },
+  "Maokai": {
+   "api_name": "DA_18_Maokai",
+   "cost": 5,
+   "traits": [
+    "Old Growth",
+    "Juggernaut"
+   ],
+   "hp": 1150.0,
+   "attack_damage": 80.0,
+   "armor": 60.0,
+   "range": 1.0
+  },
+  "Master Yi": {
+   "api_name": "DA_18_MasterYi_AD",
+   "cost": 3,
+   "traits": [
+    "Blossom",
+    "Adaptor"
+   ],
+   "hp": 850.0,
+   "attack_damage": 63.0,
+   "armor": 55.0,
+   "range": 1.0
+  },
+  "Morgana": {
+   "api_name": "DA_18_Morgana",
+   "cost": 4,
+   "traits": [
+    "Coven",
+    "Invoker"
+   ],
+   "hp": 1100.0,
+   "attack_damage": 45.0,
+   "armor": 60.0,
+   "range": 2.0
+  },
+  "Murkwolf": {
+   "api_name": "DA_Murkwolf18",
+   "cost": 2,
+   "traits": [
+    "Riftbeast",
+    "Ravager"
+   ],
+   "hp": 700.0,
+   "attack_damage": 50.0,
+   "armor": 40.0,
+   "range": 1.0
+  },
+  "Nidalee": {
+   "api_name": "DA_Nidalee18_AP",
+   "cost": 4,
+   "traits": [
+    "Primal",
+    "Adaptor"
+   ],
+   "hp": 850.0,
+   "attack_damage": 35.0,
+   "armor": 30.0,
+   "range": 1.0
+  },
+  "Ornn": {
+   "api_name": "DA_18_Ornn",
+   "cost": 1,
+   "traits": [
+    "Elderwood",
+    "Defender"
+   ],
+   "hp": 700.0,
+   "attack_damage": 40.0,
+   "armor": 40.0,
+   "range": 1.0
+  },
+  "Pebbles": {
+   "api_name": "DA_18_Sentry",
+   "cost": 1,
+   "traits": [
+    "Riftbeast",
+    "Invoker"
+   ],
+   "hp": 500.0,
+   "attack_damage": 35.0,
+   "armor": 25.0,
+   "range": 4.0
+  },
+  "Rakan": {
+   "api_name": "DA_18_Rakan",
+   "cost": 1,
+   "traits": [
+    "Fae",
+    "Juggernaut",
+    "Vanguard"
+   ],
+   "hp": 700.0,
+   "attack_damage": 45.0,
+   "armor": 35.0,
+   "range": 1.0
+  },
+  "Rammus": {
+   "api_name": "DA_18_Rammus",
+   "cost": 3,
+   "traits": [
+    "Sprykin",
+    "Defender"
+   ],
+   "hp": 1100.0,
+   "attack_damage": 50.0,
+   "armor": 50.0,
+   "range": 1.0
+  },
+  "Rek'Sai": {
+   "api_name": "DA_18_RekSai",
+   "cost": 1,
+   "traits": [
+    "Blackthorn",
+    "Brawler"
+   ],
+   "hp": 700.0,
+   "attack_damage": 50.0,
+   "armor": 40.0,
+   "range": 1.0
+  },
+  "Rengar": {
+   "api_name": "DA_18_Rengar",
+   "cost": 3,
+   "traits": [
+    "Rival"
+   ],
+   "hp": 900.0,
+   "attack_damage": 60.0,
+   "armor": 55.0,
+   "range": 1.0
+  },
+  "Scuttlecrab": {
+   "api_name": "DA_Scuttlecrab18",
+   "cost": 2,
+   "traits": [
+    "Riftbeast",
+    "Juggernaut"
+   ],
+   "hp": 950.0,
+   "attack_damage": 50.0,
+   "armor": 45.0,
+   "range": 1.0
+  },
+  "Sejuani": {
+   "api_name": "DA_18_Sejuani",
+   "cost": 2,
+   "traits": [
+    "Solar",
+    "Juggernaut"
+   ],
+   "hp": 900.0,
+   "attack_damage": 50.0,
+   "armor": 45.0,
+   "range": 1.0
+  },
+  "Sentinel": {
+   "api_name": "DA_Sentinel18",
+   "cost": 4,
+   "traits": [
+    "Riftbeast",
+    "Vanguard",
+    "Invoker"
+   ],
+   "hp": 1300.0,
+   "attack_damage": 75.0,
+   "armor": 60.0,
+   "range": 1.0
+  },
+  "Sett": {
+   "api_name": "DA_18_Sett",
+   "cost": 4,
+   "traits": [
+    "Blossom",
+    "Brawler"
+   ],
+   "hp": 1200.0,
+   "attack_damage": 80.0,
+   "armor": 60.0,
+   "range": 1.0
+  },
+  "Shen": {
+   "api_name": "DA_18_Shen",
+   "cost": 2,
+   "traits": [
+    "Inferno",
+    "Defender"
+   ],
+   "hp": 900.0,
+   "attack_damage": 50.0,
+   "armor": 45.0,
+   "range": 1.0
+  },
+  "Sivir": {
+   "api_name": "DA_18_Sivir",
+   "cost": 4,
+   "traits": [
+    "Primal",
+    "Hunter"
+   ],
+   "hp": 850.0,
+   "attack_damage": 50.0,
+   "armor": 40.0,
+   "range": 4.0
+  },
+  "Soraka": {
+   "api_name": "DA_18_Soraka",
+   "cost": 4,
+   "traits": [
+    "Flora Fatalis",
+    "Executioner"
+   ],
+   "hp": 850.0,
+   "attack_damage": 30.0,
+   "armor": 40.0,
+   "range": 4.0
+  },
+  "Taric": {
+   "api_name": "DA_Taric18",
+   "cost": 5,
+   "traits": [
+    "Emerald Aspect",
+    "Vanguard"
+   ],
+   "hp": 1300.0,
+   "attack_damage": 55.0,
+   "armor": 70.0,
+   "range": 1.0
+  },
+  "Teemo": {
+   "api_name": "DA_18_Teemo",
+   "cost": 2,
+   "traits": [
+    "Sprykin",
+    "Invoker"
+   ],
+   "hp": 550.0,
+   "attack_damage": 35.0,
+   "armor": 30.0,
+   "range": 4.0
+  },
+  "Tristana": {
+   "api_name": "DA_18_Tristana",
+   "cost": 3,
+   "traits": [
+    "Fae",
+    "Sprykin",
+    "Hunter"
+   ],
+   "hp": 650.0,
+   "attack_damage": 55.0,
+   "armor": 35.0,
+   "range": 4.0
+  },
+  "Varus": {
+   "api_name": "DA_18_Varus",
+   "cost": 1,
+   "traits": [
+    "Inferno",
+    "Rapidfire"
+   ],
+   "hp": 500.0,
+   "attack_damage": 40.0,
+   "armor": 25.0,
+   "range": 4.0
+  },
+  "Veigar": {
+   "api_name": "DA_18_Veigar",
+   "cost": 1,
+   "traits": [
+    "Blackthorn",
+    "Sprykin",
+    "Spellweaver"
+   ],
+   "hp": 500.0,
+   "attack_damage": 25.0,
+   "armor": 25.0,
+   "range": 4.0
+  },
+  "Vi": {
+   "api_name": "DA_Vi18",
+   "cost": 3,
+   "traits": [
+    "Primal",
+    "Juggernaut"
+   ],
+   "hp": 1100.0,
+   "attack_damage": 45.0,
+   "armor": 50.0,
+   "range": 1.0
+  },
+  "Warwick": {
+   "api_name": "DA_18_Warwick",
+   "cost": 2,
+   "traits": [
+    "Blackthorn",
+    "Ravager"
+   ],
+   "hp": 750.0,
+   "attack_damage": 45.0,
+   "armor": 45.0,
+   "range": 1.0
+  },
+  "Xayah": {
+   "api_name": "DA_18_Xayah",
+   "cost": 1,
+   "traits": [
+    "Elderwood",
+    "Fae",
+    "Rapidfire"
+   ],
+   "hp": 450.0,
+   "attack_damage": 45.0,
+   "armor": 25.0,
+   "range": 4.0
+  },
+  "Yorick": {
+   "api_name": "DA_18_Yorick",
+   "cost": 1,
+   "traits": [
+    "Blossom",
+    "Juggernaut",
+    "Summoner"
+   ],
+   "hp": 650.0,
+   "attack_damage": 50.0,
+   "armor": 35.0,
+   "range": 1.0
+  },
+  "Yunara": {
+   "api_name": "DA_18_Yunara",
+   "cost": 2,
+   "traits": [
+    "Blossom",
+    "Executioner"
+   ],
+   "hp": 550.0,
+   "attack_damage": 42.0,
+   "armor": 30.0,
+   "range": 4.0
+  },
+  "Zyra": {
+   "api_name": "DA_18_Zyra",
+   "cost": 4,
+   "traits": [
+    "Thornmaiden",
+    "Summoner"
+   ],
+   "hp": 850.0,
+   "attack_damage": 40.0,
+   "armor": 40.0,
+   "range": 4.0
+  }
+ },
+ "traits": {
+  "Adaptor": {
+   "api_name": "DA_18_Adaptor",
+   "breakpoints": [
+    2,
+    3,
+    4
+   ]
+  },
+  "Apex Predator": {
+   "api_name": "DA_18_ApexPredator",
+   "breakpoints": [
+    1
+   ]
+  },
+  "Attuned": {
+   "api_name": "DA_AluneUniqueTrait18",
+   "breakpoints": [
+    1
+   ]
+  },
+  "Avatar": {
+   "api_name": "DA_18_LuxUniqueTrait",
+   "breakpoints": [
+    1
+   ]
+  },
+  "Blackthorn": {
+   "api_name": "DA_18_Blackthorn",
+   "breakpoints": [
+    2,
+    4,
+    6
+   ]
+  },
+  "Blossom": {
+   "api_name": "DA_18_Blossom",
+   "breakpoints": [
+    3,
+    5,
+    7,
+    9,
+    11
+   ]
+  },
+  "Bounty Seeker": {
+   "api_name": "DA_DravenUniqueTrait18",
+   "breakpoints": [
+    1
+   ]
+  },
+  "Brawler": {
+   "api_name": "DA_18_Brawler",
+   "breakpoints": [
+    2,
+    4,
+    6
+   ]
+  },
+  "Caustic": {
+   "api_name": "DA_18_Caustic",
+   "breakpoints": [
+    1
+   ]
+  },
+  "Coven": {
+   "api_name": "DA_18_Coven",
+   "breakpoints": [
+    3,
+    4,
+    5,
+    7
+   ]
+  },
+  "Defender": {
+   "api_name": "DA_18_Defender",
+   "breakpoints": [
+    2,
+    4,
+    6
+   ]
+  },
+  "Elderwood": {
+   "api_name": "DA_18_Elderwood",
+   "breakpoints": [
+    3,
+    5,
+    7,
+    9,
+    11
+   ]
+  },
+  "Emerald Aspect": {
+   "api_name": "DA_Emerald18",
+   "breakpoints": [
+    1
+   ]
+  },
+  "Executioner": {
+   "api_name": "DA_18_Executioner",
+   "breakpoints": [
+    2,
+    3,
+    4
+   ]
+  },
+  "Fae": {
+   "api_name": "DA_18_Fae",
+   "breakpoints": [
+    2,
+    4
+   ]
+  },
+  "Flora Fatalis": {
+   "api_name": "DA_FloraFatalis18",
+   "breakpoints": [
+    1,
+    2
+   ]
+  },
+  "Greenfather": {
+   "api_name": "DA_18_Greenfather",
+   "breakpoints": [
+    1
+   ]
+  },
+  "Hunter": {
+   "api_name": "DA_18_Hunter",
+   "breakpoints": [
+    2,
+    3,
+    4,
+    5
+   ]
+  },
+  "Inferno": {
+   "api_name": "DA_18_Inferno",
+   "breakpoints": [
+    2,
+    3,
+    5,
+    7
+   ]
+  },
+  "Invoker": {
+   "api_name": "DA_18_Invoker",
+   "breakpoints": [
+    2,
+    3,
+    4,
+    5
+   ]
+  },
+  "Juggernaut": {
+   "api_name": "DA_Juggernaut18",
+   "breakpoints": [
+    2,
+    4,
+    6
+   ]
+  },
+  "Lunar": {
+   "api_name": "DA_18_Lunar",
+   "breakpoints": [
+    2,
+    3,
+    4,
+    5
+   ]
+  },
+  "Monolith": {
+   "api_name": "DA_18_Battlemage",
+   "breakpoints": [
+    1
+   ]
+  },
+  "Old Growth": {
+   "api_name": "DA_18_Maokai_UniqueTrait",
+   "breakpoints": [
+    1
+   ]
+  },
+  "Primal": {
+   "api_name": "DA_Primal18",
+   "breakpoints": [
+    2,
+    4
+   ]
+  },
+  "Rapidfire": {
+   "api_name": "DA_18_Rapidfire",
+   "breakpoints": [
+    2,
+    3,
+    4,
+    5
+   ]
+  },
+  "Ravager": {
+   "api_name": "DA_18_Slayer",
+   "breakpoints": [
+    2,
+    4,
+    6
+   ]
+  },
+  "Riftbeast": {
+   "api_name": "DA_Riftbeast18",
+   "breakpoints": [
+    3,
+    5,
+    7,
+    10
+   ]
+  },
+  "Rival": {
+   "api_name": "DA_18_Rival",
+   "breakpoints": [
+    1,
+    2
+   ]
+  },
+  "Solar": {
+   "api_name": "DA_18_Solar",
+   "breakpoints": [
+    3
+   ]
+  },
+  "Spellweaver": {
+   "api_name": "DA_18_Spellweaver",
+   "breakpoints": [
+    2,
+    4,
+    6
+   ]
+  },
+  "Sprykin": {
+   "api_name": "DA_18_Sprykin",
+   "breakpoints": [
+    3,
+    5,
+    7
+   ]
+  },
+  "Summoner": {
+   "api_name": "DA_18_Summoner",
+   "breakpoints": [
+    2,
+    3
+   ]
+  },
+  "Thornmaiden": {
+   "api_name": "DA_18_ZyraUniqueTrait",
+   "breakpoints": [
+    1
+   ]
+  },
+  "Vanguard": {
+   "api_name": "DA_18_Vanguard",
+   "breakpoints": [
+    2,
+    4,
+    6
+   ]
+  }
+ }
+}

@@ -4,27 +4,145 @@
 source_resolution: [1920, 1080]
 frame_sample_fps: 1.0   # frames to extract per second of VOD
 
-ocr:
-  # All regions are (x, y, w, h) for 1920x1080 — calibrate against real frames
-  regions:
-    gold:   [950, 878, 39, 29]
-    hp:     [1779, 281, 52, 31]
-    level:  [312, 881, 36, 26]
-    stage:  [769, 5, 39, 30]
-    streak: [1071, 876, 37, 31]   # number only; icon color determines win/loss sign
-    xp:     [402, 886, 42, 24]   # text format "X / Y"
+# NOTE: every region below is calibrated for one HUD layout (BoxBox's stream,
+# VOD knB6dE8Rbgg). Another streamer / UI scale needs its own calibration —
+# check with scripts/preview_regions.py, measure with scripts/calibrate_regions.py.
 
-  # Regions checked for game/lobby detection in game_splitter.py
-  hud_detection_regions: [gold, stage]
+hud:
+  template_dir: "assets/templates/hud"   # stage_icon.png, gold_icon.png
+  match_threshold: 0.80
+  stage_icon_search: [600, 0, 500, 40]   # the stage bar shifts right during stage 1
+  gold_icon_search:  [994, 874, 40, 40]
+  stage_one_min_x: 770                   # icon x >= this means the stage-1 bar layout
+
+ocr:
+  # All regions are (x, y, w, h) for 1920x1080
+  regions:
+    gold:   [1028, 878, 56, 32]
+    level:  [386, 878, 38, 32]    # digit only, after "Lvl."
+    streak: [1140, 876, 44, 34]   # number only; icon colour gives the sign
+    xp:     [462, 880, 62, 28]    # text format "X/Y"
+
+  # Stage text ("3-2") sits right of the stage icon, which moves in stage 1,
+  # so its region is an offset (dx, dy, w, h) from the icon's top-left corner.
+  stage_text_offset: [26, -2, 46, 30]
+
+  # Streak flame icon: red = win streak, blue = loss streak.
+  streak_icon: [1106, 880, 26, 28]
+
+  # Right-hand player list. The player's own HP is the large number; the
+  # small numbers further right are the other players' HP.
+  hp_strip: [1770, 160, 100, 650]
+  hp_own_x: [1775, 1815]          # left edge of the own-HP text falls in this range
+  hp_own_min_height: 15
+  hp_others_min_x: 1820
+  hp_max: 150                     # HP can exceed 100 with some augments
+  # A panel can replace the player list: the "Damage Dealt" recap during fights,
+  # or a unit's info panel. Both are near-black where the list rows would be.
+  # With a panel open only the top band is read: the damage recap keeps the
+  # player's own HP there; a unit info panel shows no HP at all.
+  hp_panel_zone: [1700, 300, 160, 480]
+  hp_panel_dark: 0.55             # share of near-black pixels in the zone that means "panel"
+  hp_top_band: [1770, 160, 100, 80]
+
+  # Champion-name text on each shop card, left to right (card pitch is 202 px).
+  # Each region stops short of the cost coin.
+  shop_slots:
+    - [556, 1042, 150, 30]
+    - [758, 1042, 150, 30]
+    - [960, 1042, 150, 30]
+    - [1162, 1042, 150, 30]
+    - [1364, 1042, 150, 30]
+
+  # Current-set champion names, one per line (scripts/build_champion_list.py).
+  # Shop OCR snaps to the closest entry; without the file, raw text is returned.
+  champion_list: "assets/champions.txt"
 
 champion_detector:
   weights: "assets/yolo_tft.pt"   # path to trained YOLOv8 weights
   conf_threshold: 0.50
-  # Region vertical split ratios (fraction of frame height)
+  # Vertical split by box centre (fraction of frame height).
+  # Below bench_max_ratio is the shop strip — read by OCR, detections dropped.
   board_max_ratio: 0.60
   bench_max_ratio: 0.80
 
 template_matching:
   item_dir: "assets/templates/items"
-  augment_dir: "assets/templates/ui"
   confidence_threshold: 0.82
+
+game_data:
+  set: "TFTSet18"                      # scripts/fetch_game_data.py -> assets/game_data/<set>.json
+
+# Augment bar: up to three icons above the board, centred on center_x.
+# One icon wide after the first pick, growing to three; absent before that.
+# When the camera is on someone else's board (scouting or an away fight) the
+# view is flipped and that player's bar is drawn on the right instead.
+augments:
+  center_x: 510
+  y: 228
+  away_center_x: 1390                  # the same bar when viewing another player's board
+  away_y: 268
+  height: 38
+  slot_width: 37.5
+  max_slots: 3
+  dark_below: 60                       # bar background is near-black
+  match_threshold: 0.80
+  template_dir: "assets/templates/augments"   # filled by scripts/harvest_augment_icons.py
+
+# Unequipped items: column of square slots on the left edge.
+item_column:
+  x: 12
+  y: 263
+  slot_size: 42
+  slot_pitch: 53
+  slots: 9                             # the 10th slot is rarely used and overlays cover it
+  empty_below: 25                      # mean brightness of an empty (black) slot
+  min_contrast: 30                     # below this the slot shows flat scenery, not an icon
+  match_margin: 4                      # px trimmed from each edge before matching
+  seen_dir: "assets/templates/items_seen"   # icons cut from footage (harvest_item_icons.py)
+  seen_threshold: 0.85                 # match against icons cut from footage
+  official_threshold: 0.75             # match against official art (weaker likeness)
+
+# Bench: nine fixed slots along the bottom of the board.
+bench:
+  first_center_x: 427
+  slot_pitch: 116.5
+  slots: 9
+  crop_width: 116
+  y: 680                               # top of the crop (includes the unit's health bar)
+  height: 140
+
+# Player's half of the board: 4 rows of 7 hexes. The camera looks down at an
+# angle, so rows nearer the bottom are wider. Each row: x of its first hex
+# centre, spacing between centres, and y of the centres (row 0 = front row,
+# nearest the enemy).
+board:
+  rows:
+    - {first_x: 559, pitch: 116.7, y: 439}
+    - {first_x: 616, pitch: 117.7, y: 514}
+    - {first_x: 534, pitch: 122.5, y: 586}
+    - {first_x: 587, pitch: 126.2, y: 655}
+  cols: 7
+  # Window cut around a unit standing on a hex, relative to the hex centre.
+  crop_width: 124
+  crop_above: 130                      # includes the health bar
+  crop_below: 34
+
+# Own-board and planning-phase detection (src/vision/arena.py).
+arena:
+  # Scenery patches around the board (x, y, w, h) whose colour identifies the arena skin.
+  patches:
+    - [1440, 700, 100, 80]
+    - [1450, 300, 100, 80]
+    - [330, 600, 70, 80]
+    - [900, 150, 120, 40]
+  max_distance: 15                     # mean colour difference from the game's usual arena
+  # Far part of the board, stopping above where the player's own front-row
+  # health bars are drawn. Empty during planning.
+  enemy_half: [460, 150, 1000, 150]
+  max_bar_pixels: 150                  # allows for stray effects; a single enemy bar is ~500
+  # Round timer bar under the stage bar: drains as the clock runs down and
+  # refills when the next phase starts.
+  timer_bar: [600, 43, 700, 10]
+  timer_bar_length: 435                # px when full (normal layout)
+  timer_refill: 0.12                   # rise in fill that marks a new phase

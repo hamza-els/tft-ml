@@ -1,9 +1,13 @@
 """
-YOLO-based champion detection for TFT board, bench, and shop regions.
+YOLO-based champion detection for the TFT board and bench.
+
+Classes are champion names only — star level is not part of the label.
+The shop is read by OCR (ocr_pipeline.read_shop), so detections in the shop
+strip are dropped.
 
 Training pipeline:
-  1. Label seed frames in data/processed/labeled/ (Roboflow or LabelImg).
-  2. Train a YOLOv8 model on the labeled set.
+  1. scripts/sample_for_labeling.py → label seed frames in data/processed/labeled/.
+  2. scripts/train_yolo.py → trains and installs the weights.
   3. Use the trained model here to auto-annotate new frames (bootstrap loop).
 
 Model weights live in assets/ or are specified via configs/vision_config.yaml.
@@ -18,19 +22,26 @@ import numpy as np
 @dataclass
 class Detection:
     label: str          # Champion name, e.g. "Jinx"
-    star_level: int     # 1, 2, or 3
     confidence: float
     bbox: tuple[int, int, int, int]  # x, y, w, h in frame pixels
-    region: str         # "board" | "bench" | "shop"
+    region: str         # "board" | "bench"
 
 
 class ChampionDetector:
-    def __init__(self, weights_path: str):
+    def __init__(
+        self,
+        weights_path: str,
+        board_max_ratio: float = 0.60,
+        bench_max_ratio: float = 0.80,
+    ):
         """
         Load a trained YOLOv8 model.
 
         Args:
             weights_path: Path to .pt weights file (e.g. assets/yolo_tft.pt).
+            board_max_ratio: Box centres above this fraction of frame height are board.
+            bench_max_ratio: Box centres above this (and below board) are bench;
+                anything lower is the shop strip and is ignored.
         """
         try:
             from ultralytics import YOLO
@@ -39,6 +50,8 @@ class ChampionDetector:
             raise ImportError("Install ultralytics: pip install ultralytics")
 
         self._weights_path = weights_path
+        self.board_max_ratio = board_max_ratio
+        self.bench_max_ratio = bench_max_ratio
 
     def detect(self, frame: np.ndarray, conf_threshold: float = 0.5) -> list[Detection]:
         """
@@ -49,41 +62,36 @@ class ChampionDetector:
             conf_threshold: Minimum confidence to include a detection.
 
         Returns:
-            List of Detection objects for all champions found.
+            List of Detection objects for board and bench champions.
         """
         results = self.model(frame, conf=conf_threshold, verbose=False)
         detections = []
         for r in results:
             for box in r.boxes:
-                label_raw = self.model.names[int(box.cls)]
-                label, star = _parse_label(label_raw)
                 x1, y1, x2, y2 = box.xyxy[0].tolist()
+                region = _infer_region((y1 + y2) / 2, frame.shape[0],
+                                       self.board_max_ratio, self.bench_max_ratio)
+                if region is None:
+                    continue
                 detections.append(Detection(
-                    label=label,
-                    star_level=star,
+                    label=self.model.names[int(box.cls)],
                     confidence=float(box.conf),
                     bbox=(int(x1), int(y1), int(x2 - x1), int(y2 - y1)),
-                    region=_infer_region(int(y1), frame.shape[0]),
+                    region=region,
                 ))
         return detections
 
 
-def _parse_label(raw: str) -> tuple[str, int]:
-    """
-    Expected label format from training: 'ChampionName_1star', '_2star', '_3star'.
-    Falls back to star level 1 if not found.
-    """
-    parts = raw.rsplit("_", 1)
-    if len(parts) == 2 and parts[1] in ("1star", "2star", "3star"):
-        return parts[0], int(parts[1][0])
-    return raw, 1
-
-
-def _infer_region(y: int, frame_height: int) -> str:
-    """Rough vertical split: top 60% = board, next 20% = bench, bottom 20% = shop."""
+def _infer_region(
+    y: float,
+    frame_height: int,
+    board_max_ratio: float = 0.60,
+    bench_max_ratio: float = 0.80,
+) -> str | None:
+    """Rough vertical split by box centre: board, then bench, then shop (None)."""
     ratio = y / frame_height
-    if ratio < 0.60:
+    if ratio < board_max_ratio:
         return "board"
-    if ratio < 0.80:
+    if ratio < bench_max_ratio:
         return "bench"
-    return "shop"
+    return None

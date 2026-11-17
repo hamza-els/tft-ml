@@ -3,16 +3,19 @@ Split already-extracted frames from multi-game streams into per-game subfolders.
 
 Usage:
     # Split a single VOD's frames
-    python scripts/split_frames.py --frames data/raw/frames/VOD_ID
+    python scripts/split_frames.py --frames ~/tft_frames_temp/VOD_ID
 
-    # Split all frame folders that haven't been split yet
+    # Split all frame folders under ~/tft_frames_temp that haven't been split yet
     python scripts/split_frames.py --all
 
+    # Only report the games found, move nothing
+    python scripts/split_frames.py --frames ~/tft_frames_temp/VOD_ID --dry-run
+
     # Delete lobby frames instead of keeping them
-    python scripts/split_frames.py --frames data/raw/frames/VOD_ID --delete-lobby
+    python scripts/split_frames.py --frames ~/tft_frames_temp/VOD_ID --delete-lobby
 
     # If you extracted at a different FPS
-    python scripts/split_frames.py --frames data/raw/frames/VOD_ID --fps 1.0
+    python scripts/split_frames.py --frames ~/tft_frames_temp/VOD_ID --fps 1.0
 """
 
 import sys
@@ -21,12 +24,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import argparse
 
-import yaml
-
 from src.data_collection.frame_game_splitter import find_game_segments, split_into_subfolders
 
 
-FRAME_DIR = Path("data/raw/frames")
+FRAME_DIR = Path.home() / "tft_frames_temp"   # where run_pipeline.py puts frames
 
 
 def already_split(folder: Path) -> bool:
@@ -35,7 +36,7 @@ def already_split(folder: Path) -> bool:
                for folder in folder.iterdir())
 
 
-def process_folder(folder: Path, hud_regions: dict, fps: float, delete_lobby: bool):
+def process_folder(folder: Path, fps: float, delete_lobby: bool, dry_run: bool = False):
     print(f"\n{'═' * 60}")
     print(f"  {folder.name}")
     print(f"{'═' * 60}")
@@ -49,14 +50,12 @@ def process_folder(folder: Path, hud_regions: dict, fps: float, delete_lobby: bo
         print("  No frames found — skipping.")
         return
 
-    segments = find_game_segments(
-        frame_dir=str(folder),
-        hud_regions=hud_regions,
-        extraction_fps=fps,
-    )
+    segments = find_game_segments(frame_dir=str(folder), extraction_fps=fps)
 
     if not segments:
-        print("  No games detected. Check that hud_regions are calibrated.")
+        print("  No games detected. Check the hud section of configs/vision_config.yaml.")
+        return
+    if dry_run:
         return
 
     split_into_subfolders(
@@ -71,24 +70,17 @@ def main():
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--frames", help="Path to a single frame folder to split")
     group.add_argument("--all", action="store_true",
-                       help="Split all frame folders in data/raw/frames/")
+                       help=f"Split all frame folders in {FRAME_DIR}")
     parser.add_argument("--fps", type=float, default=2.0,
                         help="FPS used during frame extraction (default: 2.0)")
     parser.add_argument("--delete-lobby", action="store_true",
                         help="Delete lobby/loading frames instead of moving them")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="Report detected games without moving any frames")
     args = parser.parse_args()
 
-    with open("configs/vision_config.yaml") as f:
-        cfg = yaml.safe_load(f)
-
-    regions = cfg["ocr"]["regions"]
-    hud_regions = {
-        "gold": tuple(regions["gold"]),
-        "hp":   tuple(regions["hp"]),
-    }
-
     if args.frames:
-        process_folder(Path(args.frames), hud_regions, args.fps, args.delete_lobby)
+        process_folder(Path(args.frames).expanduser(), args.fps, args.delete_lobby, args.dry_run)
     else:
         folders = [f for f in sorted(FRAME_DIR.iterdir())
                    if f.is_dir() and not f.name.startswith(".")]
@@ -97,7 +89,7 @@ def main():
             return
         print(f"Found {len(folders)} frame folder(s)")
         for folder in folders:
-            process_folder(folder, hud_regions, args.fps, args.delete_lobby)
+            process_folder(folder, args.fps, args.delete_lobby, args.dry_run)
 
     print(f"\n{'═' * 60}")
     print("  Done.")

@@ -38,7 +38,7 @@ def main():
     regions = cfg["ocr"]["regions"]
     hud_regions = {
         "gold": tuple(regions["gold"]),
-        "hp":   tuple(regions["hp"]),
+        "level": tuple(regions["level"]),
     }
 
     segments = find_game_segments(

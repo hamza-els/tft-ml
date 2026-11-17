@@ -1,0 +1,2328 @@
+{
+ "1 gold": {
+  "api_name": "TFT_Assist_Gold_1",
+  "kind": "other",
+  "recipe": []
+ },
+ "1-star 4-cost champion": {
+  "api_name": "TFT_Assist_1x4cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "1-star 5-cost champion": {
+  "api_name": "TFT_Assist_1x5cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "10 gold": {
+  "api_name": "TFT_Assist_Gold_10",
+  "kind": "other",
+  "recipe": []
+ },
+ "12 radiant items": {
+  "api_name": "TFT14_CypherArmoryItem_SpecificRadiantItems",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "15 gold": {
+  "api_name": "TFT_Assist_Gold_15",
+  "kind": "other",
+  "recipe": []
+ },
+ "2 2-star 2-cost champions": {
+  "api_name": "TFT_Assist_2x2star2cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "2 3-cost champions": {
+  "api_name": "TFT_Assist_2x3cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "2 4-cost champions": {
+  "api_name": "TFT_Assist_2x4cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "2 5-cost champions": {
+  "api_name": "TFT_Assist_2x5cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "2 Champion Duplicators": {
+  "api_name": "TFT_Assist_ChampionDuplicator_2",
+  "kind": "other",
+  "recipe": []
+ },
+ "2 Components": {
+  "api_name": "TFT_Assist_RandomComponent_2",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "2 Deathblades": {
+  "api_name": "TFT_Assist_Deathblade_2",
+  "kind": "other",
+  "recipe": []
+ },
+ "2 Item Removers": {
+  "api_name": "TFT_Assist_Remover_2",
+  "kind": "other",
+  "recipe": []
+ },
+ "2 Radiant Items": {
+  "api_name": "TFT_Assist_RandomRadiantItem_2",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "2 Reforgers": {
+  "api_name": "TFT_Assist_Reforger_2",
+  "kind": "other",
+  "recipe": []
+ },
+ "2 Tacticians' Capes": {
+  "api_name": "TFT_Assist_TacticiansCape_2",
+  "kind": "other",
+  "recipe": []
+ },
+ "2 gold": {
+  "api_name": "TFT_Assist_Gold_2",
+  "kind": "other",
+  "recipe": []
+ },
+ "2 star Zac, Aurora, Urgot, and Samira": {
+  "api_name": "TFT14_CypherArmoryItem_Specific5Costs",
+  "kind": "other",
+  "recipe": []
+ },
+ "2-cost champion": {
+  "api_name": "TFT_Assist_1x2cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "2-star 2-cost champion": {
+  "api_name": "TFT_Assist_1x2star2cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "2-star 3-cost champion": {
+  "api_name": "TFT_Assist_1x2star3cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "2-star 4-cost champion": {
+  "api_name": "TFT_Assist_1x2star4cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "2-star 5-cost champion": {
+  "api_name": "TFT_Assist_1x2star5cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "20 gold": {
+  "api_name": "TFT_Assist_Gold_20",
+  "kind": "other",
+  "recipe": []
+ },
+ "3 2-cost champions": {
+  "api_name": "TFT_Assist_3x2cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "3 3-cost champions": {
+  "api_name": "TFT_Assist_3x3cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "3 4-cost champions": {
+  "api_name": "TFT_Assist_3x4cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "3 5-cost champions": {
+  "api_name": "TFT_Assist_3x5cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "3 Lesser Champion Duplicators": {
+  "api_name": "TFT_Assist_LesserDuplicator_3",
+  "kind": "other",
+  "recipe": []
+ },
+ "3 Masterwork Upgrades": {
+  "api_name": "TFT_Assist_MasterworkUpgrade_3",
+  "kind": "other",
+  "recipe": []
+ },
+ "3 Radiant Items": {
+  "api_name": "TFT_Assist_RandomRadiantItem_3",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "3 Spatulas": {
+  "api_name": "TFT_Assist_Spatula_3",
+  "kind": "other",
+  "recipe": []
+ },
+ "3 gold": {
+  "api_name": "TFT_Assist_Gold_3",
+  "kind": "other",
+  "recipe": []
+ },
+ "3-cost champion": {
+  "api_name": "TFT_Assist_1x3cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "3-star 5-cost champion": {
+  "api_name": "TFT_Assist_1x3star5cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "30 gold": {
+  "api_name": "TFT_Assist_Gold_30",
+  "kind": "other",
+  "recipe": []
+ },
+ "34 gold": {
+  "api_name": "TFT_Assist_Gold_34",
+  "kind": "other",
+  "recipe": []
+ },
+ "4 2-cost champions": {
+  "api_name": "TFT_Assist_4x2cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "4 5-cost champions": {
+  "api_name": "TFT_Assist_4x5cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "4 components": {
+  "api_name": "TFT_Assist_RandomComponent_4",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "4 gold": {
+  "api_name": "TFT_Assist_Gold_4",
+  "kind": "other",
+  "recipe": []
+ },
+ "5 1-cost champions": {
+  "api_name": "TFT_Assist_5x1cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "5 4-cost champions": {
+  "api_name": "TFT_Assist_5x4cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "5 gold": {
+  "api_name": "TFT_Assist_Gold_5",
+  "kind": "other",
+  "recipe": []
+ },
+ "55 gold": {
+  "api_name": "TFT_Assist_Gold_55",
+  "kind": "other",
+  "recipe": []
+ },
+ "6 5-cost champions": {
+  "api_name": "TFT_Assist_6x5cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "6 Lesser Champion Duplicators": {
+  "api_name": "TFT_Assist_LesserDuplicator_6",
+  "kind": "other",
+  "recipe": []
+ },
+ "6 gold": {
+  "api_name": "TFT_Assist_Gold_6",
+  "kind": "other",
+  "recipe": []
+ },
+ "7 5-cost champions": {
+  "api_name": "TFT_Assist_7x5cost",
+  "kind": "other",
+  "recipe": []
+ },
+ "7 Gold": {
+  "api_name": "TFT_Assist_Gold_7",
+  "kind": "other",
+  "recipe": []
+ },
+ "8 gold": {
+  "api_name": "TFT_Assist_Gold_8",
+  "kind": "other",
+  "recipe": []
+ },
+ "9 components": {
+  "api_name": "TFT_Assist_RandomComponent_9",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "9 gold": {
+  "api_name": "TFT_Assist_Gold_9",
+  "kind": "other",
+  "recipe": []
+ },
+ "Abandon Ship": {
+  "api_name": "DA_AbandonShip18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Ability Power Booster": {
+  "api_name": "DA_AbilityBooster18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Accomplice's Gloves": {
+  "api_name": "TFT11_Item_ThiefsGlovesSupport",
+  "kind": "other",
+  "recipe": []
+ },
+ "Adaptive Helm": {
+  "api_name": "DA_AdaptiveHelm",
+  "kind": "completed",
+  "recipe": [
+   "Tear Of The Goddess",
+   "Negatron Cloak"
+  ]
+ },
+ "Aegis of Dawn": {
+  "api_name": "DA_Artifact_AegisOfDawn",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Aegis of Dusk": {
+  "api_name": "DA_Artifact_AegisOfDusk",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Aegis of the Legion": {
+  "api_name": "TFT_Item_AegisOfTheLegion",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Aftershock": {
+  "api_name": "DA_18_AfterShock_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "All Fives": {
+  "api_name": "DA_18_AllFives_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "All Fours": {
+  "api_name": "DA_18_AllFours_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "All Ones": {
+  "api_name": "DA_18_AllOnes_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "All Threes": {
+  "api_name": "DA_18_AllThrees_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "All Twos": {
+  "api_name": "DA_18_AllTwos_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "All double component items": {
+  "api_name": "TFT_Assist_AllDoubleNonSpatItems",
+  "kind": "other",
+  "recipe": []
+ },
+ "Animate Shop": {
+  "api_name": "DA_AnimateShop18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Apprentice": {
+  "api_name": "DA_Apprentice18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Archangel's Staff": {
+  "api_name": "DA_ArchangelsStaff",
+  "kind": "completed",
+  "recipe": [
+   "Needlessly Large Rod",
+   "Tear Of The Goddess"
+  ]
+ },
+ "Armor and Magic Resist Booster": {
+  "api_name": "DA_ArmorMRBooster18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Artifact Anvil": {
+  "api_name": "TFT_Assist_ItemArmoryOrnn",
+  "kind": "other",
+  "recipe": []
+ },
+ "Artifact Item": {
+  "api_name": "TFT_Assist_RandomOrnnItem",
+  "kind": "other",
+  "recipe": []
+ },
+ "Artifactinate": {
+  "api_name": "DA_Artifactinate18_Upgrade",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Attack Damage Booster": {
+  "api_name": "DA_AttackBooster18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Attack Speed Booster": {
+  "api_name": "DA_SpeedBooster18",
+  "kind": "other",
+  "recipe": []
+ },
+ "B.F. Sword": {
+  "api_name": "DA_Component_BFSword",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Backrow Star": {
+  "api_name": "DA_18_BackrowStar_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Banshee's Veil": {
+  "api_name": "TFT_Item_BansheesVeil",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Bark Armor": {
+  "api_name": "DA_18_BarkArmor_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Barrier": {
+  "api_name": "DA_Barrier18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Barter": {
+  "api_name": "DA_Barter18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Bear's Visit": {
+  "api_name": "DA_BearsVisit18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Beggar's Wisp": {
+  "api_name": "DA_BeggarsWisp18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Big Boom": {
+  "api_name": "DA_BigBoom18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Big Guns": {
+  "api_name": "DA_BigGuns18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Blacksmith's Gloves": {
+  "api_name": "TFT9_Item_OrnnPrototypeForge",
+  "kind": "other",
+  "recipe": []
+ },
+ "Blackthorn Emblem": {
+  "api_name": "DA_18_EmblemBlackthorn",
+  "kind": "emblem",
+  "recipe": [
+   "Spatula",
+   "Giant's Belt"
+  ]
+ },
+ "Blast Potion": {
+  "api_name": "DA_BlastPotion18_Upgrade_Charm",
+  "kind": "other",
+  "recipe": []
+ },
+ "Blaze": {
+  "api_name": "DA_Blaze18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Blighting Jewel": {
+  "api_name": "DA_Artifact_BlightingJewel",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Blood Money": {
+  "api_name": "DA_18_BloodMoney_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Blood and Iron": {
+  "api_name": "DA_BloodAndIron18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Bloodthirster": {
+  "api_name": "DA_Bloodthirster",
+  "kind": "completed",
+  "recipe": [
+   "B.F. Sword",
+   "Negatron Cloak"
+  ]
+ },
+ "Blossom Emblem": {
+  "api_name": "DA_18_EmblemBlossom",
+  "kind": "emblem",
+  "recipe": [
+   "Spatula",
+   "Needlessly Large Rod"
+  ]
+ },
+ "Blue Buff": {
+  "api_name": "DA_BlueBuff",
+  "kind": "completed",
+  "recipe": [
+   "Tear Of The Goddess",
+   "Tear Of The Goddess"
+  ]
+ },
+ "Booster Shot": {
+  "api_name": "DA_BoosterShot18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Border Village": {
+  "api_name": "DA_BorderVillage18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Borrowed Gear": {
+  "api_name": "DA_BorrowedGear18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Bramble Vest": {
+  "api_name": "DA_BrambleVest",
+  "kind": "completed",
+  "recipe": [
+   "Chain Vest",
+   "Chain Vest"
+  ]
+ },
+ "Brawler Emblem": {
+  "api_name": "DA_18_EmblemBrawler",
+  "kind": "emblem",
+  "recipe": [
+   "Frying Pan",
+   "Giant's Belt"
+  ]
+ },
+ "Bronze Spoon": {
+  "api_name": "DA_18_BronzeSpoon_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Bulwark": {
+  "api_name": "DA_Bulwark18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Bunch-o'-Belts": {
+  "api_name": "DA_BunchOBeltsUpgrade18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Cappa Juice": {
+  "api_name": "TFT_Item_Artifact_CappaJuice",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Chain Vest": {
+  "api_name": "DA_Component_ChainVest",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Chalice of Power": {
+  "api_name": "TFT_Item_Chalice",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Champion Duplicator": {
+  "api_name": "DA_Consumable_ChampionDuplicator",
+  "kind": "other",
+  "recipe": []
+ },
+ "Circle of Elders": {
+  "api_name": "DA_18_CircleofElders_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Clone Companion": {
+  "api_name": "DA_CloneCompanionUpgrade18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Coin Flip": {
+  "api_name": "DA_CoinFlip18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Combust": {
+  "api_name": "DA_Combust18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Completed Item": {
+  "api_name": "TFT_Assist_RandomCompletedItem",
+  "kind": "other",
+  "recipe": []
+ },
+ "Completed Item Anvil": {
+  "api_name": "TFT_Assist_ItemArmoryCompleted",
+  "kind": "other",
+  "recipe": []
+ },
+ "Component Anvil": {
+  "api_name": "TFT_Assist_ItemArmoryComponent",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Corrupt Vampiric Scepter": {
+  "api_name": "TFT_Item_Artifact_CursedVampiricScepter",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Counterspell": {
+  "api_name": "DA_18_Counterspell_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Coven Emblem": {
+  "api_name": "DA_18_EmblemCoven",
+  "kind": "emblem",
+  "recipe": []
+ },
+ "Crownguard": {
+  "api_name": "DA_Crownguard",
+  "kind": "completed",
+  "recipe": [
+   "Needlessly Large Rod",
+   "Chain Vest"
+  ]
+ },
+ "Curio Cart": {
+  "api_name": "DA_CurioCart18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Cutpurse": {
+  "api_name": "DA_Cutpurse18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Dawncore": {
+  "api_name": "DA_Artifact_Dawncore",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Death's Defiance": {
+  "api_name": "TFT4_Item_OrnnDeathsDefiance",
+  "kind": "other",
+  "recipe": []
+ },
+ "Deathblade": {
+  "api_name": "DA_Deathblade",
+  "kind": "completed",
+  "recipe": [
+   "B.F. Sword",
+   "B.F. Sword"
+  ]
+ },
+ "Deathfire Grasp": {
+  "api_name": "TFT9_Item_OrnnDeathfireGrasp",
+  "kind": "other",
+  "recipe": []
+ },
+ "Defender Emblem": {
+  "api_name": "DA_18_EmblemDefender",
+  "kind": "emblem",
+  "recipe": []
+ },
+ "Determined Investor": {
+  "api_name": "TFT7_Item_ShimmerscaleDeterminedInvestor",
+  "kind": "other",
+  "recipe": []
+ },
+ "Diamond Hands": {
+  "api_name": "TFT7_Item_ShimmerscaleDiamondHands",
+  "kind": "other",
+  "recipe": []
+ },
+ "Die Roll": {
+  "api_name": "DA_DieRoll18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Diversified": {
+  "api_name": "DA_DiversifiedUpgrade18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Doodad Bag": {
+  "api_name": "DA_DoodadBag18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Doodad Jar": {
+  "api_name": "DA_DoodadJar18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Doodad Sack": {
+  "api_name": "DA_DoodadSack18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Downpour": {
+  "api_name": "DA_Downpour18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Dragon's Claw": {
+  "api_name": "DA_DragonsClaw",
+  "kind": "completed",
+  "recipe": [
+   "Negatron Cloak",
+   "Negatron Cloak"
+  ]
+ },
+ "Drizzle": {
+  "api_name": "DA_18_DrizzleUpgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Dummy with 2 Lockets": {
+  "api_name": "TFT_Assist_Dummy_2xLocked",
+  "kind": "other",
+  "recipe": []
+ },
+ "Dummy with 2 Zeke's": {
+  "api_name": "TFT_Assist_Dummy_2xZekes",
+  "kind": "other",
+  "recipe": []
+ },
+ "Dummy with Shroud": {
+  "api_name": "TFT_Assist_Dummy_Shroud",
+  "kind": "other",
+  "recipe": []
+ },
+ "Early Fix": {
+  "api_name": "DA_18_EarlyFix_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Edge of Night": {
+  "api_name": "DA_EdgeOfNight",
+  "kind": "completed",
+  "recipe": [
+   "B.F. Sword",
+   "Chain Vest"
+  ]
+ },
+ "Elderwood Emblem": {
+  "api_name": "DA_18_EmblemElderwood",
+  "kind": "emblem",
+  "recipe": [
+   "Spatula",
+   "Chain Vest"
+  ]
+ },
+ "Essence Theft": {
+  "api_name": "DA_EssenceTheft18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Eternal Pact": {
+  "api_name": "DA_Artifact_EternalPact",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Eternal Winter": {
+  "api_name": "TFT4_Item_OrnnEternalWinter",
+  "kind": "other",
+  "recipe": []
+ },
+ "Evenshroud": {
+  "api_name": "DA_Evenshroud",
+  "kind": "completed",
+  "recipe": [
+   "Negatron Cloak",
+   "Giant's Belt"
+  ]
+ },
+ "Executioner Emblem": {
+  "api_name": "DA_18_EmblemExecutioner",
+  "kind": "emblem",
+  "recipe": [
+   "Frying Pan",
+   "Sparring Gloves"
+  ]
+ },
+ "Experienced": {
+  "api_name": "DA_18_Experienced_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Fae Emblem": {
+  "api_name": "DA_18_EmblemFae",
+  "kind": "emblem",
+  "recipe": [
+   "Spatula",
+   "B.F. Sword"
+  ]
+ },
+ "Fellowship": {
+  "api_name": "DA_18_Fellowship_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Fertilize": {
+  "api_name": "DA_18_Fertilize_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Fishbones": {
+  "api_name": "DA_Artifact_Fishbones",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Flash Fire": {
+  "api_name": "DA_FlashFire18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Flickerblades": {
+  "api_name": "DA_Artifact_NavoriFlickerblade",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Flip Frenzy": {
+  "api_name": "DA_FlipFrenzy18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Flora Fatalis Emblem": {
+  "api_name": "DA_18_EmblemFloraFatalisAugment",
+  "kind": "emblem",
+  "recipe": []
+ },
+ "Flow": {
+  "api_name": "DA_Flow18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Forbidden Idol": {
+  "api_name": "DA_Artifact_ForbiddenIdol",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Forest Guide": {
+  "api_name": "DA_ForestGuide18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Forest Mage": {
+  "api_name": "DA_18_ForestMage_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Forest Twins": {
+  "api_name": "DA_ForestTwinsUpgrade18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Found Friend": {
+  "api_name": "DA_FoundFriend18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Freeroller": {
+  "api_name": "DA_18_Freeroller_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Frying Pan": {
+  "api_name": "DA_Component_FryingPan",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Gambler's Blade": {
+  "api_name": "DA_Artifact_GamblersBlade",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Gargoyle Stoneplate": {
+  "api_name": "DA_GargoyleStoneplate",
+  "kind": "completed",
+  "recipe": [
+   "Chain Vest",
+   "Negatron Cloak"
+  ]
+ },
+ "Giant Growth": {
+  "api_name": "DA_18_GiantGrowth_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Giant Slayer": {
+  "api_name": "DA_GiantSlayer",
+  "kind": "completed",
+  "recipe": [
+   "Recurve Bow",
+   "B.F. Sword"
+  ]
+ },
+ "Giant's Aura": {
+  "api_name": "DA_GiantsAura18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Giant's Belt": {
+  "api_name": "DA_Component_GiantsBelt",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Gold Collector": {
+  "api_name": "DA_Artifact_GoldCollector",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Golden Goose": {
+  "api_name": "DA_GoldenGooseUpgrade18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Golden Item Remover": {
+  "api_name": "DA_Consumable_GoldenItemRemover",
+  "kind": "other",
+  "recipe": []
+ },
+ "Golem with 2 Aegises.": {
+  "api_name": "TFT_Assist_Golem_2xAegis",
+  "kind": "other",
+  "recipe": []
+ },
+ "Grandmaster": {
+  "api_name": "DA_Grandmaster18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Greater Chaos": {
+  "api_name": "DA_GreaterChaos18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Grove Armor": {
+  "api_name": "DA_18_GroveArmorUpgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Grow Up": {
+  "api_name": "DA_GrowUp18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Guinsoo's Rageblade": {
+  "api_name": "DA_GuinsoosRageblade",
+  "kind": "completed",
+  "recipe": [
+   "Recurve Bow",
+   "Needlessly Large Rod"
+  ]
+ },
+ "Gwen's Scissors": {
+  "api_name": "TFT16_Consumable_GwensScissors",
+  "kind": "other",
+  "recipe": []
+ },
+ "Hand Of Baron": {
+  "api_name": "DA_HandOfBaron18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Hand Of Justice": {
+  "api_name": "DA_HandOfJustice",
+  "kind": "completed",
+  "recipe": [
+   "Tear Of The Goddess",
+   "Sparring Gloves"
+  ]
+ },
+ "Health Booster": {
+  "api_name": "DA_HealthBooster18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Health Potion": {
+  "api_name": "DA_HealthPotion18_Upgrade_Charm",
+  "kind": "other",
+  "recipe": []
+ },
+ "Heated Rivalry": {
+  "api_name": "DA_18_HeatedRivalry_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Hellfire Hatchet": {
+  "api_name": "DA_Artifact_HellfireHatchet",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Hero Of Prophecy": {
+  "api_name": "DA_HeroOfProphecy18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Hero's Entrance": {
+  "api_name": "DA_HerosEntranceUpgrade18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Heroic Sacrifice": {
+  "api_name": "DA_18_HeroicSacrifice_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Hextech Gunblade": {
+  "api_name": "DA_HextechGunblade",
+  "kind": "completed",
+  "recipe": [
+   "B.F. Sword",
+   "Needlessly Large Rod"
+  ]
+ },
+ "Hireling": {
+  "api_name": "DA_Hireling18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Homing Fireflies": {
+  "api_name": "DA_HomingFireflies18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Horizon Focus": {
+  "api_name": "DA_Artifact_HorizonFocus",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Hugify": {
+  "api_name": "DA_Hugify18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Hullcrusher": {
+  "api_name": "DA_Artifact_Hullcrusher",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Hummingbird": {
+  "api_name": "DA_18_Hummingbird_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Hunter Emblem": {
+  "api_name": "DA_18_EmblemHunter",
+  "kind": "emblem",
+  "recipe": [
+   "Frying Pan",
+   "B.F. Sword"
+  ]
+ },
+ "Idle Craftsman": {
+  "api_name": "DA_IdleCraftsman18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Improved Reach": {
+  "api_name": "DA_ImprovedReach18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Inferno Emblem": {
+  "api_name": "DA_18_EmblemInferno",
+  "kind": "emblem",
+  "recipe": [
+   "Spatula",
+   "Recurve Bow"
+  ]
+ },
+ "Infinity Edge": {
+  "api_name": "DA_InfinityEdge",
+  "kind": "completed",
+  "recipe": [
+   "B.F. Sword",
+   "Sparring Gloves"
+  ]
+ },
+ "Infinity Force": {
+  "api_name": "DA_Artifact_InfinityForce",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Infliction": {
+  "api_name": "DA_18_Infliction_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Innervating Locket": {
+  "api_name": "TFT_Item_Artifact_InnervatingLocket",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Invoker Emblem": {
+  "api_name": "DA_18_EmblemInvoker",
+  "kind": "emblem",
+  "recipe": [
+   "Frying Pan",
+   "Tear Of The Goddess"
+  ]
+ },
+ "Ionic Spark": {
+  "api_name": "DA_IonicSpark",
+  "kind": "completed",
+  "recipe": [
+   "Needlessly Large Rod",
+   "Negatron Cloak"
+  ]
+ },
+ "Iron Core": {
+  "api_name": "DA_IronCore18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Ironwood": {
+  "api_name": "DA_Ironwood18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Item Remover": {
+  "api_name": "DA_Consumable_ItemRemover",
+  "kind": "other",
+  "recipe": []
+ },
+ "Jeweled Gauntlet": {
+  "api_name": "DA_JeweledGauntlet",
+  "kind": "completed",
+  "recipe": [
+   "Sparring Gloves",
+   "Needlessly Large Rod"
+  ]
+ },
+ "Journeyman": {
+  "api_name": "DA_Journeyman18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Juggernaut Emblem": {
+  "api_name": "DA_18_EmblemJuggernaut",
+  "kind": "emblem",
+  "recipe": []
+ },
+ "Jungling": {
+  "api_name": "DA_Jungling18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Killer's Regret": {
+  "api_name": "DA_KillersRegretUpgrade18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Killing Frenzy": {
+  "api_name": "DA_18_KillingFrenzy_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Knick-Knack Bag": {
+  "api_name": "DA_KnickKnackBag18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Knick-Knack Jar": {
+  "api_name": "DA_KnickKnackJar18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Knick-Knack Sack": {
+  "api_name": "DA_KnickKnackSack18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Knight's Vow": {
+  "api_name": "TFT_Item_SupportKnightsVow",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Kraken's Fury": {
+  "api_name": "DA_KrakensFury",
+  "kind": "completed",
+  "recipe": [
+   "Recurve Bow",
+   "Negatron Cloak"
+  ]
+ },
+ "Last Whisper": {
+  "api_name": "DA_LastWhisper",
+  "kind": "completed",
+  "recipe": [
+   "Recurve Bow",
+   "Sparring Gloves"
+  ]
+ },
+ "Late Bloomer": {
+  "api_name": "DA_LateBloomer18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Lesser Champion Duplicator": {
+  "api_name": "DA_Consumable_LesserChampionDuplicator",
+  "kind": "other",
+  "recipe": []
+ },
+ "Lesser Chaos": {
+  "api_name": "DA_LesserChaos18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Lesser Mirrored Persona": {
+  "api_name": "TFT_Item_Artifact_LesserMirroredPersona",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Lich Bane": {
+  "api_name": "DA_Artifact_LichBane",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Life Debt": {
+  "api_name": "DA_18_LifeDebt_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Lightning Storm": {
+  "api_name": "DA_18_LightningStorm_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Lightning Strike": {
+  "api_name": "DA_18_LightningStrike_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Lightshield Crest": {
+  "api_name": "DA_Artifact_LightshieldCrest",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Living Soil": {
+  "api_name": "DA_LivingSoil18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Loaded Dice": {
+  "api_name": "TFT_Consumable_ShopReroller",
+  "kind": "other",
+  "recipe": []
+ },
+ "Locket of the Iron Solari": {
+  "api_name": "TFT_Item_LocketOfTheIronSolari",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Lost Travelers": {
+  "api_name": "DA_18_LostTravelers_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Lucky 7": {
+  "api_name": "DA_Lucky718_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Lucky Item Chest": {
+  "api_name": "DA_LuckyItemChest",
+  "kind": "other",
+  "recipe": []
+ },
+ "Luden's Tempest": {
+  "api_name": "DA_Artifact_LudensTempest",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Lunar Emblem": {
+  "api_name": "DA_18_EmblemLunar",
+  "kind": "emblem",
+  "recipe": [
+   "Spatula",
+   "Tear Of The Goddess"
+  ]
+ },
+ "Magnetic Remover": {
+  "api_name": "TFT_Consumable_ItemRemover",
+  "kind": "other",
+  "recipe": []
+ },
+ "Major Polymorph": {
+  "api_name": "DA_18_MajorPolymorph_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Mana Potion": {
+  "api_name": "DA_ManaPotion18_Upgrade_Charm",
+  "kind": "other",
+  "recipe": []
+ },
+ "Mana Regen Booster": {
+  "api_name": "DA_ManaRegenBooster18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Mana-Rich Soil": {
+  "api_name": "DA_ManaRichSoil18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Manazane": {
+  "api_name": "DA_Artifact_Manazane",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Marksmen's Gale": {
+  "api_name": "DA_MarksmensGale18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Marksmen's Marks": {
+  "api_name": "DA_MarksmensMarks18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Masterwork Upgrade": {
+  "api_name": "DA_MasterworkUpgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Mending Echoes": {
+  "api_name": "TFT_Item_Artifact_MendingEchoes",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Mercenary Force": {
+  "api_name": "DA_18_MercenaryForce_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Middle Path": {
+  "api_name": "DA_MiddlePath18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Minor Polymorph": {
+  "api_name": "DA_18_MinorPolymorph_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Mirrored Persona": {
+  "api_name": "TFT_Item_Artifact_MirroredPersona",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Mitosis": {
+  "api_name": "DA_18_Mitosis_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Mittens": {
+  "api_name": "DA_Artifact_Mittens",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Mogul's Mail": {
+  "api_name": "DA_Artifact_MogulsMail",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Moonlight Ritual": {
+  "api_name": "DA_MoonlightRitualUpgrade18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Moonrise": {
+  "api_name": "DA_18_MoonriseUpgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Moonstone Renewer": {
+  "api_name": "TFT_Item_Moonstone",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Morellonomicon": {
+  "api_name": "DA_Morellonomicon",
+  "kind": "completed",
+  "recipe": [
+   "Giant's Belt",
+   "Needlessly Large Rod"
+  ]
+ },
+ "Nashor's Tooth": {
+  "api_name": "DA_NashorsTooth",
+  "kind": "completed",
+  "recipe": [
+   "Recurve Bow",
+   "Giant's Belt"
+  ]
+ },
+ "Nature's Ally": {
+  "api_name": "DA_NaturesAlly18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Nature's Wrath": {
+  "api_name": "DA_NaturesWrath18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Needlessly Big Gem": {
+  "api_name": "TFT7_Item_ShimmerscaleHeartOfGold",
+  "kind": "other",
+  "recipe": []
+ },
+ "Needlessly Large Rod": {
+  "api_name": "DA_Component_NeedlesslyLargeRod",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Negatron Cloak": {
+  "api_name": "DA_Component_NegatronCloak",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Obsidian Cleaver": {
+  "api_name": "TFT4_Item_OrnnObsidianCleaver",
+  "kind": "other",
+  "recipe": []
+ },
+ "Payday": {
+  "api_name": "DA_18_PaydayUpgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Peddler": {
+  "api_name": "DA_Peddler18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Petrified Dummy": {
+  "api_name": "DA_PetrifiedDummy18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Petrify Shields": {
+  "api_name": "DA_PetrifyShields18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Phantom Armor": {
+  "api_name": "DA_PhantomArmor18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Phantom Emblem": {
+  "api_name": "DA_PhantomEmblemUpgrade18",
+  "kind": "emblem",
+  "recipe": []
+ },
+ "Phantom Gloves": {
+  "api_name": "DA_PhantomGloves18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Phantom Splash": {
+  "api_name": "DA_PhantomSplashUpgrade18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Phantom Vest": {
+  "api_name": "DA_PhantomVest18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Plated Shields": {
+  "api_name": "DA_PlatedShields18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Pocket Change": {
+  "api_name": "DA_18_PocketChange_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Polymorph": {
+  "api_name": "DA_18_Polymorph_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Potioncraft": {
+  "api_name": "DA_Potioncraft18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Potted Lifebloom": {
+  "api_name": "DA_PottedLifebloom18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Potted Stonebark": {
+  "api_name": "DA_PottedStonebark18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Preppers": {
+  "api_name": "DA_18_Preppers_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Primal Emblem": {
+  "api_name": "DA_18_EmblemPrimal",
+  "kind": "emblem",
+  "recipe": [
+   "Spatula",
+   "Sparring Gloves"
+  ]
+ },
+ "Prolific Power": {
+  "api_name": "DA_18_ProlificPower_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Propagate": {
+  "api_name": "DA_18_Propagate_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Protector's Vow": {
+  "api_name": "DA_ProtectorsVow",
+  "kind": "completed",
+  "recipe": [
+   "Chain Vest",
+   "Tear Of The Goddess"
+  ]
+ },
+ "Prowler's Claw": {
+  "api_name": "TFT_Item_Artifact_ProwlersClaw",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Quicken": {
+  "api_name": "DA_QuickenUpgrade18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Quicksilver": {
+  "api_name": "DA_Quicksilver",
+  "kind": "completed",
+  "recipe": [
+   "Negatron Cloak",
+   "Sparring Gloves"
+  ]
+ },
+ "Rabadon's Deathcap": {
+  "api_name": "DA_RabadonsDeathcap",
+  "kind": "completed",
+  "recipe": [
+   "Needlessly Large Rod",
+   "Needlessly Large Rod"
+  ]
+ },
+ "Radiant Adaptive Helm": {
+  "api_name": "DA_AdaptiveHelm_Radiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Archangel's Staff": {
+  "api_name": "DA_ArchangelsStaffRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Blast Potion": {
+  "api_name": "DA_BlastPotion18_Radiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Bloodthirster": {
+  "api_name": "DA_BloodthirsterRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Blue Buff": {
+  "api_name": "DA_BlueBuffRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Bramble Vest": {
+  "api_name": "DA_BrambleVestRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Crownguard": {
+  "api_name": "DA_CrownguardRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Deathblade": {
+  "api_name": "DA_DeathbladeRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Dragon's Claw": {
+  "api_name": "DA_DragonsClawRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Edge of Night": {
+  "api_name": "DA_EdgeOfNightRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Evenshroud": {
+  "api_name": "DA_EvenshroudRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Gargoyle Stoneplate": {
+  "api_name": "DA_GargoyleStoneplate_Radiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Giant Slayer": {
+  "api_name": "DA_GiantSlayer_Radiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Guinsoo's Rageblade": {
+  "api_name": "DA_GuinsoosRagebladeRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Hand of Justice": {
+  "api_name": "DA_HandOfJusticeRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Health Potion": {
+  "api_name": "DA_HealthPotion18_Radiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Hextech Gunblade": {
+  "api_name": "DA_HextechGunbladeRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Infinity Edge": {
+  "api_name": "DA_InfinityEdgeRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Ionic Spark": {
+  "api_name": "DA_IonicSparkRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Item": {
+  "api_name": "TFT_Assist_RandomRadiantItem",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Jeweled Gauntlet": {
+  "api_name": "DA_JeweledGauntletRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Kraken's Fury": {
+  "api_name": "DA_KrakensFury_Radiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Last Whisper": {
+  "api_name": "DA_LastWhisperRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Lucky Item Chest": {
+  "api_name": "DA_RadiantLuckyItemChest",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Mana Potion": {
+  "api_name": "DA_ManaPotion18_Radiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Morellonomicon": {
+  "api_name": "DA_MorellonomiconRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Nashor's Tooth": {
+  "api_name": "DA_NashorsToothRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Protector's Vow": {
+  "api_name": "DA_ProtectorsVowRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Quicksilver": {
+  "api_name": "DA_QuicksilverRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Rabadon's Deathcap": {
+  "api_name": "DA_RabadonsDeathcap_Radiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Red Buff": {
+  "api_name": "DA_RedBuffRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Spear of Shojin": {
+  "api_name": "DA_SpearOfShojinRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Spirit Visage": {
+  "api_name": "DA_SpiritVisage_Radiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Steadfast Heart": {
+  "api_name": "DA_SteadfastHeartRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Sterak's Gage": {
+  "api_name": "DA_SteraksGageRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Striker's Flail": {
+  "api_name": "DA_StrikersFlailRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Sunfire Cape": {
+  "api_name": "DA_SunfireCape_Radiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Thief's Gloves": {
+  "api_name": "DA_ThiefsGlovesRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Titan's Resolve": {
+  "api_name": "DA_TitansResolve_Radiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Void Staff": {
+  "api_name": "DA_VoidStaffRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiant Warmog's Armor": {
+  "api_name": "DA_WarmogsArmorRadiant",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Radiantize": {
+  "api_name": "DA_18_Radiantize_Upgrade",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Rain": {
+  "api_name": "DA_Rain18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Random Component": {
+  "api_name": "TFT_Assist_RandomComponent",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Randuin's Omen": {
+  "api_name": "TFT4_Item_OrnnRanduinsSanctum",
+  "kind": "other",
+  "recipe": []
+ },
+ "Rapid Firecannon": {
+  "api_name": "DA_Artifact_RapidFireCannon",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Rapidfire Emblem": {
+  "api_name": "DA_18_EmblemRapidfire",
+  "kind": "emblem",
+  "recipe": [
+   "Frying Pan",
+   "Recurve Bow"
+  ]
+ },
+ "Ravager Emblem": {
+  "api_name": "DA_18_EmblemSlayer",
+  "kind": "emblem",
+  "recipe": [
+   "Frying Pan",
+   "Negatron Cloak"
+  ]
+ },
+ "Recurve Bow": {
+  "api_name": "DA_Component_RecurveBow",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Red Buff": {
+  "api_name": "DA_RedBuff",
+  "kind": "completed",
+  "recipe": [
+   "Recurve Bow",
+   "Recurve Bow"
+  ]
+ },
+ "Reforger": {
+  "api_name": "DA_Reforger",
+  "kind": "other",
+  "recipe": []
+ },
+ "Refreshing Light": {
+  "api_name": "DA_RefreshingLight18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Regeneration": {
+  "api_name": "DA_Regeneration18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Resistant": {
+  "api_name": "DA_18_Resistant_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Returning Friend": {
+  "api_name": "DA_ReturningFriendUpgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Revenge": {
+  "api_name": "DA_RevengeUpgrade18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Ride the Wave": {
+  "api_name": "DA_RideTheWaveUpgrade18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Rolling Bones": {
+  "api_name": "DA_RollingBones18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Roly-Polys": {
+  "api_name": "DA_RolyPolysUpgrade18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Room for a Shroom": {
+  "api_name": "DA_RoomForAShroomUpgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Salvager": {
+  "api_name": "DA_SalvagerUpgrade18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Scrappy": {
+  "api_name": "DA_Scrappy18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Search Party": {
+  "api_name": "DA_SearchParty18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Seeker's Armguard": {
+  "api_name": "DA_Artifact_SeekersArmguard",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Sentinel Swarm": {
+  "api_name": "TFT_Item_SentinelSwarm",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Shadow Puppet": {
+  "api_name": "TFT_Item_Artifact_ShadowPuppet",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Shroud of Stillness": {
+  "api_name": "TFT_Item_Shroud",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Silvermere Dawn": {
+  "api_name": "DA_Artifact_SilvermereDawn",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Slow Study": {
+  "api_name": "DA_SlowStudyUpgrade18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Smurfing": {
+  "api_name": "DA_Smurfing18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Snacktime!": {
+  "api_name": "DA_Snacktime18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Sniper's Focus": {
+  "api_name": "TFT9_Item_OrnnHorizonFocus",
+  "kind": "other",
+  "recipe": []
+ },
+ "Solar Gift": {
+  "api_name": "DA_SolarGift18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Solitude's Cloak": {
+  "api_name": "DA_SolitudesCloakUpgrade18",
+  "kind": "other",
+  "recipe": []
+ },
+ "Sparring Gloves": {
+  "api_name": "DA_Component_SparringGloves",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Spatula": {
+  "api_name": "DA_Component_Spatula",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Spear of Shojin": {
+  "api_name": "DA_SpearOfShojin",
+  "kind": "completed",
+  "recipe": [
+   "Tear Of The Goddess",
+   "B.F. Sword"
+  ]
+ },
+ "Spectral Cutlass": {
+  "api_name": "TFT_Item_Artifact_SpectralCutlass",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Spellweaver Emblem": {
+  "api_name": "DA_18_EmblemSpellweaver",
+  "kind": "emblem",
+  "recipe": [
+   "Frying Pan",
+   "Needlessly Large Rod"
+  ]
+ },
+ "Spirit Visage": {
+  "api_name": "DA_SpiritVisage",
+  "kind": "completed",
+  "recipe": [
+   "Giant's Belt",
+   "Tear Of The Goddess"
+  ]
+ },
+ "Sprykin Emblem": {
+  "api_name": "DA_18_EmblemSprykin",
+  "kind": "emblem",
+  "recipe": [
+   "Spatula",
+   "Negatron Cloak"
+  ]
+ },
+ "Stand Alone": {
+  "api_name": "DA_StandAlone18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Starfall": {
+  "api_name": "DA_18_Starfall_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Starting Town": {
+  "api_name": "DA_StartingTown18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Statikk Shiv": {
+  "api_name": "DA_Artifact_StatikkShiv",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Steadfast Heart": {
+  "api_name": "DA_SteadfastHeart",
+  "kind": "completed",
+  "recipe": [
+   "Chain Vest",
+   "Sparring Gloves"
+  ]
+ },
+ "Stealthy": {
+  "api_name": "DA_Stealthy18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Sterak's Gage": {
+  "api_name": "DA_SteraksGage",
+  "kind": "completed",
+  "recipe": [
+   "B.F. Sword",
+   "Giant's Belt"
+  ]
+ },
+ "Striker's Flail": {
+  "api_name": "DA_StrikersFlail",
+  "kind": "completed",
+  "recipe": [
+   "Giant's Belt",
+   "Sparring Gloves"
+  ]
+ },
+ "Sunfire Cape": {
+  "api_name": "DA_SunfireCape",
+  "kind": "completed",
+  "recipe": [
+   "Chain Vest",
+   "Giant's Belt"
+  ]
+ },
+ "Sunfire Sorcery": {
+  "api_name": "DA_18_SunfireSorcery_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Supercritical": {
+  "api_name": "DA_18_SupercriticalUpgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Support Anvil": {
+  "api_name": "TFT_Assist_ItemArmorySupport",
+  "kind": "other",
+  "recipe": []
+ },
+ "Suspicious Trench Coat": {
+  "api_name": "TFT_Item_Artifact_SuspiciousTrenchCoat",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Tactician's Cape": {
+  "api_name": "DA_TacticiansCape",
+  "kind": "completed",
+  "recipe": [
+   "Spatula",
+   "Frying Pan"
+  ]
+ },
+ "Tactician's Crown": {
+  "api_name": "TFT_Item_ForceOfNature",
+  "kind": "completed",
+  "recipe": [
+   "Spatula",
+   "Spatula"
+  ]
+ },
+ "Tactician's Shield": {
+  "api_name": "TFT_Item_TacticiansScepter",
+  "kind": "completed",
+  "recipe": [
+   "Frying Pan",
+   "Frying Pan"
+  ]
+ },
+ "Tacticians Crown": {
+  "api_name": "DA_TacticiansCrown",
+  "kind": "completed",
+  "recipe": [
+   "Spatula",
+   "Spatula"
+  ]
+ },
+ "Tacticians Shield": {
+  "api_name": "DA_TacticiansShield",
+  "kind": "completed",
+  "recipe": [
+   "Frying Pan",
+   "Frying Pan"
+  ]
+ },
+ "Talisman Of Ascension": {
+  "api_name": "TFT_Item_Artifact_TalismanOfAscension",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Talisman of Ascension": {
+  "api_name": "DA_Item_Artifact_TalismanOfAscension",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Tattered Armor": {
+  "api_name": "DA_18_TatteredArmor_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Tear Of The Goddess": {
+  "api_name": "DA_Component_TearOfTheGoddess",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Tear of the Goddess": {
+  "api_name": "TFT_Item_TearOfTheGoddess",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Terraforming": {
+  "api_name": "DA_Terraforming18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "The Eternal Flame": {
+  "api_name": "TFT_Item_EternalFlame",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "The Indomitable": {
+  "api_name": "DA_Artifact_TheIndomitable",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Thief's Gloves": {
+  "api_name": "DA_ThiefsGloves",
+  "kind": "completed",
+  "recipe": [
+   "Sparring Gloves",
+   "Sparring Gloves"
+  ]
+ },
+ "Thingamajig Bag": {
+  "api_name": "DA_ThingamajigBag18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Thingamajig Jar": {
+  "api_name": "DA_ThingamajigJar18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Thingamajig Sack": {
+  "api_name": "DA_ThingamajigSack18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Three Me": {
+  "api_name": "DA_ThreeMe18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Tiger's Visit": {
+  "api_name": "DA_TigersVisit18_Wisp_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Tiny Champion Duplicator": {
+  "api_name": "TFT_Consumable_ChampionDuplicator_I",
+  "kind": "other",
+  "recipe": []
+ },
+ "Titan's Resolve": {
+  "api_name": "DA_TitansResolve",
+  "kind": "completed",
+  "recipe": [
+   "Recurve Bow",
+   "Chain Vest"
+  ]
+ },
+ "Titanic Hydra": {
+  "api_name": "DA_Artifact_TitanicHydra",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Training Dummy": {
+  "api_name": "TFT_Consumable_TrainingDummy",
+  "kind": "other",
+  "recipe": []
+ },
+ "Training Yard": {
+  "api_name": "DA_TrainingYard18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Treetop Archers": {
+  "api_name": "DA_TreetopArchers_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Tremors": {
+  "api_name": "DA_18_Tremors_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Trickster's Glass": {
+  "api_name": "TFT9_Item_OrnnTrickstersGlass",
+  "kind": "other",
+  "recipe": []
+ },
+ "Trophy Hunter": {
+  "api_name": "DA_TrophyHunter18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Turtle's Visit": {
+  "api_name": "DA_TurtlesVisit18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Ultra Ascension": {
+  "api_name": "DA_18_UltraAscension_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Unending Despair": {
+  "api_name": "TFT_Item_Artifact_UnendingDespair",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Unstable Treasure Chest": {
+  "api_name": "TFT_Item_UnstableTreasureChest",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Unusable Slot": {
+  "api_name": "TFT_Item_UnusableSlot",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Vanguard Emblem": {
+  "api_name": "DA_18_EmblemVanguard",
+  "kind": "emblem",
+  "recipe": [
+   "Frying Pan",
+   "Chain Vest"
+  ]
+ },
+ "Verdant Vitality": {
+  "api_name": "DA_18_VerdantVitality_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Virtue of the Martyr": {
+  "api_name": "TFT_Item_RadiantVirtue",
+  "kind": "radiant",
+  "recipe": []
+ },
+ "Void Gauntlet": {
+  "api_name": "DA_Artifact_VoidGauntlet",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Void Staff": {
+  "api_name": "DA_VoidStaff",
+  "kind": "completed",
+  "recipe": [
+   "Recurve Bow",
+   "Tear Of The Goddess"
+  ]
+ },
+ "Warmog's Armor": {
+  "api_name": "DA_WarmogsArmor",
+  "kind": "completed",
+  "recipe": [
+   "Giant's Belt",
+   "Giant's Belt"
+  ]
+ },
+ "Wit's End": {
+  "api_name": "DA_Artifact_WitsEnd",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Wrapped In Thorns": {
+  "api_name": "DA_WrappedInThorns18_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Yordle Spirit": {
+  "api_name": "DA_18_YordleSpirit_Upgrade",
+  "kind": "other",
+  "recipe": []
+ },
+ "Zeke's Herald": {
+  "api_name": "TFT_Item_ZekesHerald",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Zephyr": {
+  "api_name": "TFT_Item_Zephyr",
+  "kind": "component_or_special",
+  "recipe": []
+ },
+ "Zhonya's Paradox": {
+  "api_name": "DA_Artifact_ZhonyasParadox",
+  "kind": "artifact",
+  "recipe": []
+ },
+ "Zz'Rot Portal": {
+  "api_name": "TFT5_Item_ZzRotPortalRadiant",
+  "kind": "radiant",
+  "recipe": []
+ }
+}

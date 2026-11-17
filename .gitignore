@@ -2,10 +2,13 @@
 data/raw/
 data/processed/state_vectors/
 data/datasets/
+data/processed/labeled/images/
 
 # Model weights
 assets/*.pt
 assets/*.pth
+# Ultralytics base weights (e.g. yolov8n.pt) download to the repo root
+/*.pt
 
 # Python
 __pycache__/
@@ -28,3 +31,6 @@ Icon\r
 .gdoc
 .gsheet
 .gslides
+data/processed/champion_crops/
+data/processed/unit_crops/images/
+data/processed/unit_crops/removed/*.jpg
