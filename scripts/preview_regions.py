@@ -27,7 +27,7 @@ from src.data_collection.frame_dedup import WATCH_REGIONS
 from src.utils.config import vision_cfg
 from src.vision.augments import AugmentReader
 from src.vision.bench import BenchSlots
-from src.vision.hud import HudDetector
+from src.vision.hud import HudDetector, shift
 from src.vision.items import ItemColumnReader
 
 MAGENTA, ORANGE, YELLOW, GREEN = (255, 0, 255), (0, 128, 255), (0, 255, 255), (0, 255, 0)
@@ -57,14 +57,15 @@ def main():
     detector = HudDetector()
     hud = detector.detect(img)
 
+    dx = hud.bottom_dx   # bottom bar position in this frame's layout
     for name, region in WATCH_REGIONS.items():
-        _box(img, region, YELLOW, f"dedup:{name}", 1)
+        _box(img, shift(region, dx) if name in ("gold", "shop") else region, YELLOW, f"dedup:{name}", 1)
     for name, region in ocr["regions"].items():
-        _box(img, region, MAGENTA, name)
-    _box(img, ocr["streak_icon"], MAGENTA)
+        _box(img, shift(region, dx), MAGENTA, name)
+    _box(img, shift(ocr["streak_icon"], dx), MAGENTA)
     _box(img, ocr["hp_strip"], MAGENTA, "hp")
     for slot in ocr["shop_slots"]:
-        _box(img, slot, ORANGE)
+        _box(img, shift(slot, dx), ORANGE)
 
     augments = AugmentReader()
     n_augments = augments.count(img)
@@ -90,7 +91,7 @@ def main():
     out = args.out or str(Path(args.frame).with_name(Path(args.frame).stem + "_regions.jpg"))
     cv2.imwrite(out, img)
     print(f"stage bar found: {hud.stage_visible}  (stage-1 layout: {hud.stage_one_layout})")
-    print(f"bottom bar found: {hud.shop_visible}")
+    print(f"bottom bar found: {hud.shop_visible}  (shifted {hud.bottom_dx} px from calibration)")
     print(f"augments shown: {n_augments}")
     print(f"other player's augments shown: {n_away}"
           + ("  -> not the player's own board" if n_away else ""))

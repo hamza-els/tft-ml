@@ -48,18 +48,26 @@ def _region_diff(a: np.ndarray, b: np.ndarray, region: tuple[int, int, int, int]
     return float(np.mean(np.abs(crop_a - crop_b)))
 
 
+# Regions on the bottom bar, which can sit further left in some VODs (see hud.py).
+BOTTOM_BAR = {"gold", "shop"}
+
+
 def _has_changed(
     frame: np.ndarray,
     reference: np.ndarray,
     threshold: float = CHANGE_THRESHOLD,
     regions: list[str] | None = None,
+    bottom_dx: int = 0,
 ) -> bool:
     """Return True if any watched region differs enough from the reference frame."""
     names = regions if regions is not None else list(WATCH_REGIONS)
-    return any(
-        _region_diff(frame, reference, WATCH_REGIONS[name]) > threshold
-        for name in names
-    )
+    for name in names:
+        x, y, w, h = WATCH_REGIONS[name]
+        if name in BOTTOM_BAR:
+            x += bottom_dx
+        if _region_diff(frame, reference, (x, y, w, h)) > threshold:
+            return True
+    return False
 
 
 def _frame_number(path: Path) -> int:
@@ -110,13 +118,15 @@ def deduplicate_frames(
             continue
 
         number = _frame_number(path)
-        bar = hud.detect(frame).shop_visible if hud is not None else None
+        state = hud.detect(frame) if hud is not None else None
+        bar = state.shop_visible if state is not None else None
+        dx = state.bottom_dx if state is not None else 0
         regions = ["stage"] if bar is False and ref_bar is False else None
 
         if (reference is None
                 or bar != ref_bar
                 or (max_gap is not None and number - ref_number >= max_gap)
-                or _has_changed(frame, reference, threshold, regions)):
+                or _has_changed(frame, reference, threshold, regions, dx)):
             reference, ref_number, ref_bar = frame, number, bar
             kept += 1
         else:

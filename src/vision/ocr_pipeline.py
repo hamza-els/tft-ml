@@ -18,7 +18,7 @@ import numpy as np
 import torch
 
 from src.utils.config import vision_cfg
-from src.vision.hud import HudDetector, HudState
+from src.vision.hud import HudDetector, HudState, shift
 
 _ROOT = Path(__file__).resolve().parents[2]
 
@@ -128,6 +128,7 @@ def extract_ui_and_lobby(
 
     if hud.shop_visible:
         for key, region in REGIONS.items():
+            region = shift(region, hud.bottom_dx)
             text = _read_text(frame, region, _ALLOWLIST.get(key, _ALLOWLIST["default"]))
             if key == "xp":
                 parsed = parse_xp(text)
@@ -136,14 +137,14 @@ def extract_ui_and_lobby(
             else:
                 results[key] = _parse_number(text)
         if results["streak"]:
-            results["streak"] *= streak_sign(frame)
+            results["streak"] *= streak_sign(frame, hud.bottom_dx)
 
     return results, others
 
 
-def streak_sign(frame: np.ndarray) -> int:
+def streak_sign(frame: np.ndarray, dx: int = 0) -> int:
     """+1 if the streak flame is red (win streak), -1 if blue (loss streak)."""
-    b, _, r = crop_region(frame, tuple(_OCR_CFG["streak_icon"])).reshape(-1, 3).mean(axis=0)
+    b, _, r = crop_region(frame, shift(_OCR_CFG["streak_icon"], dx)).reshape(-1, 3).mean(axis=0)
     return 1 if r >= b else -1
 
 
@@ -200,16 +201,17 @@ def pick_hp(boxes: list[TextBox]) -> tuple[float | None, list[float]]:
     return own_hp, [v for _, v in sorted(others)]
 
 
-def read_shop(frame: np.ndarray) -> list[str | None]:
+def read_shop(frame: np.ndarray, hud: HudState | None = None) -> list[str | None]:
     """
     Read the champion name on each shop card, left to right.
 
     Returns one entry per slot in SHOP_SLOTS; None for an empty (bought) slot
     or a name that couldn't be matched to the champion list.
     """
+    dx = (hud or _get_hud().detect(frame)).bottom_dx
     names = []
     for slot in SHOP_SLOTS:
-        boxes = sorted(_read_boxes(frame, slot, _ALLOWLIST["shop"], scale=2))
+        boxes = sorted(_read_boxes(frame, shift(slot, dx), _ALLOWLIST["shop"], scale=2))
         names.append(snap_name(" ".join(text for _, text, _ in boxes), CHAMPIONS))
     return names
 

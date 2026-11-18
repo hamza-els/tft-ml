@@ -109,6 +109,7 @@ def test_split_into_subfolders_moves_games_and_lobby(tmp_path):
 @dataclass
 class _Hud:
     shop_visible: bool
+    bottom_dx: int = 0
 
 
 class _FakeDetector:

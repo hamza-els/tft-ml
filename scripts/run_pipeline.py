@@ -191,11 +191,14 @@ def process_url(
         log(f"\n  [ 3 / 4 ]  Splitting into games")
         if any(local_dir.glob("frame_*.jpg")):
             segments = find_game_segments(str(local_dir), hud, extraction_fps=fps)
-            if segments:
-                split_into_subfolders(str(local_dir), segments)
-            else:
-                log("    No games detected — leaving frames unsplit "
-                    "(check the hud section of configs/vision_config.yaml)")
+            if not segments:
+                # Stop here: dedup without games would judge every frame as
+                # "bottom bar hidden" and delete most of them for good.
+                tqdm.write(f"  VOD {idx}/{total} — {video_id} — no games detected, stopping before "
+                           "dedup (check the hud section of configs/vision_config.yaml)")
+                _bar_update(overall_bar, increment=1)
+                return False
+            split_into_subfolders(str(local_dir), segments)
         _mark_done(local_dir, "split")
 
     # ── Step 4: Dedup locally ─────────────────────────────────────

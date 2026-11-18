@@ -7,6 +7,9 @@ Detects whether the TFT HUD is on screen, using two small icon templates.
                it is searched for across the bar rather than at a fixed x.
   gold icon  — the coin in the bottom bar. Visible only while the player is
                alive and the shop bar is shown (hidden during carousel).
+               Its x position also gives `bottom_dx`: how far the whole bottom
+               bar sits from where the regions were calibrated (it moved
+               ~105 px left in later VODs).
 
 Templates and search windows are specific to one HUD layout (UI scale +
 stream layout) and are set in configs/vision_config.yaml under `hud`.
@@ -29,6 +32,7 @@ class HudState:
     shop_visible: bool
     stage_icon_xy: tuple[int, int] | None   # top-left of the stage icon match
     stage_one_layout: bool                  # True while the bar is in its stage-1 position
+    bottom_dx: int = 0                      # shift of the bottom bar from its calibrated x
 
 
 class HudDetector:
@@ -41,6 +45,8 @@ class HudDetector:
         self.gold_search = tuple(cfg["gold_icon_search"])
         self.threshold = float(cfg["match_threshold"])
         self.stage_one_min_x = int(cfg["stage_one_min_x"])
+        self.gold_icon_x = int(cfg["gold_icon_x"])
+        self.bottom_offsets = [int(v) for v in cfg.get("bottom_bar_offsets", [0])]
 
     @staticmethod
     def _load(path: Path) -> np.ndarray:
@@ -59,11 +65,20 @@ class HudDetector:
 
     def detect(self, frame: np.ndarray) -> HudState:
         s_score, sx, sy = self._match(frame, self.stage_icon, self.stage_search)
-        g_score, _, _ = self._match(frame, self.gold_icon, self.gold_search)
+        g_score, gx, _ = self._match(frame, self.gold_icon, self.gold_search)
         stage_visible = s_score >= self.threshold
+        shop_visible = g_score >= self.threshold
         return HudState(
             stage_visible=stage_visible,
-            shop_visible=g_score >= self.threshold,
+            shop_visible=shop_visible,
             stage_icon_xy=(sx, sy) if stage_visible else None,
             stage_one_layout=stage_visible and sx >= self.stage_one_min_x,
+            bottom_dx=min(self.bottom_offsets, key=lambda o: abs(o - (gx - self.gold_icon_x)))
+            if shop_visible else 0,
         )
+
+
+def shift(region, dx: int) -> tuple[int, int, int, int]:
+    """A calibrated bottom-bar region moved sideways by dx."""
+    x, y, w, h = region
+    return x + dx, y, w, h

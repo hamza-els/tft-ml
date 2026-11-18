@@ -120,3 +120,16 @@ def test_augment_bar(mid_game, stage_one):
     assert [a.tier for a in reader.read(mid_game)] == ["gold", "gold", "gold"]
     assert reader.count(stage_one) == 0          # no augment picked yet in stage 1
     assert reader.count(mid_game * 0) == 0       # an all-black frame is not a bar
+
+
+
+def test_bottom_bar_shifted_left_is_followed(mid_game):
+    """Later VODs draw the bottom bar ~105 px further left; values must still read the same."""
+    import numpy as np
+    shifted = mid_game.copy()
+    shifted[860:1080, :-105] = mid_game[860:1080, 105:]
+    hud = HudDetector().detect(shifted)
+    assert hud.shop_visible and hud.bottom_dx == -105
+    values = extract_ui_values(shifted)
+    assert (values["gold"], values["level"], values["xp_current"], values["streak"]) == (1, 9, 2, 4)
+    assert read_shop(shifted) == ["Morgana", "Malphite", "Shen", "Draven", None]

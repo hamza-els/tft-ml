@@ -12,7 +12,17 @@ hud:
   template_dir: "assets/templates/hud"   # stage_icon.png, gold_icon.png
   match_threshold: 0.80
   stage_icon_search: [600, 0, 500, 40]   # the stage bar shifts right during stage 1
-  gold_icon_search:  [994, 874, 40, 40]
+  # The bottom bar (level, XP, gold, streak, shop) is not always in the same
+  # place: in later VODs (patch 18.6) it sits ~105 px further left. The gold
+  # coin is searched along the bar, and every bottom-bar region below is
+  # shifted by (found x - gold_icon_x). The values below are for the
+  # calibration VOD, where the coin's top-left is at x = 1002.
+  gold_icon_search:  [760, 874, 400, 40]
+  gold_icon_x: 1002
+  # Known bottom-bar positions (shift from calibration). The coin itself moves
+  # a few px with the number of gold digits, so the measured shift is snapped
+  # to the nearest of these. Add a value here if a new layout shows up.
+  bottom_bar_offsets: [0, -105]
   stage_one_min_x: 770                   # icon x >= this means the stage-1 bar layout
 
 ocr:

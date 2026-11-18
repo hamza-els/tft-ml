@@ -138,7 +138,7 @@ class StateExtractor:
 
         # 3. Shop via OCR of card names
         if hud.shop_visible:
-            sv.shop_slots = read_shop(frame)
+            sv.shop_slots = read_shop(frame, hud)
             sv.shop = [UnitState(name=name, star=1, items=[], region="shop")
                        for name in sv.shop_slots if name is not None]
 
