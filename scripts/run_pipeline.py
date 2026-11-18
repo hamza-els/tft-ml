@@ -68,6 +68,9 @@ def load_urls(path: Path) -> list[str]:
     return urls
 
 
+COOKIES_FROM_BROWSER: str | None = None   # set by --cookies-from-browser
+
+
 def download(url: str, out_dir: Path, ffmpeg: str, fragments: int) -> Path | None:
     out_dir.mkdir(parents=True, exist_ok=True)
     # yt-dlp always writes %(id)s.mp4, so we know the path before downloading.
@@ -86,8 +89,11 @@ def download(url: str, out_dir: Path, ffmpeg: str, fragments: int) -> Path | Non
         "--no-overwrites",
         "--concurrent-fragments", str(fragments),
         "--progress",
-        url,
     ]
+    if COOKIES_FROM_BROWSER:
+        # YouTube sometimes demands "sign in to confirm you're not a bot".
+        cmd += ["--cookies-from-browser", COOKIES_FROM_BROWSER]
+    cmd.append(url)
     result = subprocess.run(cmd)
     if result.returncode != 0:
         return None
@@ -233,7 +239,12 @@ def main():
                         help="VODs to process in parallel (default: 1, max 2 recommended)")
     parser.add_argument("--fragments", type=int, default=4,
                         help="Concurrent download fragments per VOD (default: 4)")
+    parser.add_argument("--cookies-from-browser", default=None, metavar="BROWSER",
+                        help="Use this browser's YouTube login (e.g. firefox) when YouTube asks to confirm you're not a bot")
     args = parser.parse_args()
+
+    global COOKIES_FROM_BROWSER
+    COOKIES_FROM_BROWSER = args.cookies_from_browser
 
     url_path = Path(args.urls)
     if not url_path.exists():

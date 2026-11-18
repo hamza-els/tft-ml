@@ -49,6 +49,9 @@ def run(step: str, args: list[str]) -> bool:
     return result.returncode == 0
 
 
+COOKIES: list[str] = []   # extra run_pipeline arguments, set from --cookies-from-browser
+
+
 def process(url: str) -> bool:
     vid = video_id(url)
     frames, states = FRAMES / vid, STATES / vid
@@ -61,7 +64,7 @@ def process(url: str) -> bool:
         f.write(url + "\n")
         single = f.name
     try:
-        if not run("download + split + dedup", ["scripts/run_pipeline.py", "--urls", single]):
+        if not run("download + split + dedup", ["scripts/run_pipeline.py", "--urls", single, *COOKIES]):
             return False
     finally:
         os.unlink(single)
@@ -87,7 +90,11 @@ def process(url: str) -> bool:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--urls", required=True)
+    parser.add_argument("--cookies-from-browser", default=None, metavar="BROWSER",
+                        help="Passed to run_pipeline.py (e.g. firefox)")
     args = parser.parse_args()
+    if args.cookies_from_browser:
+        COOKIES.extend(["--cookies-from-browser", args.cookies_from_browser])
 
     urls = [l.strip() for l in Path(args.urls).read_text(encoding="utf-8").splitlines()
             if l.strip() and not l.startswith("#")]
