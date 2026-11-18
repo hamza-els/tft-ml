@@ -35,8 +35,10 @@ Helpers:
 | `preview_regions.py <frame>` | Draw every region on a frame. Run this first on any new footage. |
 | `calibrate_regions.py <frame>` | Click to measure a region. |
 | `backfill_states.py` | Recompute the non-OCR fields in existing state files (`--reread-hp` also redoes HP). Much faster than re-extracting. |
-| `collect_unit_crops.py` → `label_units.py` | Cut unit crops, then Hamza labels them (Tk app, fuzzy search). |
+| `collect_unit_crops.py` → `label_units.py` | Cut unit crops, then Hamza labels them (Tk app, fuzzy search). `--unsure` queues only crops the classifier is below 90% sure of, least sure first (most value per label). |
 | `prune_unit_crops.py` | Move combat/away crops out of the labeling set. |
+| `recut_unit_crops.py` | Re-cut every crop from its frame after changing the window settings (labels survive; retrain after). |
+| `harvest_unit_item_icons.py` | Rebuild `assets/templates/unit_items/` (icons under units' health bars) from the crops' frames. |
 | `harvest_augment_icons.py`, `harvest_item_icons.py` | Collect icon templates from footage. |
 | `harvest_bench_units.py` | Auto-label bench crops from shop purchases (noisy; used as suggestions only). |
 | `fetch_game_data.py`, `fetch_item_icons.py` | Set data and item art from Community Dragon. |
@@ -71,14 +73,15 @@ Working, on 9 games: game splitting, dedup, stage, gold, level, XP, streak, own 
 
 Not working yet:
 
-1. **Champion recognition on board and bench.** A first classifier exists (`src/vision/unit_classifier.py`, ResNet-18 fine-tuned by `scripts/train_unit_classifier.py`, weights in `assets/unit_classifier.pt`, gitignored, about 1 minute to retrain on the GPU). On 2026-11-17, trained on 646 labels: 62.5% right first guess on a held-out game, about 79% on champions it had examples of; misses were mostly champions with no training labels. `label_units.py` shows its top guesses with confidence. Retrain as labels grow. Still to do: fill `board`/`bench` in the states on own-board planning frames and carry them through combat.
-2. **Star level and items on units.** Both visible inside the unit crops (star marker beside the health bar, item icons under it). Do after 1.
+1. **Champion recognition on board and bench.** A first classifier exists (`src/vision/unit_classifier.py`, ResNet-18 fine-tuned by `scripts/train_unit_classifier.py`, weights in `assets/unit_classifier.pt`, gitignored, a few minutes to retrain on the GPU). On 2026-11-18, 4,088 labels: 91.5% right first guess on held-out knB6dE8Rbgg game_02 (92.6% before the crops were widened); nearly all misses are Rammus and Ashe, which have no labels outside that game, and "not a unit" crops. `label_units.py` shows its top guesses with confidence. Retrain as labels grow. Still to do: fill `board`/`bench` in the states on own-board planning frames and carry them through combat.
+2. **Star level and items on units.** `src/vision/unit_bar.py` finds a unit's green health bar from its hex/slot (the bar drifts sideways with perspective: `bar_left = cx - 32.3 + 0.0425 (cx - 960)`), then reads the star badge left of it (templates `assets/templates/stars/`, made from the median of hundreds of badges: 1 bronze chevron, 2 silver diamond, 3 gold double chevron) and up to three item icons under it (templates `assets/templates/unit_items/`, cut from footage; `Name__2.png` = another picture of Name; `uitem_XXX` = unnamed ID). Checked on 2026-11-18: stars read on 98% of 3,591 labelled units and right on all ~120 checked by eye; the rest are badges hidden behind panels. Items: the count was right on 18 of 21 units checked by eye; names are less certain: Radiant items look like their normal version at 25 px, and some items still have two IDs. Not yet written into the state vectors (do it together with 1).
 3. **Hex position** falls out of which window a unit was found in; not written into the state yet.
 4. **Gameplay model.** Framework in `docs/gameplay_model.md`; action labels and model shapes exist, no dataset labels or training loop.
 
 ## Known problems, unverified or unfixed
 
-- Game 2's HP read rate is 85.7%, lowest of the nine; cause not looked at.
+- knB6dE8Rbgg game 2's HP read rate is 86%, the lowest of all games; cause not looked at. (It is not the dark-arena problem fixed on 2026-11-18: the panel check used to judge "panel open" by darkness, so dark arenas hid the player list; it now matches the panel's exact teal colour, which lifted eUOJYk4MKaY games 7-9 from 60-82% to 93-98%.)
+- YouTube's "confirm you're not a bot" block tends to return after about 3 VOD downloads in a row. `process_vods.py` stops the batch when it sees it; wait a few hours and re-run (finished VODs are skipped).
 - `assets/templates/augments/` has 48 icons for 9 games (27 is the maximum), so it holds duplicates or junk. Augment tier has only ever read "gold"; the silver and prismatic rules are untested.
 - 41 frames showed both augment bars; they are treated as away without having been inspected.
 - Item matching against official art is only trusted above 0.75. Footage-cut item templates were rebuilt on 2026-11-17 after fixing the slot spacing (54 px, not 53): 69 icons, 51 named automatically, 18 unnamed.

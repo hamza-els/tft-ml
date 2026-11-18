@@ -83,6 +83,7 @@ def main():
     images.mkdir(parents=True, exist_ok=True)
     index_path = OUT_DIR / "index.json"
     index = json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {}
+    before = set(index)
 
     total = skipped = 0
     for states in sorted(Path(args.states).glob("game_*.jsonl")):
@@ -120,10 +121,10 @@ def main():
                 # The health bar sits in the top part of the window, left of centre.
                 bar_zone = frame[max(0, y):y + 60, x:x + w - 30]
                 if health_bar_pixels(bar_zone)[0] >= MIN_BAR_PIXELS:
-                    windows.append((f"h{r}{c}", (x, y, w, h)))
+                    windows.append((f"h{r}{c}", board.window(r, c)))
             for i in range(bench.slots):
                 if bench.has_health_bar(frame, i):
-                    windows.append((f"s{i}", bench.region(i)))
+                    windows.append((f"s{i}", bench.window(i)))
 
             for wid, (x, y, w, h) in windows:
                 crop = frame[max(0, y):y + h, max(0, x):x + w]
@@ -141,6 +142,11 @@ def main():
         total += saved
         print(f"  {states.stem}: {saved} crops")
 
+    # Merge into the file as it is now: another script (recut_unit_crops.py)
+    # may have changed other entries while this one ran.
+    added = {k: v for k, v in index.items() if k not in before}
+    index = json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {}
+    index.update(added)
     index_path.write_text(json.dumps(index, indent=0), encoding="utf-8")
     print(f"\n{total} new crops ({skipped} skipped as unchanged) -> {images}")
     print(f"{len(index)} crops in total. Label them with: python scripts/label_units.py")

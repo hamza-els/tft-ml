@@ -4,6 +4,11 @@ Label unit crops with the champion they show.
 Usage:
     python scripts/label_units.py
     python scripts/label_units.py --review        # go through already-labelled crops again
+    python scripts/label_units.py --unsure        # only crops the model is unsure about, least sure first
+    python scripts/label_units.py --unsure 0.7    # ...below 70% confidence (default 90%)
+
+--unsure gives the most value per label: crops the model already gets
+right with high confidence teach it little. Needs a trained model.
 
 How it works:
   - The crop is shown large on the left; the frame it came from is shown on
@@ -102,7 +107,7 @@ def to_photo(img: np.ndarray) -> tk.PhotoImage:
 
 
 class Labeler:
-    def __init__(self, review: bool):
+    def __init__(self, review: bool, unsure: float | None = None):
         self.game = load_game_data()
         # Shop champions plus trait/augment units (Stonebark Tree, Training Dummy, ...)
         self.names = self.game.unit_names
@@ -132,6 +137,8 @@ class Labeler:
 
         self.classifier = UnitClassifier() if UnitClassifier.available() else None
         self.confidence: dict[str, float] = {}
+        if unsure is not None:
+            self.queue = self._unsure_first(self.queue, unsure)
 
         self._build_window()
         self.show()
@@ -143,6 +150,22 @@ class Labeler:
         if img is not None:
             self.known_vecs.append(fingerprint(img))
             self.known_names.append(name)
+
+    def _unsure_first(self, files: list[str], below: float) -> list[str]:
+        """The crops whose best guess is under `below`, least confident first."""
+        if self.classifier is None:
+            sys.exit("--unsure needs a trained model: python scripts/train_unit_classifier.py")
+        print(f"Scoring {len(files)} crops with the classifier ...")
+        imgs, kept = [], []
+        for f in files:
+            img = cv2.imread(str(CROP_DIR / "images" / f))
+            if img is not None:
+                imgs.append(img)
+                kept.append(f)
+        best = self.classifier.probabilities(imgs).max(axis=1) if imgs else np.zeros(0)
+        order = [i for i in np.argsort(best) if best[i] < below]
+        print(f"{len(order)} of {len(kept)} are below {below:.0%} confidence")
+        return [kept[i] for i in order]
 
     def suggestions(self, img: np.ndarray) -> list[str]:
         self.confidence = {}
@@ -333,11 +356,14 @@ class Labeler:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--review", action="store_true", help="Show already-labelled crops instead")
+    parser.add_argument("--unsure", type=float, nargs="?", const=0.9, default=None, metavar="BELOW",
+                        help="Only crops whose best guess is below this confidence (default 0.9), "
+                             "least sure first")
     args = parser.parse_args()
 
     if not (CROP_DIR / "images").exists() or not any((CROP_DIR / "images").glob("*.jpg")):
         sys.exit(f"No crops in {CROP_DIR / 'images'} - run scripts/collect_unit_crops.py first")
-    app = Labeler(args.review)
+    app = Labeler(args.review, args.unsure)
     app.root.mainloop()
     print(f"{len(app.labels)} of {app.total} crops labelled -> {app.labels_path}")
 

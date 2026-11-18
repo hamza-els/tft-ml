@@ -20,10 +20,20 @@ class BenchSlots:
         self.slots = int(cfg["slots"])
         self.width = int(cfg["crop_width"])
         self.y, self.height = int(cfg["y"]), int(cfg["height"])
+        pad = cfg.get("window_pad") or {}
+        self.pad_left, self.pad_top = int(pad.get("left", 0)), int(pad.get("top", 0))
+
+    def center_x(self, i: int) -> float:
+        return self.first_center_x + i * self.pitch
 
     def region(self, i: int) -> tuple[int, int, int, int]:
-        cx = self.first_center_x + i * self.pitch
+        cx = self.center_x(i)
         return int(round(cx - self.width / 2)), self.y, self.width, self.height
+
+    def window(self, i: int) -> tuple[int, int, int, int]:
+        """The unit crop: region() padded left and up so the star badge fits (see window_pad)."""
+        x, y, w, h = self.region(i)
+        return x - self.pad_left, y - self.pad_top, w + self.pad_left, h + self.pad_top
 
     def crop(self, frame: np.ndarray, i: int) -> np.ndarray:
         x, y, w, h = self.region(i)

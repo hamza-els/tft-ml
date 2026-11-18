@@ -54,6 +54,15 @@ class UnitClassifier:
         order = np.argsort(probs)[::-1][:top_k]
         return [(self.classes[i], float(probs[i])) for i in order]
 
+    @torch.no_grad()
+    def probabilities(self, imgs_bgr: list[np.ndarray], batch: int = 64) -> np.ndarray:
+        """Class probabilities for many crops at once, shape (len(imgs), len(classes))."""
+        out = []
+        for i in range(0, len(imgs_bgr), batch):
+            x = torch.stack([to_tensor(img) for img in imgs_bgr[i:i + batch]]).to(self.device)
+            out.append(torch.softmax(self.model(x), dim=1).cpu().numpy())
+        return np.concatenate(out) if out else np.zeros((0, len(self.classes)), np.float32)
+
     @staticmethod
     def available() -> bool:
         return WEIGHTS.exists()

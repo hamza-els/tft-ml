@@ -18,6 +18,8 @@ class BoardHexes:
         self.cols = int(cfg["cols"])
         self.width = int(cfg["crop_width"])
         self.above, self.below = int(cfg["crop_above"]), int(cfg["crop_below"])
+        pad = cfg.get("window_pad") or {}
+        self.pad_left, self.pad_top = int(pad.get("left", 0)), int(pad.get("top", 0))
 
     def hexes(self) -> list[tuple[int, int]]:
         """All (row, col) pairs, front row first."""
@@ -32,8 +34,13 @@ class BoardHexes:
         below = int(self.rows[row].get("crop_below", self.below))
         return cx - self.width // 2, cy - self.above, self.width, self.above + below
 
-    def crop(self, frame: np.ndarray, row: int, col: int) -> np.ndarray:
+    def window(self, row: int, col: int) -> tuple[int, int, int, int]:
+        """The unit crop: region() padded left and up so the star badge fits (see window_pad)."""
         x, y, w, h = self.region(row, col)
+        return x - self.pad_left, y - self.pad_top, w + self.pad_left, h + self.pad_top
+
+    def crop(self, frame: np.ndarray, row: int, col: int) -> np.ndarray:
+        x, y, w, h = self.window(row, col)
         return frame[max(0, y):y + h, max(0, x):x + w]
 
 

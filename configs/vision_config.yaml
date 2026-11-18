@@ -48,11 +48,16 @@ ocr:
   hp_others_min_x: 1820
   hp_max: 150                     # HP can exceed 100 with some augments
   # A panel can replace the player list: the "Damage Dealt" recap during fights,
-  # or a unit's info panel. Both are near-black where the list rows would be.
+  # or a unit's info panel. Both have the same flat dark-teal background.
   # With a panel open only the top band is read: the damage recap keeps the
   # player's own HP there; a unit info panel shows no HP at all.
+  # Matched by exact colour, not darkness: dark arenas and black stream
+  # backgrounds are just as dark but never this flat teal (measured on 4 VODs:
+  # lists <= 0.07 of the zone, panels >= 0.25).
   hp_panel_zone: [1700, 300, 160, 480]
-  hp_panel_dark: 0.55             # share of near-black pixels in the zone that means "panel"
+  hp_panel_color: [33, 33, 21]    # BGR
+  hp_panel_tolerance: 6           # max per-channel difference to count as panel colour
+  hp_panel_share: 0.15            # share of panel-coloured pixels in the zone that means "panel"
   hp_top_band: [1770, 160, 100, 80]
 
   # Champion-name text on each shop card, left to right (card pitch is 202 px).
@@ -135,6 +140,10 @@ bench:
   crop_width: 116
   y: 680                               # top of the crop (includes the unit's health bar)
   height: 140
+  # Unit crops (what the classifier sees) are the window above padded on the
+  # left and top, so the star badge left of the health bar is always inside:
+  # the bar drifts left of the hex the further left the unit stands.
+  window_pad: {left: 32, top: 16}
 
 # Player's half of the board: 4 rows of 7 hexes. The camera looks down at an
 # angle, so rows nearer the bottom are wider. Each row: x of its first hex
@@ -151,6 +160,46 @@ board:
   crop_width: 124
   crop_above: 130                      # includes the health bar
   crop_below: 34                       # default; a row can override it
+  # Unit crops (what the classifier sees) are the window above padded on the
+  # left and top, so the star badge left of the health bar is always inside:
+  # the bar drifts left of the hex the further left the unit stands.
+  window_pad: {left: 32, top: 16}
+
+# Health bar above each own unit, and the star badge / items hanging off it
+# (src/vision/unit_bar.py). Offsets are from the bar's left end and top edge.
+unit_bar:
+  x_offset: -32.3                      # bar_left = cx + x_offset + x_lean * (cx - 960)
+  x_lean: 0.0425
+  max_dx: 22                           # bars starting further than this from the expected x belong to a neighbour
+  min_width: 25
+  search_above: 30                     # how far above the hex/slot window to look for the bar
+  search_below: 110                    # how far below the window top
+  badge: [-26, -12, 30, 28]            # star badge box (= template size): dx, dy, w, h
+  badge_slack: [3, 2]                  # the template may sit this many px off in x, y
+  star_templates: assets/templates/stars
+  # A star level is only given when the best template scores at least this
+  # and beats the runner-up by the margin. On 3,591 labelled units: 98% read,
+  # 36/36 of the hardest accepted ones right by eye; the rest are badges half
+  # hidden behind a panel or the screen edge.
+  star_min_score: 0.35
+  star_min_margin: 0.10
+  item_dx: -9                          # first item icon: dx, dy from the bar; icons are item_size square
+  item_dy: 12
+  item_size: 25
+  item_pitch: 26
+  item_slack_x: 2                      # icons can sit this many px off sideways (bar end found +-2 px)
+  item_margin: 2                       # px trimmed off each side of an icon before matching
+  item_templates: assets/templates/unit_items   # cut from footage by scripts/harvest_unit_item_icons.py
+  # An item slot holds an icon when its dark outline is found (outline score:
+  # scenery ~0, icons mostly 0.5+) and the icon matches a template, or when the
+  # match alone is strong (scenery: 99% below 0.81). An outline
+  # >= item_sure_outline with no good match is an item we have no template for.
+  outline_dark: 80                     # outline pixels are darker than this (max channel)
+  outline_contrast: 25                 # ...and the scenery just outside is this much lighter
+  item_min_outline: 0.5
+  item_sure_outline: 0.85
+  item_sure_score: 0.85                # a match this strong is an item even without a visible outline
+  item_min_score: 0.75                 # template match needed to name the item (with an outline)
 
 # Own-board and planning-phase detection (src/vision/arena.py).
 arena:

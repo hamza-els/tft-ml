@@ -29,8 +29,8 @@ _ROOT = Path(__file__).resolve().parents[2]
 class _TemplateSet:
     """Templates as unit vectors, so one matrix product scores an icon against all of them."""
 
-    def __init__(self, size: int, margin: int):
-        self.size, self.margin = size, margin
+    def __init__(self, size: int, margin: int, mask_corner: bool = True):
+        self.size, self.margin, self.mask_corner = size, margin, mask_corner
         self.names: list[str] = []
         self._rows: list[np.ndarray] = []
         self._matrix: np.ndarray | None = None
@@ -41,7 +41,8 @@ class _TemplateSet:
         m = self.margin
         patch = icon[m:-m, m:-m].astype(np.float32)
         h, w = patch.shape[:2]
-        patch[:h // 2, :w // 2] = 0          # stack-count badge area
+        if self.mask_corner:
+            patch[:h // 2, :w // 2] = 0      # stack-count badge area
         vec = patch.reshape(-1)
         vec = vec - vec.mean()
         norm = np.linalg.norm(vec)
