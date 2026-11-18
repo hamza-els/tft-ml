@@ -11,9 +11,11 @@ How it works:
   - Type any part of the champion's name. Typos are fine: the list under the
     box shows the closest names. Click one, or press Enter for the first,
     or press its number (1-8).
-  - "Looks like" buttons suggest the champions of the most similar crops
-    labelled so far. With the box empty, Enter accepts the first suggestion.
-    They get better as you label more.
+  - "Looks like" buttons are the model's best guesses with its confidence
+    (assets/unit_classifier.pt, trained by scripts/train_unit_classifier.py).
+    With the box empty, Enter accepts the first one. Retrain now and then as
+    labels pile up; without a trained model, suggestions fall back to the most
+    similar crops labelled so far.
 
 Keys:
     Enter        first search result (or first suggestion when the box is empty)
@@ -43,6 +45,7 @@ import cv2
 import numpy as np
 
 from src.state.game_data import load_game_data
+from src.vision.unit_classifier import UnitClassifier
 
 CROP_DIR = Path("data/processed/unit_crops")
 SEED_DIR = Path("data/processed/champion_crops")   # auto-labelled bench crops, used for suggestions
@@ -127,6 +130,9 @@ class Labeler:
                     for p in folder.glob("*.jpg"):
                         self._learn(p, folder.name)
 
+        self.classifier = UnitClassifier() if UnitClassifier.available() else None
+        self.confidence: dict[str, float] = {}
+
         self._build_window()
         self.show()
 
@@ -139,6 +145,11 @@ class Labeler:
             self.known_names.append(name)
 
     def suggestions(self, img: np.ndarray) -> list[str]:
+        self.confidence = {}
+        if self.classifier is not None:
+            preds = self.classifier.predict(img, top_k=MAX_SUGGESTIONS)
+            self.confidence = dict(preds)
+            return [name for name, prob in preds if prob >= 0.02]
         if not self.known_vecs:
             return []
         scores = np.stack(self.known_vecs) @ fingerprint(img)
@@ -213,7 +224,10 @@ class Labeler:
         for i, name in enumerate(names):
             cost = self.game.cost(name)
             note = f"({cost}g)" if cost else "(trait unit)"
-            tk.Button(parent, text=f"{prefix}{i + 1}  {name}  {note}", anchor="w",
+            text = "not a unit" if name == NONE else f"{name}  {note}"
+            if parent is self.suggest_row and name in self.confidence:
+                text += f"  {self.confidence[name]:.0%}"
+            tk.Button(parent, text=f"{prefix}{i + 1}  {text}", anchor="w",
                       command=lambda n=name: command(n), font=self.big, bg="#2b2d35",
                       fg=ACCENT if i == 0 else FG, activebackground="#444754", activeforeground=FG,
                       relief="flat", padx=10, pady=3) \

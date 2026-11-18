@@ -71,7 +71,7 @@ Working, on 9 games: game splitting, dedup, stage, gold, level, XP, streak, own 
 
 Not working yet:
 
-1. **Champion recognition on board and bench.** Blocked on labels. 189 of 1,483 crops labelled in `data/processed/unit_crops/labels.json`. Next step once there are about 500: train a small classifier on the crops (not written), plug it into `label_units.py` suggestions, report per-champion accuracy on held-out crops, then fill `board`/`bench` in the states on own-board planning frames and carry them through combat.
+1. **Champion recognition on board and bench.** A first classifier exists (`src/vision/unit_classifier.py`, ResNet-18 fine-tuned by `scripts/train_unit_classifier.py`, weights in `assets/unit_classifier.pt`, gitignored, about 1 minute to retrain on the GPU). On 2026-11-17, trained on 646 labels: 62.5% right first guess on a held-out game, about 79% on champions it had examples of; misses were mostly champions with no training labels. `label_units.py` shows its top guesses with confidence. Retrain as labels grow. Still to do: fill `board`/`bench` in the states on own-board planning frames and carry them through combat.
 2. **Star level and items on units.** Both visible inside the unit crops (star marker beside the health bar, item icons under it). Do after 1.
 3. **Hex position** falls out of which window a unit was found in; not written into the state yet.
 4. **Gameplay model.** Framework in `docs/gameplay_model.md`; action labels and model shapes exist, no dataset labels or training loop.
