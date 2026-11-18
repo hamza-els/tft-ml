@@ -133,3 +133,32 @@ def test_bottom_bar_shifted_left_is_followed(mid_game):
     values = extract_ui_values(shifted)
     assert (values["gold"], values["level"], values["xp_current"], values["streak"]) == (1, 9, 2, 4)
     assert read_shop(shifted) == ["Morgana", "Malphite", "Shen", "Draven", None]
+
+
+# Player-list crops (frame region x 1640-1920, y 140-830) pasted onto a black
+# frame: the dark-arena and black-background lists used to be taken for a
+# panel because they are as dark as one.
+@pytest.mark.parametrize("name, panel, own, n_others", [
+    ("hp_list_dark_arena.png", False, 37.0, 7),
+    ("hp_list_black_bg.png", False, 100.0, 7),
+    ("hp_damage_recap.png", True, 89.0, 0),
+    ("hp_unit_panel.png", True, None, 0),
+])
+def test_player_list_or_panel(name, panel, own, n_others):
+    import numpy as np
+    from src.vision.ocr_pipeline import hp_panel_open
+    frame = np.zeros((1080, 1920, 3), np.uint8)
+    frame[140:830, 1640:1920] = _load(name)
+    assert hp_panel_open(frame) == panel
+    got_own, others = read_hp(frame)
+    assert got_own == own
+    assert len(others) == n_others
+
+
+def test_pick_hp_one_number_per_row():
+    boxes = [
+        ((1834, 512, 17, 14), "72", 0.99),
+        ((1834, 531, 14, 14), "7", 0.85),    # win/loss mark under the 72
+        ((1834, 592, 16, 12), "62", 0.99),
+    ]
+    assert pick_hp(boxes)[1] == [72.0, 62.0]

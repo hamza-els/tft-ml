@@ -169,8 +169,9 @@ def read_hp(frame: np.ndarray) -> tuple[float | None, list[float]]:
 
 def hp_panel_open(frame: np.ndarray) -> bool:
     """True if a panel covers the rows of the player list."""
-    zone = crop_region(frame, tuple(_OCR_CFG["hp_panel_zone"]))
-    return bool((zone.max(axis=2) < 45).mean() > _OCR_CFG["hp_panel_dark"])
+    zone = crop_region(frame, tuple(_OCR_CFG["hp_panel_zone"])).astype(np.int16)
+    diff = np.abs(zone - np.array(_OCR_CFG["hp_panel_color"], np.int16)).max(axis=2)
+    return bool((diff < _OCR_CFG["hp_panel_tolerance"]).mean() > _OCR_CFG["hp_panel_share"])
 
 
 def pick_hp(boxes: list[TextBox]) -> tuple[float | None, list[float]]:
@@ -188,9 +189,14 @@ def pick_hp(boxes: list[TextBox]) -> tuple[float | None, list[float]]:
     def value(text: str) -> float | None:
         return float(text) if text.isdigit() and int(text) <= _OCR_CFG["hp_max"] else None
 
-    others = [(y, value(t)) for (x, y, w, h), t, c in boxes
-              if x >= others_x and c >= 0.5 and value(t) is not None]
-    other_rows = [y for y, _ in others]
+    # Rows are ~80 px apart. The win/loss mark under a player's HP sometimes
+    # reads as "7"; keep only the most confident number in each row.
+    others: list[tuple[int, float, float]] = []
+    for (x, y, w, h), t, c in sorted(boxes, key=lambda b: -b[2]):
+        if x >= others_x and c >= 0.5 and value(t) is not None \
+                and all(abs(y - oy) > 30 for oy, _, _ in others):
+            others.append((y, value(t), c))
+    other_rows = [y for y, _, _ in others]
 
     own = [(h, value(t)) for (x, y, w, h), t, c in boxes
            if own_lo <= x <= own_hi and h >= min_h and c >= 0.5 and value(t) is not None
@@ -198,7 +204,7 @@ def pick_hp(boxes: list[TextBox]) -> tuple[float | None, list[float]]:
            and all(abs(y - oy) > 20 for oy in other_rows)]
 
     own_hp = max(own)[1] if own else None
-    return own_hp, [v for _, v in sorted(others)]
+    return own_hp, [v for _, v, _ in sorted(others)]
 
 
 def read_shop(frame: np.ndarray, hud: HudState | None = None) -> list[str | None]:

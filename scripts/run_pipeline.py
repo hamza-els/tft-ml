@@ -324,6 +324,8 @@ def main():
         for url in failed:
             print(f"    {url}")
     _divider("═")
+    if failed:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

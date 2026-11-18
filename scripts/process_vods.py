@@ -52,6 +52,16 @@ def run(step: str, args: list[str]) -> bool:
 COOKIES: list[str] = []   # extra run_pipeline arguments, set from --cookies-from-browser
 
 
+class BotCheck(Exception):
+    """YouTube asked to confirm we're not a bot: every later download will fail too."""
+
+
+def _log_tail(chars: int = 20000) -> str:
+    with open(LOG, encoding="utf-8", errors="replace") as f:
+        f.seek(max(0, f.seek(0, 2) - chars))
+        return f.read()
+
+
 def process(url: str) -> bool:
     vid = video_id(url)
     frames, states = FRAMES / vid, STATES / vid
@@ -65,6 +75,8 @@ def process(url: str) -> bool:
         single = f.name
     try:
         if not run("download + split + dedup", ["scripts/run_pipeline.py", "--urls", single, *COOKIES]):
+            if "not a bot" in _log_tail():
+                raise BotCheck()
             return False
     finally:
         os.unlink(single)
@@ -104,7 +116,15 @@ def main():
         failed = []
         for i, url in enumerate(urls, 1):
             print(f"[{i}/{len(urls)}] {time.strftime('%H:%M')}", flush=True)
-            if not process(url):
+            try:
+                ok = process(url)
+            except BotCheck:
+                print("    YouTube is asking to confirm we're not a bot. Stopping here; wait a few hours\n"
+                      "    and re-run the same command (finished VODs are skipped), or add\n"
+                      "    --cookies-from-browser firefox.", flush=True)
+                failed.extend(urls[i - 1:])
+                break
+            if not ok:
                 failed.append(url)
         print(f"\nDone. {len(urls) - len(failed)}/{len(urls)} VODs processed.", flush=True)
         for url in failed:
