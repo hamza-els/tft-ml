@@ -74,6 +74,8 @@ class ItemColumnReader:
         self.x, self.y = int(cfg["x"]), int(cfg["y"])
         self.size = int(cfg["slot_size"])
         self.pitch = float(cfg["slot_pitch"])
+        self.outline = int(cfg["outline"])
+        self.icon_size = self.size - 2 * self.outline
         self.slots = int(cfg["slots"])
         self.empty_below = float(cfg["empty_below"])
         self.min_contrast = float(cfg["min_contrast"])
@@ -81,19 +83,26 @@ class ItemColumnReader:
         self.official_threshold = float(cfg["official_threshold"])
         self.seen_dir = _ROOT / cfg["seen_dir"]
 
-        self.seen = _TemplateSet(self.size, int(cfg["match_margin"]))
+        self.seen = _TemplateSet(self.icon_size, int(cfg["match_margin"]))
         self.seen.load(self.seen_dir)
-        self.official = _TemplateSet(self.size, int(cfg["match_margin"]))
+        self.official = _TemplateSet(self.icon_size, int(cfg["match_margin"]))
         self.official.load(_ROOT / vision_cfg["template_matching"]["item_dir"])
 
     def slot_region(self, i: int) -> tuple[int, int, int, int]:
+        """The whole slot, gold outline included."""
         return self.x, int(round(self.y + i * self.pitch)), self.size, self.size
 
+    def icon_region(self, i: int) -> tuple[int, int, int, int]:
+        """The icon inside the slot's outline (what is matched against templates)."""
+        x, y, w, h = self.slot_region(i)
+        o = self.outline
+        return x + o, y + o, w - 2 * o, h - 2 * o
+
     def slot_icons(self, frame: np.ndarray) -> list[np.ndarray]:
-        """Crops of the filled slots, top to bottom."""
+        """Icon crops (inside the outline) of the filled slots, top to bottom."""
         icons = []
         for i in range(self.slots):
-            x, y, w, h = self.slot_region(i)
+            x, y, w, h = self.icon_region(i)
             icon = frame[y:y + h, x:x + w]
             if icon.shape[:2] != (h, w) or icon.mean() < self.empty_below:
                 continue

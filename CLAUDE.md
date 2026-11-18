@@ -1,3 +1,5 @@
+Next claude prompt: the item windows for each item on the left is little short on the bottom, make sure to get the golden outline of each one
+
 # TFT ML project
 
 Offline advisor for Teamfight Tactics: read game state out of stream VODs,
@@ -79,7 +81,8 @@ Not working yet:
 - Game 2's HP read rate is 85.7%, lowest of the nine; cause not looked at.
 - `assets/templates/augments/` has 48 icons for 9 games (27 is the maximum), so it holds duplicates or junk. Augment tier has only ever read "gold"; the silver and prismatic rules are untested.
 - 41 frames showed both augment bars; they are treated as away without having been inspected.
-- Item matching against official art is only trusted above 0.75; 127 footage-cut item icons are unnamed and some may be cursor or overlay junk.
+- Item matching against official art is only trusted above 0.75. Footage-cut item templates were rebuilt on 2026-11-17 after fixing the slot spacing (54 px, not 53): 69 icons, 51 named automatically, 18 unnamed.
+- `data/raw/urls.txt` holds 10 more BoxBox VODs (picked 2026-11-17 by sampling frames for the calibrated HUD). VR23D04Dte0 was streamed from a hotel room with a different overlay; check `preview_regions.py` on its frames before trusting it. Bash tournament days were skipped because parts show a spectator/broadcast view, not his own game.
 - `harvest_bench_units.py` crops were roughly a quarter to a third wrong when checked by eye.
 - Action labels: SELL is over-counted and BUY_XP looks under-counted (details in `docs/gameplay_model.md`).
 - `scripts/split_games.py` and `src/data_collection/game_splitter.py` (video-based splitting) use an older brightness heuristic and were not updated or tested with the new regions.

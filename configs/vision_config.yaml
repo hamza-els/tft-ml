@@ -91,10 +91,13 @@ augments:
 
 # Unequipped items: column of square slots on the left edge.
 item_column:
-  x: 12
-  y: 263
-  slot_size: 42
-  slot_pitch: 53
+  # Each window is the whole slot including its gold outline; matching uses
+  # the icon inside it (the window shrunk by `outline` px on every side).
+  x: 10
+  y: 261
+  slot_size: 46
+  slot_pitch: 54                       # measured from empty slots: tops at 261, 315, 369, ...
+  outline: 2
   slots: 9                             # the 10th slot is rarely used and overlays cover it
   empty_below: 25                      # mean brightness of an empty (black) slot
   min_contrast: 30                     # below this the slot shows flat scenery, not an icon

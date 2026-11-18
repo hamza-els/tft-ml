@@ -31,7 +31,7 @@ WATCH_REGIONS: dict[str, tuple[int, int, int, int]] = {
     "gold":  (1028, 878, 56, 32),
     "shop":  (552, 927, 1010, 150),   # full shop row
     "bench": (379, 697, 1031, 128),   # bench units
-    "items": (0, 249, 59, 483),       # first 9 item slots; the 10th is rarely used and overlays cover it
+    "items": (8, 259, 50, 484),       # first 9 item slots with outlines; the 10th is rarely used and overlays cover it
     "stage": (762, 2, 100, 34),       # stage text, both bar layouts
 }
 
