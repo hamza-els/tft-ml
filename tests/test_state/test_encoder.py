@@ -187,3 +187,14 @@ def test_item_block():
     assert _get(enc, vec, "item_components") == pytest.approx(2 / 10)
     assert _get(enc, vec, "items_completed") == pytest.approx(1 / 10)
     assert _get(enc, vec, "items_other") == pytest.approx(2 / 10)    # consumable + unknown icon
+
+
+def test_extra_units_count_on_board_but_not_in_shop():
+    enc = StateEncoder(GameData(RAW, extra_units=["Stonebark Tree", "Ahri"]))
+    assert enc.game.extra_units == ["Stonebark Tree"]           # Ahri is already a champion
+    assert "board_has_Stonebark Tree" in enc.feature_names
+    assert "shop_has_Stonebark Tree" not in enc.feature_names
+    vec = enc.encode({"board": [_unit("Stonebark Tree"), _unit("Teemo")]}, has_board=True)
+    assert _get(enc, vec, "board_has_Stonebark Tree") == pytest.approx(1 / 3)
+    assert _get(enc, vec, "board_units") == pytest.approx(2 / 12)
+    assert enc.game.cost("Stonebark Tree") == 0

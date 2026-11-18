@@ -72,6 +72,17 @@ template_matching:
 
 game_data:
   set: "TFTSet18"                      # scripts/fetch_game_data.py -> assets/game_data/<set>.json
+  # Units that can stand on the board or bench but are never sold in the shop,
+  # so they are missing from the set's champion list. Hand-maintained per set
+  # (from trait and augment descriptions). They have no cost and no traits.
+  extra_units:
+    - Stonebark Tree                   # Elderwood (also the Potted Stonebark augment)
+    - Lifebloom                        # Elderwood (also the Potted Lifebloom augment)
+    - Deepwood Protector               # Elderwood
+    - Big Furry Friend                 # Sprykin
+    - Small Furry Friend               # Sprykin variant
+    - Training Dummy                   # Found Friend / Returning Friend / Dummify augments
+    - Golem                            # Golemify augment, Golem assist item
 
 # Augment bar: up to three icons above the board, centred on center_x.
 # One icon wide after the first pick, growing to three; absent before that.

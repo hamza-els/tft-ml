@@ -67,7 +67,7 @@ Tests: `python -m pytest tests -q` (about 40 s; the OCR tests load EasyOCR and u
 
 ## State on 2026-11-16
 
-Working, on 9 games: game splitting, dedup, stage, gold, level, XP, streak, own and lobby HP, shop, augment count and tier, unequipped items, own-board and planning flags, cleaning, 362-number encoding, action derivation.
+Working, on 9 games: game splitting, dedup, stage, gold, level, XP, streak, own and lobby HP, shop, augment count and tier, unequipped items, own-board and planning flags, cleaning, 376-number encoding, action derivation.
 
 Not working yet:
 

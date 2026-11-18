@@ -100,7 +100,9 @@ def to_photo(img: np.ndarray) -> tk.PhotoImage:
 
 class Labeler:
     def __init__(self, review: bool):
-        self.names = load_game_data().champion_names
+        self.game = load_game_data()
+        # Shop champions plus trait/augment units (Stonebark Tree, Training Dummy, ...)
+        self.names = self.game.unit_names
         self.index = json.loads((CROP_DIR / "index.json").read_text(encoding="utf-8")) \
             if (CROP_DIR / "index.json").exists() else {}
         self.labels_path = CROP_DIR / "labels.json"
@@ -209,8 +211,9 @@ class Labeler:
         for child in parent.winfo_children():
             child.destroy()
         for i, name in enumerate(names):
-            cost = load_game_data().cost(name)
-            tk.Button(parent, text=f"{prefix}{i + 1}  {name}  ({cost}g)", anchor="w",
+            cost = self.game.cost(name)
+            note = f"({cost}g)" if cost else "(trait unit)"
+            tk.Button(parent, text=f"{prefix}{i + 1}  {name}  {note}", anchor="w",
                       command=lambda n=name: command(n), font=self.big, bg="#2b2d35",
                       fg=ACCENT if i == 0 else FG, activebackground="#444754", activeforeground=FG,
                       relief="flat", padx=10, pady=3) \

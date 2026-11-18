@@ -30,7 +30,7 @@ class Champion:
 
 
 class GameData:
-    def __init__(self, raw: dict, items: dict | None = None):
+    def __init__(self, raw: dict, items: dict | None = None, extra_units: list[str] | None = None):
         self.set_name: str = raw["set"]
         self.items: dict = items or {}
 
@@ -50,6 +50,13 @@ class GameData:
         }
         self.trait_names: list[str] = list(self.breakpoints)
         self.trait_index: dict[str, int] = {n: i for i, n in enumerate(self.trait_names)}
+
+        # Everything that can stand on the board or bench: shop champions plus
+        # trait/augment units (Stonebark Tree, Training Dummy, ...), which have
+        # no cost and no traits.
+        self.extra_units: list[str] = sorted(set(extra_units or []) - set(self.champions))
+        self.unit_names: list[str] = sorted(self.champion_names + self.extra_units)
+        self.unit_index: dict[str, int] = {n: i for i, n in enumerate(self.unit_names)}
 
     def cost(self, name: str) -> int:
         """Gold cost of a champion, 0 if the name is unknown."""
@@ -87,4 +94,5 @@ def load_game_data(set_name: str | None = None) -> GameData:
         raise FileNotFoundError(f"{path} not found — run scripts/fetch_game_data.py")
     items_path = path.with_name(f"{set_name}_items.json")
     items = json.loads(items_path.read_text(encoding="utf-8")) if items_path.exists() else {}
-    return GameData(json.loads(path.read_text(encoding="utf-8")), items)
+    extra = vision_cfg["game_data"].get("extra_units") or []
+    return GameData(json.loads(path.read_text(encoding="utf-8")), items, extra)

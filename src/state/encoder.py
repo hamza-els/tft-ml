@@ -9,9 +9,10 @@ The vector is the concatenation of named blocks (see StateEncoder.blocks):
   lobby     the other players' HP
   shop      what is on offer: which champions, their costs and traits, and
             how many offers match a unit the player already owns
-  board     what is fielded: which champions, cost mix, trait counts,
+  board     what is fielded: which units (shop champions plus trait/augment
+            units such as the Stonebark Tree), cost mix, trait counts,
             active trait tiers
-  bench     what is held in reserve
+  bench     what is held in reserve (same unit list)
   augments  how many augments are picked and of which tier
   items     how many unequipped items are held, split into components and
             finished items
@@ -80,6 +81,7 @@ class StateEncoder:
         n_trait = len(self.game.trait_names)
 
         champs, traits = self.game.champion_names, self.game.trait_names
+        units = self.game.unit_names
         costs = [f"cost_{c}" for c in range(1, MAX_COST + 1)]
         # (block name, feature names) in vector order
         self.blocks: list[tuple[str, list[str]]] = [
@@ -91,13 +93,13 @@ class StateEncoder:
             ("shop_traits", [f"shop_trait_{t}" for t in traits]),
             ("shop_summary", ["shop_filled", "shop_total_cost", "shop_matches_owned",
                               "shop_matches_board_trait"]),
-            ("board_champions", [f"board_has_{c}" for c in champs]),
+            ("board_unit_ids", [f"board_has_{u}" for u in units]),
             ("board_cost_mix", [f"board_{c}" for c in costs]),
             ("board_traits", [f"board_trait_{t}" for t in traits]),
             ("board_trait_tiers", [f"board_tier_{t}" for t in traits]),
             ("board_summary", ["board_units", "board_slots_free", "board_value",
                                "board_active_traits"]),
-            ("bench_champions", [f"bench_has_{c}" for c in champs]),
+            ("bench_unit_ids", [f"bench_has_{u}" for u in units]),
             ("bench_summary", ["bench_units", "bench_value"]),
             ("augments", AUGMENT_NAMES),
             ("items", ITEM_NAMES),
@@ -148,10 +150,12 @@ class StateEncoder:
                _clip(sum(1 for h in alive if h > hp), OTHER_PLAYERS) if others else 0.0]
         )
 
-    def _champion_counts(self, names: list[str], top: int) -> np.ndarray:
-        vec = np.zeros(self._n_champ, dtype=np.float32)
+    def _champion_counts(self, names: list[str], top: int, units: bool = False) -> np.ndarray:
+        """Copies of each name / top. Shop uses the champion list; board and bench the unit list."""
+        index = self.game.unit_index if units else self.game.champion_index
+        vec = np.zeros(len(index), dtype=np.float32)
         for name in names:
-            i = self.game.champion_index.get(name)
+            i = index.get(name)
             if i is not None:
                 vec[i] += 1.0 / top
         return np.minimum(vec, 1.0)
@@ -232,7 +236,7 @@ class StateEncoder:
              sum(1 for n in shop if n in owned) / SHOP_SLOTS,
              sum(1 for n in shop if n in g.champions
                  and board_traits & set(g.champions[n].traits)) / SHOP_SLOTS],
-            self._champion_counts(board, 3),
+            self._champion_counts(board, 3, units=True),
             self._cost_mix(board, MAX_BOARD),
             self._trait_vector(board),
             tiers,
@@ -240,7 +244,7 @@ class StateEncoder:
              _clip(level - len(board), MAX_LEVEL) if has_board else 0.0,
              _clip(self._value(board_units), 150),
              _clip(active, 10)],
-            self._champion_counts(bench, 3),
+            self._champion_counts(bench, 3, units=True),
             [_clip(len(bench), MAX_BENCH), _clip(self._value(bench_units), 100)],
             [_clip(len(row.get("augments") or []), MAX_AUGMENTS)]
             + [_clip((row.get("augment_tiers") or []).count(t), MAX_AUGMENTS) for t in AUGMENT_TIERS],
