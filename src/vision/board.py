@@ -29,7 +29,8 @@ class BoardHexes:
 
     def region(self, row: int, col: int) -> tuple[int, int, int, int]:
         cx, cy = self.center(row, col)
-        return cx - self.width // 2, cy - self.above, self.width, self.above + self.below
+        below = int(self.rows[row].get("crop_below", self.below))
+        return cx - self.width // 2, cy - self.above, self.width, self.above + below
 
     def crop(self, frame: np.ndarray, row: int, col: int) -> np.ndarray:
         x, y, w, h = self.region(row, col)

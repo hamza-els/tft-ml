@@ -135,12 +135,12 @@ board:
     - {first_x: 559, pitch: 116.7, y: 439}
     - {first_x: 616, pitch: 117.7, y: 514}
     - {first_x: 534, pitch: 122.5, y: 586}
-    - {first_x: 587, pitch: 126.2, y: 655}
+    - {first_x: 587, pitch: 126.2, y: 655, crop_below: 52}   # nearest row: units drawn larger, feet lower
   cols: 7
   # Window cut around a unit standing on a hex, relative to the hex centre.
   crop_width: 124
   crop_above: 130                      # includes the health bar
-  crop_below: 34
+  crop_below: 34                       # default; a row can override it
 
 # Own-board and planning-phase detection (src/vision/arena.py).
 arena:
