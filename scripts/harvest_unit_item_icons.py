@@ -40,18 +40,24 @@ from src.utils.config import vision_cfg
 from src.vision.bench import BenchSlots
 from src.vision.board import BoardHexes
 from src.vision.items import _ROOT, _TemplateSet
-from src.vision.unit_bar import bench_bar, board_bar, crop, item_vec, outline_score
+from src.vision.unit_bar import bench_bar, board_bar, crop, item_hue, item_vec, outline_score
 
 CROP_DIR = Path("data/processed/unit_crops")
 OUT = _ROOT / vision_cfg["unit_bar"]["item_templates"]
 MIN_OUTLINE = 0.45       # only icons with a visible outline become templates
-SAME = 0.85              # correlation above which two icons are the same item
-MERGE = 0.85             # groups whose median pictures correlate this well are merged
+# Similarity is src/vision/unit_bar.item_similarity (shape x colour): same-item
+# pairs 0.50-0.75, different items at most 0.61 on the first footage templates.
+SAME = 0.62              # an icon joins a group whose centre is at least this similar
+MERGE = 0.62             # groups whose median pictures are this similar are merged
 MIN_MEMBERS = 3          # groups smaller than this are likely glitches
 NAME_SCORE = 0.80        # median icon vs known item art needed to take its name
-TWIN_SCORE = 0.79       # unnamed group this close to a named one takes its name (checked by eye: all
-                         # pairs at >= 0.79 were the same item, the first wrong pair was at 0.78)
+TWIN_SCORE = 0.62        # unnamed group this similar to a named one takes its name
 KNOWN_SCORE = 0.84       # an outline-less slot is kept when it matches known item art this well
+# Junk: scenery that passed the outline check. Unnamed templates this blurry
+# (variance of the Laplacian) were all scenery; the softest real icon, Blue
+# Buff (821), is named so it is kept. Health-bar green inside = a bar edge.
+MIN_SHARPNESS = 1100
+MAX_BAR_PIXELS = 15
 
 
 def aligned_icon(frame, region):
@@ -106,38 +112,46 @@ def main():
                     icons.append(icon.copy())
     print(f"{len(icons)} item icons found under health bars")
 
+    def feats(img):
+        img = np.clip(img, 0, 255).astype(np.uint8)
+        return item_vec(img), item_hue(img)
+
+    def sims(centres, f):
+        """item_similarity of one icon's features against many."""
+        if not centres:
+            return np.zeros(0)
+        return (np.stack([c[0] for c in centres]) @ f[0]) * (np.stack([c[1] for c in centres]) @ f[1])
+
     # Greedy grouping against running group centres.
     groups: list[list[int]] = []
-    centres: list[np.ndarray] = []
-    vecs = [item_vec(i) for i in icons]
-    for i, v in enumerate(vecs):
+    centres: list[tuple] = []
+    for i, icon in enumerate(icons):
+        f = feats(icon)
         if centres:
-            scores = np.stack(centres) @ v
+            scores = sims(centres, f)
             k = int(np.argmax(scores))
             if scores[k] >= SAME:
                 groups[k].append(i)
-                centres[k] = item_vec(np.median([icons[j] for j in groups[k][-50:]], axis=0))
+                centres[k] = feats(np.median([icons[j] for j in groups[k][-50:]], axis=0))
                 continue
         groups.append([i])
-        centres.append(v)
+        centres.append(f)
 
     # Second pass: greedy grouping depends on order, so merge groups whose
     # median pictures turned out alike (largest first).
-    def median_vec(g):
-        return item_vec(np.median([icons[j] for j in g[:200]], axis=0))
     groups.sort(key=len, reverse=True)
     merged: list[list[int]] = []
-    merged_vecs: list[np.ndarray] = []
+    merged_feats: list[tuple] = []
     for g in groups:
-        v = median_vec(g)
-        if merged_vecs:
-            scores = np.stack(merged_vecs) @ v
+        f = feats(np.median([icons[j] for j in g[:200]], axis=0))
+        if merged_feats:
+            scores = sims(merged_feats, f)
             k = int(np.argmax(scores))
             if scores[k] >= MERGE:
                 merged[k].extend(g)
                 continue
         merged.append(list(g))
-        merged_vecs.append(v)
+        merged_feats.append(f)
     # Dark, flat "icons" are scenery that happened to pass the outline check.
     groups = [g for g in merged if len(g) >= MIN_MEMBERS
               and np.median([icons[j] for j in g], axis=0).std() > 25]
@@ -155,13 +169,24 @@ def main():
     # item (stack counter, Radiant frame, a frame where it was half covered).
     named_ids = [i for i, n in enumerate(names) if n]
     if named_ids:
-        named_vecs = np.stack([item_vec(medians[i]) for i in named_ids])
+        named_feats = [feats(medians[i]) for i in named_ids]
         for i, n in enumerate(names):
             if n is None:
-                scores = named_vecs @ item_vec(medians[i])
+                scores = sims(named_feats, feats(medians[i]))
                 k = int(np.argmax(scores))
                 if scores[k] >= TWIN_SCORE:
                     names[i] = names[named_ids[k]]
+
+    # Unnamed blurry or bar-crossed medians are scenery, not items.
+    def junk(median):
+        g = cv2.cvtColor(median, cv2.COLOR_BGR2GRAY)[2:-2, 2:-2].astype(np.float32)
+        sharp = cv2.Laplacian(g, cv2.CV_32F).var()
+        px = median.astype(np.int16)
+        bar = int(((px[..., 1] > 150) & (px[..., 2] < 120) & (px[..., 0] < 120)).sum())
+        return sharp < MIN_SHARPNESS or bar > MAX_BAR_PIXELS
+    keep = [i for i, n in enumerate(names) if n or not junk(medians[i])]
+    print(f"{len(medians) - len(keep)} unnamed blurry/bar-crossed groups dropped as scenery")
+    medians, names = [medians[i] for i in keep], [names[i] for i in keep]
 
     used: set[str] = set()
     named = 0
@@ -174,7 +199,7 @@ def main():
         else:
             stem = f"uitem_{n:03d}"
         cv2.imwrite(str(OUT / f"{stem}.png"), median)
-    print(f"{len(groups)} templates ({named} named) -> {OUT}")
+    print(f"{len(medians)} templates ({named} named) -> {OUT}")
 
 
 if __name__ == "__main__":

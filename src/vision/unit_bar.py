@@ -138,20 +138,54 @@ def outline_score(frame: np.ndarray, region: tuple[int, int, int, int]) -> float
     return best
 
 
-def item_vec(icon: np.ndarray) -> np.ndarray:
+def _item_patch(icon: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     """
-    An item icon as a unit vector for correlation matching. The 2 px border
-    is dropped (outline and scenery), and so is the bottom-centre patch where
-    stacking items (Guinsoo's Rageblade, ...) draw their stack counter.
+    The icon without its 2 px border (outline and scenery), and a mask that
+    leaves out the bottom-centre patch where stacking items (Guinsoo's
+    Rageblade, ...) draw their stack counter.
     """
     m = _CFG["item_margin"]
-    patch = icon[m:-m, m:-m].astype(np.float32).copy()
+    patch = icon[m:-m, m:-m]
     h, w = patch.shape[:2]
-    patch[int(h * 0.62):, int(w * 0.25):int(w * 0.75)] = 0
-    v = patch.reshape(-1)
+    mask = np.ones((h, w), bool)
+    mask[int(h * 0.62):, int(w * 0.25):int(w * 0.75)] = False
+    return patch, mask
+
+
+def _unit(v: np.ndarray) -> np.ndarray:
     v = v - v.mean()
     n = np.linalg.norm(v)
     return v / n if n else v
+
+
+def item_vec(icon: np.ndarray) -> np.ndarray:
+    """
+    Shape of an item icon: each colour channel centred and normalised on its
+    own, then joined, as a unit vector for correlation. (Centring all channels
+    together let the dark frame every emblem shares dominate: Fae and Sprykin
+    Emblem scored 0.81.)
+    """
+    patch, mask = _item_patch(icon)
+    p = patch.astype(np.float32)
+    return _unit(np.concatenate([_unit(p[..., c][mask]) for c in range(3)]))
+
+
+def item_hue(icon: np.ndarray) -> np.ndarray:
+    """Colour of an item icon: hue x saturation histogram, as a unit vector."""
+    patch, mask = _item_patch(icon)
+    hsv = cv2.cvtColor(np.ascontiguousarray(patch), cv2.COLOR_BGR2HSV)
+    hist = cv2.calcHist([hsv], [0, 1], mask.astype(np.uint8), [18, 4], [0, 180, 0, 256]).reshape(-1)
+    return hist / (np.linalg.norm(hist) + 1e-6)
+
+
+def item_similarity(a: np.ndarray, b: np.ndarray) -> float:
+    """
+    Shape correlation x colour similarity of two icons, 0-1. Icons that share
+    a layout but differ in colour (the emblems) are told apart by the second
+    factor. On the footage templates: same-item pairs 0.50-0.75, different
+    items at most 0.61 (2 of 2,328 pairs above 0.50).
+    """
+    return float(item_vec(a) @ item_vec(b)) * float(item_hue(a) @ item_hue(b))
 
 
 class UnitItemReader:
@@ -170,13 +204,19 @@ class UnitItemReader:
         from src.vision.items import _ROOT
         folder = folder or _ROOT / _CFG["item_templates"]
         self.names: list[str] = []
-        rows = []
+        shapes, hues = [], []
         for path in sorted(Path(folder).glob("*.png")):
             img = cv2.imread(str(path))
             if img is not None and img.shape[:2] == (_CFG["item_size"], _CFG["item_size"]):
                 self.names.append(path.stem.split("__")[0])   # Name__2.png = another picture of Name
-                rows.append(item_vec(img))
-        self.matrix = np.stack(rows) if rows else None
+                shapes.append(item_vec(img))
+                hues.append(item_hue(img))
+        self.matrix = np.stack(shapes) if shapes else None
+        self.hue_matrix = np.stack(hues) if hues else None
+
+    def scores(self, icon: np.ndarray) -> np.ndarray:
+        """item_similarity of an icon against every template."""
+        return (self.matrix @ item_vec(icon)) * (self.hue_matrix @ item_hue(icon))
 
     def identify(self, frame: np.ndarray, region: tuple[int, int, int, int]) -> tuple[str | None, float]:
         """Best-matching template name and score, allowing the icon to sit a little off."""
@@ -190,7 +230,7 @@ class UnitItemReader:
                 icon = crop(frame, (x + dx, y + dy, w, h))
                 if icon.shape[:2] != (h, w):
                     continue
-                scores = self.matrix @ item_vec(icon)
+                scores = self.scores(icon)
                 i = int(np.argmax(scores))
                 if scores[i] > best[1]:
                     best = (self.names[i], float(scores[i]))

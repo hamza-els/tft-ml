@@ -20,6 +20,7 @@ from src.vision.items import ItemColumnReader
 from src.vision.ocr_pipeline import OcrCache, extract_ui_and_lobby, read_shop
 
 _ROOT = Path(__file__).resolve().parents[2]
+AUG_CHANGED = 3.0     # mean abs pixel change over the augment bars that means "re-match" (8 missed real changes on 49 of 600 frames)
 
 
 @dataclass
@@ -99,6 +100,31 @@ class StateExtractor:
     def start_sequence(self):
         """Call before the first frame of a game: OCR of unchanged regions is skipped from here on."""
         self.ocr_cache = OcrCache()
+        self._aug_prev: np.ndarray | None = None
+        self._aug_result = None
+
+    # Augment bars (own and away), as (x, y, w, h): wide enough for three icons.
+    _AUG_ZONES = [
+        (int(vision_cfg["augments"]["center_x"] - 60), int(vision_cfg["augments"]["y"]), 120,
+         int(vision_cfg["augments"]["height"])),
+        (int(vision_cfg["augments"]["away_center_x"] - 60), int(vision_cfg["augments"]["away_y"]), 120,
+         int(vision_cfg["augments"]["height"])),
+    ]
+
+    def _read_augments(self, frame: np.ndarray):
+        """
+        (augments, away count). Matching the bar was the slowest part of a
+        frame (36%) though it changes about three times a game, so with a
+        sequence started it is only re-matched when the bar's pixels changed.
+        """
+        if self.ocr_cache is None:
+            return self.augments.read(frame), self.augments.count_away(frame)
+        now = np.concatenate([frame[y:y + h, x:x + w].reshape(-1) for x, y, w, h in self._AUG_ZONES]).astype(np.int16)
+        if self._aug_prev is not None and np.abs(now - self._aug_prev).mean() < AUG_CHANGED:
+            return self._aug_result
+        self._aug_prev = now
+        self._aug_result = (self.augments.read(frame), self.augments.count_away(frame))
+        return self._aug_result
 
     @classmethod
     def from_config(cls) -> "StateExtractor":
@@ -153,9 +179,9 @@ class StateExtractor:
         sv.bench_items = [n.split("~")[0] if n else None for n in self.items.read(frame)]
 
         # 5. Augment bar
-        for aug in self.augments.read(frame):
+        augs, sv.away_augments = self._read_augments(frame)
+        for aug in augs:
             sv.augments.append(aug.name)
             sv.augment_tiers.append(aug.tier)
-        sv.away_augments = self.augments.count_away(frame)
 
         return sv
