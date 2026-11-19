@@ -216,6 +216,9 @@ unit_bar:
   item_min_score: 0.60                 # match needed to name an outlined item (outlined items: median 0.92, 95% above 0.68)
   item_maybe_outline: 0.30             # some sign of an icon: counts only right before a clear item (items fill from the left)
   item_maybe_score: 0.40
+  # Item classifier (src/vision/item_classifier.py): its answer is taken when this sure, else the
+  # template matcher decides. Held-out: every item it was trained on >= 0.97, unseen items <= 0.92.
+  item_model_confidence: 0.97
 
 # Own-board and planning-phase detection (src/vision/arena.py).
 arena:

@@ -29,6 +29,7 @@ import numpy as np
 from src.utils.config import vision_cfg
 
 _CFG = vision_cfg["unit_bar"]
+_MODEL_PAD = 4            # the item classifier sees the icon with 4 px around it (as the item crops)
 
 
 @dataclass
@@ -200,8 +201,10 @@ class UnitItemReader:
     differs), so at this size the two can be confused.
     """
 
-    def __init__(self, folder: Path | None = None):
+    def __init__(self, folder: Path | None = None, use_model: bool = True):
+        from src.vision.item_classifier import ItemClassifier
         from src.vision.items import _ROOT
+        self.model = ItemClassifier() if use_model and ItemClassifier.available() else None
         folder = folder or _ROOT / _CFG["item_templates"]
         self.names: list[str] = []
         shapes, hues = [], []
@@ -240,9 +243,28 @@ class UnitItemReader:
         """
         Evidence for each of the three slots: outline score, best template and
         score, "item" (clearly an icon) and "maybe" (some sign of one).
+
+        With the item classifier available (src/vision/item_classifier.py), a
+        slot it is very sure about (>= item_model_confidence) takes its
+        answer; the template matcher decides the rest (items the model was
+        never trained on, unclear icons).
         """
+        regions = bar.item_regions()
+        model_says = [None] * len(regions)
+        if self.model is not None:
+            p = _MODEL_PAD
+            crops = [crop(frame, (x - p, y - p, w + 2 * p, h + 2 * p)) for x, y, w, h in regions]
+            ok = [i for i, c in enumerate(crops) if c.shape[:2] == (regions[i][3] + 2 * p, regions[i][2] + 2 * p)]
+            for i, (cls, conf) in zip(ok, self.model.predict([crops[i] for i in ok])):
+                if conf >= _CFG["item_model_confidence"]:
+                    model_says[i] = cls
         out = []
-        for region in bar.item_regions():
+        for region, said in zip(regions, model_says):
+            if said is not None:
+                is_item = not said.startswith("_")
+                out.append({"outline": None, "name": said if is_item else None, "score": None,
+                            "item": is_item, "maybe": is_item, "by": "model"})
+                continue
             outline = outline_score(frame, region)
             name, score = self.identify(frame, region)
             named = score >= _CFG["item_sure_score"] or (outline >= _CFG["item_min_outline"]
