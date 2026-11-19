@@ -40,6 +40,17 @@ rather than assumed from position.
 The masks at the end of the vector (`bottom_bar_visible`, `has_board`,
 `on_home_board`, `planning`) tell the model which blocks to trust.
 
+Next to `X`, each game's `.npz` holds a per-unit token table (`src/state/tokens.py`,
+decided with Hamza 2026-11-19): 38 rows per frame (board 14, bench 9, shop 5,
+unequipped items 10), padded, with `tok_mask`. Integer fields (`tok_int`): group,
+champion ID, star, three item IDs with radiant flags (Radiant = base item + flag),
+item ID for item-column rows, hex row/col, slot. Float fields (`tok_float`):
+reading certainty (confidence, carried, filled, loose), cost, and the champion's
+trait flags (own traits plus emblems) as fixed inputs, so rare champions' traits
+are known without having to learn them. IDs are fixed by the set data
+(`vocab.json` next to the datasets). `placement` (the final-placement label) is
+saved per game. Gold, HP, round, level, XP stay in `X`.
+
 ## Action space
 
 Nine choices (`POLICY_ACTIONS`): PASS, BUY slot 0–4, REROLL, BUY_XP, SELL.
@@ -106,8 +117,8 @@ too big for 9 games; start at 64 wide, 2 layers and grow with the data.
    action labels at all and shows whether the state vector carries signal.
 4. **Stage 2: add the policy head.** Behaviour cloning with a masked,
    class-weighted cross-entropy.
-5. **Stage 3: add the board.** When unit recognition works, rebuild the
-   dataset; the 211 board and bench numbers switch on and SELL gets an argument.
+5. **Stage 3: add the board.** Board and bench are now read (units, stars,
+   items, hexes) and in both `X` and the token table; SELL can get an argument.
 6. **Stage 4: side models.** Win Predictor output and Target Comp distance
    become extra input features. No hard-coded thresholds (project decision).
 

@@ -118,6 +118,23 @@ class GameData:
         """How many of the trait's breakpoints are reached (0 = inactive)."""
         return sum(1 for b in self.breakpoints.get(trait, []) if count >= b)
 
+    def item_base(self, name: str | None) -> tuple[str | None, bool]:
+        """(base item, radiant): "Radiant Warmog's Armor" -> ("Warmog's Armor", True)."""
+        if name and name.startswith("Radiant ") and name[len("Radiant "):] in self.items:
+            return name[len("Radiant "):], True
+        return name, False
+
+    def unit_vocab(self) -> list[str]:
+        """Champion IDs for the token table: 0 = padding, then every unit of the set, then unknown.
+        Fixed by the set data, so IDs never shift with what was seen."""
+        return ["<pad>"] + self.unit_names + ["_unknown"]
+
+    def item_vocab(self) -> list[str]:
+        """Item IDs: 0 = padding, every item of the set with Radiant versions folded into their
+        base item (the radiant flag is a separate field), then unknown."""
+        names = {self.item_base(n)[0] for n in self.items} | set(self.emblems)
+        return ["<pad>"] + sorted(names) + ["_unknown"]
+
     def slots(self, name: str) -> int:
         """Team slots a unit takes on the board: 0 for trait/augment units, 2 for Elder Dragon, else 1."""
         if name in self.extra_units:

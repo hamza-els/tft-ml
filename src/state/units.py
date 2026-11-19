@@ -185,6 +185,13 @@ def _counter_units(rows, read, rounds) -> dict[int, int]:
     return out
 
 
+def _flags(u: dict) -> dict:
+    """How sure a cleaned unit is, kept only when set: carried (put back on the
+    counter's word), filled (not read as this unit on this frame), loose (its
+    bar was not over its hex)."""
+    return {k: True for k in ("carried", "filled", "loose") if u.get(k)}
+
+
 def _keep_loose(units: list[dict], counter: int | None, stats: dict) -> list[dict]:
     """
     A frame's readings with its loose ones (bars no hex claimed: a unit being
@@ -291,7 +298,11 @@ def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None =
                 stats["names_changed"] += 1
             p = u["p"] if u and u["name"] == n else round(sum(ps[groups[k]]) / max(len(ps[groups[k]]), 1), 3)
             cleaned[k][at] = {"name": n, "star": stars[k], "items": list(items[k] or []), "p": p,
-                              "support": conf[k]}
+                              "support": conf[k],
+                              # not read on this frame as this unit: a flicker, a misread
+                              # overwritten, or hidden under a tooltip
+                              "filled": u is None or hidden[k] or u["name"] != n,
+                              "loose": bool(u and u.get("loose") and not hidden[k])}
 
     slots = game.slots if game is not None else (lambda name: 1)
     team_sizes = _counter_team_sizes(rows, read, levels, rounds)
@@ -361,10 +372,10 @@ def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None =
 
         out[i] = {
             "board": [{"name": u["name"], "star": u["star"], "items": u["items"],
-                       "hex": [int(at[1]), int(at[2])], "p": u["p"], **({"carried": True} if u.get("carried") else {})}
+                       "hex": [int(at[1]), int(at[2])], "p": u["p"], **_flags(u)}
                       for at, u in sorted(units.items()) if at[0] == "h"],
             "bench": [{"name": u["name"], "star": u["star"], "items": u["items"],
-                       "slot": int(at[1:]), "p": u["p"]}
+                       "slot": int(at[1:]), "p": u["p"], **_flags(u)}
                       for at, u in sorted(units.items(), key=lambda kv: int(kv[0][1:]) if kv[0][0] == "s" else -1)
                       if at[0] == "s"],
             "read": True,
