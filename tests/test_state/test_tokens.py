@@ -49,9 +49,9 @@ def test_board_unit(enc):
     ti, tf, _ = enc.encode(row())
     assert enc.units[get(enc, ti, tf, 0, "unit")] == "Taric"
     assert get(enc, ti, tf, 0, "star") == 2
-    assert enc.items[get(enc, ti, tf, 0, "item0")] == "Warmog's Armor"
-    assert get(enc, ti, tf, 0, "radiant0") == 1
-    assert enc.items[get(enc, ti, tf, 0, "item1")] == "Fae Emblem" and get(enc, ti, tf, 0, "radiant1") == 0
+    # items are a set, sorted by ID (the vocab is alphabetical): Fae Emblem before Warmog's
+    assert enc.items[get(enc, ti, tf, 0, "item0")] == "Fae Emblem" and get(enc, ti, tf, 0, "radiant0") == 0
+    assert enc.items[get(enc, ti, tf, 0, "item1")] == "Warmog's Armor" and get(enc, ti, tf, 0, "radiant1") == 1
     assert get(enc, ti, tf, 0, "item2") == 0                       # empty third slot = padding id
     assert (get(enc, ti, tf, 0, "hex_row"), get(enc, ti, tf, 0, "hex_col")) == (3, 1)
     assert get(enc, ti, tf, 0, "carried") == 1.0 and abs(get(enc, ti, tf, 0, "confidence") - 0.9) < 1e-6
@@ -68,6 +68,12 @@ def test_bench_shop_items(enc):
     assert enc.units[get(enc, ti, tf, 3, "unit")] == "Rakan" and get(enc, ti, tf, 3, "slot") == 2
     assert enc.items[get(enc, ti, tf, 4, "item")] == "B.F. Sword" and get(enc, ti, tf, 4, "slot") == -1
     assert enc.items[get(enc, ti, tf, 5, "item")] == "_unknown"     # an icon with no name
+
+
+def test_item_order_does_not_matter(enc):
+    a = {"board": [{"name": "Taric", "star": 1, "items": ["B.F. Sword", "Fae Emblem"], "hex": [0, 0], "p": 1}]}
+    b = {"board": [{"name": "Taric", "star": 1, "items": ["Fae Emblem", "B.F. Sword"], "hex": [0, 0], "p": 1}]}
+    assert (enc.encode(a)[0] == enc.encode(b)[0]).all()
 
 
 def test_unknown_names(enc):

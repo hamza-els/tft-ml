@@ -15,7 +15,7 @@ set / transformer model (docs/gameplay_model.md). Decided with Hamza
     traits are known without needing many examples to learn them.
 
 Rows, in order, padded to MAX_ROWS:
-    group 1 board  (up to 14, by hex)       champion, star, items, hex
+    group 1 board  (up to 14, by hex)       champion, star, items (a set: sorted by ID), hex
     group 2 bench  (up to 9)                champion, star, items (slot left out: meaningless)
     group 3 shop   (up to 5, by slot)       champion, slot
     group 4 item   (up to 10)               item   (the unequipped item column; no slot: meaningless)
@@ -69,8 +69,12 @@ class TokenEncoder:
         if unit is not None:
             ints[self._i["star"]] = int(unit.get("star") or 0)
             held = list(unit.get("items") or [])[:3]
+            # Items held are a set (Hamza, 2026-11-19: which slot an item sits
+            # in means nothing): sorted by item ID, each with its radiant flag,
+            # so the order carries no information.
+            pairs = sorted(self.item(i) for i in held)
             for k in range(3):
-                iid, rad = self.item(held[k]) if k < len(held) else (0, 0)
+                iid, rad = pairs[k] if k < len(pairs) else (0, 0)
                 ints[self._i[f"item{k}"]] = iid
                 ints[self._i[f"radiant{k}"]] = rad
             if "hex" in unit:
