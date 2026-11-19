@@ -94,6 +94,29 @@ def test_emblem_adds_trait():
     assert with_emblem == plain + 1 or "Brawler" in g.champions["Taric"].traits
 
 
+def test_counter_team_size_overrides_level():
+    # "10/10" at level 9 (an augment): the 10th unit stays
+    units = [_unit(f"h0{c}", n) for c, n in enumerate(["Ashe", "Taric", "Sona", "Gnar", "Vi", "Ivern", "Rakan"])] \
+        + [_unit("h10", "Lux"), _unit("h11", "Varus"), _unit("h12", "Sivir", p=0.3)]
+    rows = _rows([units] * 3)
+    for r in rows:
+        r["board_counter"] = [10, 10]
+    out, stats = clean_units(rows, [9] * 3, load_game_data(), [(5, 1)] * 3)
+    assert len(out[0]["board"]) == 10 and stats["team_size_from_counter"] == 3
+
+
+def test_counter_unit_count_needs_agreement():
+    units = [_unit("h00", "Ashe"), _unit("h01", "Taric"), _unit("h02", "Sona", p=0.3)]
+    rows = _rows([units] * 3)
+    rows[1]["board_counter"] = [2, 3]           # one frame alone: not trusted
+    out, _ = clean_units(rows, [3] * 3, load_game_data(), [(3, 2)] * 3)
+    assert len(out[1]["board"]) == 3
+    for r in rows:
+        r["board_counter"] = [2, 3]             # all agree: the least sure unit goes
+    out, _ = clean_units(rows, [3] * 3, load_game_data(), [(3, 2)] * 3)
+    assert sorted(u["name"] for u in out[1]["board"]) == ["Ashe", "Taric"]
+
+
 def test_board_carried_through_unread_frames():
     rows = _rows([[_unit("h10", "Ashe"), _unit("s4", "Jinx")]]) + [{"frame": 10}, {"frame": 12}]
     out, _ = clean_units(rows, [3] * 3)

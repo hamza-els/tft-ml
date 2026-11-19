@@ -9,6 +9,7 @@ For every own-board planning frame (the only frames where the units on
 screen are the player's own and standing on their hexes), adds
 
     units_raw: [{"at": "h25", "name": "Ashe", "p": 0.97, "star": 2, "items": [...]}, ...]
+    board_counter: [units, team size]   the game's own counter (src/vision/board_counter.py)
 
 to the row in game_XX.jsonl (see src/vision/unit_reader.py). Rows that were
 not read have no units_raw; units_raw = [] means read and empty.
@@ -39,10 +40,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--frames", required=True, help="VOD frame folder containing game_XX/")
     parser.add_argument("--states", required=True, help="Folder of game_XX.jsonl files")
+    parser.add_argument("--counter-only", action="store_true",
+                        help="Only (re)read the board counter on frames whose units were already read")
     args = parser.parse_args()
 
     vod_dir = Path(args.frames).expanduser()
-    reader = UnitReader()
+    reader = UnitReader()   # loads the classifier even for --counter-only (a few seconds)
 
     for states in sorted(Path(args.states).glob("game_*.jsonl")):
         if states.name.endswith(".clean.jsonl"):
@@ -56,8 +59,22 @@ def main():
                   if home and plan}
 
         read = missing = 0
+        if args.counter_only:
+            for row in tqdm(rows, desc=states.stem, unit="row", dynamic_ncols=True, smoothing=0, mininterval=1.0):
+                if row.get("units_raw") is None:
+                    continue
+                frame = cv2.imread(str(vod_dir / states.stem / f"frame_{row['frame']:06d}.jpg"))
+                if frame is None:
+                    missing += 1
+                    continue
+                row["board_counter"] = reader.read_counter(frame)
+                read += 1
+            states.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+            print(f"  {states.name}: counter read on {read} frames, {missing} frames missing")
+            continue
         for row in tqdm(rows, desc=states.stem, unit="row", dynamic_ncols=True, smoothing=0, mininterval=1.0):
             row.pop("units_raw", None)
+            row.pop("board_counter", None)
             if row["frame"] not in wanted:
                 continue
             frame = cv2.imread(str(vod_dir / states.stem / f"frame_{row['frame']:06d}.jpg"))
@@ -70,6 +87,7 @@ def main():
                 row["planning"] = False
                 continue
             row["units_raw"] = reader.read(frame)
+            row["board_counter"] = reader.read_counter(frame)
             read += 1
         states.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
         print(f"  {states.name}: {len(rows)} rows, units read on {read}, {missing} frames missing")

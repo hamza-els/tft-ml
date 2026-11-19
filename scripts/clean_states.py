@@ -55,6 +55,9 @@ def main():
                   f"removed {u['units_removed']}, renamed {u['names_changed']}; "
                   f"over the team size on {u['over_level_frames']} frames ({u['units_dropped_level']} units dropped); "
                   f"trait/item team-size bonus on {u['team_size_bonus_frames']} frames")
+            print(f"              board counter: team size on {u['team_size_from_counter']} frames, "
+                  f"unit count on {u['units_from_counter']} (counter shows more units than read on "
+                  f"{u['counter_more_than_read']})")
         else:
             print("  units       not read (run scripts/read_units.py)")
 

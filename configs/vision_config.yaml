@@ -233,3 +233,19 @@ arena:
   combat_word: assets/templates/hud/combat_word.png
   combat_banner_zone: [850, 110, 230, 90]
   combat_banner_score: 0.65
+
+# Board counter "units / team size" in the middle of the arena during
+# planning (src/vision/board_counter.py). Regions are x ranges inside the
+# strip; the slash stays put, "10" just reaches further out on both sides.
+board_counter:
+  strip: [800, 210, 440, 120]          # x, y, w, h in the frame
+  rows: [5, 115]                       # y range of the digits inside the strip
+  regions:
+    left_one: [80, 200]                # one-digit unit count, left of the slash
+    left_two: [10, 200]                # "10"
+    right_one: [235, 350]              # one-digit team size, right of the slash
+    right_two: [240, 430]
+  slack: 8                             # px the text may sit off in any direction
+  templates: assets/templates/board_counter   # scripts/build_counter_templates.py
+  min_score: 0.45
+  min_margin: 0.05

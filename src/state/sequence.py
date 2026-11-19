@@ -157,7 +157,8 @@ def clean_game(rows: list[dict]) -> list[dict]:
 
     home = home_board_rows(rows)
     planning = planning_rows(rows)
-    units, _ = clean_units(rows, final["level"], load_game_data())
+    rounds = list(zip(final["stage"], final["round_num"]))
+    units, _ = clean_units(rows, final["level"], load_game_data(), rounds)
 
     # Augments are never lost, and the bar is hidden in some scenes: carry the
     # fullest reading so far forward. Readings off someone else's board are ignored.
@@ -172,6 +173,7 @@ def clean_game(rows: list[dict]) -> list[dict]:
         new["planning"] = planning[i]
         new.pop("arena_sig", None)
         new.pop("units_raw", None)
+        new.pop("board_counter", None)
         new["board"], new["bench"] = units[i]["board"], units[i]["bench"]
         if not units[i]["read"] and (new["board"] or new["bench"]):
             filled.append("board")
@@ -207,7 +209,7 @@ def quality_report(rows: list[dict], cleaned: list[dict]) -> dict:
             "misreads_corrected": changed,
         }
     _, report["units"] = clean_units(sorted(rows, key=lambda r: r["frame"]), [c["level"] for c in cleaned],
-                                     load_game_data())
+                                     load_game_data(), [(c["stage"], c["round_num"]) for c in cleaned])
     first, last = cleaned[0], cleaned[-1]
     report["first"] = {k: first[k] for k in ("stage", "round_num", "hp", "level")}
     report["last"] = {k: last[k] for k in ("stage", "round_num", "hp", "level")}

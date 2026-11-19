@@ -20,6 +20,7 @@ Positions: "at" is "h<row><col>" for a board hex (row 0 = front row) or
 import numpy as np
 
 from src.vision.bench import BenchSlots
+from src.vision.board_counter import BoardCounter
 from src.vision.board import BoardHexes
 from src.vision.unit_bar import Bar, UnitItemReader, bench_bar, board_bar, star_level
 from src.vision.unit_classifier import UnitClassifier
@@ -32,6 +33,13 @@ class UnitReader:
         self.board, self.bench = BoardHexes(), BenchSlots()
         self.classifier = classifier or UnitClassifier()
         self.items = UnitItemReader()
+        self.counter = BoardCounter()
+
+    def read_counter(self, frame: np.ndarray) -> list[int | None] | None:
+        """The game's "units / team size" counter as [units, team size] (None where unreadable)."""
+        if not self.counter.available():
+            return None
+        return list(self.counter.read(frame))
 
     def read(self, frame: np.ndarray) -> list[dict]:
         found = occupied(frame, self.board, self.bench)

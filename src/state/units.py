@@ -26,8 +26,12 @@ a tooltip. The sequence fixes most of it:
    same unit standing on the same spot, and missing readings (badge hidden)
    are filled from the rest of that stretch.
 
-4. Team size check. During planning the board can hold at most
-   level + bonus team slots. From the set's own data (GameData):
+4. Team size check. The game's own counter ("units / team size" in the
+   arena, src/vision/board_counter.py) is used first: the team size per
+   round (two agreeing readings, between level and level + 3), and the unit
+   count per frame (agreeing with nearby frames). Where it can't be read,
+   the board can hold at most level + bonus team slots from the set's own
+   data (GameData):
      - trait and augment units (Stonebark Tree, Training Dummy, ...) take no
        slot (on knB6dE8Rbgg, counting them put the board over the level on
        68 frames, leaving them out on 2); Elder Dragon takes 2;
@@ -128,15 +132,63 @@ def _stretches(names: list) -> list:
     return ids
 
 
-def clean_units(rows: list[dict], levels: list, game=None) -> tuple[list[dict], dict]:
+COUNTER_MAX_BONUS = 3     # team size read above level + this is a misread
+COUNTER_WINDOW = 2        # unit count: read frames either side that are compared
+COUNTER_AGREE = 2         # ...and how many readings (incl. the frame's own) must agree
+
+
+def _counter_team_sizes(rows, read, levels, rounds) -> dict[int, int]:
+    """
+    Team size per read frame from the board counter: per round, the most
+    common reading, if at least two readings agree and it is between the
+    level and level + COUNTER_MAX_BONUS (a reading below the level is
+    impossible). The team size only changes between rounds.
+    """
+    votes: dict = defaultdict(list)
+    for k, i in enumerate(read):
+        c, level = rows[i].get("board_counter"), levels[i]
+        if c and c[1] is not None and level and level <= c[1] <= level + COUNTER_MAX_BONUS:
+            votes[rounds[i]].append(c[1])
+    best = {}
+    for key, vs in votes.items():
+        value = max(set(vs), key=vs.count)
+        if key is not None and vs.count(value) >= 2:
+            best[key] = value
+    return {k: best[rounds[i]] for k, i in enumerate(read) if rounds[i] in best}
+
+
+def _counter_units(rows, read, rounds) -> dict[int, int]:
+    """
+    Units on the board from the counter, per read frame: only when the
+    reading agrees with at least COUNTER_AGREE readings (its own included)
+    among the nearby read frames of the same round. One frame alone is not
+    trusted: monsters' health bars and effects can cover a digit.
+    """
+    vals = [(rows[i].get("board_counter") or [None])[0] for i in read]
+    out = {}
+    for k, i in enumerate(read):
+        v = vals[k]
+        if v is None:
+            continue
+        near = [vals[j] for j in range(max(0, k - COUNTER_WINDOW), min(len(read), k + COUNTER_WINDOW + 1))
+                if rounds[read[j]] == rounds[i]]
+        if near.count(v) >= COUNTER_AGREE:
+            out[k] = v
+    return out
+
+
+def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None = None) -> tuple[list[dict], dict]:
     """
     Cleaned board and bench for one game's rows (in frame order).
 
     Args:
-        rows: raw state rows, sorted by frame; read frames have `units_raw`.
+        rows: raw state rows, sorted by frame; read frames have `units_raw`
+            (and `board_counter`, the game's own "units / team size").
         levels: the cleaned player level for each row (None when unknown).
         game: GameData, for team slots and team-size bonuses (see step 4).
             Without it every unit takes one slot and there are no bonuses.
+        rounds: the cleaned (stage, round) of each row, to group counter
+            readings by round. Without it the counter is not used.
 
     Returns:
         (per-row {"board": [...], "bench": [...], "read": bool}, stats)
@@ -149,7 +201,9 @@ def clean_units(rows: list[dict], levels: list, game=None) -> tuple[list[dict], 
     read = [i for i, r in enumerate(rows) if r.get("units_raw") is not None]
     stats = {"frames_read": len(read), "units_filled": 0, "units_removed": 0,
              "names_changed": 0, "over_level_frames": 0, "units_dropped_level": 0,
-             "team_size_bonus_frames": 0}
+             "team_size_bonus_frames": 0, "team_size_from_counter": 0, "units_from_counter": 0,
+             "counter_more_than_read": 0}
+    rounds = rounds or [None] * len(rows)
     out = [{"board": [], "bench": [], "read": False} for _ in rows]
     if not read:
         return out, stats
@@ -188,24 +242,35 @@ def clean_units(rows: list[dict], levels: list, game=None) -> tuple[list[dict], 
                               "support": conf[k]}
 
     slots = game.slots if game is not None else (lambda name: 1)
+    team_sizes = _counter_team_sizes(rows, read, levels, rounds)
+    counts = _counter_units(rows, read, rounds)
     for k, i in enumerate(read):
         units = cleaned[k]
         board = sorted((at for at in units if at[0] == "h"), key=lambda at: -units[at]["support"])
         level = levels[i]
-        if level:
+        cap = None
+        if team_sizes.get(k) is not None:
+            cap = team_sizes[k]
+            stats["team_size_from_counter"] += 1
+        elif level:
             bonus = game.team_size_bonus([units[at] for at in board]) if game is not None else 0
             cap = int(level) + bonus
             stats["team_size_bonus_frames"] += bonus > 0
-            if sum(slots(units[at]["name"]) for at in board) > cap:
-                stats["over_level_frames"] += 1
-                used = 0
-                for at in board:                     # best supported first
-                    need = slots(units[at]["name"])
-                    if used + need > cap:
-                        del units[at]
-                        stats["units_dropped_level"] += 1
-                    else:
-                        used += need
+        if counts.get(k) is not None and (cap is None or counts[k] <= cap):
+            cap = counts[k]                          # the game's own unit count is tighter
+            stats["units_from_counter"] += 1
+            used_now = sum(slots(units[at]["name"]) for at in board)
+            stats["counter_more_than_read"] += used_now < cap
+        if cap is not None and sum(slots(units[at]["name"]) for at in board) > cap:
+            stats["over_level_frames"] += 1
+            used = 0
+            for at in board:                         # best supported first
+                need = slots(units[at]["name"])
+                if used + need > cap:
+                    del units[at]
+                    stats["units_dropped_level"] += 1
+                else:
+                    used += need
         out[i] = {
             "board": [{"name": u["name"], "star": u["star"], "items": u["items"],
                        "hex": [int(at[1]), int(at[2])], "p": u["p"]}
