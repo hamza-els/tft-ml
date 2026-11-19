@@ -30,9 +30,11 @@ import numpy as np
 import torch
 import torch.nn as nn
 
+from src.utils import paths
 from src.vision.unit_classifier import WEIGHTS, build_model, to_tensor
 
-CROP_DIR = Path("data/processed/unit_crops")
+CROP_DIR = paths.CROP_DIR          # index.json, labels.json (repo)
+IMAGES = paths.CROP_IMAGES         # crop images (local disk, src/utils/paths.py)
 
 
 def load_examples() -> list[tuple[np.ndarray, str, str]]:
@@ -40,7 +42,7 @@ def load_examples() -> list[tuple[np.ndarray, str, str]]:
     labels = json.loads((CROP_DIR / "labels.json").read_text(encoding="utf-8"))
     out = []
     for name, label in sorted(labels.items()):
-        img = cv2.imread(str(CROP_DIR / "images" / name))
+        img = cv2.imread(str(IMAGES / name))
         m = re.search(r"__(game_\d+)__", name)
         if img is not None and m:
             out.append((img, label, m.group(1)))

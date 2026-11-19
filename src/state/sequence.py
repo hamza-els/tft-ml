@@ -17,6 +17,10 @@ It also marks which frames show the player's own board (`home_board`): the
 HUD numbers are always the player's own, but while scouting or fighting away
 the units and augment bar on screen belong to someone else.
 
+Board and bench units (`units_raw` from scripts/read_units.py) are cleaned in
+src/state/units.py: one-frame flickers and misreads smoothed out, the board
+checked against the level, and the last planning board carried through combat.
+
 Cleaning replaces values that break these rules and forward-fills gaps, so the
 Macro Engine sees a complete, consistent sequence. The raw rows are not
 modified; `filled` on each cleaned row lists which fields were not read
@@ -24,6 +28,8 @@ directly from that frame.
 """
 
 
+from src.state.game_data import load_game_data
+from src.state.units import clean_units
 from src.vision.arena import home_board_rows, planning_rows
 
 SCALARS = ("stage", "round_num", "gold", "hp", "level", "xp_current", "xp_needed", "streak")
@@ -151,6 +157,7 @@ def clean_game(rows: list[dict]) -> list[dict]:
 
     home = home_board_rows(rows)
     planning = planning_rows(rows)
+    units, _ = clean_units(rows, final["level"], load_game_data())
 
     # Augments are never lost, and the bar is hidden in some scenes: carry the
     # fullest reading so far forward. Readings off someone else's board are ignored.
@@ -164,7 +171,11 @@ def clean_game(rows: list[dict]) -> list[dict]:
         new["home_board"] = home[i]
         new["planning"] = planning[i]
         new.pop("arena_sig", None)
-        seen = (row.get("augments") or []) if home[i] else []
+        new.pop("units_raw", None)
+        new["board"], new["bench"] = units[i]["board"], units[i]["bench"]
+        if not units[i]["read"] and (new["board"] or new["bench"]):
+            filled.append("board")
+        seen =(row.get("augments") or []) if home[i] else []
         if len(seen) >= len(augments) and seen:
             augments, tiers = seen, row.get("augment_tiers") or []
         elif augments:
@@ -195,6 +206,8 @@ def quality_report(rows: list[dict], cleaned: list[dict]) -> dict:
             "read_rate": round(read / len(base), 3) if base else None,
             "misreads_corrected": changed,
         }
+    _, report["units"] = clean_units(sorted(rows, key=lambda r: r["frame"]), [c["level"] for c in cleaned],
+                                     load_game_data())
     first, last = cleaned[0], cleaned[-1]
     report["first"] = {k: first[k] for k in ("stage", "round_num", "hp", "level")}
     report["last"] = {k: last[k] for k in ("stage", "round_num", "hp", "level")}

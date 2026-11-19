@@ -17,19 +17,28 @@ right it is someone else's. `home_board_rows` uses the bar first and falls
 back to the arena colour only when no bar is on screen (early game, or the
 bar hidden).
 
-Planning phase, two signs that must agree (`planning_rows`):
+Planning phase, signs that must all agree (`planning_rows`):
   - The round timer bar under the stage bar drains during planning and
     refills when combat starts. Within one round, frames before the first
-    refill are planning; everything after is combat.
+    refill are planning; everything after is combat. A frame with the timer
+    empty is the instant combat starts and does not count.
   - A player can only place units on their own half, so during planning the
     far part of the board has no health bars (`is_planning`). This covers
     rounds whose planning frames were not captured, where the timer alone
     would mistake the whole round for planning.
+  - The "Combat" banner is not up (`combat_banner`, also in `is_planning`):
+    it shows for the first second or two of a fight, when units already face
+    the enemy but enemy health bars may not be drawn yet.
 """
 
+from pathlib import Path
+
+import cv2
 import numpy as np
 
 from src.utils.config import vision_cfg
+
+_ROOT = Path(__file__).resolve().parents[2]
 from src.vision.board import health_bar_pixels
 
 
@@ -91,6 +100,7 @@ def planning_rows(rows: list[dict], cfg: dict | None = None) -> list[bool]:
     """
     cfg = cfg or vision_cfg["arena"]
     refill = float(cfg["timer_refill"])
+    empty = float(cfg["timer_empty"])
     out = []
     current_round, last_fill, in_combat = None, None, False
     for row in rows:
@@ -102,13 +112,44 @@ def planning_rows(rows: list[dict], cfg: dict | None = None) -> list[bool]:
             if last_fill is not None and fill - last_fill >= refill:
                 in_combat = True
             last_fill = fill
-        out.append(bool(row.get("planning")) and not in_combat and None not in key)
+        # An empty timer is the instant planning ends: units are already
+        # turning to face the enemy.
+        ending = fill is not None and fill <= empty
+        out.append(bool(row.get("planning")) and not in_combat and not ending and None not in key)
     return out
 
 
+_COMBAT_WORD: np.ndarray | None = None
+
+
+def combat_banner(frame: np.ndarray, cfg: dict | None = None) -> bool:
+    """
+    True while the "Combat" banner (crossed swords over the word "Combat") is
+    shown under the stage bar: the first second or two of a fight, when the
+    units have turned to face the enemy but no enemy bars are up yet.
+
+    Matched on the word only (greyscale, median of 117 banners): the swords
+    animate in, and a "Planning" banner with a different icon appears at the
+    same spot when planning starts. Measured on 1,638 frames with a banner or
+    bright text there: "Combat" banners score 0.6-1.0 (0.8+ unless fading),
+    "Planning" banners 0.5-0.6, everything else lower.
+    """
+    global _COMBAT_WORD
+    cfg = cfg or vision_cfg["arena"]
+    if _COMBAT_WORD is None:
+        _COMBAT_WORD = cv2.imread(str(_ROOT / cfg["combat_word"]), cv2.IMREAD_GRAYSCALE).astype(np.float32)
+    x, y, w, h = cfg["combat_banner_zone"]
+    zone = cv2.cvtColor(frame[y:y + h, x:x + w], cv2.COLOR_BGR2GRAY).astype(np.float32)
+    score = float(cv2.matchTemplate(zone, _COMBAT_WORD, cv2.TM_CCOEFF_NORMED).max())
+    return score >= float(cfg["combat_banner_score"])
+
+
 def is_planning(frame: np.ndarray, cfg: dict | None = None) -> bool:
-    """True if no health bars are drawn on the far (enemy) half of the board."""
+    """
+    True if no health bars are drawn on the far (enemy) half of the board and
+    the "Combat" banner is not up.
+    """
     cfg = cfg or vision_cfg["arena"]
     x, y, w, h = cfg["enemy_half"]
     green, red = health_bar_pixels(frame[y:y + h, x:x + w])
-    return green + red < int(cfg["max_bar_pixels"])
+    return green + red < int(cfg["max_bar_pixels"]) and not combat_banner(frame, cfg)

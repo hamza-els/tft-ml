@@ -140,30 +140,35 @@ bench:
   crop_width: 116
   y: 680                               # top of the crop (includes the unit's health bar)
   height: 140
-  # Unit crops (what the classifier sees) are the window above padded on the
-  # left and top, so the star badge left of the health bar is always inside:
-  # the bar drifts left of the hex the further left the unit stands.
-  window_pad: {left: 32, top: 16}
+  # Unit crops (what the classifier sees). Units lean away from the screen
+  # centre with perspective, so each window is centred on
+  #     cx + shift + lean * (cx - 960)
+  # (fitted to the health-bar centres of 1,323 labelled bench units), half_width
+  # either side, and reaches pad_top above the slot window. Sized so the star
+  # badge is inside for 97.5% of units.
+  window: {lean: 0.0387, shift: 1.5, half_width: 70, pad_top: 16}
 
 # Player's half of the board: 4 rows of 7 hexes. The camera looks down at an
 # angle, so rows nearer the bottom are wider. Each row: x of its first hex
 # centre, spacing between centres, and y of the centres (row 0 = front row,
 # nearest the enemy).
 board:
+  # Unit crops (what the classifier sees), per row: units lean away from the
+  # screen centre with perspective (more on nearer rows), so each window is
+  # centred on cx + win_shift + win_lean * (cx - 960), window_half_width either
+  # side, reaching win_top above the hex region. Fitted to the health-bar
+  # centres of 2,488 labelled board units; the star badge is inside for 97.5%.
   rows:
-    - {first_x: 559, pitch: 116.7, y: 439}
-    - {first_x: 616, pitch: 117.7, y: 514}
-    - {first_x: 534, pitch: 122.5, y: 586}
-    - {first_x: 587, pitch: 126.2, y: 655, crop_below: 52}   # nearest row: units drawn larger, feet lower
+    - {first_x: 559, pitch: 116.7, y: 439, win_lean: 0.0272, win_shift: -3.7, win_top: 14}
+    - {first_x: 616, pitch: 117.7, y: 514, win_lean: 0.0514, win_shift: -5.4, win_top: 10}
+    - {first_x: 534, pitch: 122.5, y: 586, win_lean: 0.0490, win_shift: 1.0, win_top: 12}
+    - {first_x: 587, pitch: 126.2, y: 655, crop_below: 52, win_lean: 0.0588, win_shift: -1.7, win_top: 10}   # nearest row: units drawn larger, feet lower
   cols: 7
-  # Window cut around a unit standing on a hex, relative to the hex centre.
+  window_half_width: 66
+  # Region around a hex (occupancy and bar search), relative to the hex centre.
   crop_width: 124
   crop_above: 130                      # includes the health bar
   crop_below: 34                       # default; a row can override it
-  # Unit crops (what the classifier sees) are the window above padded on the
-  # left and top, so the star badge left of the health bar is always inside:
-  # the bar drifts left of the hex the further left the unit stands.
-  window_pad: {left: 32, top: 16}
 
 # Health bar above each own unit, and the star badge / items hanging off it
 # (src/vision/unit_bar.py). Offsets are from the bar's left end and top edge.
@@ -183,6 +188,10 @@ unit_bar:
   # hidden behind a panel or the screen edge.
   star_min_score: 0.35
   star_min_margin: 0.10
+  # A green bar only counts as a unit's when some star template scores at
+  # least this at its badge position: the Little Legend's nameplate bar has a
+  # level box there instead.
+  badge_min_score: 0.35
   item_dx: -9                          # first item icon: dx, dy from the bar; icons are item_size square
   item_dy: 12
   item_size: 25
@@ -219,3 +228,8 @@ arena:
   timer_bar: [600, 43, 700, 10]
   timer_bar_length: 435                # px when full (normal layout)
   timer_refill: 0.12                   # rise in fill that marks a new phase
+  timer_empty: 0.02                    # fill at or below this = planning is ending, units turn to fight
+  # "Combat" banner under the stage bar at the start of each fight (arena.combat_banner).
+  combat_word: assets/templates/hud/combat_word.png
+  combat_banner_zone: [850, 110, 230, 90]
+  combat_banner_score: 0.65

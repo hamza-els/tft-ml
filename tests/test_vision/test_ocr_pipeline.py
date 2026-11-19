@@ -20,7 +20,7 @@ import cv2
 import pytest
 
 from src.vision.hud import HudDetector
-from src.vision.ocr_pipeline import extract_ui_values, pick_hp, read_hp, read_shop
+from src.vision.ocr_pipeline import extract_ui_and_lobby, extract_ui_values, pick_hp, read_hp, read_shop
 
 FIXTURES = Path(__file__).resolve().parents[1] / "fixtures"
 
@@ -162,3 +162,14 @@ def test_pick_hp_one_number_per_row():
         ((1834, 592, 16, 12), "62", 0.99),
     ]
     assert pick_hp(boxes)[1] == [72.0, 62.0]
+
+
+def test_ocr_cache_skips_unchanged_regions_once_confirmed():
+    from src.vision.ocr_pipeline import OcrCache
+    frame = cv2.imread(str(FIXTURES / "frame_030059.jpg"))
+    cache = OcrCache()
+    first = [extract_ui_and_lobby(frame, cache=cache)[0] for _ in range(3)]
+    assert first[0] == first[1] == first[2] == extract_ui_and_lobby(frame)[0]
+    reads = cache.reads
+    extract_ui_and_lobby(frame, cache=cache)
+    assert cache.reads == reads          # everything confirmed: nothing read again

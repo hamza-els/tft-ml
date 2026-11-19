@@ -1,7 +1,12 @@
 """
 Download the official TFT set data (Community Dragon) and save the part the
-project uses: every purchasable champion with its cost and traits, and every
-trait with its activation breakpoints.
+project uses: every purchasable champion with its cost and traits, every
+trait with its activation breakpoints, and what changes the board's team
+size: traits that add max team size at a breakpoint (Riftbeast 10: +2),
+champions that take more than one slot (Elder Dragon: 2), items that add
+team size while held (Tactician's Crown: +1). Also which emblem gives which
+trait. Augments that add team size are not used: augment icons are only
+known by ID.
 
 Usage:
     python scripts/fetch_game_data.py                 # set from configs/vision_config.yaml
@@ -21,6 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import argparse
 import json
+import re
 
 import requests
 
@@ -56,15 +62,49 @@ def build(raw: dict, set_key: str) -> dict:
 
     traits = {}
     for t in data["traits"]:
-        breakpoints = sorted({e["minUnits"] for e in t["effects"] if e.get("minUnits")})
-        if breakpoints:
-            traits[t["name"]] = {"api_name": t["apiName"], "breakpoints": breakpoints}
+        effects = sorted((e for e in t["effects"] if e.get("minUnits")), key=lambda e: e["minUnits"])
+        breakpoints = sorted({e["minUnits"] for e in effects})
+        if not breakpoints:
+            continue
+        entry = {"api_name": t["apiName"], "breakpoints": breakpoints}
+        # Extra max team size at a breakpoint ("+@TeamSize@ maximum team size", e.g. Riftbeast 10).
+        team_size = [int((e.get("variables") or {}).get("TeamSize") or 0) for e in effects]
+        if any(team_size):
+            entry["team_size"] = team_size
+        desc = re.sub(r"<[^>]+>", "", t.get("desc") or "")
+        # "Elder Dragon takes up 2 team slots and grants +2 to the Riftbeast trait."
+        if m := re.search(r"takes up (\d+) team slots", desc):
+            entry["team_slots"] = int(m.group(1))
+        if m := re.search(r"grants \+(\d+) to the ([\w' ]+?) trait", desc):
+            entry["grants_trait"] = {m.group(2): int(m.group(1))}
+        traits[t["name"]] = entry
+
+    # Champions of a trait that "takes up N team slots" count N on the board.
+    for c in champions.values():
+        for tr in c["traits"]:
+            if "team_slots" in traits.get(tr, {}):
+                c["team_slots"] = traits[tr]["team_slots"]
+            if "grants_trait" in traits.get(tr, {}):
+                c["grants_trait"] = traits[tr]["grants_trait"]
+
+    # Items that raise max team size while held (Tactician's Crown, ...), and
+    # emblems: "<Trait> Emblem" gives its holder that trait.
+    team_size_items, emblems = {}, {}
+    for it in raw.get("items", []):
+        name = it.get("name") or ""
+        bonus = (it.get("effects") or {}).get("MaxArmySizeIncrease")
+        if bonus and "Augment" not in (it.get("apiName") or ""):
+            team_size_items[name] = int(bonus)
+        if name.endswith(" Emblem") and name[:-len(" Emblem")] in traits:
+            emblems[name] = name[:-len(" Emblem")]
 
     return {
         "set": set_key,
         "source": URL,
         "champions": dict(sorted(champions.items())),
         "traits": dict(sorted(traits.items())),
+        "team_size_items": dict(sorted(team_size_items.items())),
+        "emblems": dict(sorted(emblems.items())),
     }
 
 
@@ -76,13 +116,17 @@ def shop_names(champions: dict) -> list[str]:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--set", default=vision_cfg["game_data"]["set"])
+    parser.add_argument("--from-file", help="Use an already downloaded en_us.json instead of downloading")
     args = parser.parse_args()
 
-    print(f"Downloading {URL} ...")
-    # The server rejects the default python user agent.
-    resp = requests.get(URL, timeout=300, headers={"User-Agent": "Mozilla/5.0 (tft-project)"})
-    resp.raise_for_status()
-    raw = resp.json()
+    if args.from_file:
+        raw = json.loads(Path(args.from_file).read_text(encoding="utf-8"))
+    else:
+        print(f"Downloading {URL} ...")
+        # The server rejects the default python user agent.
+        resp = requests.get(URL, timeout=300, headers={"User-Agent": "Mozilla/5.0 (tft-project)"})
+        resp.raise_for_status()
+        raw = resp.json()
 
     game = build(raw, args.set)
     OUT_DIR.mkdir(parents=True, exist_ok=True)

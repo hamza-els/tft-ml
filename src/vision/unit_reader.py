@@ -1,0 +1,78 @@
+"""
+Read every unit on the player's own board and bench from one frame.
+
+Only meaningful on own-board planning frames (see src/vision/arena.py): during
+combat units walk off their hexes, and away/scouting frames show someone
+else's board.
+
+For each board hex and bench slot with a unit's health bar over it (occupied()):
+  name   the unit classifier's best guess (src/vision/unit_classifier.py);
+         a window it calls "_none" (no unit) is left out
+  p      the classifier's confidence in that guess, 0-1
+  star   1-3 from the badge left of the health bar, None if hidden
+  items  item IDs under the bar, left to right (None = an item we have no
+         template for)
+
+Positions: "at" is "h<row><col>" for a board hex (row 0 = front row) or
+"s<slot>" for a bench slot (0 = leftmost), the same ids as the unit crops.
+"""
+
+import numpy as np
+
+from src.vision.bench import BenchSlots
+from src.vision.board import BoardHexes
+from src.vision.unit_bar import Bar, UnitItemReader, bench_bar, board_bar, star_level
+from src.vision.unit_classifier import UnitClassifier
+
+NONE = "_none"
+
+
+class UnitReader:
+    def __init__(self, classifier: UnitClassifier | None = None):
+        self.board, self.bench = BoardHexes(), BenchSlots()
+        self.classifier = classifier or UnitClassifier()
+        self.items = UnitItemReader()
+
+    def read(self, frame: np.ndarray) -> list[dict]:
+        found = occupied(frame, self.board, self.bench)
+        if not found:
+            return []
+        crops = [frame[max(0, y):y + h, max(0, x):x + w] for _, (x, y, w, h), _ in found]
+        probs = self.classifier.probabilities(crops)
+        units = []
+        for (at, _, bar), p in zip(found, probs):
+            k = int(np.argmax(p))
+            name = self.classifier.classes[k]
+            if name == NONE:
+                continue
+            units.append({
+                "at": at,
+                "name": name,
+                "p": round(float(p[k]), 3),
+                "star": star_level(frame, bar),
+                "items": self.items.read(frame, bar),
+            })
+        return units
+
+
+def occupied(frame: np.ndarray, board: BoardHexes, bench: BenchSlots) -> list[tuple[str, tuple, Bar]]:
+    """
+    (position id, crop window, health bar) for every hex and bench slot with
+    an own unit's health bar over it (src/vision/unit_bar.find_bar: the bar
+    lined up with the position, with a star badge on its left).
+
+    This replaced a fixed band at the top of each window: short champions
+    draw their bar lower and were missed (a quarter of the units on the
+    nearest row), while the band picked up the Little Legend's nameplate,
+    green spell effects and the cursor.
+    """
+    out = []
+    for r, c in board.hexes():
+        bar = board_bar(frame, board, r, c)
+        if bar is not None:
+            out.append((f"h{r}{c}", board.window(r, c, bar), bar))
+    for i in range(bench.slots):
+        bar = bench_bar(frame, bench, i)
+        if bar is not None:
+            out.append((f"s{i}", bench.window(i, bar), bar))
+    return out

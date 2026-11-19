@@ -17,7 +17,7 @@ from src.vision.augments import AugmentReader
 from src.vision.champion_detector import ChampionDetector, Detection
 from src.vision.hud import HudDetector
 from src.vision.items import ItemColumnReader
-from src.vision.ocr_pipeline import extract_ui_and_lobby, read_shop
+from src.vision.ocr_pipeline import OcrCache, extract_ui_and_lobby, read_shop
 
 _ROOT = Path(__file__).resolve().parents[2]
 
@@ -92,6 +92,13 @@ class StateExtractor:
         self.hud = hud or HudDetector()
         self.augments = augments or AugmentReader()
         self.items = items or ItemColumnReader()
+        # Frames are read in order within a game: skip OCR of unchanged
+        # regions and read HP once per round (OcrCache). reset() between games.
+        self.ocr_cache: OcrCache | None = None
+
+    def start_sequence(self):
+        """Call before the first frame of a game: OCR of unchanged regions is skipped from here on."""
+        self.ocr_cache = OcrCache()
 
     @classmethod
     def from_config(cls) -> "StateExtractor":
@@ -116,7 +123,7 @@ class StateExtractor:
         sv.timer_fill = timer_fill(frame)
 
         # 1. OCR for scalar UI values
-        ui, sv.other_hp = extract_ui_and_lobby(frame, hud)
+        ui, sv.other_hp = extract_ui_and_lobby(frame, hud, self.ocr_cache)
         sv.gold = ui["gold"]
         sv.hp = ui["hp"]
         sv.level = ui["level"]
@@ -138,7 +145,7 @@ class StateExtractor:
 
         # 3. Shop via OCR of card names
         if hud.shop_visible:
-            sv.shop_slots = read_shop(frame, hud)
+            sv.shop_slots = read_shop(frame, hud, self.ocr_cache)
             sv.shop = [UnitState(name=name, star=1, items=[], region="shop")
                        for name in sv.shop_slots if name is not None]
 

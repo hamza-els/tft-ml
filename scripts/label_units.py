@@ -7,6 +7,9 @@ Usage:
     python scripts/label_units.py --unsure        # only crops the model is unsure about, least sure first
     python scripts/label_units.py --unsure 0.7    # ...below 70% confidence (default 90%)
 
+    python scripts/label_units.py --relabel _none   # go through every crop labelled "not a unit" again
+    python scripts/label_units.py --relabel Ashe    # ...or any other label
+
 --unsure gives the most value per label: crops the model already gets
 right with high confidence teach it little. Needs a trained model.
 
@@ -26,13 +29,16 @@ Keys:
     Enter        first search result (or first suggestion when the box is empty)
     1-8          that search result
     F1-F4        that suggestion
-    Tab          not a unit / empty hex
+    Tab          not a unit / empty hex (scenery, an effect, the Little Legend)
+    Shift+Tab    a unit, but it can't be told which (mid-animation, covered)
     Esc          skip for now (comes back at the end)
     Ctrl+Z       undo the last label
     Ctrl+Q       save and quit   (every label is saved immediately anyway)
 
 Labels are stored in data/processed/unit_crops/labels.json as
-{crop file name: champion name}; "_none" marks a crop with no unit.
+{crop file name: champion name}; "_none" marks a crop with no unit,
+"_unknown" a unit that can't be recognised. The classifier learns both, so
+a hex it calls "_unknown" still counts as occupied in the game states.
 """
 
 import sys
@@ -49,12 +55,19 @@ from tkinter import font as tkfont
 import cv2
 import numpy as np
 
+from src.utils import paths
 from src.state.game_data import load_game_data
-from src.vision.unit_classifier import UnitClassifier
+from tqdm import tqdm
 
-CROP_DIR = Path("data/processed/unit_crops")
+from src.vision.unit_classifier import WEIGHTS, UnitClassifier
+
+CROP_DIR = paths.CROP_DIR          # index.json, labels.json (repo)
+IMAGES = paths.CROP_IMAGES         # crop images (local disk, src/utils/paths.py)
+SCORE_CACHE = paths.CROP_SCORE_CACHE   # --unsure scores (local disk); rebuilt when the model changes
 SEED_DIR = Path("data/processed/champion_crops")   # auto-labelled bench crops, used for suggestions
 NONE = "_none"
+UNKNOWN = "_unknown"
+SPECIAL = {NONE: "not a unit", UNKNOWN: "unit, can't tell which"}
 MAX_RESULTS = 8
 MAX_SUGGESTIONS = 4
 
@@ -107,7 +120,7 @@ def to_photo(img: np.ndarray) -> tk.PhotoImage:
 
 
 class Labeler:
-    def __init__(self, review: bool, unsure: float | None = None):
+    def __init__(self, review: bool, unsure: float | None = None, relabel: str | None = None):
         self.game = load_game_data()
         # Shop champions plus trait/augment units (Stonebark Tree, Training Dummy, ...)
         self.names = self.game.unit_names
@@ -117,26 +130,35 @@ class Labeler:
         self.labels: dict[str, str] = json.loads(self.labels_path.read_text(encoding="utf-8")) \
             if self.labels_path.exists() else {}
 
-        files = sorted(p.name for p in (CROP_DIR / "images").glob("*.jpg"))
-        self.queue = [f for f in files if (f in self.labels) == review]
+        files = sorted(p.name for p in (IMAGES).glob("*.jpg"))
+        if relabel is not None:
+            self.queue = [f for f in files if self.labels.get(f) == relabel]
+            print(f"{len(self.queue)} crops labelled {relabel!r}")
+        else:
+            self.queue = [f for f in files if (f in self.labels) == review]
         self.total = len(files)
         self.history: list[str] = []
+        self.changed: dict[str, str | None] = {}   # labels set (or removed by undo) this session
         self.pos = 0
-
-        # Known examples for "looks like" suggestions: labelled crops + auto-labelled bench crops.
-        self.known_vecs: list[np.ndarray] = []
-        self.known_names: list[str] = []
-        for f, name in self.labels.items():
-            if name != NONE:
-                self._learn(CROP_DIR / "images" / f, name)
-        if SEED_DIR.exists():
-            for folder in SEED_DIR.iterdir():
-                if folder.is_dir() and folder.name in self.names:
-                    for p in folder.glob("*.jpg"):
-                        self._learn(p, folder.name)
 
         self.classifier = UnitClassifier() if UnitClassifier.available() else None
         self.confidence: dict[str, float] = {}
+
+        # Without a model, "looks like" falls back to the most similar crops
+        # labelled so far (labelled crops + auto-labelled bench crops). Reading
+        # them all is slow on the Drive folder, so only done when needed.
+        self.known_vecs: list[np.ndarray] = []
+        self.known_names: list[str] = []
+        if self.classifier is None:
+            print("No trained model: loading labelled crops for suggestions ...")
+            for f, name in self.labels.items():
+                if name != NONE:
+                    self._learn(IMAGES / f, name)
+            if SEED_DIR.exists():
+                for folder in SEED_DIR.iterdir():
+                    if folder.is_dir() and folder.name in self.names:
+                        for p in folder.glob("*.jpg"):
+                            self._learn(p, folder.name)
         if unsure is not None:
             self.queue = self._unsure_first(self.queue, unsure)
 
@@ -155,17 +177,36 @@ class Labeler:
         """The crops whose best guess is under `below`, least confident first."""
         if self.classifier is None:
             sys.exit("--unsure needs a trained model: python scripts/train_unit_classifier.py")
-        print(f"Scoring {len(files)} crops with the classifier ...")
-        imgs, kept = [], []
-        for f in files:
-            img = cv2.imread(str(CROP_DIR / "images" / f))
-            if img is not None:
-                imgs.append(img)
-                kept.append(f)
-        best = self.classifier.probabilities(imgs).max(axis=1) if imgs else np.zeros(0)
-        order = [i for i in np.argsort(best) if best[i] < below]
-        print(f"{len(order)} of {len(kept)} are below {below:.0%} confidence")
-        return [kept[i] for i in order]
+        # Scores are kept in a cache tied to the model file, so only crops
+        # added since the last run (or since retraining) are read again.
+        model_id = f"{WEIGHTS.stat().st_mtime:.0f}"
+        try:
+            cache = json.loads(SCORE_CACHE.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            cache = {}
+        if cache.get("model") != model_id:
+            cache = {"model": model_id, "scores": {}}
+        scores: dict[str, float] = cache["scores"]
+        todo = [f for f in files if f not in scores]
+        print(f"Scoring {len(todo)} crops with the classifier ({len(files) - len(todo)} already scored) ...")
+        for start in tqdm(range(0, len(todo), 64), unit="batch", dynamic_ncols=True):
+            imgs, names = [], []
+            for f in todo[start:start + 64]:
+                img = cv2.imread(str(IMAGES / f))
+                if img is not None:
+                    imgs.append(img)
+                    names.append(f)
+            if imgs:
+                for f, p in zip(names, self.classifier.probabilities(imgs).max(axis=1)):
+                    scores[f] = round(float(p), 4)
+        try:
+            SCORE_CACHE.parent.mkdir(parents=True, exist_ok=True)
+            SCORE_CACHE.write_text(json.dumps(cache), encoding="utf-8")
+        except OSError:
+            pass
+        unsure = sorted((scores[f], f) for f in files if f in scores and scores[f] < below)
+        print(f"{len(unsure)} of {len(files)} are below {below:.0%} confidence")
+        return [f for _, f in unsure]
 
     def suggestions(self, img: np.ndarray) -> list[str]:
         self.confidence = {}
@@ -187,7 +228,21 @@ class Labeler:
         return out
 
     def save(self):
-        self.labels_path.write_text(json.dumps(self.labels, indent=0, sort_keys=True), encoding="utf-8")
+        """
+        Write this session's changes into labels.json as it is on disk now:
+        other scripts (prune_unit_crops.py) may have changed it meanwhile, and
+        writing the whole in-memory copy would undo them.
+        """
+        try:
+            on_disk = json.loads(self.labels_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            on_disk = {}
+        for name, label in self.changed.items():
+            if label is None:
+                on_disk.pop(name, None)
+            else:
+                on_disk[name] = label
+        self.labels_path.write_text(json.dumps(on_disk, indent=0, sort_keys=True), encoding="utf-8")
 
     # ── window ────────────────────────────────────────────────────────────────
 
@@ -224,7 +279,8 @@ class Labeler:
 
         actions = tk.Frame(self.root, bg=BG)
         actions.grid(row=5, column=0, columnspan=2, sticky="we", padx=12, pady=(4, 12))
-        for text, command in (("Not a unit  (Tab)", self.mark_none), ("Skip  (Esc)", self.skip),
+        for text, command in (("Not a unit  (Tab)", self.mark_none),
+                              ("Unit, can't tell which  (Shift+Tab)", self.mark_unknown), ("Skip  (Esc)", self.skip),
                               ("Undo  (Ctrl+Z)", self.undo), ("Quit  (Ctrl+Q)", self.quit)):
             tk.Button(actions, text=text, command=command, font=small, bg="#33353f", fg=FG,
                       activebackground="#444754", activeforeground=FG, relief="flat", padx=10, pady=4) \
@@ -232,6 +288,12 @@ class Labeler:
 
         self.root.bind("<Return>", lambda e: self.pick_first())
         self.root.bind("<Tab>", lambda e: (self.mark_none(), "break")[1])
+        # Windows sends Shift+Tab as ISO_Left_Tab on some keyboards
+        self.root.bind("<Shift-Tab>", lambda e: (self.mark_unknown(), "break")[1])
+        try:
+            self.root.bind("<ISO_Left_Tab>", lambda e: (self.mark_unknown(), "break")[1])
+        except tk.TclError:
+            pass
         self.root.bind("<Escape>", lambda e: self.skip())
         self.root.bind("<Control-z>", lambda e: self.undo())
         self.root.bind("<Control-q>", lambda e: self.quit())
@@ -247,7 +309,7 @@ class Labeler:
         for i, name in enumerate(names):
             cost = self.game.cost(name)
             note = f"({cost}g)" if cost else "(trait unit)"
-            text = "not a unit" if name == NONE else f"{name}  {note}"
+            text = SPECIAL[name] if name in SPECIAL else f"{name}  {note}"
             if parent is self.suggest_row and name in self.confidence:
                 text += f"  {self.confidence[name]:.0%}"
             tk.Button(parent, text=f"{prefix}{i + 1}  {text}", anchor="w",
@@ -269,7 +331,14 @@ class Labeler:
             self._buttons(self.result_box, [], "", self.assign)
             return
         name = self.queue[self.pos]
-        img = cv2.imread(str(CROP_DIR / "images" / name))
+        img = cv2.imread(str(IMAGES / name))
+        while img is None:                  # moved away (prune_unit_crops.py) since the queue was built
+            self.queue.pop(self.pos)
+            if self.pos >= len(self.queue):
+                self.show()
+                return
+            name = self.queue[self.pos]
+            img = cv2.imread(str(IMAGES / name))
         info = self.index.get(name, {})
 
         self.crop_photo = to_photo(cv2.resize(img, None, fx=3, fy=3, interpolation=cv2.INTER_CUBIC))
@@ -307,10 +376,11 @@ class Labeler:
             return
         name = self.queue[self.pos]
         self.labels[name] = label
+        self.changed[name] = label
         self.history.append(name)
         self.save()
-        if label != NONE:
-            self._learn(CROP_DIR / "images" / name, label)
+        if label not in SPECIAL and self.classifier is None:
+            self._learn(IMAGES / name, label)
         self.pos += 1
         self.show()
 
@@ -331,6 +401,9 @@ class Labeler:
     def mark_none(self):
         self.assign(NONE)
 
+    def mark_unknown(self):
+        self.assign(UNKNOWN)
+
     def skip(self):
         if self.pos < len(self.queue):
             self.queue.append(self.queue.pop(self.pos))
@@ -341,6 +414,7 @@ class Labeler:
             return
         name = self.history.pop()
         self.labels.pop(name, None)
+        self.changed[name] = None
         self.save()
         if name in self.queue:
             self.pos = self.queue.index(name)
@@ -359,11 +433,13 @@ def main():
     parser.add_argument("--unsure", type=float, nargs="?", const=0.9, default=None, metavar="BELOW",
                         help="Only crops whose best guess is below this confidence (default 0.9), "
                              "least sure first")
+    parser.add_argument("--relabel", metavar="LABEL",
+                        help="Go through every crop with this label again (e.g. _none)")
     args = parser.parse_args()
 
-    if not (CROP_DIR / "images").exists() or not any((CROP_DIR / "images").glob("*.jpg")):
-        sys.exit(f"No crops in {CROP_DIR / 'images'} - run scripts/collect_unit_crops.py first")
-    app = Labeler(args.review, args.unsure)
+    if not (IMAGES).exists() or not any((IMAGES).glob("*.jpg")):
+        sys.exit(f"No crops in {IMAGES} - run scripts/collect_unit_crops.py first")
+    app = Labeler(args.review, args.unsure, args.relabel)
     app.root.mainloop()
     print(f"{len(app.labels)} of {app.total} crops labelled -> {app.labels_path}")
 

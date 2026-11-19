@@ -10,6 +10,7 @@ purchases; a classifier over these crops comes next).
 import numpy as np
 
 from src.utils.config import vision_cfg
+from src.vision.board import anchored
 
 
 class BenchSlots:
@@ -20,8 +21,7 @@ class BenchSlots:
         self.slots = int(cfg["slots"])
         self.width = int(cfg["crop_width"])
         self.y, self.height = int(cfg["y"]), int(cfg["height"])
-        pad = cfg.get("window_pad") or {}
-        self.pad_left, self.pad_top = int(pad.get("left", 0)), int(pad.get("top", 0))
+        self.win = cfg.get("window") or {}
 
     def center_x(self, i: int) -> float:
         return self.first_center_x + i * self.pitch
@@ -30,10 +30,20 @@ class BenchSlots:
         cx = self.center_x(i)
         return int(round(cx - self.width / 2)), self.y, self.width, self.height
 
-    def window(self, i: int) -> tuple[int, int, int, int]:
-        """The unit crop: region() padded left and up so the star badge fits (see window_pad)."""
+    def window(self, i: int, bar=None) -> tuple[int, int, int, int]:
+        """
+        The unit crop. With the unit's health bar it is anchored to it
+        (src/vision/board.anchored); without, centred where units in this slot
+        usually lean to. Same size either way.
+        """
+        cx = self.center_x(i)
         x, y, w, h = self.region(i)
-        return x - self.pad_left, y - self.pad_top, w + self.pad_left, h + self.pad_top
+        half = int(self.win.get("half_width", w // 2))
+        top = int(self.win.get("pad_top", 0))
+        if bar is not None:
+            return anchored(bar, half, h + top)
+        mid = cx + self.win.get("shift", 0.0) + self.win.get("lean", 0.0) * (cx - 960)
+        return int(round(mid - half)), y - top, 2 * half, h + top
 
     def crop(self, frame: np.ndarray, i: int) -> np.ndarray:
         x, y, w, h = self.region(i)

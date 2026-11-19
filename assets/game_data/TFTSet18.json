@@ -195,7 +195,11 @@
    "hp": 1800.0,
    "attack_damage": 125.0,
    "armor": 75.0,
-   "range": 2.0
+   "range": 2.0,
+   "team_slots": 2,
+   "grants_trait": {
+    "Riftbeast": 2
+   }
   },
   "Elise": {
    "api_name": "DA_18_Elise",
@@ -913,7 +917,11 @@
    "api_name": "DA_18_ApexPredator",
    "breakpoints": [
     1
-   ]
+   ],
+   "team_slots": 2,
+   "grants_trait": {
+    "Riftbeast": 2
+   }
   },
   "Attuned": {
    "api_name": "DA_AluneUniqueTrait18",
@@ -1113,6 +1121,12 @@
     5,
     7,
     10
+   ],
+   "team_size": [
+    0,
+    0,
+    0,
+    2
    ]
   },
   "Rival": {
@@ -1165,5 +1179,34 @@
     6
    ]
   }
+ },
+ "team_size_items": {
+  "Choncc's Chalice": 1,
+  "Choncc's Crown": 2,
+  "Tactician's Cape": 1,
+  "Tactician's Crown": 1,
+  "Tactician's Shield": 1
+ },
+ "emblems": {
+  "Blackthorn Emblem": "Blackthorn",
+  "Blossom Emblem": "Blossom",
+  "Brawler Emblem": "Brawler",
+  "Coven Emblem": "Coven",
+  "Defender Emblem": "Defender",
+  "Elderwood Emblem": "Elderwood",
+  "Executioner Emblem": "Executioner",
+  "Fae Emblem": "Fae",
+  "Flora Fatalis Emblem": "Flora Fatalis",
+  "Hunter Emblem": "Hunter",
+  "Inferno Emblem": "Inferno",
+  "Invoker Emblem": "Invoker",
+  "Juggernaut Emblem": "Juggernaut",
+  "Lunar Emblem": "Lunar",
+  "Primal Emblem": "Primal",
+  "Rapidfire Emblem": "Rapidfire",
+  "Ravager Emblem": "Ravager",
+  "Spellweaver Emblem": "Spellweaver",
+  "Sprykin Emblem": "Sprykin",
+  "Vanguard Emblem": "Vanguard"
  }
 }

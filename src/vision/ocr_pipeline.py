@@ -108,28 +108,124 @@ def extract_ui_values(frame: np.ndarray, hud: HudState | None = None) -> dict[st
     return extract_ui_and_lobby(frame, hud)[0]
 
 
+class OcrCache:
+    """
+    Skips OCR that would read the same thing as on the previous frame.
+
+    Dedup only keeps a frame when something changed, but usually only one or
+    two numbers did. Each small region (stage, gold, level, XP, streak, each
+    shop card) is re-read only when its text pixels changed since the last
+    time it was read (and until two reads agree); otherwise the last value is
+    returned. Text pixels are the bright ones (grey > TEXT_LEVEL): scenery
+    moving behind the HUD doesn't count as a change.
+
+    HP is read once per round instead (`hp_needed`): it only changes when a
+    fight ends, and the round counter moves on right after. The HP column
+    itself is useless as a change signal: notices slide over the names and
+    the portrait rings animate on almost every frame.
+
+    One cache per game; call reset() between games.
+    """
+    TEXT_LEVEL = 170
+    CHANGED_PIXELS = 12        # text pixels that must differ to count as a change
+
+    def __init__(self):
+        self.reset()
+
+    HP_AGREE = 2               # own-HP readings that must agree before HP stops being read this round
+    HP_MAX_READS = 4           # ...or give up after this many and take the most common
+
+    def reset(self):
+        self.seen: dict[str, tuple[np.ndarray, object, bool]] = {}   # key -> (text pixels, value, confirmed)
+        self.hp_round: tuple | None = None
+        self.hp: tuple[float | None, list[float]] = (None, [])
+        self.hp_votes: list[float] = []
+        self.hp_reads = 0
+        self.reads = self.skips = 0
+
+    def get(self, key: str, frame: np.ndarray, region: tuple[int, int, int, int], read):
+        """
+        The region's value: re-used while its text pixels stay the same, but
+        only once two reads of the unchanged region agreed. OCR is not fully
+        stable (the same "42" can come out as "12" once), so a single read is
+        not trusted for a whole stretch of frames. (Reading the confirmation at
+        a different upscale was tried: it did not catch the misreads, which
+        both upscales share, and the smaller one added new ones like "142".)
+        """
+        gray = cv2.cvtColor(crop_region(frame, region), cv2.COLOR_BGR2GRAY)
+        text = gray > self.TEXT_LEVEL
+        old = self.seen.get(key)
+        same = (old is not None and old[0].shape == text.shape
+                and int((old[0] != text).sum()) < self.CHANGED_PIXELS)
+        if same and old[2]:
+            self.skips += 1
+            return old[1]
+        value = read()
+        self.reads += 1
+        self.seen[key] = (text, value, same and value == old[1])
+        return value
+
+    def read_hp(self, frame: np.ndarray, stage_round: tuple) -> tuple[float | None, list[float]]:
+        """
+        HP for this round, read on its first frames until two own-HP readings
+        agree and the lobby's HP was found (a panel can hide the list on the
+        first frames), at most HP_MAX_READS times.
+        """
+        if None in stage_round:
+            return self.hp
+        if stage_round != self.hp_round:
+            self.hp_round, self.hp, self.hp_votes, self.hp_reads = stage_round, (None, []), [], 0
+        own, others = self.hp
+        settled = own is not None and self.hp_votes.count(own) >= self.HP_AGREE and others
+        if settled or self.hp_reads >= self.HP_MAX_READS:
+            self.skips += 1
+            return self.hp
+        new_own, new_others = read_hp(frame)
+        self.reads += 1
+        self.hp_reads += 1
+        if new_own is not None:
+            self.hp_votes.append(new_own)
+            own = max(set(self.hp_votes), key=self.hp_votes.count)
+        self.hp = (own, new_others or others)
+        return self.hp
+
+
 def extract_ui_and_lobby(
     frame: np.ndarray,
     hud: HudState | None = None,
+    cache: OcrCache | None = None,
 ) -> tuple[dict[str, float | None], list[float]]:
-    """Same as extract_ui_values, plus the other players' HP (top to bottom)."""
+    """
+    Same as extract_ui_values, plus the other players' HP (top to bottom).
+
+    With a cache (consecutive frames of one game), unchanged regions are not
+    read again and HP is read once per round (see OcrCache).
+    """
     hud = hud or _get_hud().detect(frame)
     results: dict[str, float | None] = dict.fromkeys(
         ("gold", "hp", "level", "stage", "round", "streak", "xp_current", "xp_needed"))
     others: list[float] = []
 
+    def read(key: str, region, allowlist: str) -> str:
+        if cache is None:
+            return _read_text(frame, region, allowlist)
+        return cache.get(key, frame, region, lambda: _read_text(frame, region, allowlist))
+
     if hud.stage_visible:
         ix, iy = hud.stage_icon_xy
         dx, dy, w, h = _OCR_CFG["stage_text_offset"]
-        parsed = parse_stage(_read_text(frame, (ix + dx, iy + dy, w, h), _ALLOWLIST["stage"]))
+        parsed = parse_stage(read("stage", (ix + dx, iy + dy, w, h), _ALLOWLIST["stage"]))
         if parsed:
             results["stage"], results["round"] = float(parsed[0]), float(parsed[1])
-        results["hp"], others = read_hp(frame)
+        if cache is None:
+            results["hp"], others = read_hp(frame)
+        else:
+            results["hp"], others = cache.read_hp(frame, (results["stage"], results["round"]))
 
     if hud.shop_visible:
         for key, region in REGIONS.items():
             region = shift(region, hud.bottom_dx)
-            text = _read_text(frame, region, _ALLOWLIST.get(key, _ALLOWLIST["default"]))
+            text = read(key, region, _ALLOWLIST.get(key, _ALLOWLIST["default"]))
             if key == "xp":
                 parsed = parse_xp(text)
                 if parsed:
@@ -207,18 +303,24 @@ def pick_hp(boxes: list[TextBox]) -> tuple[float | None, list[float]]:
     return own_hp, [v for _, v, _ in sorted(others)]
 
 
-def read_shop(frame: np.ndarray, hud: HudState | None = None) -> list[str | None]:
+def read_shop(frame: np.ndarray, hud: HudState | None = None,
+              cache: OcrCache | None = None) -> list[str | None]:
     """
     Read the champion name on each shop card, left to right.
 
     Returns one entry per slot in SHOP_SLOTS; None for an empty (bought) slot
-    or a name that couldn't be matched to the champion list.
+    or a name that couldn't be matched to the champion list. With a cache,
+    a card whose text didn't change since the last frame is not read again.
     """
     dx = (hud or _get_hud().detect(frame)).bottom_dx
     names = []
-    for slot in SHOP_SLOTS:
-        boxes = sorted(_read_boxes(frame, shift(slot, dx), _ALLOWLIST["shop"], scale=2))
-        names.append(snap_name(" ".join(text for _, text, _ in boxes), CHAMPIONS))
+    for i, slot in enumerate(SHOP_SLOTS):
+        region = shift(slot, dx)
+
+        def read(region=region):
+            boxes = sorted(_read_boxes(frame, region, _ALLOWLIST["shop"], scale=2))
+            return snap_name(" ".join(text for _, text, _ in boxes), CHAMPIONS)
+        names.append(read() if cache is None else cache.get(f"shop{i}", frame, region, read))
     return names
 
 

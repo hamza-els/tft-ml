@@ -34,3 +34,4 @@ Icon\r
 data/processed/champion_crops/
 data/processed/unit_crops/images/
 data/processed/unit_crops/removed/*.jpg
+data/processed/unit_crops/confidence_cache.json

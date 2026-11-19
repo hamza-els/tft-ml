@@ -1,6 +1,7 @@
 """
 Re-cut every unit crop from its source frame with the current window settings
-(board / bench window_pad etc. in configs/vision_config.yaml).
+(src/vision/board.py window(): anchored to the unit's health bar when one is
+found, else the fixed window from configs/vision_config.yaml).
 
 Usage:
     python scripts/recut_unit_crops.py
@@ -22,16 +23,23 @@ from collections import defaultdict
 import cv2
 from tqdm import tqdm
 
+from src.utils import paths
 from src.vision.bench import BenchSlots
 from src.vision.board import BoardHexes
+from src.vision.unit_bar import bench_bar, board_bar
 
-CROP_DIR = Path("data/processed/unit_crops")
+CROP_DIR = paths.CROP_DIR          # index.json, labels.json (repo)
+IMAGES = paths.CROP_IMAGES         # crop images (local disk, src/utils/paths.py)
 
 
-def window_for(name: str, board: BoardHexes, bench: BenchSlots) -> tuple[int, int, int, int]:
+def window_for(frame, name: str, board: BoardHexes, bench: BenchSlots) -> tuple[int, int, int, int]:
+    """Anchored to the unit's health bar when one is found there, else the fixed window."""
     pos = re.search(r"__([hs])(\d+)\.jpg$", name)
     kind, num = pos.group(1), pos.group(2)
-    return board.window(int(num[0]), int(num[1])) if kind == "h" else bench.window(int(num))
+    if kind == "h":
+        r, c = int(num[0]), int(num[1])
+        return board.window(r, c, board_bar(frame, board, r, c))
+    return bench.window(int(num), bench_bar(frame, bench, int(num)))
 
 
 def main():
@@ -41,7 +49,7 @@ def main():
 
     by_frame = defaultdict(list)             # read each frame once
     for name, info in index.items():
-        if (CROP_DIR / "images" / name).exists():
+        if (IMAGES / name).exists():
             by_frame[info["frame_path"]].append(name)
 
     new_windows, missing = {}, []
@@ -51,8 +59,8 @@ def main():
             missing.extend(names)
             continue
         for name in names:
-            x, y, w, h = window_for(name, board, bench)
-            cv2.imwrite(str(CROP_DIR / "images" / name), frame[max(0, y):y + h, max(0, x):x + w])
+            x, y, w, h = window_for(frame, name, board, bench)
+            cv2.imwrite(str(IMAGES / name), frame[max(0, y):y + h, max(0, x):x + w])
             new_windows[name] = [x, y, w, h]
 
     # Re-read before writing: another script may have added crops meanwhile.

@@ -14,14 +14,14 @@ Which frames are used:
   - a couple of frames per round, since the board changes slowly
 
 In each chosen frame a window is cut around every board hex and bench slot
-that has a health bar drawn above it. A crop that looks the same as the last
+that has a unit's health bar over it (src/vision/unit_reader.occupied). A crop that looks the same as the last
 one saved for that hex/slot is skipped, so a unit that stands still for ten
 rounds is labelled once, not ten times.
 
 Output:
-    data/processed/unit_crops/images/<vod>__<game>__f<frame>__h<row><col>.jpg   (board hex)
-    data/processed/unit_crops/images/<vod>__<game>__f<frame>__s<slot>.jpg       (bench slot)
-    data/processed/unit_crops/index.json     crop -> source frame and window, for the labeler
+    ~/tft_data/unit_crops/images/<vod>__<game>__f<frame>__h<row><col>.jpg   (board hex; local disk)
+    ~/tft_data/unit_crops/images/<vod>__<game>__f<frame>__s<slot>.jpg       (bench slot)
+    data/processed/unit_crops/index.json     crop -> source frame and window, for the labeler (repo)
 
 Requires arena_sig / planning in the state files (new extractions have them;
 older ones need scripts/backfill_states.py first).
@@ -38,14 +38,15 @@ import cv2
 import numpy as np
 from tqdm import tqdm
 
+from src.utils import paths
 from src.vision.arena import home_board_rows, is_planning, planning_rows
 from src.vision.bench import BenchSlots
-from src.vision.board import BoardHexes, health_bar_pixels
+from src.vision.board import BoardHexes
+from src.vision.unit_reader import occupied
 
-OUT_DIR = Path("data/processed/unit_crops")
+OUT_DIR = paths.CROP_DIR            # index.json (in the repo)
 FRAMES_PER_ROUND = 2
 CANDIDATES_PER_ROUND = 8   # own-board frames checked per round to find planning-phase ones
-MIN_BAR_PIXELS = 120       # green health-bar pixels needed to call a hex occupied
 SAME_UNIT = 0.90           # crops more alike than this are the same unit standing still
 
 
@@ -79,7 +80,7 @@ def main():
 
     vod_dir = Path(args.frames).expanduser()
     board, bench = BoardHexes(), BenchSlots()
-    images = OUT_DIR / "images"
+    images = paths.CROP_IMAGES         # local disk
     images.mkdir(parents=True, exist_ok=True)
     index_path = OUT_DIR / "index.json"
     index = json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {}
@@ -115,18 +116,7 @@ def main():
         for row, frame_path, frame in tqdm(chosen, desc=states.stem, unit="frame",
                                            dynamic_ncols=True, smoothing=0, mininterval=1.0):
 
-            windows = []
-            for r, c in board.hexes():
-                x, y, w, h = board.region(r, c)
-                # The health bar sits in the top part of the window, left of centre.
-                bar_zone = frame[max(0, y):y + 60, x:x + w - 30]
-                if health_bar_pixels(bar_zone)[0] >= MIN_BAR_PIXELS:
-                    windows.append((f"h{r}{c}", board.window(r, c)))
-            for i in range(bench.slots):
-                if bench.has_health_bar(frame, i):
-                    windows.append((f"s{i}", bench.window(i)))
-
-            for wid, (x, y, w, h) in windows:
+            for wid, (x, y, w, h), _ in occupied(frame, board, bench):
                 crop = frame[max(0, y):y + h, max(0, x):x + w]
                 fp = _fingerprint(crop)
                 if wid in last and float(fp @ last[wid]) >= SAME_UNIT:

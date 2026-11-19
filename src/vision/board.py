@@ -18,8 +18,7 @@ class BoardHexes:
         self.cols = int(cfg["cols"])
         self.width = int(cfg["crop_width"])
         self.above, self.below = int(cfg["crop_above"]), int(cfg["crop_below"])
-        pad = cfg.get("window_pad") or {}
-        self.pad_left, self.pad_top = int(pad.get("left", 0)), int(pad.get("top", 0))
+        self.half_width = int(cfg.get("window_half_width", self.width // 2))
 
     def hexes(self) -> list[tuple[int, int]]:
         """All (row, col) pairs, front row first."""
@@ -34,14 +33,42 @@ class BoardHexes:
         below = int(self.rows[row].get("crop_below", self.below))
         return cx - self.width // 2, cy - self.above, self.width, self.above + below
 
-    def window(self, row: int, col: int) -> tuple[int, int, int, int]:
-        """The unit crop: region() padded left and up so the star badge fits (see window_pad)."""
+    def window(self, row: int, col: int, bar=None) -> tuple[int, int, int, int]:
+        """
+        The unit crop. With the unit's health bar (src/vision/unit_bar.Bar) it
+        is anchored to it: centred on the bar, top just above the star badge,
+        so every crop has the badge in the same place. Without one, it is
+        centred where units on this hex usually lean to (perspective pushes
+        them away from the screen centre). Same size either way.
+        """
+        r = self.rows[row]
+        cx, _ = self.center(row, col)
         x, y, w, h = self.region(row, col)
-        return x - self.pad_left, y - self.pad_top, w + self.pad_left, h + self.pad_top
+        top = int(r.get("win_top", 0))
+        if bar is not None:
+            return anchored(bar, self.half_width, h + top)
+        mid = cx + r.get("win_shift", 0.0) + r.get("win_lean", 0.0) * (cx - 960)
+        return int(round(mid - self.half_width)), y - top, 2 * self.half_width, h + top
 
     def crop(self, frame: np.ndarray, row: int, col: int) -> np.ndarray:
         x, y, w, h = self.window(row, col)
         return frame[max(0, y):y + h, max(0, x):x + w]
+
+    def has_health_bar(self, frame: np.ndarray, row: int, col: int, min_pixels: int = 120) -> bool:
+        """True if a green health bar is drawn in the top part of the hex's window (left of centre)."""
+        x, y, w, h = self.region(row, col)
+        return health_bar_pixels(frame[max(0, y):y + 60, x:x + w - 30])[0] >= min_pixels
+
+
+BAR_WIDTH = 63          # a full health bar, px
+BADGE_ABOVE = 12        # the star badge's top is this far above the bar's top
+WINDOW_MARGIN = 4       # px of room above the badge
+
+
+def anchored(bar, half_width: int, height: int) -> tuple[int, int, int, int]:
+    """A unit window of fixed size, centred on the health bar, top just above the star badge."""
+    mid = bar.left + BAR_WIDTH / 2
+    return int(round(mid - half_width)), bar.top - BADGE_ABOVE - WINDOW_MARGIN, 2 * half_width, height
 
 
 def health_bar_pixels(crop: np.ndarray) -> tuple[int, int]:

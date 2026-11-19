@@ -10,8 +10,11 @@ The vector is the concatenation of named blocks (see StateEncoder.blocks):
   shop      what is on offer: which champions, their costs and traits, and
             how many offers match a unit the player already owns
   board     what is fielded: which units (shop champions plus trait/augment
-            units such as the Stonebark Tree), cost mix, trait counts,
-            active trait tiers
+            units such as the Stonebark Tree), cost mix, trait counts
+            (board_trait_<trait>: units with the trait, emblems included,
+            / its top breakpoint), active trait tiers (board_tier_<trait>:
+            breakpoints reached / number of breakpoints), free team slots
+            (team size incl. trait/item bonuses, minus slots used)
   bench     what is held in reserve (same unit list)
   augments  how many augments are picked and of which tier
   items     how many unequipped items are held, split into components and
@@ -23,8 +26,10 @@ Champion knowledge (cost, traits, breakpoints) comes from GameData, so a
 champion is never just an ID: buying a unit changes cost and trait features
 the model can generalise over.
 
-Everything is scaled to roughly 0-1. Board and bench blocks are all zeros,
-with their mask at 0, until the champion detector is trained.
+Everything is scaled to roughly 0-1. Board and bench come from the cleaned
+rows (scripts/read_units.py, then clean_states.py); a game without unit
+readings has those blocks all zeros and the has_board mask at 0. Hex
+positions and items on units are in the rows but not encoded yet.
 """
 
 import numpy as np
@@ -168,18 +173,20 @@ class StateEncoder:
                 mix[cost - 1] += 1.0 / top
         return [min(m, 1.0) for m in mix]
 
-    def _trait_vector(self, names: list[str]) -> np.ndarray:
+    def _trait_vector(self, names: list[str], units: list[dict] | None = None) -> np.ndarray:
+        """Units per trait (emblems included when units are given) / the trait's top breakpoint."""
         vec = np.zeros(self._n_trait, dtype=np.float32)
-        for trait, count in self.game.trait_counts(names).items():
+        for trait, count in self.game.trait_counts(names, units).items():
             top = max(self.game.breakpoints[trait]) if trait in self.game.breakpoints else 1
             if trait in self.game.trait_index:
                 vec[self.game.trait_index[trait]] = min(count / top, 1.0)
         return vec
 
-    def _trait_tiers(self, names: list[str]) -> tuple[np.ndarray, int]:
+    def _trait_tiers(self, names: list[str], units: list[dict] | None = None) -> tuple[np.ndarray, int]:
+        """Breakpoints reached per trait / number of breakpoints, and how many traits are active."""
         vec = np.zeros(self._n_trait, dtype=np.float32)
         active = 0
-        for trait, count in self.game.trait_counts(names).items():
+        for trait, count in self.game.trait_counts(names, units).items():
             if trait not in self.game.trait_index:
                 continue
             tier = self.game.active_tier(trait, count)
@@ -220,9 +227,12 @@ class StateEncoder:
         shop = [n for n in slots if n]
 
         owned = set(board) | set(bench)
-        board_traits = set(g.trait_counts(board))
-        tiers, active = self._trait_tiers(board)
+        board_traits = set(g.trait_counts(board, board_units))
+        tiers, active = self._trait_tiers(board, board_units)
         level = row.get("level") or 0
+        # Team size the board shows (level + trait/item bonuses) minus slots used.
+        team_size = level + g.team_size_bonus(board_units) if level else 0
+        slots_used = sum(g.slots(n) for n in board)
 
         parts = [
             self._scalars(row, game_start_sec),
@@ -238,10 +248,10 @@ class StateEncoder:
                  and board_traits & set(g.champions[n].traits)) / SHOP_SLOTS],
             self._champion_counts(board, 3, units=True),
             self._cost_mix(board, MAX_BOARD),
-            self._trait_vector(board),
+            self._trait_vector(board, board_units),
             tiers,
             [_clip(len(board), MAX_BOARD),
-             _clip(level - len(board), MAX_LEVEL) if has_board else 0.0,
+             _clip(team_size - slots_used, MAX_LEVEL) if has_board else 0.0,
              _clip(self._value(board_units), 150),
              _clip(active, 10)],
             self._champion_counts(bench, 3, units=True),

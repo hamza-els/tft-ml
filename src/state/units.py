@@ -1,0 +1,227 @@
+"""
+Turn single-frame unit readings (units_raw, from scripts/read_units.py) into
+a cleaned board and bench for every frame of a game.
+
+Single frames are noisy: a unit's health bar flickers behind an effect, the
+classifier swaps two look-alikes for one frame, the star badge is hidden by
+a tooltip. The sequence fixes most of it:
+
+1. Frame weight. Dedup deleted every frame that looked the same as the one
+   before it (gold, shop, bench, item column and stage text), so a kept frame
+   stands for all the seconds until the next kept one. A frame that stood for
+   10 s was on screen, unchanged, for 20 captured frames: nothing was moving,
+   so it is the most trustworthy kind of reading. Each frame's weight is that
+   time, capped at MAX_STABLE_SECONDS. (The board itself is not one of the
+   watched regions: moving a unit between hexes alone does not keep a frame.)
+
+2. Per position (each hex and bench slot), the readings over the planning
+   frames form a sequence: "Ashe, Ashe, (empty), Ashe" or "Ashe, Jinx, Ashe".
+   A short run that interrupts two longer runs agreeing with each other is
+   noise and takes their value: the unit never left, or was never something
+   else. "Longer" is by weight (time x classifier confidence), and only runs
+   of up to MAX_BLIP_FRAMES frames are overwritten, so a real swap that
+   lasted a while stays.
+
+3. Star level and items are smoothed the same way within each stretch of the
+   same unit standing on the same spot, and missing readings (badge hidden)
+   are filled from the rest of that stretch.
+
+4. Team size check. During planning the board can hold at most
+   level + bonus team slots. From the set's own data (GameData):
+     - trait and augment units (Stonebark Tree, Training Dummy, ...) take no
+       slot (on knB6dE8Rbgg, counting them put the board over the level on
+       68 frames, leaving them out on 2); Elder Dragon takes 2;
+     - the bonus comes from active traits (Riftbeast 10: +2) and team-size
+       items held by units (Tactician's Crown/Cape/Shield: +1).
+   Augments that add team size (New Recruit, Cursed Crown, ...) are not
+   known (augment icons only have IDs), so their extra unit gets dropped:
+   ev6dfSvJuJ8 game_03 shows "10/10" at level 9 from stage 5 on. When more
+   is read than fits, the least supported units are dropped; the count of
+   such frames goes into the quality report.
+
+Frames that were not read (combat, away fights, scouting) carry the last
+planning board forward: the units only move during combat and come back.
+"""
+
+from collections import defaultdict
+
+MAX_STABLE_SECONDS = 10.0
+MAX_BLIP_FRAMES = 2
+FPS = 2.0                      # frame numbers are at 2 fps (frame / 2 = seconds)
+EMPTY = None
+# "Nothing here" is weaker evidence than a unit seen: spell effects and
+# overlapping units hide health bars for a frame far more often than a
+# unit appears from nowhere. An empty reading counts this much of a sure one.
+EMPTY_WEIGHT = 0.5
+
+
+def frame_weights(frames: list[int], max_seconds: float = MAX_STABLE_SECONDS) -> list[float]:
+    """Seconds each kept frame stood for (until the next kept frame), capped."""
+    out = []
+    for i, f in enumerate(frames):
+        gap = (frames[i + 1] - f) / FPS if i + 1 < len(frames) else 1 / FPS
+        out.append(min(max(gap, 1 / FPS), max_seconds))
+    return out
+
+
+def smooth(labels: list, weights: list[float], max_blip: int = MAX_BLIP_FRAMES) -> list:
+    """
+    Overwrite short runs that interrupt two longer runs of the same label.
+
+    labels: one label per reading (any hashable; None is a label too, e.g. "empty").
+    weights: how much each reading counts. A run is overwritten when it has at
+    most `max_blip` readings and no more total weight than each neighbour run.
+    """
+    runs: list[list] = []          # [label, [indices], weight]
+    for i, (lab, w) in enumerate(zip(labels, weights)):
+        if runs and runs[-1][0] == lab:
+            runs[-1][1].append(i)
+            runs[-1][2] += w
+        else:
+            runs.append([lab, [i], w])
+
+    out = list(labels)
+    changed = True
+    while changed:
+        changed = False
+        # Weakest blip first, so one flicker doesn't decide its neighbour's fate.
+        candidates = sorted(range(1, len(runs) - 1), key=lambda j: runs[j][2])
+        for j in candidates:
+            before, blip, after = runs[j - 1], runs[j], runs[j + 1]
+            if (before[0] == after[0] and len(blip[1]) <= max_blip
+                    and blip[2] <= min(before[2], after[2])):
+                for i in blip[1]:
+                    out[i] = before[0]
+                before[1].extend(blip[1] + after[1])
+                before[2] += blip[2] + after[2]
+                del runs[j:j + 2]
+                changed = True
+                break
+    return out
+
+
+def _fill_within(values: list, groups: list) -> list:
+    """Fill None from the nearest earlier (else later) value in the same group."""
+    out = list(values)
+    by_group = defaultdict(list)
+    for i, g in enumerate(groups):
+        by_group[g].append(i)
+    for idx in by_group.values():
+        last = None
+        for i in idx:
+            last = out[i] if out[i] is not None else last
+            out[i] = last
+        last = None
+        for i in reversed(idx):
+            last = out[i] if out[i] is not None else last
+            out[i] = last
+    return out
+
+
+def _stretches(names: list) -> list:
+    """An id per stretch of the same name (consecutive readings), so stars/items are smoothed within it."""
+    ids, k = [], 0
+    for i, n in enumerate(names):
+        if i and n != names[i - 1]:
+            k += 1
+        ids.append(k)
+    return ids
+
+
+def clean_units(rows: list[dict], levels: list, game=None) -> tuple[list[dict], dict]:
+    """
+    Cleaned board and bench for one game's rows (in frame order).
+
+    Args:
+        rows: raw state rows, sorted by frame; read frames have `units_raw`.
+        levels: the cleaned player level for each row (None when unknown).
+        game: GameData, for team slots and team-size bonuses (see step 4).
+            Without it every unit takes one slot and there are no bonuses.
+
+    Returns:
+        (per-row {"board": [...], "bench": [...], "read": bool}, stats)
+        Board units: {"name", "star", "items", "hex": [row, col], "p"};
+        bench units: {"name", "star", "items", "slot", "p"}.
+        `p` is the classifier's confidence on that frame, or the mean over the
+        unit's stretch when the reading was filled in.
+    """
+    weights_all = frame_weights([r["frame"] for r in rows])
+    read = [i for i, r in enumerate(rows) if r.get("units_raw") is not None]
+    stats = {"frames_read": len(read), "units_filled": 0, "units_removed": 0,
+             "names_changed": 0, "over_level_frames": 0, "units_dropped_level": 0,
+             "team_size_bonus_frames": 0}
+    out = [{"board": [], "bench": [], "read": False} for _ in rows]
+    if not read:
+        return out, stats
+
+    w = [weights_all[i] for i in read]
+    raw = [{u["at"]: u for u in rows[i]["units_raw"]} for i in read]
+    positions = sorted({at for frame in raw for at in frame})
+
+    # Smoothed reading per (read frame, position).
+    cleaned: list[dict] = [{} for _ in read]
+    for at in positions:
+        seen = [frame.get(at) for frame in raw]
+        names = [u["name"] if u else EMPTY for u in seen]
+        conf = [w[k] * (u["p"] if u else EMPTY_WEIGHT) for k, u in enumerate(seen)]
+        names2 = smooth(names, conf)
+        groups = _stretches(names2)
+        stars = [u["star"] if u and u["name"] == n else None for u, n in zip(seen, names2)]
+        items = [tuple(u["items"]) if u and u["name"] == n else None for u, n in zip(seen, names2)]
+        stars = _fill_within(smooth(stars, conf), groups)
+        items = _fill_within(smooth(items, conf), groups)
+        ps: dict[int, list[float]] = defaultdict(list)
+        for u, n, g in zip(seen, names2, groups):
+            if u and u["name"] == n:
+                ps[g].append(u["p"])
+        for k, (u, n) in enumerate(zip(seen, names2)):
+            if n is EMPTY:
+                if u:
+                    stats["units_removed"] += 1
+                continue
+            if u is None:
+                stats["units_filled"] += 1
+            elif u["name"] != n:
+                stats["names_changed"] += 1
+            p = u["p"] if u and u["name"] == n else round(sum(ps[groups[k]]) / max(len(ps[groups[k]]), 1), 3)
+            cleaned[k][at] = {"name": n, "star": stars[k], "items": list(items[k] or []), "p": p,
+                              "support": conf[k]}
+
+    slots = game.slots if game is not None else (lambda name: 1)
+    for k, i in enumerate(read):
+        units = cleaned[k]
+        board = sorted((at for at in units if at[0] == "h"), key=lambda at: -units[at]["support"])
+        level = levels[i]
+        if level:
+            bonus = game.team_size_bonus([units[at] for at in board]) if game is not None else 0
+            cap = int(level) + bonus
+            stats["team_size_bonus_frames"] += bonus > 0
+            if sum(slots(units[at]["name"]) for at in board) > cap:
+                stats["over_level_frames"] += 1
+                used = 0
+                for at in board:                     # best supported first
+                    need = slots(units[at]["name"])
+                    if used + need > cap:
+                        del units[at]
+                        stats["units_dropped_level"] += 1
+                    else:
+                        used += need
+        out[i] = {
+            "board": [{"name": u["name"], "star": u["star"], "items": u["items"],
+                       "hex": [int(at[1]), int(at[2])], "p": u["p"]}
+                      for at, u in sorted(units.items()) if at[0] == "h"],
+            "bench": [{"name": u["name"], "star": u["star"], "items": u["items"],
+                       "slot": int(at[1:]), "p": u["p"]}
+                      for at, u in sorted(units.items(), key=lambda kv: int(kv[0][1:]) if kv[0][0] == "s" else -1)
+                      if at[0] == "s"],
+            "read": True,
+        }
+
+    # Carry the last planning board through combat and away frames.
+    last = None
+    for i in range(len(rows)):
+        if out[i]["read"]:
+            last = out[i]
+        elif last is not None:
+            out[i] = {"board": last["board"], "bench": last["bench"], "read": False}
+    return out, stats

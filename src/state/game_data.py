@@ -1,6 +1,7 @@
 """
 Static knowledge about the current TFT set: each champion's cost and traits,
-and each trait's activation breakpoints.
+each trait's activation breakpoints, emblems, and what changes the board's
+team size (traits, multi-slot champions, team-size items).
 
 Loaded from assets/game_data/<set>.json (written by scripts/fetch_game_data.py).
 The champion and trait orderings defined here fix the layout of the encoded
@@ -58,6 +59,21 @@ class GameData:
         self.unit_names: list[str] = sorted(self.champion_names + self.extra_units)
         self.unit_index: dict[str, int] = {n: i for i, n in enumerate(self.unit_names)}
 
+        # What changes the board's team size (from the set's own descriptions,
+        # see scripts/fetch_game_data.py). Trait/augment units take no slot.
+        self.trait_team_size: dict[str, list[int]] = {
+            name: t["team_size"] for name, t in raw["traits"].items() if t.get("team_size")}
+        self.team_slots: dict[str, int] = {}
+        self.grants_trait: dict[str, dict[str, int]] = {}
+        for name, c in raw["champions"].items():
+            base = name.split(" (")[0]
+            if c.get("team_slots"):
+                self.team_slots[base] = c["team_slots"]
+            if c.get("grants_trait"):
+                self.grants_trait[base] = c["grants_trait"]
+        self.team_size_items: dict[str, int] = raw.get("team_size_items") or {}
+        self.emblems: dict[str, str] = raw.get("emblems") or {}
+
     def cost(self, name: str) -> int:
         """Gold cost of a champion, 0 if the name is unknown."""
         c = self.champions.get(name)
@@ -72,18 +88,58 @@ class GameData:
             return "completed"
         return "component" if name in BASIC_COMPONENTS else "other"
 
-    def trait_counts(self, names: list[str]) -> dict[str, int]:
-        """Units per trait. Each distinct champion counts once, as in the game."""
+    def trait_counts(self, names: list[str], units: list[dict] | None = None) -> dict[str, int]:
+        """
+        Units per trait. Each distinct champion counts once, as in the game.
+
+        With `units` (board units with their "items"), emblems count too: a
+        unit holding "<Trait> Emblem" adds that trait if it doesn't have it.
+        Champions that grant extra trait count (Elder Dragon: +2 Riftbeast)
+        add it once.
+        """
         counts: dict[str, int] = {}
         for name in set(names):
             c = self.champions.get(name)
             for trait in (c.traits if c else ()):
                 counts[trait] = counts.get(trait, 0) + 1
+            for trait, n in self.grants_trait.get(name, {}).items():
+                counts[trait] = counts.get(trait, 0) + n
+        for u in units or []:
+            c = self.champions.get(u.get("name"))
+            own = set(c.traits) if c else set()
+            for item in set(i for i in (u.get("items") or []) if i):
+                trait = self.emblems.get(item)
+                if trait and trait not in own:
+                    counts[trait] = counts.get(trait, 0) + 1
+                    own.add(trait)
         return counts
 
     def active_tier(self, trait: str, count: int) -> int:
         """How many of the trait's breakpoints are reached (0 = inactive)."""
         return sum(1 for b in self.breakpoints.get(trait, []) if count >= b)
+
+    def slots(self, name: str) -> int:
+        """Team slots a unit takes on the board: 0 for trait/augment units, 2 for Elder Dragon, else 1."""
+        if name in self.extra_units:
+            return 0
+        return self.team_slots.get(name, 1)
+
+    def team_size_bonus(self, units: list[dict]) -> int:
+        """
+        Max team size above the player's level that the board itself shows:
+        active traits that add team size (Riftbeast 10: +2) and team-size
+        items held by units (Tactician's Crown: +1). Augments that add team
+        size (New Recruit, Cursed Crown, ...) are not visible here.
+        """
+        counts = self.trait_counts([u["name"] for u in units], units)
+        bonus = 0
+        for trait, sizes in self.trait_team_size.items():
+            tier = self.active_tier(trait, counts.get(trait, 0))
+            if tier:
+                bonus += sizes[tier - 1]
+        for u in units:
+            bonus += sum(self.team_size_items.get(i, 0) for i in (u.get("items") or []) if i)
+        return bonus
 
 
 @lru_cache(maxsize=None)

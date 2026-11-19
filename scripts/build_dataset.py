@@ -2,11 +2,11 @@
 Encode cleaned state sequences into model-ready arrays, one file per game.
 
 Usage:
-    python scripts/build_dataset.py --states data/processed/state_vectors/VOD_ID
+    python scripts/build_dataset.py --states ~/tft_data/state_vectors/VOD_ID
     python scripts/build_dataset.py --describe        # print the vector layout only
 
 Input:   <states>/game_XX.clean.jsonl        (from scripts/clean_states.py)
-Output:  data/datasets/states/<VOD_ID>/game_XX.npz with
+Output:  ~/tft_data/datasets/states/<VOD_ID>/game_XX.npz with
            X              float32 [frames, features]   encoded states
            frame          int     [frames]             source frame numbers
            time_sec       float   [frames]             seconds into the VOD
@@ -23,8 +23,9 @@ import json
 import numpy as np
 
 from src.state.encoder import StateEncoder
+from src.utils import paths
 
-OUT_DIR = Path("data/datasets/states")
+OUT_DIR = paths.DATASETS     # local disk (src/utils/paths.py)
 
 
 def main():

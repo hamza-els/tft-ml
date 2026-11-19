@@ -69,17 +69,23 @@ def find_bar(frame: np.ndarray, cx: float, top: int) -> Bar | None:
     region) downwards. None if there is no own unit there.
 
     Only bars starting within max_dx of where this position's bar is expected
-    count, which rules out the neighbours' bars.
+    count, which rules out the neighbours' bars. A unit's bar always has its
+    star badge on the left; the player's Little Legend has a green bar too
+    (under its name, with a level box instead of a badge), so a bar without a
+    badge is not taken. On 150 frames, 33 of the 35 badge-less bars were the
+    Little Legend's (the other two: an effect and a half-hidden bar); every
+    bar with a badge that was looked at was a unit's.
     """
     want = expected_left(cx)
     x0, y0 = max(0, int(want) - 40), max(0, top - _CFG["search_above"])
     zone = frame[y0:top + _CFG["search_below"], x0:int(want) + 110]
-    near = [(abs(l + x0 - want), l + x0, r + x0, t + y0) for l, r, t in green_bars(zone)
-            if abs(l + x0 - want) <= _CFG["max_dx"]]
-    if not near:
-        return None
-    _, left, right, top_y = min(near)
-    return Bar(left, right, top_y)
+    near = sorted((abs(l + x0 - want), l + x0, r + x0, t + y0) for l, r, t in green_bars(zone)
+                  if abs(l + x0 - want) <= _CFG["max_dx"])
+    for _, left, right, top_y in near:
+        bar = Bar(left, right, top_y)
+        if max(star_scores(frame, bar).values(), default=0.0) >= _CFG["badge_min_score"]:
+            return bar
+    return None
 
 
 def board_bar(frame: np.ndarray, board, row: int, col: int) -> Bar | None:

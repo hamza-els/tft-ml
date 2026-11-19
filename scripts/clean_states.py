@@ -5,7 +5,8 @@ Usage:
     python scripts/clean_states.py --states data/processed/state_vectors/VOD_ID
 
 Input:   <states>/game_XX.jsonl          (from scripts/extract_states.py)
-Output:  <states>/game_XX.clean.jsonl    (misreads fixed, gaps forward-filled)
+Output:  <states>/game_XX.clean.jsonl    (misreads fixed, gaps forward-filled,
+                                          board/bench filled from units_raw)
 
 The report shows how often each value was read and how many readings broke
 the game's rules — a quick check that the OCR regions are still calibrated.
@@ -48,6 +49,14 @@ def main():
         for field, stats in rep["fields"].items():
             rate = "  n/a" if stats["read_rate"] is None else f"{stats['read_rate'] * 100:5.1f}%"
             print(f"  {field:<11} read {rate}   corrected {stats['misreads_corrected']}")
+        u = rep["units"]
+        if u["frames_read"]:
+            print(f"  units       read on {u['frames_read']} planning frames; flickers filled {u['units_filled']}, "
+                  f"removed {u['units_removed']}, renamed {u['names_changed']}; "
+                  f"over the team size on {u['over_level_frames']} frames ({u['units_dropped_level']} units dropped); "
+                  f"trait/item team-size bonus on {u['team_size_bonus_frames']} frames")
+        else:
+            print("  units       not read (run scripts/read_units.py)")
 
 
 if __name__ == "__main__":

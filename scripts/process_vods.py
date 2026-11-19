@@ -1,16 +1,23 @@
 """
 Process VODs end to end, one at a time: download, extract, split into games,
-dedup, read states, collect icons, clean, encode, and cut unit crops.
+dedup, read states, collect icons, read board/bench units, clean, encode,
+and cut unit crops.
 
 Usage:
     python scripts/process_vods.py --urls data/raw/urls_batch1.txt
 
 Each VOD goes through every step before the next one starts. A VOD whose
-steps all finished is skipped on a re-run (data/processed/state_vectors/<id>/.done),
+steps all finished is skipped on a re-run (~/tft_data/state_vectors/<id>/.done),
 and run_pipeline.py itself resumes an interrupted download/extract/split/dedup.
 
+Everything happens on the local disk (src/utils/paths.py); the repo on
+Google Drive only receives the finished state files, in the last step
+(scripts/upload_states.py). Exceptions: the icon harvest steps add template
+PNGs to assets/templates/, and unit crops add entries to the repo's
+data/processed/unit_crops/index.json (the images stay local).
+
 Keeps the PC awake while it runs. Output for each step is appended to
-data/raw/process_vods.log.
+~/tft_data/logs/process_vods.log.
 """
 
 import sys
@@ -24,10 +31,12 @@ import subprocess
 import tempfile
 import time
 
+from src.utils import paths
+
 ROOT = Path(__file__).resolve().parents[1]
 FRAMES = Path.home() / "tft_frames_temp"
-STATES = ROOT / "data" / "processed" / "state_vectors"
-LOG = ROOT / "data" / "raw" / "process_vods.log"
+STATES = paths.STATES                      # local working copy
+LOG = paths.LOGS / "process_vods.log"
 
 ES_CONTINUOUS, ES_SYSTEM_REQUIRED = 0x80000000, 0x00000001
 
@@ -88,9 +97,11 @@ def process(url: str) -> bool:
         ("read states", ["scripts/extract_states.py", "--frames", str(frames)]),
         ("augment icons", ["scripts/harvest_augment_icons.py", "--frames", str(frames), "--update-states", str(states)]),
         ("item icons", ["scripts/harvest_item_icons.py", "--frames", str(frames), "--update-states", str(states)]),
+        ("read units", ["scripts/read_units.py", "--frames", str(frames), "--states", str(states)]),
         ("clean states", ["scripts/clean_states.py", "--states", str(states)]),
         ("encode dataset", ["scripts/build_dataset.py", "--states", str(states)]),
         ("unit crops", ["scripts/collect_unit_crops.py", "--frames", str(frames), "--states", str(states)]),
+        ("upload states", ["scripts/upload_states.py", vid]),
     ]
     for step, args in steps:
         if not run(step, args):
