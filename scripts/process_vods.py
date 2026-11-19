@@ -59,6 +59,7 @@ def run(step: str, args: list[str]) -> bool:
 
 
 COOKIES: list[str] = []   # extra run_pipeline arguments, set from --cookies-from-browser
+JOBS = [3]                # games read in parallel by the state and unit readers (--jobs)
 
 
 class BotCheck(Exception):
@@ -94,10 +95,10 @@ def process(url: str) -> bool:
         return False
 
     steps = [
-        ("read states", ["scripts/extract_states.py", "--frames", str(frames)]),
+        ("read states", ["scripts/extract_states.py", "--frames", str(frames), "--jobs", str(JOBS[0])]),
         ("augment icons", ["scripts/harvest_augment_icons.py", "--frames", str(frames), "--update-states", str(states)]),
         ("item icons", ["scripts/harvest_item_icons.py", "--frames", str(frames), "--update-states", str(states)]),
-        ("read units", ["scripts/read_units.py", "--frames", str(frames), "--states", str(states)]),
+        ("read units", ["scripts/read_units.py", "--frames", str(frames), "--states", str(states), "--jobs", str(JOBS[0])]),
         ("clean states", ["scripts/clean_states.py", "--states", str(states)]),
         ("encode dataset", ["scripts/build_dataset.py", "--states", str(states)]),
         ("unit crops", ["scripts/collect_unit_crops.py", "--frames", str(frames), "--states", str(states)]),
@@ -113,9 +114,12 @@ def process(url: str) -> bool:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--urls", required=True)
+    parser.add_argument("--jobs", type=int, default=3,
+                        help="Games read in parallel by the state and unit readers (default 3)")
     parser.add_argument("--cookies-from-browser", default=None, metavar="BROWSER",
                         help="Passed to run_pipeline.py (e.g. firefox)")
     args = parser.parse_args()
+    JOBS[0] = args.jobs
     if args.cookies_from_browser:
         COOKIES.extend(["--cookies-from-browser", args.cookies_from_browser])
 
