@@ -149,6 +149,22 @@ def test_nothing_carried_without_counter():
     assert len(out[-1]["board"]) == 2 and stats["units_carried"] == 0
 
 
+def test_tooltip_covered_reading_is_filled_from_neighbours():
+    a = _unit("h00", "Ashe", star=2)
+    covered = {"at": "h00", "covered": True}
+    # 3 covered frames in a row would otherwise read as a lasting empty hex
+    rows = _rows([[a], [a], [covered], [covered], [covered], [a]])
+    out, stats = clean_units(rows, [5] * 6)
+    assert all(o["board"] and o["board"][0]["name"] == "Ashe" and o["board"][0]["star"] == 2 for o in out)
+    assert stats["covered_filled"] == 3
+
+
+def test_all_covered_position_stays_empty():
+    rows = _rows([[{"at": "s3", "covered": True}]] * 3)
+    out, _ = clean_units(rows, [5] * 3)
+    assert all(not o["bench"] for o in out)
+
+
 def test_board_carried_through_unread_frames():
     rows = _rows([[_unit("h10", "Ashe"), _unit("s4", "Jinx")]]) + [{"frame": 10}, {"frame": 12}]
     out, _ = clean_units(rows, [3] * 3)

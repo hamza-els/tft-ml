@@ -15,17 +15,22 @@ For each board hex and bench slot with a unit's health bar over it (occupied()):
 
 Positions: "at" is "h<row><col>" for a board hex (row 0 = front row) or
 "s<slot>" for a bench slot (0 = leftmost), the same ids as the unit crops.
+
+A position under a tooltip panel, or whose crop the classifier calls
+"_covered", comes back as {"at": ..., "covered": True}: unknown, not empty.
 """
 
 import numpy as np
 
 from src.vision.bench import BenchSlots
 from src.vision.board_counter import BoardCounter
+from src.vision.tooltip import CFG as TOOLTIP_CFG, covered_share, tooltip_boxes
 from src.vision.board import BoardHexes
 from src.vision.unit_bar import Bar, UnitItemReader, bench_bar, board_bar, star_level
 from src.vision.unit_classifier import UnitClassifier
 
 NONE = "_none"
+COVERED = "_covered"      # label: the crop is hidden behind a tooltip
 
 
 class UnitReader:
@@ -41,17 +46,38 @@ class UnitReader:
             return None
         return list(self.counter.read(frame))
 
-    def read(self, frame: np.ndarray) -> list[dict]:
-        found = occupied(frame, self.board, self.bench)
-        if not found:
+    def covered(self, frame: np.ndarray) -> list[str]:
+        """Positions whose window is largely under a tooltip panel (src/vision/tooltip.py)."""
+        boxes = tooltip_boxes(frame)
+        if not boxes:
             return []
+        share = TOOLTIP_CFG["covered_share"]
+        out = [f"h{r}{c}" for r, c in self.board.hexes()
+               if covered_share(boxes, self.board.window(r, c)) >= share]
+        out += [f"s{i}" for i in range(self.bench.slots)
+                if covered_share(boxes, self.bench.window(i)) >= share]
+        return out
+
+    def read(self, frame: np.ndarray) -> list[dict]:
+        """
+        Units seen on the board and bench. A position under a tooltip is
+        returned as {"at": ..., "covered": True} instead: nothing can be said
+        about it (a hidden bar would otherwise read as an empty hex).
+        """
+        covered = set(self.covered(frame))
+        units = [{"at": at, "covered": True} for at in sorted(covered)]
+        found = [f for f in occupied(frame, self.board, self.bench) if f[0] not in covered]
+        if not found:
+            return units
         crops = [frame[max(0, y):y + h, max(0, x):x + w] for _, (x, y, w, h), _ in found]
         probs = self.classifier.probabilities(crops)
-        units = []
         for (at, _, bar), p in zip(found, probs):
             k = int(np.argmax(p))
             name = self.classifier.classes[k]
             if name == NONE:
+                continue
+            if name == COVERED:
+                units.append({"at": at, "covered": True})
                 continue
             units.append({
                 "at": at,

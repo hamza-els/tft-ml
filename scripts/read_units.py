@@ -40,8 +40,9 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--frames", required=True, help="VOD frame folder containing game_XX/")
     parser.add_argument("--states", required=True, help="Folder of game_XX.jsonl files")
-    parser.add_argument("--counter-only", action="store_true",
-                        help="Only (re)read the board counter on frames whose units were already read")
+    parser.add_argument("--light", "--counter-only", dest="light", action="store_true",
+                        help="On frames whose units were already read, only (re)read the board counter "
+                             "and which positions are under a tooltip (no re-classifying)")
     args = parser.parse_args()
 
     vod_dir = Path(args.frames).expanduser()
@@ -59,7 +60,8 @@ def main():
                   if home and plan}
 
         read = missing = 0
-        if args.counter_only:
+        if args.light:
+            covered_n = 0
             for row in tqdm(rows, desc=states.stem, unit="row", dynamic_ncols=True, smoothing=0, mininterval=1.0):
                 if row.get("units_raw") is None:
                     continue
@@ -68,9 +70,14 @@ def main():
                     missing += 1
                     continue
                 row["board_counter"] = reader.read_counter(frame)
+                covered = set(reader.covered(frame))
+                kept = [u for u in row["units_raw"] if u["at"] not in covered and not u.get("covered")]
+                row["units_raw"] = kept + [{"at": at, "covered": True} for at in sorted(covered)]
+                covered_n += len(covered)
                 read += 1
             states.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
-            print(f"  {states.name}: counter read on {read} frames, {missing} frames missing")
+            print(f"  {states.name}: counter and tooltips read on {read} frames "
+                  f"({covered_n} positions under a tooltip), {missing} frames missing")
             continue
         for row in tqdm(rows, desc=states.stem, unit="row", dynamic_ncols=True, smoothing=0, mininterval=1.0):
             row.pop("units_raw", None)

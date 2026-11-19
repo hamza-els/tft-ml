@@ -250,3 +250,13 @@ board_counter:
   min_score: 0.45
   min_margin: 0.05
   max_red_pixels: 30                   # enemy health bars over the counter (PvE monsters): don't read it
+
+# Tooltip panels over the board (src/vision/tooltip.py): dark, flat, rectangular.
+tooltip:
+  area: [280, 120, 1360, 760]          # x, y, w, h searched (board and bench)
+  scale: 4                             # work at 1/4 size
+  dark_below: 40                       # panel background: every channel below this
+  close_px: 24                         # closes the gaps left by the panel's text
+  min_size: [140, 60]                  # w, h in frame pixels
+  min_fill: 0.80                       # component area / bounding box: panels are rectangles
+  covered_share: 0.25                  # a unit window this much under a panel is "covered"

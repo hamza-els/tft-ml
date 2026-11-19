@@ -30,15 +30,17 @@ Keys:
     1-8          that search result
     F1-F4        that suggestion
     Tab          not a unit / empty hex (scenery, an effect, the Little Legend)
-    Shift+Tab    a unit, but it can't be told which (mid-animation, covered)
+    Shift+Tab    a unit, but it can't be told which (mid-animation, effects)
+    Ctrl+T       covered by a tooltip (dark panel with text over the unit)
     Esc          skip for now (comes back at the end)
     Ctrl+Z       undo the last label
     Ctrl+Q       save and quit   (every label is saved immediately anyway)
 
 Labels are stored in data/processed/unit_crops/labels.json as
 {crop file name: champion name}; "_none" marks a crop with no unit,
-"_unknown" a unit that can't be recognised. The classifier learns both, so
-a hex it calls "_unknown" still counts as occupied in the game states.
+"_unknown" a unit that can't be recognised, "_covered" a crop hidden by a
+tooltip. The classifier learns all three: "_unknown" still counts as an
+occupied hex in the game states, "_covered" as no information at all.
 """
 
 import sys
@@ -67,7 +69,8 @@ SCORE_CACHE = paths.CROP_SCORE_CACHE   # --unsure scores (local disk); rebuilt w
 SEED_DIR = Path("data/processed/champion_crops")   # auto-labelled bench crops, used for suggestions
 NONE = "_none"
 UNKNOWN = "_unknown"
-SPECIAL = {NONE: "not a unit", UNKNOWN: "unit, can't tell which"}
+COVERED = "_covered"
+SPECIAL = {NONE: "not a unit", UNKNOWN: "unit, can't tell which", COVERED: "covered by a tooltip"}
 MAX_RESULTS = 8
 MAX_SUGGESTIONS = 4
 
@@ -280,7 +283,8 @@ class Labeler:
         actions = tk.Frame(self.root, bg=BG)
         actions.grid(row=5, column=0, columnspan=2, sticky="we", padx=12, pady=(4, 12))
         for text, command in (("Not a unit  (Tab)", self.mark_none),
-                              ("Unit, can't tell which  (Shift+Tab)", self.mark_unknown), ("Skip  (Esc)", self.skip),
+                              ("Unit, can't tell which  (Shift+Tab)", self.mark_unknown),
+                              ("Covered by tooltip  (Ctrl+T)", self.mark_covered), ("Skip  (Esc)", self.skip),
                               ("Undo  (Ctrl+Z)", self.undo), ("Quit  (Ctrl+Q)", self.quit)):
             tk.Button(actions, text=text, command=command, font=small, bg="#33353f", fg=FG,
                       activebackground="#444754", activeforeground=FG, relief="flat", padx=10, pady=4) \
@@ -296,6 +300,7 @@ class Labeler:
             pass
         self.root.bind("<Escape>", lambda e: self.skip())
         self.root.bind("<Control-z>", lambda e: self.undo())
+        self.root.bind("<Control-t>", lambda e: (self.mark_covered(), "break")[1])
         self.root.bind("<Control-q>", lambda e: self.quit())
         for n in range(1, MAX_RESULTS + 1):
             self.root.bind(str(n), lambda e, k=n: (self.pick_result(k - 1), "break")[1])
@@ -403,6 +408,9 @@ class Labeler:
 
     def mark_unknown(self):
         self.assign(UNKNOWN)
+
+    def mark_covered(self):
+        self.assign(COVERED)
 
     def skip(self):
         if self.pos < len(self.queue):

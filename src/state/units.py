@@ -210,7 +210,7 @@ def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None =
     stats = {"frames_read": len(read), "units_filled": 0, "units_removed": 0,
              "names_changed": 0, "over_level_frames": 0, "units_dropped_level": 0,
              "team_size_bonus_frames": 0, "team_size_from_counter": 0, "units_from_counter": 0,
-             "counter_more_than_read": 0, "units_carried": 0}
+             "counter_more_than_read": 0, "units_carried": 0, "covered_filled": 0}
     rounds = rounds or [None] * len(rows)
     out = [{"board": [], "bench": [], "read": False} for _ in rows]
     if not read:
@@ -224,9 +224,28 @@ def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None =
     cleaned: list[dict] = [{} for _ in read]
     for at in positions:
         seen = [frame.get(at) for frame in raw]
-        names = [u["name"] if u else EMPTY for u in seen]
-        conf = [w[k] * (u["p"] if u else EMPTY_WEIGHT) for k, u in enumerate(seen)]
-        names2 = smooth(names, conf)
+        # Under a tooltip: no evidence either way. Left out of the smoothing
+        # and given the value of the nearest reading before (else after).
+        hidden = [bool(u and u.get("covered")) for u in seen]
+        known = [k for k in range(len(seen)) if not hidden[k]]
+        names = [seen[k]["name"] if seen[k] else EMPTY for k in known]
+        conf_known = [w[k] * (seen[k]["p"] if seen[k] else EMPTY_WEIGHT) for k in known]
+        smoothed = smooth(names, conf_known)
+        names2: list = [EMPTY] * len(seen)
+        source = list(range(len(seen)))          # which reading each frame's value comes from
+        for j, k in enumerate(known):
+            names2[k] = smoothed[j]
+        for k in range(len(seen)):
+            if hidden[k]:
+                prev = [j for j in known if j < k]
+                nxt = [j for j in known if j > k]
+                src = prev[-1] if prev else (nxt[0] if nxt else None)
+                if src is not None:
+                    names2[k], source[k] = names2[src], src
+                stats["covered_filled"] += names2[k] is not EMPTY
+        seen = [(seen[source[k]] if source[k] != k else None) if hidden[k] else seen[k]
+                for k in range(len(seen))]
+        conf = [w[k] * (seen[k]["p"] if seen[k] and "p" in seen[k] else EMPTY_WEIGHT) for k in range(len(seen))]
         groups = _stretches(names2)
         stars = [u["star"] if u and u["name"] == n else None for u, n in zip(seen, names2)]
         items = [tuple(u["items"]) if u and u["name"] == n else None for u, n in zip(seen, names2)]
