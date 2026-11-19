@@ -110,7 +110,7 @@ augments:
   away_y: 268
   height: 38
   slot_width: 37.5
-  max_slots: 3
+  max_slots: 4                         # 3 picks, plus a possible 4th from some effects
   dark_below: 60                       # bar background is near-black
   match_threshold: 0.80
   template_dir: "assets/templates/augments"   # filled by scripts/harvest_augment_icons.py

@@ -48,8 +48,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import argparse
-import base64
-import difflib
 import json
 import tkinter as tk
 from tkinter import font as tkfont
@@ -57,6 +55,7 @@ from tkinter import font as tkfont
 import cv2
 import numpy as np
 
+from scripts.label_common import MAX_RESULTS, search_champions, to_photo
 from src.utils import paths
 from src.state.game_data import load_game_data
 from tqdm import tqdm
@@ -71,40 +70,9 @@ NONE = "_none"
 UNKNOWN = "_unknown"
 COVERED = "_covered"
 SPECIAL = {NONE: "not a unit", UNKNOWN: "unit, can't tell which", COVERED: "covered by a tooltip"}
-MAX_RESULTS = 8
 MAX_SUGGESTIONS = 4
 
 BG, FG, DIM, ACCENT = "#1e1f24", "#e8e8ea", "#8b8d98", "#f2c14e"
-
-
-def search_champions(query: str, names: list[str], limit: int = MAX_RESULTS) -> list[str]:
-    """
-    Names ranked by how well they match a possibly misspelled query.
-
-    A name that starts with the query ranks first, then one that contains it,
-    then names by spelling similarity (so "morgna" finds Morgana and "khazik"
-    finds Kha'Zix). Punctuation, spaces and case are ignored.
-    """
-    def norm(text: str) -> str:
-        return "".join(ch for ch in text.lower() if ch.isalnum())
-
-    q = norm(query)
-    if not q:
-        return []
-    scored = []
-    for name in names:
-        n = norm(name)
-        ratio = difflib.SequenceMatcher(None, q, n).ratio()
-        # Compare against the start of the name too: people type the first few letters.
-        prefix_ratio = difflib.SequenceMatcher(None, q, n[:len(q) + 1]).ratio()
-        score = max(ratio, prefix_ratio * 0.95)
-        if n.startswith(q):
-            score += 2.0
-        elif q in n:
-            score += 1.0
-        scored.append((score, name))
-    scored.sort(key=lambda item: (-item[0], item[1]))
-    return [name for score, name in scored[:limit] if score >= 0.45]
 
 
 def fingerprint(img: np.ndarray) -> np.ndarray:
@@ -115,11 +83,6 @@ def fingerprint(img: np.ndarray) -> np.ndarray:
     vec -= vec.mean()
     norm = np.linalg.norm(vec)
     return vec / norm if norm > 0 else vec
-
-
-def to_photo(img: np.ndarray) -> tk.PhotoImage:
-    ok, buf = cv2.imencode(".png", img)
-    return tk.PhotoImage(data=base64.b64encode(buf.tobytes()))
 
 
 class Labeler:

@@ -148,7 +148,9 @@ def process_url(
     wanted = ["extract"] + (["split"] if split else []) + (["dedup"] if dedup else [])
     done = _steps_done(local_dir)
     # Folders from before step tracking existed: frames on disk means extraction finished.
-    if "extract" not in done and local_dir.exists() and any(local_dir.rglob("frame_*.jpg")):
+    # Only without a step record: an interrupted extraction also leaves frames on disk.
+    if ("extract" not in done and not (local_dir / STEPS_FILE).exists()
+            and local_dir.exists() and any(local_dir.rglob("frame_*.jpg"))):
         done.add("extract")
         _mark_done(local_dir, "extract")
     if all(step in done for step in wanted):
@@ -241,6 +243,10 @@ def main():
                         help="Concurrent download fragments per VOD (default: 4)")
     parser.add_argument("--cookies-from-browser", default=None, metavar="BROWSER",
                         help="Use this browser's YouTube login (e.g. firefox) when YouTube asks to confirm you're not a bot")
+    parser.add_argument("--download-only", action="store_true",
+                        help="Only download the videos (skipped if their frames are already extracted); "
+                             "a later normal run finds the file and goes on from extraction. "
+                             "scripts/process_vods.py uses this to fetch the next VOD while the current one is read.")
     args = parser.parse_args()
 
     global COOKIES_FROM_BROWSER
@@ -257,6 +263,19 @@ def main():
         return
 
     ffmpeg  = imageio_ffmpeg.get_ffmpeg_exe()
+    if args.download_only:
+        VOD_DIR.mkdir(parents=True, exist_ok=True)
+        failed = 0
+        for url in urls:
+            video_id = url.rstrip("/").split("=")[-1].split("/")[-1]
+            if "extract" in _steps_done(LOCAL_TEMP / video_id):
+                print(f"  {video_id}: frames already extracted, nothing to download")
+                continue
+            t0 = time.time()
+            path = download(url, VOD_DIR, ffmpeg, args.fragments)
+            print(f"  {video_id}: {'downloaded' if path else 'download FAILED'} in {(time.time() - t0) / 60:.1f} min")
+            failed += path is None
+        sys.exit(1 if failed else 0)
     dedup   = not args.no_dedup
     split   = not args.no_split
     total   = len(urls)

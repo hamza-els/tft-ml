@@ -14,6 +14,10 @@ scripts/process_vods.py or by scripts/upload_states.py.
     LOCAL/unit_crops/removed/                   crops taken out by prune_unit_crops.py
     LOCAL/datasets/states/<vod>/game_XX.npz     encoded datasets
     LOCAL/logs/                                 batch logs
+
+Frames live next to LOCAL, not in it: ~/tft_frames_temp/<vod>/ (full frames)
+and AUG_FRAMES/<vod>/ (augment-only copies made by scripts/slim_frames.py,
+kept so augment detection can be redone after the full frames are deleted).
 """
 
 import os
@@ -28,6 +32,8 @@ CROP_REMOVED = LOCAL / "unit_crops" / "removed"
 CROP_SCORE_CACHE = LOCAL / "unit_crops" / "confidence_cache.json"
 DATASETS = LOCAL / "datasets" / "states"
 LOGS = LOCAL / "logs"
+FRAMES = Path.home() / "tft_frames_temp"
+AUG_FRAMES = Path.home() / "tft_frames_augments"   # frames with everything but the augment bars blacked out
 ITEM_IMAGES = LOCAL / "item_crops" / "images"
 ITEM_CONTEXT = LOCAL / "item_crops" / "context"     # the unit's bar and item row around each icon
 

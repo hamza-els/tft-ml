@@ -28,7 +28,7 @@ from tqdm import tqdm
 
 from src.data_collection.frame_dedup import frame_folders
 from src.data_collection.frame_game_splitter import frame_number
-from src.vision.augments import AugmentReader
+from src.vision.augments import AugmentReader, expected_counts
 
 MIN_SIGHTINGS = 5
 
@@ -52,6 +52,15 @@ def main():
     for folder in frame_folders(str(Path(args.frames).expanduser())):
         pending: list[list] = []     # [icon, sightings] not yet promoted to templates
         per_frame: dict[int, list[tuple[str | None, str]]] = {}
+        # Stage per frame from the state file, if there is one: it limits how many icons
+        # the bar can hold, so each icon is cut on its own (AugmentReader, expected_counts).
+        allowed: dict[int, set[int] | None] = {}
+        states = Path(args.update_states) / f"{folder.name}.jsonl" if args.update_states else None
+        if states and states.exists():
+            for line in states.read_text(encoding="utf-8").splitlines():
+                if line:
+                    r = json.loads(line)
+                    allowed[r["frame"]] = expected_counts(r.get("stage"), r.get("round_num"))
 
         for path in tqdm(sorted(folder.glob("frame_*.jpg")), desc=folder.name, unit="frame",
                          dynamic_ncols=True, smoothing=0, mininterval=1.0):
@@ -59,7 +68,7 @@ def main():
             if frame is None:
                 continue
             found = []
-            for aug in reader.read(frame):
+            for aug in reader.read(frame, allowed.get(frame_number(path))):
                 name = aug.name
                 if name is None:
                     for k, cand in enumerate(pending):
@@ -96,7 +105,7 @@ def main():
                     path = folder / f"frame_{row['frame']:06d}.jpg"
                     frame = cv2.imread(str(path))
                     if frame is not None:
-                        augs = reader.read(frame)
+                        augs = reader.read(frame, allowed.get(row["frame"]))
                         row["augments"] = [a.name for a in augs]
                         row["augment_tiers"] = [a.tier for a in augs]
             states.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")

@@ -13,9 +13,10 @@ home" — they are not useful for reading units either.)
 
 The augment bar is a stronger sign when it is showing (see
 src/vision/augments.py): on the left it is the player's own board, on the
-right it is someone else's. `home_board_rows` uses the bar first and falls
-back to the arena colour only when no bar is on screen (early game, or the
-bar hidden).
+right it is someone else's. In combat both players' bars show at once, the
+board owner's on the left and the visitor's on the right. `home_board_rows`
+uses the bar first and falls back to the arena colour when no bar is on
+screen (early game, or the bar hidden) or both are (combat).
 
 Planning phase, signs that must all agree (`planning_rows`):
   - The round timer bar under the stage bar drains during planning and
@@ -73,7 +74,11 @@ def home_board_rows(rows: list[dict], cfg: dict | None = None) -> list[bool]:
     by_colour = home_board_mask(sigs, cfg) if any(sigs) else [True] * len(rows)
     out = []
     for row, colour in zip(rows, by_colour):
-        if row.get("away_augments"):
+        if row.get("away_augments") and row.get("augments"):
+            # In combat both players' bars show (the board owner's on the left, the
+            # visitor's on the right), so the bars don't say whose board it is.
+            out.append(colour)
+        elif row.get("away_augments"):
             out.append(False)
         elif row.get("augments"):
             out.append(True)

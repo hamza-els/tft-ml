@@ -33,6 +33,7 @@ from collections import Counter
 from src.state.game_data import load_game_data
 from src.state.units import clean_units
 from src.vision.arena import home_board_rows, planning_rows
+from src.vision.augments import MAX_AUGMENTS
 
 SCALARS = ("stage", "round_num", "gold", "hp", "level", "xp_current", "xp_needed", "streak")
 
@@ -129,7 +130,7 @@ def _forward_fill(values: list) -> list:
     return out
 
 
-AUGMENT_SLOTS = 3
+AUGMENT_SLOTS = MAX_AUGMENTS   # 3 picks, and a 4th seen in some games
 AUGMENT_PRESENT = 0.5     # a slot counts as picked from the first frame after which at least this
 AUGMENT_CONFIRM = 2       # share of the readings that show the bar show the slot, and at least
                           # this many readings show it (one phantom icon is not a pick)
@@ -139,8 +140,9 @@ def game_augments(rows: list[dict], home: list[bool], label: dict | None = None)
     """
     The game's augments, decided once per game instead of per frame.
 
-    A game has exactly three, picked at 2-1, 3-2 and 4-2 and never changed,
-    each in its own place in the bar (left to right in pick order). Per bar
+    A game has three picks, at 2-1, 3-2 and 4-2, sometimes a fourth augment
+    from elsewhere; none ever changes, and each keeps its own place in the
+    bar (left to right in the order received). Per bar
     position: the slot is picked from the first own-board frame after which
     at least AUGMENT_PRESENT of the readings that show the bar (an empty
     reading is a hidden bar, not a lost augment) show an icon there, with

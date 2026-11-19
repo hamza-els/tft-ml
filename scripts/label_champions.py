@@ -42,7 +42,7 @@ from tkinter import font as tkfont
 import cv2
 import numpy as np
 
-from scripts.label_units import search_champions as fuzzy, to_photo
+from scripts.label_common import load, merge_save, search_champions as fuzzy, to_photo
 from src.state.game_data import load_game_data
 from src.utils import paths
 from src.vision.bench import BenchSlots
@@ -56,25 +56,6 @@ STAR_LABELS = paths.CROP_DIR / "star_labels.json"
 REVIEWS = paths.CROP_DIR / "champion_reviews.json"
 ITEM_PAD = 4
 BG, FG, DIM, ACCENT, GOOD, BAD = "#1e1f24", "#e8e8ea", "#8b8d98", "#f2c14e", "#5fbf7f", "#d96b6b"
-
-
-def load(path: Path) -> dict:
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
-        return {}
-
-
-def merge_save(path: Path, changes: dict):
-    """Write only this session's changes into the file as it is now (None = remove)."""
-    data = load(path)
-    for k, v in changes.items():
-        if v is None:
-            data.pop(k, None)
-        else:
-            data[k] = v
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(data, indent=0, sort_keys=True), encoding="utf-8")
 
 
 def scoreboard(reviews: dict) -> dict:

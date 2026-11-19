@@ -33,7 +33,7 @@ import numpy as np
 from src.state.game_data import GameData, load_game_data
 
 GROUPS = {"board": 1, "bench": 2, "shop": 3, "item": 4, "augment": 5}
-LIMITS = {"board": 14, "bench": 9, "shop": 5, "item": 10, "augment": 3}
+LIMITS = {"board": 14, "bench": 9, "shop": 5, "item": 10, "augment": 4}   # augments: 3 picks + 1 extra (seen in footage)
 MAX_ROWS = sum(LIMITS.values())
 INT_FIELDS = ["group", "unit", "star", "item0", "item1", "item2", "radiant0", "radiant1", "radiant2",
               "item", "item_radiant", "hex_row", "hex_col", "slot", "augment", "augment_tier"]

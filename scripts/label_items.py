@@ -47,7 +47,7 @@ from tkinter import font as tkfont
 import cv2
 import numpy as np
 
-from scripts.label_units import search_champions as fuzzy_search, to_photo
+from scripts.label_common import search_champions as fuzzy_search, to_photo
 from src.state.game_data import load_game_data
 from src.utils import paths
 from src.utils.config import vision_cfg

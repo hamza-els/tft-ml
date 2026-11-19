@@ -13,7 +13,7 @@ import numpy as np
 
 from src.utils.config import vision_cfg
 from src.vision.arena import arena_signature, is_planning, timer_fill
-from src.vision.augments import AugmentReader
+from src.vision.augments import AugmentReader, expected_counts
 from src.vision.champion_detector import ChampionDetector, Detection
 from src.vision.hud import HudDetector
 from src.vision.items import ItemColumnReader
@@ -101,29 +101,36 @@ class StateExtractor:
         """Call before the first frame of a game: OCR of unchanged regions is skipped from here on."""
         self.ocr_cache = OcrCache()
         self._aug_prev: np.ndarray | None = None
+        self._aug_allowed = None
         self._aug_result = None
 
-    # Augment bars (own and away), as (x, y, w, h): wide enough for three icons.
+    # Augment bars (own and away), as (x, y, w, h): everywhere a bar of up to
+    # max_slots icons can be, its centre found within AugmentReader.SHIFT px.
+    _AUG_HALF = int(vision_cfg["augments"]["slot_width"] * vision_cfg["augments"]["max_slots"] / 2) + AugmentReader.SHIFT
     _AUG_ZONES = [
-        (int(vision_cfg["augments"]["center_x"] - 60), int(vision_cfg["augments"]["y"]), 120,
+        (int(vision_cfg["augments"]["center_x"]) - _AUG_HALF, int(vision_cfg["augments"]["y"]), 2 * _AUG_HALF,
          int(vision_cfg["augments"]["height"])),
-        (int(vision_cfg["augments"]["away_center_x"] - 60), int(vision_cfg["augments"]["away_y"]), 120,
+        (int(vision_cfg["augments"]["away_center_x"]) - _AUG_HALF, int(vision_cfg["augments"]["away_y"]), 2 * _AUG_HALF,
          int(vision_cfg["augments"]["height"])),
     ]
 
-    def _read_augments(self, frame: np.ndarray):
+    def _read_augments(self, frame: np.ndarray, stage=None, round_num=None):
         """
-        (augments, away count). Matching the bar was the slowest part of a
-        frame (36%) though it changes about three times a game, so with a
-        sequence started it is only re-matched when the bar's pixels changed.
+        (augments, away count). The stage limits how many icons the own bar can
+        hold (expected_counts), so each icon is cut on its own. Matching the bar
+        was the slowest part of a frame (36%) though it changes about three
+        times a game, so with a sequence started it is only re-matched when the
+        bar's pixels (or the possible counts) changed.
         """
+        allowed = expected_counts(stage, round_num)
         if self.ocr_cache is None:
-            return self.augments.read(frame), self.augments.count_away(frame)
+            return self.augments.read(frame, allowed), self.augments.count_away(frame)
         now = np.concatenate([frame[y:y + h, x:x + w].reshape(-1) for x, y, w, h in self._AUG_ZONES]).astype(np.int16)
-        if self._aug_prev is not None and np.abs(now - self._aug_prev).mean() < AUG_CHANGED:
+        if (self._aug_prev is not None and self._aug_allowed == allowed
+                and np.abs(now - self._aug_prev).mean() < AUG_CHANGED):
             return self._aug_result
-        self._aug_prev = now
-        self._aug_result = (self.augments.read(frame), self.augments.count_away(frame))
+        self._aug_prev, self._aug_allowed = now, allowed
+        self._aug_result = (self.augments.read(frame, allowed), self.augments.count_away(frame))
         return self._aug_result
 
     @classmethod
@@ -179,7 +186,7 @@ class StateExtractor:
         sv.bench_items = [n.split("~")[0] if n else None for n in self.items.read(frame)]
 
         # 5. Augment bar
-        augs, sv.away_augments = self._read_augments(frame)
+        augs, sv.away_augments = self._read_augments(frame, sv.stage, sv.round_num)
         for aug in augs:
             sv.augments.append(aug.name)
             sv.augment_tiers.append(aug.tier)

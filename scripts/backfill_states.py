@@ -16,6 +16,8 @@ Recomputed per row (the frames must still be on disk):
                                missing or a panel covers the player list
 
 Everything else read by OCR (gold, level, shop, ...) is left as it is.
+With --augments-only just the two augment bars are read again (after a
+change to src/vision/augments.py).
 """
 
 import sys
@@ -29,7 +31,7 @@ import cv2
 from tqdm import tqdm
 
 from src.vision.arena import arena_signature, is_planning, timer_fill
-from src.vision.augments import AugmentReader
+from src.vision.augments import AugmentReader, expected_counts
 from src.vision.items import ItemColumnReader
 
 
@@ -39,6 +41,7 @@ def main():
     parser.add_argument("--states", required=True, help="Folder of game_XX.jsonl files")
     parser.add_argument("--reread-hp", action="store_true",
                         help="Re-read HP where it is missing or a panel covers the player list")
+    parser.add_argument("--augments-only", action="store_true", help="Only read the augment bars again")
     args = parser.parse_args()
 
     augments, items = AugmentReader(), ItemColumnReader()
@@ -59,13 +62,16 @@ def main():
             if frame is None:
                 missing += 1
                 continue
-            row["arena_sig"] = arena_signature(frame)
-            row["planning"] = is_planning(frame)
-            row["timer_fill"] = timer_fill(frame)
-            augs = augments.read(frame)
+            # the stage limits how many icons the bar can hold, so each icon is cut on its own
+            augs = augments.read(frame, expected_counts(row.get("stage"), row.get("round_num")))
             row["augments"] = [a.name for a in augs]
             row["augment_tiers"] = [a.tier for a in augs]
             row["away_augments"] = augments.count_away(frame)
+            if args.augments_only:
+                continue
+            row["arena_sig"] = arena_signature(frame)
+            row["planning"] = is_planning(frame)
+            row["timer_fill"] = timer_fill(frame)
             row["bench_items"] = [n.split("~")[0] if n else None for n in items.read(frame)]
             if args.reread_hp and (row.get("hp") is None or hp_panel_open(frame)):
                 row["hp"], row["other_hp"] = read_hp(frame)
