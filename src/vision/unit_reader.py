@@ -77,6 +77,7 @@ class UnitReader:
             return units
         crops = [frame[max(0, y):y + h, max(0, x):x + w] for _, (x, y, w, h), _ in found]
         probs = self.classifier.probabilities(crops)
+        keep = []
         for (at, _, bar), p in zip(found, probs):
             k = int(np.argmax(p))
             name = self.classifier.classes[k]
@@ -85,12 +86,16 @@ class UnitReader:
             if name == COVERED:
                 units.append({"at": at, "covered": True})
                 continue
+            keep.append((at, bar, name, float(p[k])))
+        # Items of every unit in the frame in one batched model call.
+        items = self.items.read_many(frame, [bar for _, bar, _, _ in keep])
+        for (at, bar, name, prob), held in zip(keep, items):
             units.append({
                 "at": at,
                 "name": name,
-                "p": round(float(p[k]), 3),
+                "p": round(prob, 3),
                 "star": star_level(frame, bar),
-                "items": self.items.read(frame, bar),
+                "items": held,
                 **({"loose": True} if id(bar) in loose_ids else {}),
             })
         return units

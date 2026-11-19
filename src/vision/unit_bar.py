@@ -249,15 +249,40 @@ class UnitItemReader:
         answer; the template matcher decides the rest (items the model was
         never trained on, unclear icons).
         """
+        return self.slots_many(frame, [bar])[0]
+
+    def model_answers(self, frame: np.ndarray, bars: list[Bar]) -> list[list[str | None]]:
+        """
+        The item classifier's sure answers for every slot of every bar, in one
+        batch (one GPU call per frame instead of one per unit); None where it
+        isn't sure or no model is available.
+        """
+        answers = [[None] * 3 for _ in bars]
+        if self.model is None or not bars:
+            return answers
+        p = _MODEL_PAD
+        crops, where = [], []
+        for b, bar in enumerate(bars):
+            for s, (x, y, w, h) in enumerate(bar.item_regions()):
+                c = crop(frame, (x - p, y - p, w + 2 * p, h + 2 * p))
+                if c.shape[:2] == (h + 2 * p, w + 2 * p):
+                    crops.append(c)
+                    where.append((b, s))
+        for (b, s), (cls, conf) in zip(where, self.model.predict(crops)):
+            if conf >= _CFG["item_model_confidence"]:
+                answers[b][s] = cls
+        return answers
+
+    def slots_many(self, frame: np.ndarray, bars: list[Bar]) -> list[list[dict]]:
+        """slots() for several units of one frame, with one batched model call."""
+        return [self._slots(frame, bar, said) for bar, said in zip(bars, self.model_answers(frame, bars))]
+
+    def read_many(self, frame: np.ndarray, bars: list[Bar]) -> list[list[str | None]]:
+        """read() for several units of one frame, with one batched model call."""
+        return [[s["name"] for s in sl[:held_count(sl)]] for sl in self.slots_many(frame, bars)]
+
+    def _slots(self, frame: np.ndarray, bar: Bar, model_says: list[str | None]) -> list[dict]:
         regions = bar.item_regions()
-        model_says = [None] * len(regions)
-        if self.model is not None:
-            p = _MODEL_PAD
-            crops = [crop(frame, (x - p, y - p, w + 2 * p, h + 2 * p)) for x, y, w, h in regions]
-            ok = [i for i, c in enumerate(crops) if c.shape[:2] == (regions[i][3] + 2 * p, regions[i][2] + 2 * p)]
-            for i, (cls, conf) in zip(ok, self.model.predict([crops[i] for i in ok])):
-                if conf >= _CFG["item_model_confidence"]:
-                    model_says[i] = cls
         out = []
         for region, said in zip(regions, model_says):
             if said is not None:

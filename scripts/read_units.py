@@ -19,6 +19,7 @@ cleaned `board` / `bench` of every frame (noise smoothed out over time,
 checked against the player's level, carried through combat).
 
 Re-run after retraining the classifier or rebuilding the item templates.
+--jobs N reads N games at once (one worker process each; games are independent).
 Don't run it on a VOD that another job is still writing.
 """
 
@@ -28,12 +29,76 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import argparse
 import json
+from concurrent.futures import ProcessPoolExecutor
 
 import cv2
 from tqdm import tqdm
 
 from src.vision.arena import home_board_rows, is_planning, planning_rows
 from src.vision.unit_reader import UnitReader
+
+
+_READER = None
+
+
+def _reader() -> UnitReader:
+    """One UnitReader per process (models load once per worker)."""
+    global _READER
+    if _READER is None:
+        _READER = UnitReader()
+    return _READER
+
+
+def process_game(states_path: str, vod_dir_path: str, light: bool, progress: bool = True) -> str:
+    """Read (or with light, refresh) the units of one game's state file; returns a summary line."""
+    states, vod_dir = Path(states_path), Path(vod_dir_path)
+    reader = _reader()
+    rows = [json.loads(line) for line in states.read_text(encoding="utf-8").splitlines() if line]
+    in_game = sorted((r for r in rows if r.get("in_game")), key=lambda r: r["frame"])
+    if not any(r.get("timer_fill") is not None for r in in_game):
+        return f"  {states.name}: no timer readings - run scripts/backfill_states.py first"
+    wanted = {r["frame"] for r, home, plan in zip(in_game, home_board_rows(in_game), planning_rows(in_game))
+              if home and plan}
+    bar = tqdm(rows, desc=states.stem, unit="row", dynamic_ncols=True, smoothing=0, mininterval=1.0,
+               disable=not progress)
+    read = missing = 0
+    if light:
+        covered_n = 0
+        for row in bar:
+            if row.get("units_raw") is None:
+                continue
+            frame = cv2.imread(str(vod_dir / states.stem / f"frame_{row['frame']:06d}.jpg"))
+            if frame is None:
+                missing += 1
+                continue
+            row["board_counter"] = reader.read_counter(frame)
+            covered = set(reader.covered(frame))
+            kept = [u for u in row["units_raw"] if u["at"] not in covered and not u.get("covered")]
+            row["units_raw"] = kept + [{"at": at, "covered": True} for at in sorted(covered)]
+            covered_n += len(covered)
+            read += 1
+        states.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+        return (f"  {states.name}: counter and tooltips read on {read} frames "
+                f"({covered_n} positions under a tooltip), {missing} frames missing")
+    for row in bar:
+        row.pop("units_raw", None)
+        row.pop("board_counter", None)
+        if row["frame"] not in wanted:
+            continue
+        frame = cv2.imread(str(vod_dir / states.stem / f"frame_{row['frame']:06d}.jpg"))
+        if frame is None:
+            missing += 1
+            continue
+        # Re-checked on the frame: states extracted before the "Combat"
+        # banner check existed still count those frames as planning.
+        if not is_planning(frame):
+            row["planning"] = False
+            continue
+        row["units_raw"] = reader.read(frame)
+        row["board_counter"] = reader.read_counter(frame)
+        read += 1
+    states.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+    return f"  {states.name}: {len(rows)} rows, units read on {read}, {missing} frames missing"
 
 
 def main():
@@ -43,61 +108,21 @@ def main():
     parser.add_argument("--light", "--counter-only", dest="light", action="store_true",
                         help="On frames whose units were already read, only (re)read the board counter "
                              "and which positions are under a tooltip (no re-classifying)")
+    parser.add_argument("--jobs", type=int, default=1,
+                        help="Games read in parallel, one worker process each (models load per worker)")
     args = parser.parse_args()
 
-    vod_dir = Path(args.frames).expanduser()
-    reader = UnitReader()   # loads the classifier even for --counter-only (a few seconds)
-
-    for states in sorted(Path(args.states).glob("game_*.jsonl")):
-        if states.name.endswith(".clean.jsonl"):
-            continue
-        rows = [json.loads(line) for line in states.read_text(encoding="utf-8").splitlines() if line]
-        in_game = sorted((r for r in rows if r.get("in_game")), key=lambda r: r["frame"])
-        if not any(r.get("timer_fill") is not None for r in in_game):
-            print(f"  {states.name}: no timer readings - run scripts/backfill_states.py first")
-            continue
-        wanted = {r["frame"] for r, home, plan in zip(in_game, home_board_rows(in_game), planning_rows(in_game))
-                  if home and plan}
-
-        read = missing = 0
-        if args.light:
-            covered_n = 0
-            for row in tqdm(rows, desc=states.stem, unit="row", dynamic_ncols=True, smoothing=0, mininterval=1.0):
-                if row.get("units_raw") is None:
-                    continue
-                frame = cv2.imread(str(vod_dir / states.stem / f"frame_{row['frame']:06d}.jpg"))
-                if frame is None:
-                    missing += 1
-                    continue
-                row["board_counter"] = reader.read_counter(frame)
-                covered = set(reader.covered(frame))
-                kept = [u for u in row["units_raw"] if u["at"] not in covered and not u.get("covered")]
-                row["units_raw"] = kept + [{"at": at, "covered": True} for at in sorted(covered)]
-                covered_n += len(covered)
-                read += 1
-            states.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
-            print(f"  {states.name}: counter and tooltips read on {read} frames "
-                  f"({covered_n} positions under a tooltip), {missing} frames missing")
-            continue
-        for row in tqdm(rows, desc=states.stem, unit="row", dynamic_ncols=True, smoothing=0, mininterval=1.0):
-            row.pop("units_raw", None)
-            row.pop("board_counter", None)
-            if row["frame"] not in wanted:
-                continue
-            frame = cv2.imread(str(vod_dir / states.stem / f"frame_{row['frame']:06d}.jpg"))
-            if frame is None:
-                missing += 1
-                continue
-            # Re-checked on the frame: states extracted before the "Combat"
-            # banner check existed still count those frames as planning.
-            if not is_planning(frame):
-                row["planning"] = False
-                continue
-            row["units_raw"] = reader.read(frame)
-            row["board_counter"] = reader.read_counter(frame)
-            read += 1
-        states.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
-        print(f"  {states.name}: {len(rows)} rows, units read on {read}, {missing} frames missing")
+    vod_dir = str(Path(args.frames).expanduser())
+    games = [str(p) for p in sorted(Path(args.states).glob("game_*.jsonl")) if not p.name.endswith(".clean.jsonl")]
+    if args.jobs <= 1:
+        for g in games:
+            print(process_game(g, vod_dir, args.light))
+        return
+    # Whole games per worker: each file is read and written by one process only.
+    with ProcessPoolExecutor(max_workers=args.jobs) as pool:
+        futures = [pool.submit(process_game, g, vod_dir, args.light, False) for g in games]
+        for f in futures:
+            print(f.result(), flush=True)
 
 
 if __name__ == "__main__":
