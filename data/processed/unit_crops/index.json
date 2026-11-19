@@ -15131,18 +15131,6 @@
 "round": 5.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_00__f001134__h13.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_00\\frame_001134.jpg",
-"window": [
-898,
-374,
-132,
-174
-],
-"stage": 1.0,
-"round": 2.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_00__f001171__s0.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_00\\frame_001171.jpg",
 "window": [
@@ -15460,18 +15448,6 @@
 "window": [
 838,
 321,
-132,
-178
-],
-"stage": 2.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_00__f001669__h04.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_00\\frame_001669.jpg",
-"window": [
-958,
-295,
 132,
 178
 ],
@@ -16199,30 +16175,6 @@
 "round": 7.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_00__f003062__h11.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_00\\frame_003062.jpg",
-"window": [
-651,
-374,
-132,
-174
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_00__f003062__h12.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_00\\frame_003062.jpg",
-"window": [
-774,
-374,
-132,
-174
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_00__f003062__h13.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_00\\frame_003062.jpg",
 "window": [
@@ -16470,18 +16422,6 @@
 300,
 132,
 178
-],
-"stage": 4.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_00__f003519__h12.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_00\\frame_003519.jpg",
-"window": [
-774,
-374,
-132,
-174
 ],
 "stage": 4.0,
 "round": 3.0,
@@ -16912,18 +16852,6 @@
 "window": [
 340,
 676,
-140,
-156
-],
-"stage": 4.0,
-"round": 7.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_00__f004028__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_00\\frame_004028.jpg",
-"window": [
-459,
-664,
 140,
 156
 ],
@@ -17447,35 +17375,11 @@
 "round": 1.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_00__f005012__h25.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_00\\frame_005012.jpg",
-"window": [
-1090,
-444,
-132,
-176
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_00__f005012__h30.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_00\\frame_005012.jpg",
 "window": [
 500,
 528,
-132,
-192
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_00__f005012__h32.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_00\\frame_005012.jpg",
-"window": [
-764,
-515,
 132,
 192
 ],
@@ -17494,18 +17398,6 @@
 "stage": 6.0,
 "round": 1.0,
 "where": "bench"
-},
-"kLX5YxRApcc__game_00__f005087__h23.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_00\\frame_005087.jpg",
-"window": [
-834,
-444,
-132,
-176
-],
-"stage": 6.0,
-"round": 2.0,
-"where": "board"
 },
 "kLX5YxRApcc__game_01__f006981__h15.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_006981.jpg",
@@ -17567,18 +17459,6 @@
 "round": 3.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f007030__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007030.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 1.0,
-"round": 3.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f007030__s1.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007030.jpg",
 "window": [
@@ -17603,18 +17483,6 @@
 "round": 4.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f007114__h06.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007114.jpg",
-"window": [
-1197,
-295,
-132,
-178
-],
-"stage": 1.0,
-"round": 4.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_01__f007114__h36.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007114.jpg",
 "window": [
@@ -17627,34 +17495,10 @@
 "round": 4.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f007114__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007114.jpg",
-"window": [
-943,
-664,
-140,
-156
-],
-"stage": 1.0,
-"round": 4.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f007114__s7.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007114.jpg",
 "window": [
 1185,
-664,
-140,
-156
-],
-"stage": 1.0,
-"round": 4.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f007114__s8.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007114.jpg",
-"window": [
-1306,
 664,
 140,
 156
@@ -17687,34 +17531,10 @@
 "round": 1.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f007172__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007172.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 1.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f007172__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007172.jpg",
 "window": [
 701,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 1.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f007172__s8.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007172.jpg",
-"window": [
-1306,
 664,
 140,
 156
@@ -17771,30 +17591,6 @@
 "round": 2.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f007345__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007345.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 2.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f007345__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007345.jpg",
-"window": [
-943,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 2.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f007371__h04.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007371.jpg",
 "window": [
@@ -17819,18 +17615,6 @@
 "round": 2.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f007371__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007371.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 2.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f007497__h04.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007497.jpg",
 "window": [
@@ -17838,18 +17622,6 @@
 341,
 132,
 178
-],
-"stage": 2.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_01__f007497__h16.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007497.jpg",
-"window": [
-1269,
-374,
-132,
-174
 ],
 "stage": 2.0,
 "round": 3.0,
@@ -17877,54 +17649,6 @@
 ],
 "stage": 2.0,
 "round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_01__f007497__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007497.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 3.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f007497__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007497.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 3.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f007684__h22.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007684.jpg",
-"window": [
-705,
-444,
-132,
-176
-],
-"stage": 2.0,
-"round": 5.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_01__f007684__h31.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007684.jpg",
-"window": [
-631,
-515,
-132,
-192
-],
-"stage": 2.0,
-"round": 5.0,
 "where": "board"
 },
 "kLX5YxRApcc__game_01__f007684__h35.jpg": {
@@ -17963,30 +17687,6 @@
 "round": 5.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_01__f007684__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007684.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 5.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f007706__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007706.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 5.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f007824__h35.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007824.jpg",
 "window": [
@@ -17998,30 +17698,6 @@
 "stage": 2.0,
 "round": 6.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_01__f007824__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007824.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 6.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f007824__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007824.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 6.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_01__f007824__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007824.jpg",
@@ -18071,18 +17747,6 @@
 "round": 7.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f007965__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007965.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 7.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f007965__s2.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007965.jpg",
 "window": [
@@ -18111,30 +17775,6 @@
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007965.jpg",
 "window": [
 1306,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 7.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f007967__h32.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007967.jpg",
-"window": [
-764,
-515,
-132,
-192
-],
-"stage": 2.0,
-"round": 7.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_01__f007967__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_007967.jpg",
-"window": [
-580,
 664,
 140,
 156
@@ -18178,30 +17818,6 @@
 "stage": 3.0,
 "round": 1.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_01__f008058__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008058.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 1.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f008058__s8.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008058.jpg",
-"window": [
-1306,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 1.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_01__f008072__h04.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008072.jpg",
@@ -18251,30 +17867,6 @@
 "round": 1.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f008072__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008072.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 1.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f008072__s8.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008072.jpg",
-"window": [
-1306,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 1.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f008188__h04.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008188.jpg",
 "window": [
@@ -18311,30 +17903,6 @@
 "round": 2.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f008188__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008188.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 2.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f008422__h03.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008422.jpg",
-"window": [
-838,
-295,
-132,
-178
-],
-"stage": 3.0,
-"round": 3.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_01__f008422__h04.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008422.jpg",
 "window": [
@@ -18359,18 +17927,6 @@
 "round": 3.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f008422__h15.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008422.jpg",
-"window": [
-1145,
-374,
-132,
-174
-],
-"stage": 3.0,
-"round": 3.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_01__f008422__h36.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008422.jpg",
 "window": [
@@ -18382,42 +17938,6 @@
 "stage": 3.0,
 "round": 3.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_01__f008422__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008422.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 3.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f008422__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008422.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 3.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f008422__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008422.jpg",
-"window": [
-701,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 3.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_01__f008549__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008549.jpg",
@@ -18478,18 +17998,6 @@
 "stage": 3.0,
 "round": 4.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_01__f008549__s8.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008549.jpg",
-"window": [
-1306,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 4.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_01__f008644__h02.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008644.jpg",
@@ -18695,42 +18203,6 @@
 "round": 7.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f008910__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008910.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f008910__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008910.jpg",
-"window": [
-701,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f008910__s8.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008910.jpg",
-"window": [
-1306,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f008912__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008912.jpg",
 "window": [
@@ -18779,30 +18251,6 @@
 "round": 7.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f008912__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008912.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f008912__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_008912.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f009012__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009012.jpg",
 "window": [
@@ -18850,18 +18298,6 @@
 "stage": 4.0,
 "round": 1.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_01__f009012__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009012.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 1.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_01__f009012__s2.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009012.jpg",
@@ -18982,30 +18418,6 @@
 "stage": 4.0,
 "round": 4.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_01__f009464__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009464.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 4.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f009464__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009464.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 4.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_01__f009464__s8.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009464.jpg",
@@ -19139,18 +18551,6 @@
 "round": 5.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_01__f009573__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009573.jpg",
-"window": [
-822,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 5.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f009578__h04.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009578.jpg",
 "window": [
@@ -19222,18 +18622,6 @@
 "stage": 4.0,
 "round": 5.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_01__f009578__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009578.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 5.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_01__f009578__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009578.jpg",
@@ -19343,46 +18731,10 @@
 "round": 6.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f009702__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009702.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f009702__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009702.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f009702__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009702.jpg",
 "window": [
 701,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f009702__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009702.jpg",
-"window": [
-822,
 664,
 140,
 156
@@ -19547,18 +18899,6 @@
 "round": 6.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_01__f009711__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009711.jpg",
-"window": [
-822,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f009851__h02.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009851.jpg",
 "window": [
@@ -19582,18 +18922,6 @@
 "stage": 4.0,
 "round": 7.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_01__f009851__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009851.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 7.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_01__f009851__s6.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009851.jpg",
@@ -19691,34 +19019,10 @@
 "round": 1.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f009948__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009948.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 1.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f009948__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009948.jpg",
 "window": [
 701,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 1.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f009948__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_009948.jpg",
-"window": [
-943,
 664,
 140,
 156
@@ -19823,18 +19127,6 @@
 "round": 2.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f010071__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_010071.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 2.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f010071__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_010071.jpg",
 "window": [
@@ -19907,18 +19199,6 @@
 "round": 2.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f010080__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_010080.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 2.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f010080__s8.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_010080.jpg",
 "window": [
@@ -19972,18 +19252,6 @@
 "window": [
 526,
 380,
-132,
-174
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_01__f010200__h11.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_010200.jpg",
-"window": [
-651,
-374,
 132,
 174
 ],
@@ -20051,30 +19319,6 @@
 "round": 3.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f010200__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_010200.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f010200__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_010200.jpg",
-"window": [
-943,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_01__f010200__s6.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_010200.jpg",
 "window": [
@@ -20106,18 +19350,6 @@
 326,
 132,
 178
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_01__f010206__h10.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_010206.jpg",
-"window": [
-527,
-374,
-132,
-174
 ],
 "stage": 5.0,
 "round": 3.0,
@@ -20195,54 +19427,6 @@
 "round": 3.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_01__f010206__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_010206.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_01__f010206__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_01\\frame_010206.jpg",
-"window": [
-943,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f011028__h23.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011028.jpg",
-"window": [
-834,
-444,
-132,
-176
-],
-"stage": 1.0,
-"round": 2.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f011028__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011028.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 1.0,
-"round": 2.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f011190__h01.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011190.jpg",
 "window": [
@@ -20278,18 +19462,6 @@
 "stage": 1.0,
 "round": 4.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_02__f011190__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011190.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 1.0,
-"round": 4.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_02__f011190__s5.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011190.jpg",
@@ -20351,46 +19523,10 @@
 "round": 2.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f011446__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011446.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 2.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f011446__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011446.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 2.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f011446__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011446.jpg",
 "window": [
 701,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 2.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f011446__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011446.jpg",
-"window": [
-943,
 664,
 140,
 156
@@ -20435,30 +19571,6 @@
 "round": 3.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f011559__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011559.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 3.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f011559__s8.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011559.jpg",
-"window": [
-1306,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 3.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f011778__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011778.jpg",
 "window": [
@@ -20482,30 +19594,6 @@
 "stage": 2.0,
 "round": 5.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_02__f011778__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011778.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 5.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f011778__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011778.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 5.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_02__f011902__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011902.jpg",
@@ -20531,30 +19619,6 @@
 "round": 6.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f011902__h33.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011902.jpg",
-"window": [
-899,
-515,
-132,
-192
-],
-"stage": 2.0,
-"round": 6.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f011902__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011902.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 6.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f011909__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011909.jpg",
 "window": [
@@ -20566,18 +19630,6 @@
 "stage": 2.0,
 "round": 6.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_02__f011909__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_011909.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 6.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_02__f012027__h02.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012027.jpg",
@@ -20602,78 +19654,6 @@
 "stage": 2.0,
 "round": 7.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_02__f012027__h31.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012027.jpg",
-"window": [
-631,
-515,
-132,
-192
-],
-"stage": 2.0,
-"round": 7.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f012027__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012027.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 7.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f012027__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012027.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 7.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f012032__h31.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012032.jpg",
-"window": [
-631,
-515,
-132,
-192
-],
-"stage": 2.0,
-"round": 7.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f012032__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012032.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 7.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f012032__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012032.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 7.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_02__f012126__h02.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012126.jpg",
@@ -20711,30 +19691,6 @@
 "round": 1.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f012126__h34.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012126.jpg",
-"window": [
-1032,
-515,
-132,
-192
-],
-"stage": 3.0,
-"round": 1.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f012126__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012126.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 1.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f012129__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012129.jpg",
 "window": [
@@ -20770,18 +19726,6 @@
 "stage": 3.0,
 "round": 2.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_02__f012273__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012273.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 2.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_02__f012456__h02.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012456.jpg",
@@ -20830,18 +19774,6 @@
 "stage": 3.0,
 "round": 3.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_02__f012456__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012456.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 3.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_02__f012456__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012456.jpg",
@@ -20902,18 +19834,6 @@
 "stage": 3.0,
 "round": 3.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_02__f012460__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012460.jpg",
-"window": [
-701,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 3.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_02__f012460__s4.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012460.jpg",
@@ -21011,34 +19931,10 @@
 "round": 5.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f012681__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012681.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 5.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f012681__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012681.jpg",
 "window": [
 701,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 5.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f012681__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012681.jpg",
-"window": [
-822,
 664,
 140,
 156
@@ -21087,18 +19983,6 @@
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012689.jpg",
 "window": [
 701,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 5.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f012689__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012689.jpg",
-"window": [
-822,
 664,
 140,
 156
@@ -21178,18 +20062,6 @@
 "stage": 3.0,
 "round": 6.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_02__f012831__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012831.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 6.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_02__f012831__s8.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012831.jpg",
@@ -21275,18 +20147,6 @@
 "round": 7.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f012964__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012964.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f012964__s4.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_012964.jpg",
 "window": [
@@ -21371,18 +20231,6 @@
 "round": 1.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f013074__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013074.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 1.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f013368__h02.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013368.jpg",
 "window": [
@@ -21455,18 +20303,6 @@
 "round": 3.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f013368__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013368.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 3.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f013368__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013368.jpg",
 "window": [
@@ -21503,18 +20339,6 @@
 "round": 3.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f013374__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013374.jpg",
-"window": [
-701,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 3.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f013466__h02.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013466.jpg",
 "window": [
@@ -21550,30 +20374,6 @@
 "stage": 4.0,
 "round": 4.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_02__f013466__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013466.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 4.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f013466__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013466.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 4.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_02__f013476__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013476.jpg",
@@ -21635,18 +20435,6 @@
 "round": 5.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f013577__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013577.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 5.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f013577__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013577.jpg",
 "window": [
@@ -21683,47 +20471,11 @@
 "round": 5.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f013581__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013581.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 5.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f013581__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013581.jpg",
-"window": [
-701,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 5.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f013821__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013821.jpg",
 "window": [
 838,
 335,
-132,
-178
-],
-"stage": 4.0,
-"round": 7.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f013821__h04.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013821.jpg",
-"window": [
-958,
-295,
 132,
 178
 ],
@@ -21791,18 +20543,6 @@
 "round": 7.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f013821__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013821.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 7.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f013821__s2.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013821.jpg",
 "window": [
@@ -21827,30 +20567,6 @@
 "round": 7.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_02__f013821__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013821.jpg",
-"window": [
-943,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 7.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f013821__s6.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013821.jpg",
-"window": [
-1064,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 7.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f013825__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013825.jpg",
 "window": [
@@ -21862,30 +20578,6 @@
 "stage": 4.0,
 "round": 7.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_02__f013825__h24.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013825.jpg",
-"window": [
-962,
-444,
-132,
-176
-],
-"stage": 4.0,
-"round": 7.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f013825__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013825.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 7.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_02__f013825__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013825.jpg",
@@ -21959,18 +20651,6 @@
 "round": 1.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f013934__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_013934.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 1.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f014062__h22.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014062.jpg",
 "window": [
@@ -22035,18 +20715,6 @@
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014062.jpg",
 "window": [
 701,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 2.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f014062__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014062.jpg",
-"window": [
-822,
 664,
 140,
 156
@@ -22247,30 +20915,6 @@
 "round": 3.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f014208__h12.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014208.jpg",
-"window": [
-774,
-374,
-132,
-174
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014208__h13.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014208.jpg",
-"window": [
-898,
-374,
-132,
-174
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_02__f014208__h14.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014208.jpg",
 "window": [
@@ -22278,18 +20922,6 @@
 410,
 132,
 174
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014208__h21.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014208.jpg",
-"window": [
-576,
-444,
-132,
-176
 ],
 "stage": 5.0,
 "round": 3.0,
@@ -22343,18 +20975,6 @@
 "round": 3.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f014208__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014208.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f014208__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014208.jpg",
 "window": [
@@ -22371,18 +20991,6 @@
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014208.jpg",
 "window": [
 822,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f014208__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014208.jpg",
-"window": [
-943,
 664,
 140,
 156
@@ -22422,18 +21030,6 @@
 330,
 132,
 178
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014213__h13.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014213.jpg",
-"window": [
-898,
-374,
-132,
-174
 ],
 "stage": 5.0,
 "round": 3.0,
@@ -22523,58 +21119,10 @@
 "round": 3.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f014213__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014213.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f014213__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014213.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f014213__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014213.jpg",
 "window": [
 701,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f014213__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014213.jpg",
-"window": [
-943,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f014213__s6.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014213.jpg",
-"window": [
-1064,
 664,
 140,
 156
@@ -22590,18 +21138,6 @@
 329,
 132,
 178
-],
-"stage": 5.0,
-"round": 4.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014344__h13.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014344.jpg",
-"window": [
-898,
-374,
-132,
-174
 ],
 "stage": 5.0,
 "round": 4.0,
@@ -22643,18 +21179,6 @@
 "round": 4.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f014344__h24.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014344.jpg",
-"window": [
-962,
-444,
-132,
-176
-],
-"stage": 5.0,
-"round": 4.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_02__f014344__h25.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014344.jpg",
 "window": [
@@ -22672,18 +21196,6 @@
 "window": [
 498,
 552,
-132,
-192
-],
-"stage": 5.0,
-"round": 4.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014344__h31.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014344.jpg",
-"window": [
-631,
-515,
 132,
 192
 ],
@@ -22787,18 +21299,6 @@
 "round": 4.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f014354__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014354.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 4.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f014414__h04.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014414.jpg",
 "window": [
@@ -22806,30 +21306,6 @@
 308,
 132,
 178
-],
-"stage": 5.0,
-"round": 5.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014414__h12.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014414.jpg",
-"window": [
-774,
-374,
-132,
-174
-],
-"stage": 5.0,
-"round": 5.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014414__h13.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014414.jpg",
-"window": [
-898,
-374,
-132,
-174
 ],
 "stage": 5.0,
 "round": 5.0,
@@ -22883,18 +21359,6 @@
 "round": 5.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f014414__h24.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014414.jpg",
-"window": [
-962,
-444,
-132,
-176
-],
-"stage": 5.0,
-"round": 5.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_02__f014414__h25.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014414.jpg",
 "window": [
@@ -22923,18 +21387,6 @@
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014414.jpg",
 "window": [
 459,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 5.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f014414__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014414.jpg",
-"window": [
-580,
 664,
 140,
 156
@@ -22974,30 +21426,6 @@
 300,
 132,
 178
-],
-"stage": 5.0,
-"round": 6.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014562__h12.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014562.jpg",
-"window": [
-774,
-374,
-132,
-174
-],
-"stage": 5.0,
-"round": 6.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014562__h13.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014562.jpg",
-"window": [
-898,
-374,
-132,
-174
 ],
 "stage": 5.0,
 "round": 6.0,
@@ -23063,30 +21491,6 @@
 "round": 6.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f014562__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014562.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 6.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f014562__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014562.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 6.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f014562__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014562.jpg",
 "window": [
@@ -23123,30 +21527,6 @@
 "round": 6.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f014568__h12.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014568.jpg",
-"window": [
-774,
-374,
-132,
-174
-],
-"stage": 5.0,
-"round": 6.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014568__h13.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014568.jpg",
-"window": [
-898,
-374,
-132,
-174
-],
-"stage": 5.0,
-"round": 6.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_02__f014568__h16.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014568.jpg",
 "window": [
@@ -23170,18 +21550,6 @@
 "stage": 5.0,
 "round": 6.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_02__f014568__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014568.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 6.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_02__f014568__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014568.jpg",
@@ -23250,18 +21618,6 @@
 300,
 132,
 178
-],
-"stage": 5.0,
-"round": 7.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014677__h13.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014677.jpg",
-"window": [
-898,
-374,
-132,
-174
 ],
 "stage": 5.0,
 "round": 7.0,
@@ -23375,30 +21731,6 @@
 "round": 7.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f014680__h12.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014680.jpg",
-"window": [
-774,
-374,
-132,
-174
-],
-"stage": 5.0,
-"round": 7.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014680__h13.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014680.jpg",
-"window": [
-898,
-374,
-132,
-174
-],
-"stage": 5.0,
-"round": 7.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_02__f014680__h30.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014680.jpg",
 "window": [
@@ -23410,18 +21742,6 @@
 "stage": 5.0,
 "round": 7.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_02__f014680__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014680.jpg",
-"window": [
-701,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 7.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_02__f014680__s4.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014680.jpg",
@@ -23490,18 +21810,6 @@
 410,
 132,
 174
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014758__h24.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014758.jpg",
-"window": [
-962,
-444,
-132,
-176
 ],
 "stage": 6.0,
 "round": 1.0,
@@ -23591,30 +21899,6 @@
 "round": 1.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f014763__h10.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014763.jpg",
-"window": [
-527,
-374,
-132,
-174
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014763__h13.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014763.jpg",
-"window": [
-898,
-374,
-132,
-174
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_02__f014763__h14.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014763.jpg",
 "window": [
@@ -23622,18 +21906,6 @@
 411,
 132,
 174
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014763__h24.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014763.jpg",
-"window": [
-962,
-444,
-132,
-176
 ],
 "stage": 6.0,
 "round": 1.0,
@@ -23651,18 +21923,6 @@
 "round": 1.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f014763__h33.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014763.jpg",
-"window": [
-899,
-515,
-132,
-192
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_02__f014763__h35.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014763.jpg",
 "window": [
@@ -23674,30 +21934,6 @@
 "stage": 6.0,
 "round": 1.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_02__f014763__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014763.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f014763__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014763.jpg",
-"window": [
-701,
-664,
-140,
-156
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_02__f014913__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014913.jpg",
@@ -23718,18 +21954,6 @@
 300,
 132,
 178
-],
-"stage": 6.0,
-"round": 2.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014913__h10.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014913.jpg",
-"window": [
-527,
-374,
-132,
-174
 ],
 "stage": 6.0,
 "round": 2.0,
@@ -23795,42 +22019,6 @@
 "round": 2.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f014913__h24.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014913.jpg",
-"window": [
-962,
-444,
-132,
-176
-],
-"stage": 6.0,
-"round": 2.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014913__h30.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014913.jpg",
-"window": [
-497,
-515,
-132,
-192
-],
-"stage": 6.0,
-"round": 2.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f014913__h31.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014913.jpg",
-"window": [
-631,
-515,
-132,
-192
-],
-"stage": 6.0,
-"round": 2.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_02__f014913__h35.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014913.jpg",
 "window": [
@@ -23842,30 +22030,6 @@
 "stage": 6.0,
 "round": 2.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_02__f014913__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014913.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 6.0,
-"round": 2.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f014913__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014913.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 6.0,
-"round": 2.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_02__f014913__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014913.jpg",
@@ -23975,18 +22139,6 @@
 "round": 2.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f014917__h30.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014917.jpg",
-"window": [
-497,
-515,
-132,
-192
-],
-"stage": 6.0,
-"round": 2.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_02__f014917__h31.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014917.jpg",
 "window": [
@@ -24010,30 +22162,6 @@
 "stage": 6.0,
 "round": 2.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_02__f014917__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014917.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 6.0,
-"round": 2.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_02__f014917__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014917.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 6.0,
-"round": 2.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_02__f014917__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_014917.jpg",
@@ -24064,18 +22192,6 @@
 "window": [
 720,
 332,
-132,
-178
-],
-"stage": 6.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f015045__h03.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015045.jpg",
-"window": [
-838,
-295,
 132,
 178
 ],
@@ -24203,18 +22319,6 @@
 "round": 3.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f015051__h03.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015051.jpg",
-"window": [
-838,
-295,
-132,
-178
-],
-"stage": 6.0,
-"round": 3.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_02__f015051__h11.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015051.jpg",
 "window": [
@@ -24222,18 +22326,6 @@
 397,
 132,
 174
-],
-"stage": 6.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f015051__h21.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015051.jpg",
-"window": [
-576,
-444,
-132,
-176
 ],
 "stage": 6.0,
 "round": 3.0,
@@ -24323,18 +22415,6 @@
 "round": 5.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f015222__h03.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015222.jpg",
-"window": [
-838,
-295,
-132,
-178
-],
-"stage": 6.0,
-"round": 5.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_02__f015222__h05.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015222.jpg",
 "window": [
@@ -24366,30 +22446,6 @@
 397,
 132,
 174
-],
-"stage": 6.0,
-"round": 5.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f015222__h21.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015222.jpg",
-"window": [
-576,
-444,
-132,
-176
-],
-"stage": 6.0,
-"round": 5.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f015222__h25.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015222.jpg",
-"window": [
-1090,
-444,
-132,
-176
 ],
 "stage": 6.0,
 "round": 5.0,
@@ -24431,18 +22487,6 @@
 "round": 5.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f015222__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015222.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 6.0,
-"round": 5.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_02__f015225__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015225.jpg",
 "window": [
@@ -24462,18 +22506,6 @@
 372,
 132,
 174
-],
-"stage": 6.0,
-"round": 5.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f015225__h21.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015225.jpg",
-"window": [
-576,
-444,
-132,
-176
 ],
 "stage": 6.0,
 "round": 5.0,
@@ -24791,30 +22823,6 @@
 "round": 7.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f015443__h21.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015443.jpg",
-"window": [
-576,
-444,
-132,
-176
-],
-"stage": 6.0,
-"round": 7.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f015443__h22.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015443.jpg",
-"window": [
-705,
-444,
-132,
-176
-],
-"stage": 6.0,
-"round": 7.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_02__f015443__h24.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015443.jpg",
 "window": [
@@ -24887,18 +22895,6 @@
 "round": 1.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f015537__h03.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015537.jpg",
-"window": [
-838,
-295,
-132,
-178
-],
-"stage": 7.0,
-"round": 1.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_02__f015537__h04.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015537.jpg",
 "window": [
@@ -24947,18 +22943,6 @@
 "round": 1.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_02__f015537__h22.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015537.jpg",
-"window": [
-705,
-444,
-132,
-176
-],
-"stage": 7.0,
-"round": 1.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_02__f015537__h25.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015537.jpg",
 "window": [
@@ -25002,18 +22986,6 @@
 541,
 132,
 192
-],
-"stage": 7.0,
-"round": 1.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_02__f015550__h03.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_02\\frame_015550.jpg",
-"window": [
-838,
-295,
-132,
-178
 ],
 "stage": 7.0,
 "round": 1.0,
@@ -25091,18 +23063,6 @@
 "round": 3.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_03__f016920__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_016920.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 1.0,
-"round": 3.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_03__f016920__s8.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_016920.jpg",
 "window": [
@@ -25151,54 +23111,6 @@
 "round": 4.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_03__f016991__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_016991.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 1.0,
-"round": 4.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f016991__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_016991.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 1.0,
-"round": 4.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f016991__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_016991.jpg",
-"window": [
-822,
-664,
-140,
-156
-],
-"stage": 1.0,
-"round": 4.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f016991__s7.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_016991.jpg",
-"window": [
-1185,
-664,
-140,
-156
-],
-"stage": 1.0,
-"round": 4.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_03__f016992__h13.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_016992.jpg",
 "window": [
@@ -25210,30 +23122,6 @@
 "stage": 1.0,
 "round": 4.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_03__f016992__h31.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_016992.jpg",
-"window": [
-631,
-515,
-132,
-192
-],
-"stage": 1.0,
-"round": 4.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_03__f016992__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_016992.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 1.0,
-"round": 4.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_03__f016992__s1.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_016992.jpg",
@@ -25270,54 +23158,6 @@
 "stage": 2.0,
 "round": 2.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_03__f017281__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017281.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 2.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f017281__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017281.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 2.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f017281__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017281.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 2.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f017281__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017281.jpg",
-"window": [
-822,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 2.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_03__f017281__s6.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017281.jpg",
@@ -25367,18 +23207,6 @@
 "round": 2.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_03__f017290__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017290.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 2.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_03__f017444__h30.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017444.jpg",
 "window": [
@@ -25414,30 +23242,6 @@
 "stage": 2.0,
 "round": 3.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_03__f017444__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017444.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 3.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f017444__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017444.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 3.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_03__f017456__h02.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017456.jpg",
@@ -25571,18 +23375,6 @@
 "round": 5.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_03__f017643__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017643.jpg",
-"window": [
-822,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 5.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_03__f017643__s5.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017643.jpg",
 "window": [
@@ -25595,34 +23387,10 @@
 "round": 5.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_03__f017643__s6.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017643.jpg",
-"window": [
-1064,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 5.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_03__f017643__s7.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017643.jpg",
 "window": [
 1185,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 5.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f017643__s8.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017643.jpg",
-"window": [
-1306,
 664,
 140,
 156
@@ -25715,34 +23483,10 @@
 "round": 6.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_03__f017786__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017786.jpg",
-"window": [
-822,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 6.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_03__f017786__s5.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017786.jpg",
 "window": [
 943,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 6.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f017786__s6.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017786.jpg",
-"window": [
-1064,
 664,
 140,
 156
@@ -25803,18 +23547,6 @@
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017789.jpg",
 "window": [
 943,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 6.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f017789__s6.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017789.jpg",
-"window": [
-1064,
 664,
 140,
 156
@@ -25931,18 +23663,6 @@
 "round": 1.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_03__f017964__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017964.jpg",
-"window": [
-943,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 1.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_03__f017964__s6.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017964.jpg",
 "window": [
@@ -25971,18 +23691,6 @@
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017965.jpg",
 "window": [
 701,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 1.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f017965__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_017965.jpg",
-"window": [
-943,
 664,
 140,
 156
@@ -26062,42 +23770,6 @@
 "stage": 3.0,
 "round": 3.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_03__f018317__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018317.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 3.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f018317__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018317.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 3.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f018317__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018317.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 3.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_03__f018317__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018317.jpg",
@@ -26219,34 +23891,10 @@
 "round": 5.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_03__f018513__h33.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018513.jpg",
-"window": [
-899,
-515,
-132,
-192
-],
-"stage": 3.0,
-"round": 5.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_03__f018513__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018513.jpg",
 "window": [
 701,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 5.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f018513__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018513.jpg",
-"window": [
-822,
 664,
 140,
 156
@@ -26303,18 +23951,6 @@
 "round": 5.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_03__f018517__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018517.jpg",
-"window": [
-822,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 5.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_03__f018654__h30.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018654.jpg",
 "window": [
@@ -26351,18 +23987,6 @@
 "round": 6.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_03__f018654__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018654.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 6.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_03__f018654__s2.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018654.jpg",
 "window": [
@@ -26379,18 +24003,6 @@
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018654.jpg",
 "window": [
 701,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 6.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f018654__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018654.jpg",
-"window": [
-822,
 664,
 140,
 156
@@ -26427,30 +24039,6 @@
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018659.jpg",
 "window": [
 459,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 6.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f018659__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018659.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 6.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f018659__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018659.jpg",
-"window": [
-701,
 664,
 140,
 156
@@ -26506,18 +24094,6 @@
 "stage": 3.0,
 "round": 7.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_03__f018794__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018794.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_03__f018794__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018794.jpg",
@@ -26579,30 +24155,6 @@
 "round": 7.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_03__f018797__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018797.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f018797__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018797.jpg",
-"window": [
-701,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_03__f018890__h30.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018890.jpg",
 "window": [
@@ -26639,30 +24191,6 @@
 "round": 1.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_03__f018890__h34.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018890.jpg",
-"window": [
-1032,
-515,
-132,
-192
-],
-"stage": 4.0,
-"round": 1.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_03__f018890__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018890.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 1.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_03__f018890__s2.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018890.jpg",
 "window": [
@@ -26675,34 +24203,10 @@
 "round": 1.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_03__f018890__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018890.jpg",
-"window": [
-943,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 1.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_03__f018890__s6.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018890.jpg",
 "window": [
 1064,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 1.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f018890__s7.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_018890.jpg",
-"window": [
-1185,
 664,
 140,
 156
@@ -26855,18 +24359,6 @@
 "round": 4.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_03__f019329__s7.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_019329.jpg",
-"window": [
-1185,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 4.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_03__f019329__s8.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_019329.jpg",
 "window": [
@@ -26914,18 +24406,6 @@
 "stage": 4.0,
 "round": 5.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_03__f019430__s8.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_019430.jpg",
-"window": [
-1306,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 5.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_03__f019563__h23.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_019563.jpg",
@@ -27071,18 +24551,6 @@
 "round": 7.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_03__f019663__h04.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_019663.jpg",
-"window": [
-958,
-295,
-132,
-178
-],
-"stage": 4.0,
-"round": 7.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_03__f019663__h30.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_019663.jpg",
 "window": [
@@ -27102,30 +24570,6 @@
 297,
 132,
 178
-],
-"stage": 5.0,
-"round": 1.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_03__f019755__h15.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_019755.jpg",
-"window": [
-1145,
-374,
-132,
-174
-],
-"stage": 5.0,
-"round": 1.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_03__f019755__h16.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_019755.jpg",
-"window": [
-1269,
-374,
-132,
-174
 ],
 "stage": 5.0,
 "round": 1.0,
@@ -27250,18 +24694,6 @@
 "stage": 5.0,
 "round": 2.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_03__f019903__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_019903.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 2.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_03__f020029__h01.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_020029.jpg",
@@ -27479,18 +24911,6 @@
 "round": 5.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_03__f020236__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_020236.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 5.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_03__f020357__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_020357.jpg",
 "window": [
@@ -27544,18 +24964,6 @@
 "window": [
 446,
 446,
-132,
-176
-],
-"stage": 5.0,
-"round": 6.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_03__f020368__h25.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_020368.jpg",
-"window": [
-1090,
-444,
 132,
 176
 ],
@@ -27755,30 +25163,6 @@
 "round": 1.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_03__f020534__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_020534.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_03__f020534__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_020534.jpg",
-"window": [
-822,
-664,
-140,
-156
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_03__f020535__h30.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_020535.jpg",
 "window": [
@@ -27813,18 +25197,6 @@
 ],
 "stage": 6.0,
 "round": 1.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_03__f020709__h02.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_020709.jpg",
-"window": [
-718,
-295,
-132,
-178
-],
-"stage": 6.0,
-"round": 2.0,
 "where": "board"
 },
 "kLX5YxRApcc__game_03__f020709__h20.jpg": {
@@ -27887,18 +25259,6 @@
 "round": 3.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_03__f020839__h03.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_020839.jpg",
-"window": [
-838,
-295,
-132,
-178
-],
-"stage": 6.0,
-"round": 3.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_03__f020839__h04.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_020839.jpg",
 "window": [
@@ -27946,18 +25306,6 @@
 "stage": 6.0,
 "round": 3.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_03__f020839__s7.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_020839.jpg",
-"window": [
-1185,
-664,
-140,
-156
-],
-"stage": 6.0,
-"round": 3.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_03__f020843__h02.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_020843.jpg",
@@ -28139,18 +25487,6 @@
 "round": 5.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_03__f020990__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_020990.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 6.0,
-"round": 5.0,
-"where": "bench"
-},
 "kLX5YxRApcc__game_03__f020997__h02.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_03\\frame_020997.jpg",
 "window": [
@@ -28247,42 +25583,6 @@
 "round": 3.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_04__f022600__h13.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_022600.jpg",
-"window": [
-898,
-374,
-132,
-174
-],
-"stage": 1.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f022600__h23.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_022600.jpg",
-"window": [
-834,
-444,
-132,
-176
-],
-"stage": 1.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f022679__h05.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_022679.jpg",
-"window": [
-1077,
-295,
-132,
-178
-],
-"stage": 1.0,
-"round": 4.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_04__f022679__h30.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_022679.jpg",
 "window": [
@@ -28294,18 +25594,6 @@
 "stage": 1.0,
 "round": 4.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_04__f022679__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_022679.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 1.0,
-"round": 4.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_04__f022679__s7.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_022679.jpg",
@@ -28583,30 +25871,6 @@
 "round": 6.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_04__f023473__h23.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_023473.jpg",
-"window": [
-834,
-444,
-132,
-176
-],
-"stage": 2.0,
-"round": 6.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f023473__h25.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_023473.jpg",
-"window": [
-1090,
-444,
-132,
-176
-],
-"stage": 2.0,
-"round": 6.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_04__f023473__h36.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_023473.jpg",
 "window": [
@@ -28655,18 +25919,6 @@
 "round": 7.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_04__f023555__h15.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_023555.jpg",
-"window": [
-1145,
-374,
-132,
-174
-],
-"stage": 2.0,
-"round": 7.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_04__f023555__h25.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_023555.jpg",
 "window": [
@@ -28703,18 +25955,6 @@
 "round": 7.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_04__f023575__h03.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_023575.jpg",
-"window": [
-838,
-295,
-132,
-178
-],
-"stage": 2.0,
-"round": 7.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_04__f023575__h25.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_023575.jpg",
 "window": [
@@ -28725,30 +25965,6 @@
 ],
 "stage": 2.0,
 "round": 7.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f023668__h02.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_023668.jpg",
-"window": [
-718,
-295,
-132,
-178
-],
-"stage": 3.0,
-"round": 1.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f023668__h03.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_023668.jpg",
-"window": [
-838,
-295,
-132,
-178
-],
-"stage": 3.0,
-"round": 1.0,
 "where": "board"
 },
 "kLX5YxRApcc__game_04__f023668__h04.jpg": {
@@ -28835,18 +26051,6 @@
 "round": 1.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_04__f023676__h12.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_023676.jpg",
-"window": [
-774,
-374,
-132,
-174
-],
-"stage": 3.0,
-"round": 1.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_04__f023676__s4.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_023676.jpg",
 "window": [
@@ -28888,18 +26092,6 @@
 "window": [
 958,
 292,
-132,
-178
-],
-"stage": 3.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f023999__h05.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_023999.jpg",
-"window": [
-1077,
-295,
 132,
 178
 ],
@@ -28955,30 +26147,6 @@
 "round": 3.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_04__f024000__h05.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_024000.jpg",
-"window": [
-1077,
-295,
-132,
-178
-],
-"stage": 3.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f024207__h03.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_024207.jpg",
-"window": [
-838,
-295,
-132,
-178
-],
-"stage": 3.0,
-"round": 5.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_04__f024207__h35.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_024207.jpg",
 "window": [
@@ -29015,35 +26183,11 @@
 "round": 5.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_04__f024209__h03.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_024209.jpg",
-"window": [
-838,
-295,
-132,
-178
-],
-"stage": 3.0,
-"round": 5.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_04__f024353__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_024353.jpg",
 "window": [
 838,
 292,
-132,
-178
-],
-"stage": 3.0,
-"round": 6.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f024353__h06.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_024353.jpg",
-"window": [
-1197,
-295,
 132,
 178
 ],
@@ -29183,30 +26327,6 @@
 "round": 7.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_04__f024455__s7.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_024455.jpg",
-"window": [
-1185,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "bench"
-},
-"kLX5YxRApcc__game_04__f024462__h02.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_024462.jpg",
-"window": [
-718,
-295,
-132,
-178
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_04__f024462__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_024462.jpg",
 "window": [
@@ -29255,30 +26375,6 @@
 "round": 7.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_04__f024575__h01.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_024575.jpg",
-"window": [
-599,
-295,
-132,
-178
-],
-"stage": 4.0,
-"round": 1.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f024575__h02.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_024575.jpg",
-"window": [
-718,
-295,
-132,
-178
-],
-"stage": 4.0,
-"round": 1.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_04__f024575__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_024575.jpg",
 "window": [
@@ -29326,30 +26422,6 @@
 "stage": 4.0,
 "round": 1.0,
 "where": "bench"
-},
-"kLX5YxRApcc__game_04__f024579__h01.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_024579.jpg",
-"window": [
-599,
-295,
-132,
-178
-],
-"stage": 4.0,
-"round": 1.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f024579__h02.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_024579.jpg",
-"window": [
-718,
-295,
-132,
-178
-],
-"stage": 4.0,
-"round": 1.0,
-"where": "board"
 },
 "kLX5YxRApcc__game_04__f024579__h04.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_024579.jpg",
@@ -29591,18 +26663,6 @@
 "round": 6.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_04__f025189__h01.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025189.jpg",
-"window": [
-599,
-295,
-132,
-178
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_04__f025189__s2.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025189.jpg",
 "window": [
@@ -29627,42 +26687,6 @@
 "round": 6.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_04__f025190__h00.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025190.jpg",
-"window": [
-478,
-295,
-132,
-178
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f025190__h01.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025190.jpg",
-"window": [
-599,
-295,
-132,
-178
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f025190__h11.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025190.jpg",
-"window": [
-651,
-374,
-132,
-174
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_04__f025190__s1.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025190.jpg",
 "window": [
@@ -29686,30 +26710,6 @@
 "stage": 4.0,
 "round": 6.0,
 "where": "bench"
-},
-"kLX5YxRApcc__game_04__f025394__h01.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025394.jpg",
-"window": [
-599,
-295,
-132,
-178
-],
-"stage": 5.0,
-"round": 1.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f025394__h02.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025394.jpg",
-"window": [
-718,
-295,
-132,
-178
-],
-"stage": 5.0,
-"round": 1.0,
-"where": "board"
 },
 "kLX5YxRApcc__game_04__f025394__h24.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025394.jpg",
@@ -29751,18 +26751,6 @@
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025559.jpg",
 "window": [
 478,
-295,
-132,
-178
-],
-"stage": 5.0,
-"round": 2.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f025559__h01.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025559.jpg",
-"window": [
-599,
 295,
 132,
 178
@@ -29915,18 +26903,6 @@
 "round": 2.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_04__f025560__h01.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025560.jpg",
-"window": [
-599,
-295,
-132,
-178
-],
-"stage": 5.0,
-"round": 2.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_04__f025560__h24.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025560.jpg",
 "window": [
@@ -29974,42 +26950,6 @@
 "stage": 5.0,
 "round": 2.0,
 "where": "bench"
-},
-"kLX5YxRApcc__game_04__f025692__h04.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025692.jpg",
-"window": [
-958,
-295,
-132,
-178
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f025692__h05.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025692.jpg",
-"window": [
-1077,
-295,
-132,
-178
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f025692__h13.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025692.jpg",
-"window": [
-898,
-374,
-132,
-174
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
 },
 "kLX5YxRApcc__game_04__f025692__h23.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025692.jpg",
@@ -30094,30 +27034,6 @@
 "stage": 5.0,
 "round": 3.0,
 "where": "bench"
-},
-"kLX5YxRApcc__game_04__f025693__h04.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025693.jpg",
-"window": [
-958,
-295,
-132,
-178
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f025693__h05.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025693.jpg",
-"window": [
-1077,
-295,
-132,
-178
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
 },
 "kLX5YxRApcc__game_04__f025693__h23.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025693.jpg",
@@ -30227,18 +27143,6 @@
 "round": 5.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_04__f025869__h01.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025869.jpg",
-"window": [
-599,
-295,
-132,
-178
-],
-"stage": 5.0,
-"round": 5.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_04__f025869__h35.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_025869.jpg",
 "window": [
@@ -30261,18 +27165,6 @@
 ],
 "stage": 5.0,
 "round": 5.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f026040__h02.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_026040.jpg",
-"window": [
-718,
-295,
-132,
-178
-],
-"stage": 5.0,
-"round": 6.0,
 "where": "board"
 },
 "kLX5YxRApcc__game_04__f026040__h30.jpg": {
@@ -30311,18 +27203,6 @@
 "round": 7.0,
 "where": "board"
 },
-"kLX5YxRApcc__game_04__f026130__h20.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_026130.jpg",
-"window": [
-448,
-444,
-132,
-176
-],
-"stage": 5.0,
-"round": 7.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_04__f026130__h35.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_026130.jpg",
 "window": [
@@ -30330,18 +27210,6 @@
 517,
 132,
 192
-],
-"stage": 5.0,
-"round": 7.0,
-"where": "board"
-},
-"kLX5YxRApcc__game_04__f026132__h01.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_026132.jpg",
-"window": [
-599,
-295,
-132,
-178
 ],
 "stage": 5.0,
 "round": 7.0,
@@ -30430,18 +27298,6 @@
 "stage": 6.0,
 "round": 1.0,
 "where": "board"
-},
-"kLX5YxRApcc__game_04__f026207__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_026207.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "bench"
 },
 "kLX5YxRApcc__game_04__f026217__h02.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_026217.jpg",
@@ -30635,18 +27491,6 @@
 "round": 3.0,
 "where": "bench"
 },
-"kLX5YxRApcc__game_04__f026455__h05.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_026455.jpg",
-"window": [
-1077,
-295,
-132,
-178
-],
-"stage": 6.0,
-"round": 3.0,
-"where": "board"
-},
 "kLX5YxRApcc__game_04__f026455__h34.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_026455.jpg",
 "window": [
@@ -30754,18 +27598,6 @@
 "stage": 6.0,
 "round": 5.0,
 "where": "bench"
-},
-"kLX5YxRApcc__game_04__f026651__h22.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_026651.jpg",
-"window": [
-705,
-444,
-132,
-176
-],
-"stage": 6.0,
-"round": 5.0,
-"where": "board"
 },
 "kLX5YxRApcc__game_04__f026651__h32.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\kLX5YxRApcc\\game_04\\frame_026651.jpg",
@@ -57671,18 +54503,6 @@
 "round": 6.0,
 "where": "board"
 },
-"eUOJYk4MKaY__game_08__f040295__h22.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_08\\frame_040295.jpg",
-"window": [
-705,
-444,
-132,
-176
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "board"
-},
 "eUOJYk4MKaY__game_08__f040295__s0.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_08\\frame_040295.jpg",
 "window": [
@@ -57772,18 +54592,6 @@
 "window": [
 458,
 669,
-140,
-156
-],
-"stage": 4.0,
-"round": 7.0,
-"where": "bench"
-},
-"eUOJYk4MKaY__game_08__f040420__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_08\\frame_040420.jpg",
-"window": [
-822,
-664,
 140,
 156
 ],
@@ -57983,18 +54791,6 @@
 "round": 2.0,
 "where": "board"
 },
-"eUOJYk4MKaY__game_08__f040656__h25.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_08\\frame_040656.jpg",
-"window": [
-1090,
-444,
-132,
-176
-],
-"stage": 5.0,
-"round": 2.0,
-"where": "board"
-},
 "eUOJYk4MKaY__game_08__f040656__s0.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_08\\frame_040656.jpg",
 "window": [
@@ -58048,18 +54844,6 @@
 "window": [
 444,
 447,
-132,
-176
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
-"eUOJYk4MKaY__game_08__f040772__h24.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_08\\frame_040772.jpg",
-"window": [
-962,
-444,
 132,
 176
 ],
@@ -58158,18 +54942,6 @@
 397,
 132,
 174
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
-"eUOJYk4MKaY__game_08__f040800__h24.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_08\\frame_040800.jpg",
-"window": [
-962,
-444,
-132,
-176
 ],
 "stage": 5.0,
 "round": 3.0,
@@ -58523,18 +55295,6 @@
 "round": 2.0,
 "where": "board"
 },
-"eUOJYk4MKaY__game_09__f041445__h02.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_09\\frame_041445.jpg",
-"window": [
-718,
-295,
-132,
-178
-],
-"stage": 1.0,
-"round": 3.0,
-"where": "board"
-},
 "eUOJYk4MKaY__game_09__f041445__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_09\\frame_041445.jpg",
 "window": [
@@ -58571,35 +55331,11 @@
 "round": 3.0,
 "where": "board"
 },
-"eUOJYk4MKaY__game_09__f041448__h25.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_09\\frame_041448.jpg",
-"window": [
-1090,
-444,
-132,
-176
-],
-"stage": 1.0,
-"round": 3.0,
-"where": "board"
-},
 "eUOJYk4MKaY__game_09__f041538__h11.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_09\\frame_041538.jpg",
 "window": [
 650,
 390,
-132,
-174
-],
-"stage": 1.0,
-"round": 4.0,
-"where": "board"
-},
-"eUOJYk4MKaY__game_09__f041538__h12.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_09\\frame_041538.jpg",
-"window": [
-774,
-374,
 132,
 174
 ],
@@ -58666,18 +55402,6 @@
 "stage": 1.0,
 "round": 4.0,
 "where": "bench"
-},
-"eUOJYk4MKaY__game_09__f041620__h12.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_09\\frame_041620.jpg",
-"window": [
-774,
-374,
-132,
-174
-],
-"stage": 2.0,
-"round": 1.0,
-"where": "board"
 },
 "eUOJYk4MKaY__game_09__f041620__s0.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_09\\frame_041620.jpg",
@@ -59044,18 +55768,6 @@
 "window": [
 764,
 563,
-132,
-192
-],
-"stage": 2.0,
-"round": 6.0,
-"where": "board"
-},
-"eUOJYk4MKaY__game_09__f042243__h34.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_09\\frame_042243.jpg",
-"window": [
-1032,
-515,
 132,
 192
 ],
@@ -59831,18 +56543,6 @@
 "round": 7.0,
 "where": "board"
 },
-"eUOJYk4MKaY__game_09__f043296__h32.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_09\\frame_043296.jpg",
-"window": [
-764,
-515,
-132,
-192
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "board"
-},
 "eUOJYk4MKaY__game_09__f043296__s1.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_09\\frame_043296.jpg",
 "window": [
@@ -60491,18 +57191,6 @@
 "round": 4.0,
 "where": "bench"
 },
-"eUOJYk4MKaY__game_09__f043904__h06.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_09\\frame_043904.jpg",
-"window": [
-1197,
-295,
-132,
-178
-],
-"stage": 4.0,
-"round": 4.0,
-"where": "board"
-},
 "eUOJYk4MKaY__game_09__f043904__h23.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_09\\frame_043904.jpg",
 "window": [
@@ -60779,18 +57467,6 @@
 "round": 6.0,
 "where": "board"
 },
-"eUOJYk4MKaY__game_09__f044115__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_09\\frame_044115.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "bench"
-},
 "eUOJYk4MKaY__game_09__f044115__s1.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_09\\frame_044115.jpg",
 "window": [
@@ -60964,18 +57640,6 @@
 "window": [
 956,
 348,
-132,
-178
-],
-"stage": 4.0,
-"round": 7.0,
-"where": "board"
-},
-"eUOJYk4MKaY__game_09__f044248__h06.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_09\\frame_044248.jpg",
-"window": [
-1197,
-295,
 132,
 178
 ],
@@ -61372,18 +58036,6 @@
 "window": [
 824,
 671,
-140,
-156
-],
-"stage": 5.0,
-"round": 5.0,
-"where": "bench"
-},
-"eUOJYk4MKaY__game_09__f044804__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\eUOJYk4MKaY\\game_09\\frame_044804.jpg",
-"window": [
-943,
-664,
 140,
 156
 ],
@@ -61835,18 +58487,6 @@
 "round": 2.0,
 "where": "bench"
 },
-"ev6dfSvJuJ8__game_00__f001970__h34.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_00\\frame_001970.jpg",
-"window": [
-1032,
-515,
-132,
-192
-],
-"stage": 1.0,
-"round": 2.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_00__f002046__h02.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_00\\frame_002046.jpg",
 "window": [
@@ -62099,18 +58739,6 @@
 "round": 2.0,
 "where": "bench"
 },
-"ev6dfSvJuJ8__game_00__f002405__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_00\\frame_002405.jpg",
-"window": [
-943,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 2.0,
-"where": "bench"
-},
 "ev6dfSvJuJ8__game_00__f002535__h01.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_00\\frame_002535.jpg",
 "window": [
@@ -62130,18 +58758,6 @@
 309,
 132,
 178
-],
-"stage": 2.0,
-"round": 3.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_00__f002535__h11.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_00\\frame_002535.jpg",
-"window": [
-651,
-374,
-132,
-174
 ],
 "stage": 2.0,
 "round": 3.0,
@@ -62380,18 +58996,6 @@
 "window": [
 1022,
 390,
-132,
-174
-],
-"stage": 3.0,
-"round": 1.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_00__f003114__h16.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_00\\frame_003114.jpg",
-"window": [
-1269,
-374,
 132,
 174
 ],
@@ -62759,18 +59363,6 @@
 "round": 6.0,
 "where": "bench"
 },
-"ev6dfSvJuJ8__game_00__f003806__h33.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_00\\frame_003806.jpg",
-"window": [
-899,
-515,
-132,
-192
-],
-"stage": 3.0,
-"round": 6.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_00__f003933__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_00\\frame_003933.jpg",
 "window": [
@@ -62854,18 +59446,6 @@
 "stage": 3.0,
 "round": 7.0,
 "where": "bench"
-},
-"ev6dfSvJuJ8__game_00__f003934__h01.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_00\\frame_003934.jpg",
-"window": [
-599,
-295,
-132,
-178
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "board"
 },
 "ev6dfSvJuJ8__game_00__f003934__h05.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_00\\frame_003934.jpg",
@@ -63239,18 +59819,6 @@
 "round": 4.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_00__f004519__h26.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_00\\frame_004519.jpg",
-"window": [
-1219,
-444,
-132,
-176
-],
-"stage": 4.0,
-"round": 4.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_00__f004519__h33.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_00\\frame_004519.jpg",
 "window": [
@@ -63270,18 +59838,6 @@
 557,
 132,
 192
-],
-"stage": 4.0,
-"round": 4.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_00__f004529__h15.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_00\\frame_004529.jpg",
-"window": [
-1145,
-374,
-132,
-174
 ],
 "stage": 4.0,
 "round": 4.0,
@@ -63539,18 +60095,6 @@
 "round": 6.0,
 "where": "bench"
 },
-"ev6dfSvJuJ8__game_00__f004714__h21.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_00\\frame_004714.jpg",
-"window": [
-576,
-444,
-132,
-176
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_00__f004714__h24.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_00\\frame_004714.jpg",
 "window": [
@@ -63784,18 +60328,6 @@
 "window": [
 838,
 326,
-132,
-178
-],
-"stage": 5.0,
-"round": 2.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_00__f005092__h06.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_00\\frame_005092.jpg",
-"window": [
-1197,
-295,
 132,
 178
 ],
@@ -64475,18 +61007,6 @@
 "round": 5.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_01__f006337__h12.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_006337.jpg",
-"window": [
-774,
-374,
-132,
-174
-],
-"stage": 2.0,
-"round": 5.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_01__f006337__h26.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_006337.jpg",
 "window": [
@@ -64504,18 +61024,6 @@
 "window": [
 498,
 567,
-132,
-192
-],
-"stage": 2.0,
-"round": 5.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_01__f006337__h36.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_006337.jpg",
-"window": [
-1299,
-515,
 132,
 192
 ],
@@ -64739,18 +61247,6 @@
 "round": 1.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_01__f006717__h35.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_006717.jpg",
-"window": [
-1165,
-515,
-132,
-192
-],
-"stage": 3.0,
-"round": 1.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_01__f006717__s1.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_006717.jpg",
 "window": [
@@ -64792,18 +61288,6 @@
 "window": [
 498,
 567,
-132,
-192
-],
-"stage": 3.0,
-"round": 1.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_01__f006728__h35.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_006728.jpg",
-"window": [
-1165,
-515,
 132,
 192
 ],
@@ -65051,35 +61535,11 @@
 "round": 6.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_01__f007377__h35.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_007377.jpg",
-"window": [
-1165,
-515,
-132,
-192
-],
-"stage": 3.0,
-"round": 6.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_01__f007377__s1.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_007377.jpg",
 "window": [
 456,
 684,
-140,
-156
-],
-"stage": 3.0,
-"round": 6.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_01__f007377__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_007377.jpg",
-"window": [
-822,
-664,
 140,
 156
 ],
@@ -65147,18 +61607,6 @@
 "round": 6.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_01__f007378__h35.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_007378.jpg",
-"window": [
-1165,
-515,
-132,
-192
-],
-"stage": 3.0,
-"round": 6.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_01__f007378__s8.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_007378.jpg",
 "window": [
@@ -65170,18 +61618,6 @@
 "stage": 3.0,
 "round": 6.0,
 "where": "bench"
-},
-"ev6dfSvJuJ8__game_01__f007488__h05.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_007488.jpg",
-"window": [
-1077,
-295,
-132,
-178
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "board"
 },
 "ev6dfSvJuJ8__game_01__f007488__h35.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_007488.jpg",
@@ -65380,18 +61816,6 @@
 "window": [
 568,
 663,
-140,
-156
-],
-"stage": 4.0,
-"round": 3.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_01__f007936__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_007936.jpg",
-"window": [
-701,
-664,
 140,
 156
 ],
@@ -65603,30 +62027,6 @@
 "round": 6.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_01__f008274__h21.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_008274.jpg",
-"window": [
-576,
-444,
-132,
-176
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_01__f008274__h30.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_008274.jpg",
-"window": [
-497,
-515,
-132,
-192
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_01__f008274__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_008274.jpg",
 "window": [
@@ -65638,18 +62038,6 @@
 "stage": 4.0,
 "round": 6.0,
 "where": "bench"
-},
-"ev6dfSvJuJ8__game_01__f008282__h05.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_008282.jpg",
-"window": [
-1077,
-295,
-132,
-178
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "board"
 },
 "ev6dfSvJuJ8__game_01__f008282__s0.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_008282.jpg",
@@ -65674,18 +62062,6 @@
 "stage": 4.0,
 "round": 7.0,
 "where": "bench"
-},
-"ev6dfSvJuJ8__game_01__f008486__h03.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_008486.jpg",
-"window": [
-838,
-295,
-132,
-178
-],
-"stage": 5.0,
-"round": 1.0,
-"where": "board"
 },
 "ev6dfSvJuJ8__game_01__f008486__s0.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_01\\frame_008486.jpg",
@@ -66911,18 +63287,6 @@
 "round": 2.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_02__f012549__h02.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_02\\frame_012549.jpg",
-"window": [
-718,
-295,
-132,
-178
-],
-"stage": 4.0,
-"round": 3.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_02__f012549__h04.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_02\\frame_012549.jpg",
 "window": [
@@ -67175,18 +63539,6 @@
 "round": 7.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_02__f013023__h06.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_02\\frame_013023.jpg",
-"window": [
-1197,
-295,
-132,
-178
-],
-"stage": 4.0,
-"round": 7.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_02__f013023__s2.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_02\\frame_013023.jpg",
 "window": [
@@ -67264,18 +63616,6 @@
 "window": [
 480,
 327,
-132,
-178
-],
-"stage": 5.0,
-"round": 1.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_02__f013128__h01.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_02\\frame_013128.jpg",
-"window": [
-599,
-295,
 132,
 178
 ],
@@ -67662,30 +64002,6 @@
 327,
 132,
 178
-],
-"stage": 5.0,
-"round": 6.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_02__f013775__h21.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_02\\frame_013775.jpg",
-"window": [
-576,
-444,
-132,
-176
-],
-"stage": 5.0,
-"round": 6.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_02__f013775__h31.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_02\\frame_013775.jpg",
-"window": [
-631,
-515,
-132,
-192
 ],
 "stage": 5.0,
 "round": 6.0,
@@ -68243,18 +64559,6 @@
 "round": 7.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_03__f015576__h35.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_015576.jpg",
-"window": [
-1165,
-515,
-132,
-192
-],
-"stage": 2.0,
-"round": 7.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_03__f015576__s0.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_015576.jpg",
 "window": [
@@ -68290,18 +64594,6 @@
 "stage": 2.0,
 "round": 7.0,
 "where": "bench"
-},
-"ev6dfSvJuJ8__game_03__f015580__h32.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_015580.jpg",
-"window": [
-764,
-515,
-132,
-192
-],
-"stage": 2.0,
-"round": 7.0,
-"where": "board"
 },
 "ev6dfSvJuJ8__game_03__f015580__s0.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_015580.jpg",
@@ -68560,18 +64852,6 @@
 "window": [
 576,
 669,
-140,
-156
-],
-"stage": 3.0,
-"round": 3.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_03__f015994__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_015994.jpg",
-"window": [
-701,
-664,
 140,
 156
 ],
@@ -68927,18 +65207,6 @@
 "round": 6.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_03__f016325__h30.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_016325.jpg",
-"window": [
-497,
-515,
-132,
-192
-],
-"stage": 3.0,
-"round": 6.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_03__f016602__h02.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_016602.jpg",
 "window": [
@@ -69016,18 +65284,6 @@
 "window": [
 704,
 693,
-140,
-156
-],
-"stage": 4.0,
-"round": 1.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_03__f016602__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_016602.jpg",
-"window": [
-943,
-664,
 140,
 156
 ],
@@ -69767,18 +66023,6 @@
 "round": 6.0,
 "where": "bench"
 },
-"ev6dfSvJuJ8__game_03__f017333__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_017333.jpg",
-"window": [
-701,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "bench"
-},
 "ev6dfSvJuJ8__game_03__f017333__s4.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_017333.jpg",
 "window": [
@@ -70355,18 +66599,6 @@
 "round": 3.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_03__f017839__h31.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_017839.jpg",
-"window": [
-631,
-515,
-132,
-192
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_03__f017839__h33.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_017839.jpg",
 "window": [
@@ -70475,35 +66707,11 @@
 "round": 3.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_03__f017853__h23.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_017853.jpg",
-"window": [
-834,
-444,
-132,
-176
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_03__f017853__h30.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_017853.jpg",
 "window": [
 494,
 511,
-132,
-192
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_03__f017853__h31.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_017853.jpg",
-"window": [
-631,
-515,
 132,
 192
 ],
@@ -70931,18 +67139,6 @@
 "round": 6.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_03__f018201__h22.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_018201.jpg",
-"window": [
-705,
-444,
-132,
-176
-],
-"stage": 5.0,
-"round": 6.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_03__f018310__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_018310.jpg",
 "window": [
@@ -71351,18 +67547,6 @@
 "round": 3.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_03__f018695__s6.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_018695.jpg",
-"window": [
-1064,
-664,
-140,
-156
-],
-"stage": 6.0,
-"round": 3.0,
-"where": "bench"
-},
 "ev6dfSvJuJ8__game_03__f018830__h02.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_018830.jpg",
 "window": [
@@ -71603,18 +67787,6 @@
 "round": 6.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_03__f019008__h24.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_019008.jpg",
-"window": [
-962,
-444,
-132,
-176
-],
-"stage": 6.0,
-"round": 6.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_03__f019008__h31.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_019008.jpg",
 "window": [
@@ -71668,18 +67840,6 @@
 "window": [
 836,
 504,
-132,
-176
-],
-"stage": 6.0,
-"round": 6.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_03__f019024__h26.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_019024.jpg",
-"window": [
-1219,
-444,
 132,
 176
 ],
@@ -71752,18 +67912,6 @@
 "window": [
 836,
 504,
-132,
-176
-],
-"stage": 6.0,
-"round": 7.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_03__f019162__h24.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_019162.jpg",
-"window": [
-962,
-444,
 132,
 176
 ],
@@ -71860,18 +68008,6 @@
 "window": [
 836,
 504,
-132,
-176
-],
-"stage": 7.0,
-"round": 1.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_03__f019258__h24.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_03\\frame_019258.jpg",
-"window": [
-962,
-444,
 132,
 176
 ],
@@ -72263,18 +68399,6 @@
 "round": 5.0,
 "where": "bench"
 },
-"ev6dfSvJuJ8__game_04__f021183__s6.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_021183.jpg",
-"window": [
-1064,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 5.0,
-"where": "bench"
-},
 "ev6dfSvJuJ8__game_04__f021183__s8.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_021183.jpg",
 "window": [
@@ -72563,18 +68687,6 @@
 "round": 1.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_04__f021526__h14.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_021526.jpg",
-"window": [
-1022,
-374,
-132,
-174
-],
-"stage": 3.0,
-"round": 1.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_04__f021526__s1.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_021526.jpg",
 "window": [
@@ -72647,102 +68759,6 @@
 "round": 3.0,
 "where": "bench"
 },
-"ev6dfSvJuJ8__game_04__f022069__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_022069.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 4.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_04__f022069__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_022069.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 4.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_04__f022069__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_022069.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 4.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_04__f022069__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_022069.jpg",
-"window": [
-701,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 4.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_04__f022069__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_022069.jpg",
-"window": [
-822,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 4.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_04__f022069__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_022069.jpg",
-"window": [
-943,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 4.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_04__f022069__s6.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_022069.jpg",
-"window": [
-1064,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 4.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_04__f022069__s7.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_022069.jpg",
-"window": [
-1185,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 4.0,
-"where": "bench"
-},
 "ev6dfSvJuJ8__game_04__f022150__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_022150.jpg",
 "window": [
@@ -72772,18 +68788,6 @@
 "window": [
 898,
 541,
-132,
-192
-],
-"stage": 3.0,
-"round": 5.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_04__f022150__h34.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_022150.jpg",
-"window": [
-1032,
-515,
 132,
 192
 ],
@@ -73018,18 +69022,6 @@
 "stage": 3.0,
 "round": 7.0,
 "where": "bench"
-},
-"ev6dfSvJuJ8__game_04__f022400__h25.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_022400.jpg",
-"window": [
-1090,
-444,
-132,
-176
-],
-"stage": 3.0,
-"round": 7.0,
-"where": "board"
 },
 "ev6dfSvJuJ8__game_04__f022400__s2.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_022400.jpg",
@@ -73667,18 +69659,6 @@
 "round": 6.0,
 "where": "bench"
 },
-"ev6dfSvJuJ8__game_04__f023225__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_023225.jpg",
-"window": [
-943,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "bench"
-},
 "ev6dfSvJuJ8__game_04__f023225__s8.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_023225.jpg",
 "window": [
@@ -73871,18 +69851,6 @@
 "round": 7.0,
 "where": "bench"
 },
-"ev6dfSvJuJ8__game_04__f023368__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_023368.jpg",
-"window": [
-701,
-664,
-140,
-156
-],
-"stage": 4.0,
-"round": 7.0,
-"where": "bench"
-},
 "ev6dfSvJuJ8__game_04__f023480__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_023480.jpg",
 "window": [
@@ -73960,18 +69928,6 @@
 "window": [
 576,
 702,
-140,
-156
-],
-"stage": 5.0,
-"round": 1.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_04__f023480__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_023480.jpg",
-"window": [
-701,
-664,
 140,
 156
 ],
@@ -74291,35 +70247,11 @@
 "round": 3.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_04__f023749__h14.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_023749.jpg",
-"window": [
-1022,
-374,
-132,
-174
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_04__f023749__h30.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_023749.jpg",
 "window": [
 488,
 552,
-132,
-192
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_04__f023749__h34.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_023749.jpg",
-"window": [
-1032,
-515,
 132,
 192
 ],
@@ -74759,18 +70691,6 @@
 "round": 1.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_04__f024325__h33.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_024325.jpg",
-"window": [
-899,
-515,
-132,
-192
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_04__f024325__h36.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_024325.jpg",
 "window": [
@@ -74795,47 +70715,11 @@
 "round": 1.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_04__f024327__h14.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_024327.jpg",
-"window": [
-1022,
-374,
-132,
-174
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_04__f024327__h23.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_024327.jpg",
-"window": [
-834,
-444,
-132,
-176
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_04__f024327__h30.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_024327.jpg",
 "window": [
 488,
 552,
-132,
-192
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_04__f024327__h32.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_024327.jpg",
-"window": [
-764,
-515,
 132,
 192
 ],
@@ -74987,18 +70871,6 @@
 "round": 2.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_04__f024439__h32.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_024439.jpg",
-"window": [
-764,
-515,
-132,
-192
-],
-"stage": 6.0,
-"round": 2.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_04__f024439__h33.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_04\\frame_024439.jpg",
 "window": [
@@ -75083,18 +70955,6 @@
 "round": 4.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_05__f025518__h04.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_025518.jpg",
-"window": [
-958,
-295,
-132,
-178
-],
-"stage": 1.0,
-"round": 4.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_05__f025518__h11.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_025518.jpg",
 "window": [
@@ -75114,18 +70974,6 @@
 410,
 132,
 174
-],
-"stage": 1.0,
-"round": 4.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_05__f025518__h32.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_025518.jpg",
-"window": [
-764,
-515,
-132,
-192
 ],
 "stage": 1.0,
 "round": 4.0,
@@ -75370,18 +71218,6 @@
 "stage": 2.0,
 "round": 4.0,
 "where": "bench"
-},
-"ev6dfSvJuJ8__game_05__f026150__h04.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_026150.jpg",
-"window": [
-958,
-295,
-132,
-178
-],
-"stage": 2.0,
-"round": 5.0,
-"where": "board"
 },
 "ev6dfSvJuJ8__game_05__f026150__h31.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_026150.jpg",
@@ -75635,18 +71471,6 @@
 "round": 3.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_05__f026849__h13.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_026849.jpg",
-"window": [
-898,
-374,
-132,
-174
-],
-"stage": 3.0,
-"round": 3.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_05__f026849__h14.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_026849.jpg",
 "window": [
@@ -75654,18 +71478,6 @@
 396,
 132,
 174
-],
-"stage": 3.0,
-"round": 3.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_05__f026849__h22.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_026849.jpg",
-"window": [
-705,
-444,
-132,
-176
 ],
 "stage": 3.0,
 "round": 3.0,
@@ -75798,18 +71610,6 @@
 426,
 132,
 174
-],
-"stage": 3.0,
-"round": 6.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_05__f027223__h24.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_027223.jpg",
-"window": [
-962,
-444,
-132,
-176
 ],
 "stage": 3.0,
 "round": 6.0,
@@ -76379,18 +72179,6 @@
 "round": 6.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_05__f028160__h26.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_028160.jpg",
-"window": [
-1219,
-444,
-132,
-176
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_05__f028160__h30.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_028160.jpg",
 "window": [
@@ -76506,18 +72294,6 @@
 315,
 132,
 178
-],
-"stage": 4.0,
-"round": 7.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_05__f028263__h11.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_028263.jpg",
-"window": [
-651,
-374,
-132,
-174
 ],
 "stage": 4.0,
 "round": 7.0,
@@ -76799,18 +72575,6 @@
 "round": 2.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_05__f028472__h25.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_028472.jpg",
-"window": [
-1090,
-444,
-132,
-176
-],
-"stage": 5.0,
-"round": 2.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_05__f028472__h30.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_028472.jpg",
 "window": [
@@ -76859,18 +72623,6 @@
 "round": 2.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_05__f028473__s4.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_028473.jpg",
-"window": [
-822,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 2.0,
-"where": "bench"
-},
 "ev6dfSvJuJ8__game_05__f028646__h04.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_028646.jpg",
 "window": [
@@ -76878,18 +72630,6 @@
 326,
 132,
 178
-],
-"stage": 5.0,
-"round": 3.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_05__f028646__h23.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_028646.jpg",
-"window": [
-834,
-444,
-132,
-176
 ],
 "stage": 5.0,
 "round": 3.0,
@@ -77363,18 +73103,6 @@
 "round": 1.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_05__f029164__h23.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_029164.jpg",
-"window": [
-834,
-444,
-132,
-176
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_05__f029164__h30.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_029164.jpg",
 "window": [
@@ -77422,18 +73150,6 @@
 "stage": 6.0,
 "round": 1.0,
 "where": "bench"
-},
-"ev6dfSvJuJ8__game_05__f029178__h23.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_029178.jpg",
-"window": [
-834,
-444,
-132,
-176
-],
-"stage": 6.0,
-"round": 1.0,
-"where": "board"
 },
 "ev6dfSvJuJ8__game_05__f029178__h33.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_029178.jpg",
@@ -77526,18 +73242,6 @@
 444,
 132,
 176
-],
-"stage": 6.0,
-"round": 2.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_05__f029286__h32.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_029286.jpg",
-"window": [
-764,
-515,
-132,
-192
 ],
 "stage": 6.0,
 "round": 2.0,
@@ -77711,59 +73415,11 @@
 "round": 3.0,
 "where": "bench"
 },
-"ev6dfSvJuJ8__game_05__f029422__h14.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_029422.jpg",
-"window": [
-1022,
-374,
-132,
-174
-],
-"stage": 6.0,
-"round": 3.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_05__f029422__h23.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_029422.jpg",
-"window": [
-834,
-444,
-132,
-176
-],
-"stage": 6.0,
-"round": 3.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_05__f029422__h24.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_029422.jpg",
-"window": [
-962,
-444,
-132,
-176
-],
-"stage": 6.0,
-"round": 3.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_05__f029422__h33.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_029422.jpg",
 "window": [
 896,
 541,
-132,
-192
-],
-"stage": 6.0,
-"round": 3.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_05__f029422__h34.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_029422.jpg",
-"window": [
-1032,
-515,
 132,
 192
 ],
@@ -77788,30 +73444,6 @@
 "window": [
 462,
 668,
-140,
-156
-],
-"stage": 6.0,
-"round": 3.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_05__f029422__s5.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_029422.jpg",
-"window": [
-943,
-664,
-140,
-156
-],
-"stage": 6.0,
-"round": 3.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_05__f029422__s6.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_029422.jpg",
-"window": [
-1064,
-664,
 140,
 156
 ],
@@ -77855,18 +73487,6 @@
 "round": 5.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_05__f029587__h04.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_029587.jpg",
-"window": [
-958,
-295,
-132,
-178
-],
-"stage": 6.0,
-"round": 5.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_05__f029587__h12.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_029587.jpg",
 "window": [
@@ -77874,18 +73494,6 @@
 397,
 132,
 174
-],
-"stage": 6.0,
-"round": 5.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_05__f029587__h23.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_029587.jpg",
-"window": [
-834,
-444,
-132,
-176
 ],
 "stage": 6.0,
 "round": 5.0,
@@ -77932,18 +73540,6 @@
 "window": [
 462,
 668,
-140,
-156
-],
-"stage": 6.0,
-"round": 6.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_05__f029694__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_05\\frame_029694.jpg",
-"window": [
-580,
-664,
 140,
 156
 ],
@@ -78006,18 +73602,6 @@
 319,
 132,
 178
-],
-"stage": 1.0,
-"round": 3.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_06__f031179__h22.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_031179.jpg",
-"window": [
-705,
-444,
-132,
-176
 ],
 "stage": 1.0,
 "round": 3.0,
@@ -78431,30 +74015,6 @@
 "round": 3.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_06__f031680__s0.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_031680.jpg",
-"window": [
-338,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 3.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_06__f031680__s1.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_031680.jpg",
-"window": [
-459,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 3.0,
-"where": "bench"
-},
 "ev6dfSvJuJ8__game_06__f031680__s2.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_031680.jpg",
 "window": [
@@ -78503,18 +74063,6 @@
 "round": 5.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_06__f031893__h31.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_031893.jpg",
-"window": [
-631,
-515,
-132,
-192
-],
-"stage": 2.0,
-"round": 5.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_06__f031893__s8.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_031893.jpg",
 "window": [
@@ -78550,18 +74098,6 @@
 "stage": 2.0,
 "round": 5.0,
 "where": "board"
-},
-"ev6dfSvJuJ8__game_06__f031898__s8.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_031898.jpg",
-"window": [
-1306,
-664,
-140,
-156
-],
-"stage": 2.0,
-"round": 5.0,
-"where": "bench"
 },
 "ev6dfSvJuJ8__game_06__f032155__h10.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_032155.jpg",
@@ -78616,18 +74152,6 @@
 "window": [
 650,
 396,
-132,
-174
-],
-"stage": 2.0,
-"round": 7.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_06__f032157__h12.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_032157.jpg",
-"window": [
-774,
-374,
 132,
 174
 ],
@@ -78826,18 +74350,6 @@
 "stage": 3.0,
 "round": 5.0,
 "where": "board"
-},
-"ev6dfSvJuJ8__game_06__f032842__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_032842.jpg",
-"window": [
-701,
-664,
-140,
-156
-],
-"stage": 3.0,
-"round": 5.0,
-"where": "bench"
 },
 "ev6dfSvJuJ8__game_06__f032842__s4.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_032842.jpg",
@@ -79043,18 +74555,6 @@
 "round": 1.0,
 "where": "bench"
 },
-"ev6dfSvJuJ8__game_06__f033194__h04.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_033194.jpg",
-"window": [
-958,
-295,
-132,
-178
-],
-"stage": 4.0,
-"round": 1.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_06__f033495__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_033495.jpg",
 "window": [
@@ -79120,18 +74620,6 @@
 "window": [
 498,
 517,
-132,
-192
-],
-"stage": 4.0,
-"round": 3.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_06__f033495__h34.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_033495.jpg",
-"window": [
-1032,
-515,
 132,
 192
 ],
@@ -79427,35 +74915,11 @@
 "round": 5.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_06__f033705__h34.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_033705.jpg",
-"window": [
-1032,
-515,
-132,
-192
-],
-"stage": 4.0,
-"round": 5.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_06__f033705__s3.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_033705.jpg",
 "window": [
 700,
 665,
-140,
-156
-],
-"stage": 4.0,
-"round": 5.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_06__f033705__s6.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_033705.jpg",
-"window": [
-1064,
-664,
 140,
 156
 ],
@@ -79504,18 +74968,6 @@
 "window": [
 764,
 564,
-132,
-192
-],
-"stage": 4.0,
-"round": 6.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_06__f033805__h34.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_033805.jpg",
-"window": [
-1032,
-515,
 132,
 192
 ],
@@ -79643,30 +75095,6 @@
 "round": 7.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_06__f033947__h31.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_033947.jpg",
-"window": [
-631,
-515,
-132,
-192
-],
-"stage": 4.0,
-"round": 7.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_06__f033947__h36.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_033947.jpg",
-"window": [
-1299,
-515,
-132,
-192
-],
-"stage": 4.0,
-"round": 7.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_06__f033947__s2.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_033947.jpg",
 "window": [
@@ -79746,18 +75174,6 @@
 456,
 132,
 176
-],
-"stage": 5.0,
-"round": 1.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_06__f034036__h31.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_034036.jpg",
-"window": [
-631,
-515,
-132,
-192
 ],
 "stage": 5.0,
 "round": 1.0,
@@ -79847,30 +75263,6 @@
 "round": 2.0,
 "where": "board"
 },
-"ev6dfSvJuJ8__game_06__f034160__h16.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_034160.jpg",
-"window": [
-1269,
-374,
-132,
-174
-],
-"stage": 5.0,
-"round": 2.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_06__f034160__h31.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_034160.jpg",
-"window": [
-631,
-515,
-132,
-192
-],
-"stage": 5.0,
-"round": 2.0,
-"where": "board"
-},
 "ev6dfSvJuJ8__game_06__f034160__h35.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_034160.jpg",
 "window": [
@@ -79894,30 +75286,6 @@
 "stage": 5.0,
 "round": 2.0,
 "where": "board"
-},
-"ev6dfSvJuJ8__game_06__f034160__s2.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_034160.jpg",
-"window": [
-580,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 2.0,
-"where": "bench"
-},
-"ev6dfSvJuJ8__game_06__f034160__s3.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_034160.jpg",
-"window": [
-701,
-664,
-140,
-156
-],
-"stage": 5.0,
-"round": 2.0,
-"where": "bench"
 },
 "ev6dfSvJuJ8__game_06__f034318__h02.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_034318.jpg",
@@ -80082,18 +75450,6 @@
 326,
 132,
 178
-],
-"stage": 5.0,
-"round": 5.0,
-"where": "board"
-},
-"ev6dfSvJuJ8__game_06__f034524__h16.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\ev6dfSvJuJ8\\game_06\\frame_034524.jpg",
-"window": [
-1269,
-374,
-132,
-174
 ],
 "stage": 5.0,
 "round": 5.0,
@@ -242771,18 +238127,6 @@
 "round": 6.0,
 "where": "bench"
 },
-"TRYn_hEfx7Y__game_01__f006928__h05.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\TRYn_hEfx7Y\\game_01\\frame_006928.jpg",
-"window": [
-998,
-291,
-132,
-178
-],
-"stage": 3.0,
-"round": 6.0,
-"where": "board"
-},
 "TRYn_hEfx7Y__game_01__f008512__s1.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\TRYn_hEfx7Y\\game_01\\frame_008512.jpg",
 "window": [
@@ -246982,18 +242326,6 @@
 "stage": 4.0,
 "round": 3.0,
 "where": "bench"
-},
-"TRYn_hEfx7Y__game_07__f033459__h10.jpg": {
-"frame_path": "C:\\Users\\hamza\\tft_frames_temp\\TRYn_hEfx7Y\\game_07\\frame_033459.jpg",
-"window": [
-630,
-313,
-132,
-174
-],
-"stage": 4.0,
-"round": 3.0,
-"where": "board"
 },
 "TRYn_hEfx7Y__game_08__f037105__h03.jpg": {
 "frame_path": "C:\\Users\\hamza\\tft_frames_temp\\TRYn_hEfx7Y\\game_08\\frame_037105.jpg",
