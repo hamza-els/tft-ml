@@ -133,7 +133,8 @@ class AugmentReader:
             filled = (total >= 0.04 * bright.shape[0] * d) & (((rows[:, a + d] - rows[:, a]) >= 2).mean(axis=0) >= 0.4)
             centre = (cols_x[a + d] - cols_x[a]) / np.maximum(total, 1) - a   # bright pixels' mean x in the slot
             slots[d] = (filled.tolist(), (np.abs(centre - (d - 1) / 2) / self.slot_width).tolist())
-        sums = {"edge": np.concatenate([[0], np.cumsum(edge)]).tolist(), "slots": slots, "w": w}
+        sums = {"edge": np.concatenate([[0], np.cumsum(edge)]).tolist(), "slots": slots, "w": w,
+                "cols": cols_sum.tolist(), "rows_n": bright.shape[0]}
         best, best_score = (0, center_x), -np.inf
         for shift in range(-self.SHIFT, self.SHIFT + 1, 2):
             c = w / 2 + shift
@@ -166,7 +167,13 @@ class AugmentReader:
 
         Score: the dark outline (inside dark, a BAND of scenery just outside not) minus
         how far each slot's bright pixels sit from the slot's centre (icons are centred in
-        their slot; cutting 3 icons as 4 puts halves of icons at slot edges). Accepted if
+        their slot; cutting 3 icons as 4 puts halves of icons at slot edges), plus the
+        "comb": icon pixels near the slot centres minus those at the borders between slots.
+        Between two icons there is a dark gap, so a right cut has its borders on dark
+        columns; a cut shifted by half a slot or with the wrong count puts its borders
+        through icons. The comb decides when the scenery is as dark as the bar (the outline
+        then says nothing, and a half-slot shift still looks "centred": each slot holds two
+        icon halves; t8ER_nNdjpk games 2-3, Hamza 2026-11-19). Accepted if
         the inside is dark, every slot holds an icon spread over several middle rows (when
         a dark panel slides over the bar only the icons' tops show, plus the panel's light
         edge: one line across every slot), the icons are centred, and the outline fits,
@@ -194,10 +201,28 @@ class AugmentReader:
                 continue
             offsets.append(off_centre[a])
         off = float(np.mean(offsets)) if offsets else 0.5
-        score = float(inside) - out - 2 * off
-        # off above 0.2: icons straddle the slots (the bar is mid-animation or cut wrongly)
-        ok = inside > 0.8 and filled and off < 0.2 and (score >= self.MIN_FIT or out >= 0.5)
+        comb = self._comb(sums, left, n)
+        score = float(inside) - out - 2 * off + comb
+        # off above 0.2: icons straddle the slots (the bar is mid-animation or cut wrongly);
+        # comb below 0: slot borders cut through icons
+        ok = inside > 0.8 and filled and off < 0.2 and (comb > 0 or n == 1) and (score >= self.MIN_FIT or out >= 0.5)
         return score, bool(ok)
+
+    def _comb(self, sums: dict, left: float, n: int) -> float:
+        """Share of middle rows with icon pixels around the slot centres (+-5 px) minus that
+        at the n-1 borders between slots (+-2 px); 0 for a single slot."""
+        if n < 2:
+            return 0.0
+        cs, w, rn = sums["cols"], sums["w"], sums["rows_n"]
+
+        def mean(a: float, b: float) -> float:
+            a, b = max(int(round(a)), 0), min(int(round(b)), w)
+            return (cs[b] - cs[a]) / ((b - a) * rn) if b > a else 0.0
+
+        sw = self.slot_width
+        centres = sum(mean(left + (i + 0.5) * sw - 5, left + (i + 0.5) * sw + 5) for i in range(n)) / n
+        borders = sum(mean(left + i * sw - 2, left + i * sw + 2) for i in range(1, n)) / (n - 1)
+        return centres - borders
 
     def icons(self, frame: np.ndarray, allowed: set[int] | None = None) -> list[np.ndarray]:
         """Icon crops, left to right. allowed: counts possible at this stage (expected_counts)."""
