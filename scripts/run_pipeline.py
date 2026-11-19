@@ -214,7 +214,7 @@ def process_url(
         # Safe to restart after an interruption: it makes the same choices again.
         for folder in frame_folders(str(local_dir)):
             log(f"    {folder.name}")
-            deduplicate_frames(str(folder), quiet=quiet, hud=hud, max_gap_sec=5.0, fps=fps)
+            deduplicate_frames(str(folder), quiet=quiet, hud=hud, max_gap_sec=5.0, fps=fps, combat_aware=True)
         _mark_done(local_dir, "dedup")
 
     kept = sum(len(list(f.glob("frame_*.jpg"))) for f in frame_folders(str(local_dir)))

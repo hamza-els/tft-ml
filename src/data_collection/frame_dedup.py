@@ -13,6 +13,8 @@ Two optional refinements (used by scripts/dedup_frames.py and the pipeline):
     actions, so only a stage change or the bar reappearing counts as a change.
   - Keep-alive: keep at least one frame every `max_gap_sec`, so slow changes
     that stay under the threshold (e.g. one unit moved) are never lost.
+  - Combat-aware (2026-11-19, Hamza): in combat the bench is not watched;
+    gold and the shop still are, and they change when a unit is bought.
 """
 
 import re
@@ -21,6 +23,8 @@ from pathlib import Path
 import cv2
 import numpy as np
 from tqdm import tqdm
+
+from src.vision.arena import is_planning
 
 
 # Regions to compare for change detection (x, y, w, h) at 1920x1080.
@@ -50,6 +54,8 @@ def _region_diff(a: np.ndarray, b: np.ndarray, region: tuple[int, int, int, int]
 
 # Regions on the bottom bar, which can sit further left in some VODs (see hud.py).
 BOTTOM_BAR = {"gold", "shop"}
+# Watched in combat (combat_aware): not the bench (see deduplicate_frames).
+COMBAT_REGIONS = ["gold", "shop", "items", "stage"]
 
 
 def _has_changed(
@@ -82,6 +88,7 @@ def deduplicate_frames(
     hud=None,
     max_gap_sec: float | None = None,
     fps: float = 2.0,
+    combat_aware: bool = False,
 ) -> tuple[int, int]:
     """
     Remove near-duplicate frames from a directory of extracted JPEGs.
@@ -95,6 +102,8 @@ def deduplicate_frames(
         max_gap_sec: If set, always keep a frame once this much time has
             passed since the last kept one (time from the frame number).
         fps: FPS the frames were extracted at.
+        combat_aware: In combat (src/vision/arena.is_planning is False), don't
+            watch the bench: only gold, shop, item column and stage count.
 
     Returns:
         (kept, deleted) counts.
@@ -121,7 +130,16 @@ def deduplicate_frames(
         state = hud.detect(frame) if hud is not None else None
         bar = state.shop_visible if state is not None else None
         dx = state.bottom_dx if state is not None else 0
-        regions = ["stage"] if bar is False and ref_bar is False else None
+        if bar is False and ref_bar is False:
+            regions = ["stage"]
+        elif combat_aware and not is_planning(frame):
+            # In combat the bench strip mostly shows fighting units and spell
+            # effects spilling over from the board (44% of kept combat frames
+            # were kept for that alone). A real bench change in combat - a unit
+            # bought - also changes gold and the shop, which are still watched.
+            regions = COMBAT_REGIONS
+        else:
+            regions = None
 
         if (reference is None
                 or bar != ref_bar
