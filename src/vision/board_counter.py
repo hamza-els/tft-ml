@@ -23,6 +23,7 @@ import cv2
 import numpy as np
 
 from src.utils.config import vision_cfg
+from src.vision.board import health_bar_pixels
 
 _ROOT = Path(__file__).resolve().parents[2]
 CFG = vision_cfg["board_counter"]
@@ -82,6 +83,15 @@ class BoardCounter:
         return best
 
     def read(self, frame: np.ndarray) -> tuple[int | None, int | None]:
-        """(units on board, team size); None for a side that can't be read clearly."""
+        """
+        (units on board, team size); None for a side that can't be read clearly.
+
+        Nothing is read while enemy (red) health bars cross the counter: in PvE
+        rounds the monsters stand right on it during planning, and their bars
+        were read as digits ("1/3" came out as "2/3").
+        """
+        x, y, w, h = CFG["strip"]
+        if health_bar_pixels(frame[y:y + h, x:x + w])[1] > CFG["max_red_pixels"]:
+            return None, None
         edge = edges(frame)
         return self._pick(self.scores(edge, "left")), self._pick(self.scores(edge, "right"))

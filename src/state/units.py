@@ -43,11 +43,18 @@ a tooltip. The sequence fixes most of it:
    is read than fits, the least supported units are dropped; the count of
    such frames goes into the quality report.
 
+5. Carry forward. When the counter (agreeing over nearby frames) shows more
+   units than were read, units seen on the board in the last CARRY_LOOKBACK
+   read frames that have since vanished are put back, most recently seen
+   first, until the count matches. Not a unit that just moved (its champion
+   is already counted on its new hex), and never more than the counter says.
+   Carried units have "carried": true.
+
 Frames that were not read (combat, away fights, scouting) carry the last
 planning board forward: the units only move during combat and come back.
 """
 
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 MAX_STABLE_SECONDS = 10.0
 MAX_BLIP_FRAMES = 2
@@ -133,6 +140,7 @@ def _stretches(names: list) -> list:
 
 
 COUNTER_MAX_BONUS = 3     # team size read above level + this is a misread
+CARRY_LOOKBACK = 6        # read frames back a vanished unit may be carried from (counter permitting)
 COUNTER_WINDOW = 2        # unit count: read frames either side that are compared
 COUNTER_AGREE = 2         # ...and how many readings (incl. the frame's own) must agree
 
@@ -202,7 +210,7 @@ def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None =
     stats = {"frames_read": len(read), "units_filled": 0, "units_removed": 0,
              "names_changed": 0, "over_level_frames": 0, "units_dropped_level": 0,
              "team_size_bonus_frames": 0, "team_size_from_counter": 0, "units_from_counter": 0,
-             "counter_more_than_read": 0}
+             "counter_more_than_read": 0, "units_carried": 0}
     rounds = rounds or [None] * len(rows)
     out = [{"board": [], "bench": [], "read": False} for _ in rows]
     if not read:
@@ -244,6 +252,8 @@ def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None =
     slots = game.slots if game is not None else (lambda name: 1)
     team_sizes = _counter_team_sizes(rows, read, levels, rounds)
     counts = _counter_units(rows, read, rounds)
+    last_seen: dict[str, tuple[dict, int]] = {}      # board hex -> (unit, read-frame index last seen)
+    recent_counts: list[Counter] = []                 # champion copies on the board, per read frame
     for k, i in enumerate(read):
         units = cleaned[k]
         board = sorted((at for at in units if at[0] == "h"), key=lambda at: -units[at]["support"])
@@ -271,9 +281,43 @@ def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None =
                     stats["units_dropped_level"] += 1
                 else:
                     used += need
+
+        # The counter shows more units than were read: carry forward units seen
+        # on the board in the last few read frames that have since vanished
+        # (their bar hidden behind a tooltip, a short unit's bar not found).
+        if counts.get(k) is not None:
+            board_now = [at for at in units if at[0] == "h"]
+            used = sum(slots(units[at]["name"]) for at in board_now)
+            if used < counts[k]:
+                window = {at: (u, k0) for at, (u, k0) in last_seen.items() if k - k0 <= CARRY_LOOKBACK}
+                # Most copies of each champion on the board in any one recent
+                # frame: a unit that just moved hexes is in the window twice
+                # (old and new hex) but must not be carried as a second copy.
+                before = Counter()
+                for c in recent_counts[-CARRY_LOOKBACK:]:
+                    before |= c
+                now = Counter(units[at]["name"] for at in board_now)
+                gone = [(at, u, k0) for at, (u, k0) in window.items() if at not in units]
+                for at, u, k0 in sorted(gone, key=lambda t: (-t[2], -t[1]["support"])):
+                    need = slots(u["name"])
+                    if need == 0 or used + need > counts[k] or now[u["name"]] >= before[u["name"]]:
+                        continue
+                    units[at] = dict(u, carried=True)
+                    now[u["name"]] += 1
+                    used += need
+                    stats["units_carried"] += 1
+                    if used >= counts[k]:
+                        break
+        recent_counts.append(Counter(u["name"] for at, u in units.items() if at[0] == "h"))
+        for at, u in units.items():
+            if at[0] == "h":
+                last_seen[at] = (u, k)
+        for at in [a for a in last_seen if a not in units and k - last_seen[a][1] > CARRY_LOOKBACK]:
+            del last_seen[at]
+
         out[i] = {
             "board": [{"name": u["name"], "star": u["star"], "items": u["items"],
-                       "hex": [int(at[1]), int(at[2])], "p": u["p"]}
+                       "hex": [int(at[1]), int(at[2])], "p": u["p"], **({"carried": True} if u.get("carried") else {})}
                       for at, u in sorted(units.items()) if at[0] == "h"],
             "bench": [{"name": u["name"], "star": u["star"], "items": u["items"],
                        "slot": int(at[1:]), "p": u["p"]}

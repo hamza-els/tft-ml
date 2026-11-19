@@ -117,6 +117,38 @@ def test_counter_unit_count_needs_agreement():
     assert sorted(u["name"] for u in out[1]["board"]) == ["Ashe", "Taric"]
 
 
+def _counted(readings, count):
+    rows = _rows(readings)
+    for r in rows:
+        r["board_counter"] = [count, 9]
+    return rows
+
+
+def test_hidden_unit_carried_when_counter_says_it_is_there():
+    a, b, c = _unit("h00", "Ashe"), _unit("h01", "Taric"), _unit("h02", "Sona")
+    # Sona's bar hidden for the last 4 frames (longer than a flicker), counter still says 3
+    rows = _counted([[a, b, c]] * 3 + [[a, b]] * 4, 3)
+    out, stats = clean_units(rows, [9] * 7, load_game_data(), [(4, 1)] * 7)
+    assert sorted(u["name"] for u in out[-1]["board"]) == ["Ashe", "Sona", "Taric"]
+    assert [u for u in out[-1]["board"] if u["name"] == "Sona"][0]["carried"]
+    assert stats["units_carried"] >= 1
+
+
+def test_moved_unit_not_carried_twice():
+    a, b = _unit("h00", "Ashe"), _unit("h01", "Taric")
+    moved = _unit("h05", "Taric")
+    rows = _counted([[a, b]] * 3 + [[a, moved]] * 4, 3)   # counter misreads 3; Taric only moved
+    out, _ = clean_units(rows, [9] * 7, load_game_data(), [(4, 1)] * 7)
+    assert sorted(u["name"] for u in out[-1]["board"]) == ["Ashe", "Taric"]
+
+
+def test_nothing_carried_without_counter():
+    a, b, c = _unit("h00", "Ashe"), _unit("h01", "Taric"), _unit("h02", "Sona")
+    rows = _rows([[a, b, c]] * 3 + [[a, b]] * 4)
+    out, stats = clean_units(rows, [9] * 7, load_game_data(), [(4, 1)] * 7)
+    assert len(out[-1]["board"]) == 2 and stats["units_carried"] == 0
+
+
 def test_board_carried_through_unread_frames():
     rows = _rows([[_unit("h10", "Ashe"), _unit("s4", "Jinx")]]) + [{"frame": 10}, {"frame": 12}]
     out, _ = clean_units(rows, [3] * 3)

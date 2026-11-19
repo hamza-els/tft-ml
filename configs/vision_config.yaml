@@ -249,3 +249,4 @@ board_counter:
   templates: assets/templates/board_counter   # scripts/build_counter_templates.py
   min_score: 0.45
   min_margin: 0.05
+  max_red_pixels: 30                   # enemy health bars over the counter (PvE monsters): don't read it

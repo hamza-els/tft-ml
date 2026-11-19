@@ -57,7 +57,7 @@ def main():
                   f"trait/item team-size bonus on {u['team_size_bonus_frames']} frames")
             print(f"              board counter: team size on {u['team_size_from_counter']} frames, "
                   f"unit count on {u['units_from_counter']} (counter shows more units than read on "
-                  f"{u['counter_more_than_read']})")
+                  f"{u['counter_more_than_read']}; {u['units_carried']} units carried forward)")
         else:
             print("  units       not read (run scripts/read_units.py)")
 
