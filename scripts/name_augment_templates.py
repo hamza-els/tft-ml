@@ -46,7 +46,7 @@ def main():
             if not home:
                 continue
             for k, tid in enumerate(r.get("augments") or []):
-                if tid and k < len(lab["augments"]):
+                if tid and k < len(lab["augments"]) and lab["augments"][k] != "_unknown":
                     votes[tid][lab["augments"][k]] += 1
     names, unsure = {}, {}
     for tid, c in sorted(votes.items()):

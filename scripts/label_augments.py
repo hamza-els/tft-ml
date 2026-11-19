@@ -15,6 +15,7 @@ Keys:
     Enter       accept the first suggestion for the highlighted icon
     F1-F8       pick a suggestion          1-8   pick a search result (type to search all augments)
     Tab         no augment in this slot (the game has fewer)
+    Shift+Tab   an augment is here but blocked / can't be read (try Ctrl+N first)
     Ctrl+N      show another frame of this game (the bar is covered or unclear)
     Ctrl+Z      back one icon              Esc   skip the game     Ctrl+Q  quit
 
@@ -48,6 +49,7 @@ OFFICIAL = paths.REPO / "assets" / "templates" / "augments_official"
 AUG_DATA = paths.REPO / "assets" / "game_data"
 CROPS = paths.LOCAL / "augment_crops"
 NO_AUGMENT = "_none"
+BLOCKED = "_unknown"       # an augment is there, but covered or unreadable: cleaning keeps the reader's guess
 BG, FG, DIM, ACCENT = "#1e1f24", "#e8e8ea", "#8b8d98", "#f2c14e"
 
 
@@ -171,8 +173,21 @@ class AugmentLabeler:
         self.result_box.grid(row=4, column=1, sticky="nw", padx=6)
         self.ctx_view = tk.Label(r, bg=BG)
         self.ctx_view.grid(row=5, column=0, columnspan=2, padx=12, pady=8, sticky="w")
+        actions = tk.Frame(r, bg=BG)
+        actions.grid(row=6, column=0, columnspan=2, sticky="w", padx=12, pady=(0, 10))
+        for text, cmd in (("No augment here (Tab)", lambda: self.choose(NO_AUGMENT, None)),
+                          ("Blocked / can't read (Shift+Tab)", lambda: self.choose(BLOCKED, None)),
+                          ("Another frame (Ctrl+N)", self.next_frame), ("Back (Ctrl+Z)", self.back),
+                          ("Skip game (Esc)", self.skip)):
+            tk.Button(actions, text=text, command=cmd, font=self.small, bg="#33353f", fg=FG, relief="flat",
+                      padx=8, pady=3).pack(side="left", padx=(0, 6))
         r.bind("<Return>", lambda e: self.enter())
         r.bind("<Tab>", lambda e: (self.choose(NO_AUGMENT, None), "break")[1])
+        r.bind("<Shift-Tab>", lambda e: (self.choose(BLOCKED, None), "break")[1])
+        try:
+            r.bind("<ISO_Left_Tab>", lambda e: (self.choose(BLOCKED, None), "break")[1])
+        except tk.TclError:
+            pass
         r.bind("<Control-n>", lambda e: self.next_frame())
         r.bind("<Control-z>", lambda e: self.back())
         r.bind("<Escape>", lambda e: self.skip())
@@ -239,7 +254,7 @@ class AugmentLabeler:
             self.choose(self.results[i], None)
 
     def choose(self, name, tier):
-        if name != NO_AUGMENT and tier is None and self.slot < len(self.icons):
+        if name not in (NO_AUGMENT, BLOCKED) and tier is None and self.slot < len(self.icons):
             tier = self.reader.tier(self.icons[self.slot])        # typed name: tier from the icon colour
         self.chosen.append((name, tier))
         self.slot += 1

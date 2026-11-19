@@ -176,7 +176,8 @@ def game_augments(rows: list[dict], home: list[bool], label: dict | None = None)
         picked.append(readings[start][0])
     if label:
         for k, n in enumerate(label.get("augments") or []):
-            if k < len(names):
+            # "_unknown": an augment Hamza saw but couldn't read - keep the reader's guess
+            if k < len(names) and n != "_unknown":
                 names[k] = n
                 if label.get("tiers") and k < len(label["tiers"]) and label["tiers"][k]:
                     tiers[k] = label["tiers"][k]
