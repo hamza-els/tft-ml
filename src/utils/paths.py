@@ -28,7 +28,10 @@ CROP_REMOVED = LOCAL / "unit_crops" / "removed"
 CROP_SCORE_CACHE = LOCAL / "unit_crops" / "confidence_cache.json"
 DATASETS = LOCAL / "datasets" / "states"
 LOGS = LOCAL / "logs"
+ITEM_IMAGES = LOCAL / "item_crops" / "images"
+ITEM_CONTEXT = LOCAL / "item_crops" / "context"     # the unit's bar and item row around each icon
 
 # In the repo (on Drive): small files that belong in git.
 CROP_DIR = REPO / "data" / "processed" / "unit_crops"     # index.json, labels.json, removed/labels.json
+ITEM_DIR = REPO / "data" / "processed" / "item_crops"     # index.json, labels.json
 REPO_STATES = REPO / "data" / "processed" / "state_vectors"
