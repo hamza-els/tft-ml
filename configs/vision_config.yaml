@@ -205,14 +205,13 @@ unit_bar:
   item_slack_x: 2                      # icons can sit this many px off sideways (bar end found +-2 px)
   item_margin: 2                       # px trimmed off each side of an icon before matching
   item_templates: assets/templates/unit_items   # cut from footage by scripts/harvest_unit_item_icons.py
-  # An item slot holds an icon when its dark outline is found (outline score:
-  # scenery ~0, icons mostly 0.5+) and the icon matches a template, or when the
-  # match alone is strong (scenery: 99% below 0.81). An outline
-  # >= item_sure_outline with no good match is an item we have no template for.
+  # An item slot holds an item when the icon matches an item template: with
+  # its dark outline found (outline score: scenery ~0, icons mostly 0.5+) at
+  # item_min_score, or without at item_sure_score. An outline alone is not an
+  # item (it was: 71 false items on Hamza's labels, no real ones).
   outline_dark: 80                     # outline pixels are darker than this (max channel)
   outline_contrast: 25                 # ...and the scenery just outside is this much lighter
   item_min_outline: 0.5
-  item_sure_outline: 0.85
   item_sure_score: 0.80                # a match this strong is an item even without a visible outline (shape x colour score)
   item_min_score: 0.60                 # match needed to name an outlined item (outlined items: median 0.92, 95% above 0.68)
   item_maybe_outline: 0.30             # some sign of an icon: counts only right before a clear item (items fill from the left)

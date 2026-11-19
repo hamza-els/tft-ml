@@ -247,8 +247,14 @@ class UnitItemReader:
             name, score = self.identify(frame, region)
             named = score >= _CFG["item_sure_score"] or (outline >= _CFG["item_min_outline"]
                                                           and score >= _CFG["item_min_score"])
+            # An item is a slot that matches an item template. A strong outline
+            # with no match used to count too (an item without a template), but
+            # on Hamza's labels that rule found 71 false items (dark scenery
+            # framed like an icon, match scores 0.04-0.13) and none of 559 real
+            # ones: every item seen has a template now. Outline alone is only
+            # "some sign of an icon".
             out.append({"outline": outline, "name": name if named else None, "score": score,
-                        "item": named or outline >= _CFG["item_sure_outline"],
+                        "item": named,
                         "maybe": outline >= _CFG["item_maybe_outline"] or score >= _CFG["item_maybe_score"]})
         return out
 
