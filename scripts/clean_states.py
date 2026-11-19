@@ -58,7 +58,8 @@ def main():
             print(f"              board counter: team size on {u['team_size_from_counter']} frames, "
                   f"unit count on {u['units_from_counter']} (counter shows more units than read on "
                   f"{u['counter_more_than_read']}; {u['units_carried']} units carried forward); "
-                  f"{u['covered_filled']} readings under tooltips filled from neighbours")
+                  f"{u['covered_filled']} readings under tooltips filled from neighbours; "
+                  f"loose bars kept {u['loose_kept']}, dropped {u['loose_dropped']}")
         else:
             print("  units       not read (run scripts/read_units.py)")
 

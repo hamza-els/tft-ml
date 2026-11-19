@@ -185,6 +185,28 @@ def _counter_units(rows, read, rounds) -> dict[int, int]:
     return out
 
 
+def _keep_loose(units: list[dict], counter: int | None, stats: dict) -> list[dict]:
+    """
+    A frame's readings with its loose ones (bars no hex claimed: a unit being
+    dragged, or one off its hex) kept only as far as the board counter says
+    the board is short: a unit dragged from the bench floats over the board
+    but the game doesn't count it until it is dropped. Without a trusted
+    count, loose readings are left out. Most confident first.
+    """
+    loose = [u for u in units if u.get("loose")]
+    if not loose:
+        return units
+    fixed = [u for u in units if not u.get("loose")]
+    short = 0
+    if counter is not None:
+        on_board = sum(1 for u in fixed if u["at"][0] == "h" and not u.get("covered"))
+        short = max(0, counter - on_board)
+    keep = sorted(loose, key=lambda u: -u.get("p", 0))[:short]
+    stats["loose_kept"] += len(keep)
+    stats["loose_dropped"] += len(loose) - len(keep)
+    return fixed + keep
+
+
 def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None = None) -> tuple[list[dict], dict]:
     """
     Cleaned board and bench for one game's rows (in frame order).
@@ -210,14 +232,17 @@ def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None =
     stats = {"frames_read": len(read), "units_filled": 0, "units_removed": 0,
              "names_changed": 0, "over_level_frames": 0, "units_dropped_level": 0,
              "team_size_bonus_frames": 0, "team_size_from_counter": 0, "units_from_counter": 0,
-             "counter_more_than_read": 0, "units_carried": 0, "covered_filled": 0}
+             "counter_more_than_read": 0, "units_carried": 0, "covered_filled": 0,
+             "loose_kept": 0, "loose_dropped": 0}
     rounds = rounds or [None] * len(rows)
     out = [{"board": [], "bench": [], "read": False} for _ in rows]
     if not read:
         return out, stats
 
     w = [weights_all[i] for i in read]
-    raw = [{u["at"]: u for u in rows[i]["units_raw"]} for i in read]
+    counts = _counter_units(rows, read, rounds)
+    raw = [{u["at"]: u for u in _keep_loose(rows[i]["units_raw"], counts.get(k), stats)}
+           for k, i in enumerate(read)]
     positions = sorted({at for frame in raw for at in frame})
 
     # Smoothed reading per (read frame, position).

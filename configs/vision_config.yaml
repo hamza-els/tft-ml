@@ -192,6 +192,12 @@ unit_bar:
   # least this at its badge position: the Little Legend's nameplate bar has a
   # level box there instead.
   badge_min_score: 0.35
+  # Bars no hex claimed (a unit being dragged or off its hex; unit_reader.loose_bars).
+  # Board bars' tops span y 299-619 (measured on 150 frames), bench bars start at 654.
+  loose:
+    zone: [420, 280, 1100, 360]        # x, y, w, h: the board area where such bars are looked for
+    bar_top: [31, 29, 41, 42]          # usual bar top below each row's hex region top (median)
+    max_distance: 180                  # px from a free hex's usual bar position; further = not assigned
   item_dx: -9                          # first item icon: dx, dy from the bar; icons are item_size square
   item_dy: 12
   item_size: 25
