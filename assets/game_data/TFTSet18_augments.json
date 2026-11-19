@@ -1,0 +1,3096 @@
+{
+ "A Golden Quest": {
+  "api_names": [
+   "TFT_Augment_GoldenQuest"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "A Magic Roll": {
+  "api_names": [
+   "TFT_Augment_MagicRoll"
+  ],
+  "tiers": []
+ },
+ "A Story of Seven": {
+  "api_names": [
+   "TFT_Augment_StoryOfSeven"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "AFK": {
+  "api_names": [
+   "TFT7_Augment_AFK"
+  ],
+  "tiers": []
+ },
+ "Advanced Loan": {
+  "api_names": [
+   "DA_AdvancedLoan",
+   "TFT_Augment_AdvancedLoan"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Advanced Loan+": {
+  "api_names": [
+   "DA_AdvancedLoanPlus",
+   "TFT_Augment_AdvancedLoanPlus"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Aim For The Top!": {
+  "api_names": [
+   "TFT_Augment_AimForTheTop"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "All That Shimmers": {
+  "api_names": [
+   "TFT9_Augment_AllThatShimmers"
+  ],
+  "tiers": []
+ },
+ "All That Shimmers+": {
+  "api_names": [
+   "TFT_Augment_AllThatShimmersPlus"
+  ],
+  "tiers": []
+ },
+ "An Exalted Adventure": {
+  "api_names": [
+   "TFT_Augment_AnExaltedAdventure"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Another One!": {
+  "api_names": [
+   "TFT_Augment_AnotherOne"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Another One!+": {
+  "api_names": [
+   "TFT_Augment_AnotherOnePlus"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Arcane Viktor-y": {
+  "api_names": [
+   "DA_ArcaneViktory",
+   "TFT_Augment_ArcaneViktory"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Ascension": {
+  "api_names": [
+   "DA_Ascension",
+   "TFT9_Augment_Commander_Ascension"
+  ],
+  "tiers": []
+ },
+ "At What Cost": {
+  "api_names": [
+   "TFT11_Augment_AtWhatCost"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Augmented Power": {
+  "api_names": [
+   "DA_AugmentedPower",
+   "TFT_Augment_PowerUp"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Aura Farming": {
+  "api_names": [
+   "TFT_Augment_AuraFarming"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Backline Blueprint": {
+  "api_names": [
+   "DA_BacklineBlueprint",
+   "TFT_Augment_BacklineBlueprint"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Backup Bows": {
+  "api_names": [
+   "DA_BackupBows",
+   "TFT_Augment_ComponentQuestBow"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Backup Dancers": {
+  "api_names": [
+   "TFT_Augment_BackupDancers"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Band of Thieves": {
+  "api_names": [
+   "DA_BandOfThieves",
+   "TFT7_Augment_BandOfThieves1"
+  ],
+  "tiers": []
+ },
+ "Band of Thieves II": {
+  "api_names": [
+   "DA_BandOfThievesII",
+   "TFT6_Augment_BandOfThieves2"
+  ],
+  "tiers": []
+ },
+ "Band of Thieves II+": {
+  "api_names": [
+   "DA_BandOfThievesIIPlus",
+   "TFT6_Augment_BandOfThieves2Plus"
+  ],
+  "tiers": []
+ },
+ "Band of Thieves II++": {
+  "api_names": [
+   "DA_BandOfThievesIIPlusPlus",
+   "TFT6_Augment_BandOfThieves2PlusPlus"
+  ],
+  "tiers": []
+ },
+ "Baron's Lair": {
+  "api_names": [
+   "DA_BaronsLair",
+   "TFT_Augment_TheBaronsLair"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Beast Within": {
+  "api_names": [
+   "DA_18_PrimalAugment_Nidalee",
+   "DA_18_PrimalAugment_Sivir"
+  ],
+  "tiers": []
+ },
+ "Beast Within+": {
+  "api_names": [
+   "DA_18_PrimalAugmentPlus_Nidalee",
+   "DA_18_PrimalAugmentPlus_Sivir"
+  ],
+  "tiers": []
+ },
+ "Belt Overflow": {
+  "api_names": [
+   "DA_BeltOverflow",
+   "TFT_Augment_BeltOverflow"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Best Friends I": {
+  "api_names": [
+   "TFT7_Augment_BestFriends1"
+  ],
+  "tiers": []
+ },
+ "Best Friends II": {
+  "api_names": [
+   "TFT7_Augment_BestFriends2"
+  ],
+  "tiers": []
+ },
+ "Big Friend I": {
+  "api_names": [
+   "TFT7_Augment_BigFriend"
+  ],
+  "tiers": []
+ },
+ "Big Friend II": {
+  "api_names": [
+   "TFT7_Augment_BigFriend2"
+  ],
+  "tiers": []
+ },
+ "Big Grab Bag": {
+  "api_names": [
+   "DA_BigGrabBag",
+   "TFT9_Augment_BigGrabBag"
+  ],
+  "tiers": []
+ },
+ "Birthday Present": {
+  "api_names": [
+   "DA_BirthdayPresent",
+   "TFT7_Augment_BirthdayPresents"
+  ],
+  "tiers": []
+ },
+ "Birthday Reunion": {
+  "api_names": [
+   "DA_BirthdayReunion",
+   "TFT_Augment_BirthdayReunion"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Blazing Soul I": {
+  "api_names": [
+   "TFT_Augment_BlazingSoul"
+  ],
+  "tiers": []
+ },
+ "Blazing Soul II": {
+  "api_names": [
+   "TFT_Augment_BlazingSoul2"
+  ],
+  "tiers": []
+ },
+ "Blood Offering": {
+  "api_names": [
+   "TFT_Augment_TheDarkinBlade"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Blood Rage": {
+  "api_names": [
+   "TFT_Augment_BloodRage"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Blossom's Call": {
+  "api_names": [
+   "DA_18_BlossomTraitAugment"
+  ],
+  "tiers": []
+ },
+ "Bodyguard Training": {
+  "api_names": [
+   "DA_BodyguardTraining",
+   "TFT_Augment_BodyguardTraining"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Bonus Gifts": {
+  "api_names": [
+   "DA_BonusGift"
+  ],
+  "tiers": []
+ },
+ "Bonus Gifts+": {
+  "api_names": [
+   "DA_BonusGiftPlus"
+  ],
+  "tiers": []
+ },
+ "Booster Pack": {
+  "api_names": [
+   "DA_BoosterPack",
+   "TFT_Augment_BoosterPack"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Booster Pack+": {
+  "api_names": [
+   "DA_BoosterPackPlus",
+   "TFT_Augment_BoosterPackPlus"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Booster Pack++": {
+  "api_names": [
+   "DA_BoosterPackPlusPlus",
+   "TFT_Augment_BoosterPackPlusPlus"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Boxing Lessons": {
+  "api_names": [
+   "DA_BoxingLessons",
+   "TFT_Augment_BoxingLessons"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Branching Out": {
+  "api_names": [
+   "DA_BranchingOut",
+   "TFT_Augment_BranchingOut"
+  ],
+  "tiers": []
+ },
+ "Branching Out+": {
+  "api_names": [
+   "DA_BranchingOutPlus",
+   "TFT_Augment_BranchingOutPlus"
+  ],
+  "tiers": []
+ },
+ "Bronze For Life I": {
+  "api_names": [
+   "DA_BronzeForLifeI",
+   "TFT_Augment_BronzeForLifeI"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Bronze For Life II": {
+  "api_names": [
+   "DA_BronzeForLifeII",
+   "TFT_Augment_BronzeForLife2"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Build A Bud": {
+  "api_names": [
+   "DA_BuildABud"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Build a Bud": {
+  "api_names": [
+   "TFT11_Augment_Buildabud"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Buried Treasures": {
+  "api_names": [
+   "TFT9_Augment_BuildingACollectionPlusPlus"
+  ],
+  "tiers": []
+ },
+ "Buried Treasures III": {
+  "api_names": [
+   "DA_BuriedTreasuresIII"
+  ],
+  "tiers": []
+ },
+ "Calculated Loss": {
+  "api_names": [
+   "DA_CalculatedLoss",
+   "TFT6_Augment_CalculatedLoss"
+  ],
+  "tiers": []
+ },
+ "Call To Chaos": {
+  "api_names": [
+   "DA_CallToChaos"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Call to Chaos": {
+  "api_names": [
+   "TFT11_Augment_Calltochaos"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Called Shot": {
+  "api_names": [
+   "DA_CalledShot",
+   "TFT_Augment_CalledShot"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Capital Gains I": {
+  "api_names": [
+   "DA_CapitalGainsI"
+  ],
+  "tiers": []
+ },
+ "Capital Gains II": {
+  "api_names": [
+   "DA_CapitalGainsII"
+  ],
+  "tiers": []
+ },
+ "Care Package": {
+  "api_names": [
+   "TFT_Augment_HomeCooking"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Caretaker's Ally": {
+  "api_names": [
+   "DA_18_CaretakersAlly",
+   "TFT9_Augment_BardPlaybook1"
+  ],
+  "tiers": []
+ },
+ "Caretaker's Chosen": {
+  "api_names": [
+   "TFT9_Augment_BardPlaybook3"
+  ],
+  "tiers": []
+ },
+ "Caretaker's Favor": {
+  "api_names": [
+   "DA_CaretakersFavor",
+   "TFT9_Augment_BardPlaybook2"
+  ],
+  "tiers": []
+ },
+ "Carve a Path": {
+  "api_names": [
+   "DA_CarveAPath",
+   "TFT_Augment_ComponentQuestSword"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Celestial Blessing I": {
+  "api_names": [
+   "DA_CelestialBlessingI"
+  ],
+  "tiers": []
+ },
+ "Celestial Blessing II": {
+  "api_names": [
+   "DA_CelestialBlessingII"
+  ],
+  "tiers": []
+ },
+ "Celestial Blessing III": {
+  "api_names": [
+   "DA_CelestialBlessingIII"
+  ],
+  "tiers": []
+ },
+ "Challenger's Grace": {
+  "api_names": [
+   "DA_ChallengersGrace"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Champ Delivery": {
+  "api_names": [
+   "DA_ChampDelivery"
+  ],
+  "tiers": []
+ },
+ "Champ Delivery+": {
+  "api_names": [
+   "DA_ChampDeliveryPlus"
+  ],
+  "tiers": []
+ },
+ "Champ Delivery++": {
+  "api_names": [
+   "DA_ChampDeliveryPlusPlus"
+  ],
+  "tiers": []
+ },
+ "Chaotic Evolution": {
+  "api_names": [
+   "TFT_Augment_ChaosEvolution"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Charge Transfer I": {
+  "api_names": [
+   "TFT_Augment_ChargeTransfer1"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Charge Transfer II": {
+  "api_names": [
+   "TFT_Augment_ChargeTransfer2"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Chosen of the Sun": {
+  "api_names": [
+   "DA_18_SolarTraitAugment"
+  ],
+  "tiers": []
+ },
+ "Clear Mind": {
+  "api_names": [
+   "DA_ClearMind",
+   "TFT6_Augment_ClearMind"
+  ],
+  "tiers": []
+ },
+ "Climb The Ladder I": {
+  "api_names": [
+   "TFT_Augment_ClimbTheLadder1"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Climb The Ladder II": {
+  "api_names": [
+   "TFT_Augment_ClimbTheLadder2"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Clockwork Accelerator": {
+  "api_names": [
+   "DA_ClockworkAccelerator",
+   "TFT_Augment_ClockworkAccelerator"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Cloning Facility": {
+  "api_names": [
+   "TFT_Augment_CloningFacility"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Cluttered Mind": {
+  "api_names": [
+   "DA_ClutteredMind",
+   "TFT7_Augment_ClutteredMind"
+  ],
+  "tiers": []
+ },
+ "Cognitive Overload": {
+  "api_names": [
+   "DA_CognitiveOverload",
+   "TFT_Augment_CognitiveOverload"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Cognitive Tax": {
+  "api_names": [
+   "DA_CognitiveTax",
+   "TFT_Augment_CognitiveTax"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Cognitive Tax+": {
+  "api_names": [
+   "DA_CognitiveTaxPlus",
+   "TFT_Augment_CognitiveTaxPlus"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Comeback Story": {
+  "api_names": [
+   "DA_ComebackStory",
+   "TFT_Augment_ComebackStory"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Commerce Core": {
+  "api_names": [
+   "DA_CommerceCore",
+   "TFT6_Augment_TradeSector2"
+  ],
+  "tiers": []
+ },
+ "Component Buffet": {
+  "api_names": [
+   "DA_ComponentBuffet",
+   "TFT9_Augment_CustomerIsAlwaysRight"
+  ],
+  "tiers": []
+ },
+ "Component Heist": {
+  "api_names": [
+   "TFT_Augment_MuseumHeist"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Component Quest": {
+  "api_names": [
+   "DA_ComponentQuest"
+  ],
+  "tiers": []
+ },
+ "Construct a Companion": {
+  "api_names": [
+   "DA_ConstructACompanion",
+   "TFT_Augment_ConstructACompanion"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Consuming Flora": {
+  "api_names": [
+   "DA_18_FloraFatalisAugment"
+  ],
+  "tiers": []
+ },
+ "Continuous Conjuration": {
+  "api_names": [
+   "TFT_Augment_ComponentQuestRod"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Cooking Pot": {
+  "api_names": [
+   "DA_CookingPot",
+   "TFT_Augment_CookingPot"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Coronation": {
+  "api_names": [
+   "DA_Coronation",
+   "TFT_Augment_Coronation"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Corrosion": {
+  "api_names": [
+   "DA_Corrosion",
+   "TFT_Augment_Corrosion"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Cosmic Restart": {
+  "api_names": [
+   "TFT_Augment_CosmicRestart"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Coven Acolyte": {
+  "api_names": [
+   "DA_18_CovenTraitAugment"
+  ],
+  "tiers": []
+ },
+ "Crafted Crafting": {
+  "api_names": [
+   "DA_CraftedCrafting",
+   "TFT_Augment_CraftedCrafting"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Crash Test Dummies": {
+  "api_names": [
+   "TFT10_Augment_CrashTestDummies"
+  ],
+  "tiers": []
+ },
+ "Crown's Will": {
+  "api_names": [
+   "TFT_Augment_CrownguardSpirit"
+  ],
+  "tiers": []
+ },
+ "Cry Me A River": {
+  "api_names": [
+   "DA_CryMeARiver",
+   "TFT_Augment_CryMeARiver"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Cursed Crown": {
+  "api_names": [
+   "TFT7_Augment_CursedCrown"
+  ],
+  "tiers": []
+ },
+ "Cybernetic Implants": {
+  "api_names": [
+   "DA_CyberneticImplants_Gold",
+   "TFT6_Augment_CyberneticImplants2"
+  ],
+  "tiers": []
+ },
+ "Cybernetic Uplink": {
+  "api_names": [
+   "DA_CyberneticUplink_Gold",
+   "TFT6_Augment_CyberneticUplink2"
+  ],
+  "tiers": []
+ },
+ "Cybernetic Uplink III": {
+  "api_names": [
+   "TFT6_Augment_CyberneticUplink3"
+  ],
+  "tiers": []
+ },
+ "Dark Ritual": {
+  "api_names": [
+   "DA_18_CovenTraitAugment_LootToAP"
+  ],
+  "tiers": []
+ },
+ "Deadlier Blades": {
+  "api_names": [
+   "DA_DeadlierBlades",
+   "TFT_Augment_TragicalBlade"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Deadlier Caps": {
+  "api_names": [
+   "DA_DeadlierCaps",
+   "TFT_Augment_DeadlierCaps"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Delayed Start": {
+  "api_names": [
+   "TFT_Augment_HeadStart"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Double Trouble": {
+  "api_names": [
+   "TFT6_Augment_Twins2"
+  ],
+  "tiers": []
+ },
+ "Dummify": {
+  "api_names": [
+   "DA_Dummify",
+   "TFT_Augment_Dummify"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Duo Queue": {
+  "api_names": [
+   "DA_18_DuoQueue",
+   "TFT_Augment_DuoQueue"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Early Learnings": {
+  "api_names": [
+   "DA_EarlyLearnings",
+   "TFT_Augment_EarlyLearning"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Efficient Shopper": {
+  "api_names": [
+   "TFT_Augment_EfficientShopper"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Electrocharge I": {
+  "api_names": [
+   "DA_ElectrochargeI",
+   "TFT6_Augment_Electrocharge1"
+  ],
+  "tiers": []
+ },
+ "Electrocharge II": {
+  "api_names": [
+   "DA_ElectrochargeII",
+   "TFT6_Augment_Electrocharge2"
+  ],
+  "tiers": []
+ },
+ "Embiggen": {
+  "api_names": [
+   "DA_18_FaeTraitAugment"
+  ],
+  "tiers": []
+ },
+ "Epic Rolldown": {
+  "api_names": [
+   "DA_EpicRolldown",
+   "TFT_Augment_EpicRolldown"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Epoch": {
+  "api_names": [
+   "DA_Epoch",
+   "TFT11_Augment_Epoch"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Epoch+": {
+  "api_names": [
+   "DA_EpochPlus",
+   "TFT11_Augment_EpochPlus"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Evil Beyond Measure": {
+  "api_names": [
+   "TFT_Augment_EvilBeyondMeasure"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Exclusive Customization": {
+  "api_names": [
+   "DA_ExclusiveCustomization",
+   "TFT_Augment_ExclusiveCustomization"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Exclusive Customization II": {
+  "api_names": [
+   "TFT_Augment_ExclusiveCustomization2"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Exiles I": {
+  "api_names": [
+   "TFT6_Augment_Distancing"
+  ],
+  "tiers": []
+ },
+ "Exiles II": {
+  "api_names": [
+   "TFT6_Augment_Distancing2"
+  ],
+  "tiers": []
+ },
+ "Expected Unexpectedness": {
+  "api_names": [
+   "DA_ExpectedUnexpectedness",
+   "TFT_Augment_ExpectedUnexpectedness"
+  ],
+  "tiers": []
+ },
+ "Expedition": {
+  "api_names": [
+   "DA_Expedition",
+   "TFT_Augment_Expedition"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Explosive Growth": {
+  "api_names": [
+   "DA_ExplosiveGrowth",
+   "TFT_Augment_ExplosiveGrowth"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Explosive Growth+": {
+  "api_names": [
+   "DA_ExplosiveGrowthPlus",
+   "TFT_Augment_ExplosiveGrowthPlus"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Extra Buckles": {
+  "api_names": [
+   "DA_ExtraBuckles"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Eye For An Eye": {
+  "api_names": [
+   "TFT_Augment_EyeForAnEye"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Eye For An Eye+": {
+  "api_names": [
+   "TFT_Augment_EyeForAnEyePlus"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "FOURcing": {
+  "api_names": [
+   "DA_18_FOURcing"
+  ],
+  "tiers": []
+ },
+ "Feed the Flames": {
+  "api_names": [
+   "TFT_Augment_FeedTheFlames"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Feeling Lucky": {
+  "api_names": [
+   "DA_FeelingLucky",
+   "TFT_Augment_FeelingLucky"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Final Ascension": {
+  "api_names": [
+   "TFT9_Augment_Commander_FinalAscension"
+  ],
+  "tiers": []
+ },
+ "Find Your Center": {
+  "api_names": [
+   "DA_FindYourCenter",
+   "TFT_Augment_FindYourCenter"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Firesale": {
+  "api_names": [
+   "TFT_Augment_FiresalePlus"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Flame On": {
+  "api_names": [
+   "DA_18_InfernoTraitAugment"
+  ],
+  "tiers": []
+ },
+ "Flexible": {
+  "api_names": [
+   "DA_Flexible",
+   "TFT_Augment_Flexible"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Flowing Tears": {
+  "api_names": [
+   "DA_FlowingTears",
+   "TFT_Augment_ComponentQuestTear"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Focused Fire": {
+  "api_names": [
+   "DA_FocusedFire",
+   "TFT_Augment_MarksMan"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Forge A Friend": {
+  "api_names": [
+   "DA_ForgeAFriend"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Forge a Friend": {
+  "api_names": [
+   "TFT_Augment_ForgeAFriend"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Forged In Strength": {
+  "api_names": [
+   "DA_ForgedInStrength"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Forged in Strength": {
+  "api_names": [
+   "TFT_Augment_ForgedInStrength"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Forward Thinking": {
+  "api_names": [
+   "TFT_Augment_ForwardThinking"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Frontline Foundation": {
+  "api_names": [
+   "DA_FrontlineFoundation",
+   "TFT_Augment_FrontlineFoundation"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Fully Adapted": {
+  "api_names": [
+   "TFT10_Augment_FullyAdapted"
+  ],
+  "tiers": []
+ },
+ "Future Focused": {
+  "api_names": [
+   "DA_FutureFocused"
+  ],
+  "tiers": []
+ },
+ "Gain 21 Gold": {
+  "api_names": [
+   "DA_GainGold"
+  ],
+  "tiers": []
+ },
+ "Gain @Gold@ Gold": {
+  "api_names": [
+   "TFT_Augment_GainGold"
+  ],
+  "tiers": []
+ },
+ "Giant and Mighty": {
+  "api_names": [
+   "DA_GiantAndMighty",
+   "TFT_Augment_GiantAndMighty"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Gilded Steel": {
+  "api_names": [
+   "DA_GildedSteel",
+   "TFT_Augment_GildedSteel"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Glass Cannon I": {
+  "api_names": [
+   "DA_GlassCannon_Silver",
+   "TFT_Augment_GlassCannonI"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Glass Cannon II": {
+  "api_names": [
+   "DA_GlassCannon_Gold",
+   "TFT_Augment_GlassCannonII"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Going Long": {
+  "api_names": [
+   "DA_GoingLong",
+   "TFT10_Augment_GoingLong"
+  ],
+  "tiers": []
+ },
+ "Gold Destiny": {
+  "api_names": [
+   "DA_GoldDestiny",
+   "TFT_Augment_GoldDestiny"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Gold Destiny+": {
+  "api_names": [
+   "DA_GoldDestinyPlus",
+   "TFT_Augment_GoldDestinyPlus"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Gold For Dummies": {
+  "api_names": [
+   "TFT_Augment_GoldForDummies"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Golden Gamble": {
+  "api_names": [
+   "DA_GoldenGamble",
+   "TFT_Augment_GoldenGamble"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Golden Gamble+": {
+  "api_names": [
+   "DA_GoldenGamblePlus",
+   "TFT_Augment_GoldenGamblePlus"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Golden Gamble++": {
+  "api_names": [
+   "DA_GoldenGamblePlusPlus",
+   "TFT_Augment_GoldenGamblePlusPlus"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Golemify": {
+  "api_names": [
+   "TFT_Augment_Golemify"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Good For Something I": {
+  "api_names": [
+   "DA_GoodForSomethingI",
+   "TFT10_Augment_GoodForSomethingSilver"
+  ],
+  "tiers": []
+ },
+ "Group Hug I": {
+  "api_names": [
+   "DA_GroupHugI",
+   "TFT_Augment_GroupHug1"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Group Hug II": {
+  "api_names": [
+   "DA_GroupHugII",
+   "TFT_Augment_GroupHug2"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Hard Bargain": {
+  "api_names": [
+   "DA_HardBargain",
+   "TFT_Augment_HardBargain"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Hard Commit": {
+  "api_names": [
+   "DA_HardCommit",
+   "TFT_Augment_HardCommit"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Healing Orbs I": {
+  "api_names": [
+   "DA_HealingOrbsI",
+   "TFT9_Augment_HealingOrbsI"
+  ],
+  "tiers": []
+ },
+ "Healing Orbs II": {
+  "api_names": [
+   "DA_HealingOrbsII",
+   "TFT9_Augment_HealingOrbsII"
+  ],
+  "tiers": []
+ },
+ "Heart of Steel": {
+  "api_names": [
+   "TFT_Augment_WarmogsBuckle"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Heavy Is the Crown": {
+  "api_names": [
+   "TFT_Augment_HeavyIsTheCrown"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Hedge Fund": {
+  "api_names": [
+   "DA_HedgeFund",
+   "TFT9_Augment_HedgeFund"
+  ],
+  "tiers": []
+ },
+ "Hedge Fund+": {
+  "api_names": [
+   "TFT9_Augment_HedgeFundPlus"
+  ],
+  "tiers": []
+ },
+ "Hefty Rolls": {
+  "api_names": [
+   "TFT_Augment_HeftyRolls"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Heroic Grab Bag": {
+  "api_names": [
+   "DA_HeroicGrabBag",
+   "TFT10_Augment_HeroicGrabBag"
+  ],
+  "tiers": []
+ },
+ "Heroic Grab Bag+": {
+  "api_names": [
+   "DA_HeroicGrabBagPlus",
+   "TFT_Augment_HeroicGrabBagPlus"
+  ],
+  "tiers": []
+ },
+ "Heroic Grab Bag++": {
+  "api_names": [
+   "DA_HeroicGrabBagPlusPlus",
+   "TFT_Augment_HeroicGrabBagPlusPlus"
+  ],
+  "tiers": []
+ },
+ "High Voltage": {
+  "api_names": [
+   "TFT_Augment_HighVoltage"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Hold the Line": {
+  "api_names": [
+   "DA_HoldTheLine",
+   "TFT_Augment_HoldTheLine"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Howling Gale": {
+  "api_names": [
+   "TFT_Augment_HowlingGale"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Hustler": {
+  "api_names": [
+   "DA_Hustler",
+   "TFT6_Augment_HyperRoll"
+  ],
+  "tiers": []
+ },
+ "Indiscriminate Killer": {
+  "api_names": [
+   "TFT_Augment_JustSlayer"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Infinity Protection": {
+  "api_names": [
+   "DA_InfinityProtection",
+   "TFT_Augment_InfinityProtection"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Invested+": {
+  "api_names": [
+   "DA_InvestedPlus",
+   "TFT_Augment_InvestedPlus"
+  ],
+  "tiers": []
+ },
+ "Invested++": {
+  "api_names": [
+   "DA_InvestedPlusPlus",
+   "TFT_Augment_InvestedPlusPlus"
+  ],
+  "tiers": []
+ },
+ "Investment Strategy I": {
+  "api_names": [
+   "DA_InvestmentStrategyI",
+   "TFT_Augment_InvestmentStrategy1"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Investment Strategy II": {
+  "api_names": [
+   "DA_InvestmentStrategy",
+   "TFT_Augment_InvestmentStrategy2"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Iron Assets": {
+  "api_names": [
+   "DA_IronAssets",
+   "TFT9_Augment_IronAssets"
+  ],
+  "tiers": []
+ },
+ "It's Me, Baby": {
+  "api_names": [
+   "DA_ItsMeBaby"
+  ],
+  "tiers": []
+ },
+ "Item Collector I": {
+  "api_names": [
+   "TFT_Augment_ItemCollector1"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Item Collector II": {
+  "api_names": [
+   "TFT_Augment_ItemCollector2"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Item Extraction": {
+  "api_names": [
+   "DA_BlackthornTraitAugment"
+  ],
+  "tiers": []
+ },
+ "Item Grab Bag": {
+  "api_names": [
+   "TFT6_Augment_ItemGrabBag1"
+  ],
+  "tiers": []
+ },
+ "Item Grab Bag I": {
+  "api_names": [
+   "DA_ItemGrabBag"
+  ],
+  "tiers": []
+ },
+ "Jeweled Lotus I": {
+  "api_names": [
+   "DA_JeweledLotus_I",
+   "TFT9_Augment_JeweledLotus"
+  ],
+  "tiers": []
+ },
+ "Jeweled Lotus II": {
+  "api_names": [
+   "DA_JeweledLotus_II",
+   "TFT9_Augment_GreaterJeweledLotus"
+  ],
+  "tiers": []
+ },
+ "Kahunahuna": {
+  "api_names": [
+   "TFT_Augment_FuriousBlows"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Keepers I": {
+  "api_names": [
+   "TFT6_Augment_Keepers1"
+  ],
+  "tiers": []
+ },
+ "Keepers II": {
+  "api_names": [
+   "TFT6_Augment_Keepers2"
+  ],
+  "tiers": []
+ },
+ "Kick Start": {
+  "api_names": [
+   "DA_KickStart",
+   "TFT_Augment_KickStart"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Kingslayer": {
+  "api_names": [
+   "DA_Kingslayer"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Know Your Enemy": {
+  "api_names": [
+   "DA_KnowYourEnemy",
+   "TFT9_Augment_KnowYourEnemy"
+  ],
+  "tiers": []
+ },
+ "Last Second Save": {
+  "api_names": [
+   "TFT_Augment_LastSecondSave"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Late Game Scaling": {
+  "api_names": [
+   "DA_LateGameScaling",
+   "TFT_Augment_LateGameScaling"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Late Game Specialist": {
+  "api_names": [
+   "DA_LateGameSpecialist",
+   "TFT7_Augment_LategameSpecialist"
+  ],
+  "tiers": []
+ },
+ "Latent Forge": {
+  "api_names": [
+   "DA_LatentForge",
+   "TFT9_Augment_LongTimeCrafting"
+  ],
+  "tiers": []
+ },
+ "Legion Of Threes": {
+  "api_names": [
+   "DA_LegionOfThrees"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Legion of Threes": {
+  "api_names": [
+   "TFT_Augment_LegionOfThrees"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Level Up!": {
+  "api_names": [
+   "DA_LevelUp",
+   "TFT6_Augment_MaxLevel10"
+  ],
+  "tiers": []
+ },
+ "Lineup": {
+  "api_names": [
+   "TFT_Augment_Lineup"
+  ],
+  "tiers": []
+ },
+ "Lit Fuse": {
+  "api_names": [
+   "TFT_Augment_Incoming"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Little Buddies": {
+  "api_names": [
+   "TFT10_Augment_LittleBuddies"
+  ],
+  "tiers": []
+ },
+ "Living Forge": {
+  "api_names": [
+   "DA_LivingForge",
+   "TFT7_Augment_LivingForge"
+  ],
+  "tiers": []
+ },
+ "Loaded Dice": {
+  "api_names": [
+   "DA_LoadedDice"
+  ],
+  "tiers": []
+ },
+ "Lucky Gloves": {
+  "api_names": [
+   "DA_LuckyGloves",
+   "TFT7_Augment_LuckyGloves"
+  ],
+  "tiers": []
+ },
+ "Lucky Gloves+": {
+  "api_names": [
+   "DA_LuckyGlovesPlus",
+   "TFT7_Augment_LuckyGlovesPlus"
+  ],
+  "tiers": []
+ },
+ "Lunch Money": {
+  "api_names": [
+   "TFT11_Augment_BloodBank"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Luxury Subscription": {
+  "api_names": [
+   "DA_LuxurySubscription",
+   "TFT_Augment_LuxurySubscription"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Mace's Will": {
+  "api_names": [
+   "TFT_Augment_GuardbreakerSpirit"
+  ],
+  "tiers": []
+ },
+ "Magic Roll": {
+  "api_names": [
+   "DA_MagicRoll"
+  ],
+  "tiers": []
+ },
+ "Makeshift Armor I": {
+  "api_names": [
+   "DA_MakeshiftArmorI",
+   "TFT6_Augment_MakeshiftArmor1"
+  ],
+  "tiers": []
+ },
+ "Makeshift Armor II": {
+  "api_names": [
+   "DA_MakeshiftArmorII",
+   "TFT6_Augment_MakeshiftArmor2"
+  ],
+  "tiers": []
+ },
+ "Malicious Monetization": {
+  "api_names": [
+   "DA_MaliciousMonetization",
+   "TFT_Augment_MirroredMonetization"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Master of All Origins": {
+  "api_names": [
+   "DA_18_LuxAugmentII"
+  ],
+  "tiers": []
+ },
+ "Max Build": {
+  "api_names": [
+   "DA_MaxBuild",
+   "TFT_Augment_MaxBuild"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Mess Hall": {
+  "api_names": [
+   "TFT_Augment_FoodfightTactics"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Min-Max": {
+  "api_names": [
+   "DA_Min_Max",
+   "TFT_Augment_MinMaxer"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Misfits": {
+  "api_names": [
+   "TFT_Augment_Misfits"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Missed Connections": {
+  "api_names": [
+   "DA_MissedConnections",
+   "TFT9_Augment_MissedConnections"
+  ],
+  "tiers": []
+ },
+ "Money Hungry": {
+  "api_names": [
+   "DA_MoneyHungry_NotBroken",
+   "TFT_Augment_MoneyHungry"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Money Hungry+": {
+  "api_names": [
+   "DA_MoneyHungryPlus"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Money Monsoon": {
+  "api_names": [
+   "DA_MoneyMonsoon",
+   "TFT_Augment_MoneyMonsoon"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Moonlight": {
+  "api_names": [
+   "TFT_Augment_Moonlight"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "NO SCOUT NO PIVOT": {
+  "api_names": [
+   "DA_NoScoutNoPivot",
+   "TFT_Augment_NoScoutNoPivot"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Nature's Shelter": {
+  "api_names": [
+   "DA_18_ElderwoodTraitAugment"
+  ],
+  "tiers": []
+ },
+ "Nesting Anvils": {
+  "api_names": [
+   "DA_NestingAnvils"
+  ],
+  "tiers": []
+ },
+ "Nesting Anvils+": {
+  "api_names": [
+   "DA_NestingAnvilsPlus"
+  ],
+  "tiers": []
+ },
+ "New Recruit": {
+  "api_names": [
+   "TFT6_Augment_ForceOfNature"
+  ],
+  "tiers": []
+ },
+ "New Recruit+": {
+  "api_names": [
+   "TFT6_Augment_ForceOfNaturePlus"
+  ],
+  "tiers": []
+ },
+ "Nine Lives": {
+  "api_names": [
+   "TFT_Augment_NineLives"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Noble Sacrifice": {
+  "api_names": [
+   "TFT_Augment_NobleSacrifice"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Omega Riftbeast": {
+  "api_names": [
+   "DA_18_RiftbeastTraitAugment"
+  ],
+  "tiers": []
+ },
+ "On a Roll": {
+  "api_names": [
+   "TFT_Augment_Waverider"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "One Buff Two Buff": {
+  "api_names": [
+   "DA_OneBuffTwoBuff"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "One Buff, Two Buff": {
+  "api_names": [
+   "TFT_Augment_OneBuffTwoBuff"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "One Two Three": {
+  "api_names": [
+   "TFT9_Augment_OneTwosThree"
+  ],
+  "tiers": []
+ },
+ "One, Two, Five!": {
+  "api_names": [
+   "DA_OneTwoFive",
+   "TFT6_Augment_OneTwoFive"
+  ],
+  "tiers": []
+ },
+ "Ones Two Three": {
+  "api_names": [
+   "DA_18_OnesTwosThree"
+  ],
+  "tiers": []
+ },
+ "Over Encumbered": {
+  "api_names": [
+   "TFT11_Augment_OverEncumbered"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Overheal": {
+  "api_names": [
+   "TFT_Augment_Overheal"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Pandora's Bench": {
+  "api_names": [
+   "DA_PandorasBench",
+   "TFT7_Augment_PandorasBench"
+  ],
+  "tiers": []
+ },
+ "Pandora's Items": {
+  "api_names": [
+   "TFT6_Augment_PandorasItems"
+  ],
+  "tiers": []
+ },
+ "Pandora's Items I": {
+  "api_names": [
+   "DA_PandorasItemsI"
+  ],
+  "tiers": []
+ },
+ "Pandora's Items II": {
+  "api_names": [
+   "DA_PandorasItemsIIMinus",
+   "TFT9_Augment_PandorasItems2"
+  ],
+  "tiers": []
+ },
+ "Pandora's Items II+": {
+  "api_names": [
+   "DA_PandorasItemsIIPlus"
+  ],
+  "tiers": []
+ },
+ "Pandora's Items II++": {
+  "api_names": [
+   "DA_PandorasItemsIIPlusPlus"
+  ],
+  "tiers": []
+ },
+ "Pandora's Items III": {
+  "api_names": [
+   "DA_PandorasItemsIII",
+   "TFT9_Augment_PandorasRadiantBox"
+  ],
+  "tiers": []
+ },
+ "Partial Ascension": {
+  "api_names": [
+   "DA_PartialAscension",
+   "TFT9_Augment_Commander_PartialAscension"
+  ],
+  "tiers": []
+ },
+ "Patience Is A Virtue": {
+  "api_names": [
+   "DA_PatienceIsAVirtue"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Patience is a Virtue": {
+  "api_names": [
+   "TFT_Augment_PatienceIsAVirtue"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Patient Study": {
+  "api_names": [
+   "DA_PatientStudy",
+   "TFT9_Augment_LearningFromExperience2"
+  ],
+  "tiers": []
+ },
+ "Piercing Sight": {
+  "api_names": [
+   "TFT_Augment_Crossfire2"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Pilfer": {
+  "api_names": [
+   "DA_Pilfer",
+   "TFT_Augment_Pilfer"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Placebo": {
+  "api_names": [
+   "TFT_Augment_Placebo"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Placebo+": {
+  "api_names": [
+   "TFT_Augment_PlaceboPlus"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Plot Armor": {
+  "api_names": [
+   "DA_PlotArmor",
+   "TFT_Augment_PlotArmor"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Pocket Recombobulator": {
+  "api_names": [
+   "TFT_Augment_PocketRecombobulator"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Portable Forge": {
+  "api_names": [
+   "DA_PortableForge",
+   "TFT6_Augment_PortableForge"
+  ],
+  "tiers": []
+ },
+ "Preparation I": {
+  "api_names": [
+   "TFT7_Augment_Preparation"
+  ],
+  "tiers": []
+ },
+ "Preparation II": {
+  "api_names": [
+   "TFT7_Augment_Preparation2"
+  ],
+  "tiers": []
+ },
+ "Prismatic Destiny": {
+  "api_names": [
+   "DA_PrismaticDestiny",
+   "TFT_Augment_PrismaticDestiny"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Prismatic Destiny+": {
+  "api_names": [
+   "DA_PrismaticDestinyPlus"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Prismatic Ticket": {
+  "api_names": [
+   "DA_PrismaticTicket",
+   "TFT6_Augment_GachaAddict"
+  ],
+  "tiers": []
+ },
+ "Prizefighter": {
+  "api_names": [
+   "TFT11_Augment_Prizefighter"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Promised Protection": {
+  "api_names": [
+   "DA_PromisedProtection"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Protagonist": {
+  "api_names": [
+   "TFT_Augment_Protagonist"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Psychic Forge": {
+  "api_names": [
+   "TFT_Augment_PsychicForge"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Pumping Up I": {
+  "api_names": [
+   "TFT9_Augment_PumpingUp"
+  ],
+  "tiers": []
+ },
+ "Pumping Up II": {
+  "api_names": [
+   "TFT9_Augment_PumpingUp2"
+  ],
+  "tiers": []
+ },
+ "Pumping Up III": {
+  "api_names": [
+   "TFT9_Augment_PumpingUp3"
+  ],
+  "tiers": []
+ },
+ "Pyromaniac": {
+  "api_names": [
+   "TFT_Augment_Pyromaniac"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Quality Over Quantity": {
+  "api_names": [
+   "TFT_Augment_QualityOverQuantity"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Quick Streaks": {
+  "api_names": [
+   "DA_QuickStreaks"
+  ],
+  "tiers": []
+ },
+ "Quiet Quitting": {
+  "api_names": [
+   "TFT_Augment_QuietQuitting"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Radiant Rascal": {
+  "api_names": [
+   "DA_RadiantRascal",
+   "TFT9_Augment_RollTheDice"
+  ],
+  "tiers": []
+ },
+ "Radiant Refactor": {
+  "api_names": [
+   "TFT11_Augment_RadiantRefactor"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Radiant Relics": {
+  "api_names": [
+   "DA_RadiantRelic",
+   "TFT6_Augment_RadiantRelics"
+  ],
+  "tiers": []
+ },
+ "Raining Gold": {
+  "api_names": [
+   "TFT11_Augment_RainingGold"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Raining Gold+": {
+  "api_names": [
+   "TFT11_Augment_RainingGoldPlus"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Recombobulator": {
+  "api_names": [
+   "DA_Recombobulator",
+   "TFT6_Augment_Recombobulator"
+  ],
+  "tiers": []
+ },
+ "ReinFOURcement": {
+  "api_names": [
+   "TFT11_Augment_Reinfourcement"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Replication": {
+  "api_names": [
+   "DA_Replication",
+   "TFT_Augment_Replication"
+  ],
+  "tiers": []
+ },
+ "Reroll Transfer": {
+  "api_names": [
+   "TFT_Augment_RerollTransfer"
+  ],
+  "tiers": []
+ },
+ "Residual Magic": {
+  "api_names": [
+   "DA_18_ResidualMagic"
+  ],
+  "tiers": []
+ },
+ "Residual Magic +": {
+  "api_names": [
+   "DA_18_ResidualMagicPlus"
+  ],
+  "tiers": []
+ },
+ "Residual Magic ++": {
+  "api_names": [
+   "DA_18_ResidualMagicPlusPlus"
+  ],
+  "tiers": []
+ },
+ "Restart Mission": {
+  "api_names": [
+   "TFT_Augment_RestartMission"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Retribution": {
+  "api_names": [
+   "DA_Retribution",
+   "TFT_Augment_Retribution"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Rigged Shop+": {
+  "api_names": [
+   "TFT_Augment_RiggedShopPlus"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Risky Moves": {
+  "api_names": [
+   "TFT9_Augment_RiskyMoves"
+  ],
+  "tiers": []
+ },
+ "Rolling For Days": {
+  "api_names": [
+   "DA_RollingForDays"
+  ],
+  "tiers": []
+ },
+ "Rolling For Days I": {
+  "api_names": [
+   "TFT9_Augment_Commander_RollingForDays"
+  ],
+  "tiers": []
+ },
+ "Salvage Bin": {
+  "api_names": [
+   "DA_SalvageBin",
+   "TFT6_Augment_SalvageBin",
+   "TFT6_Augment_SalvageBinHR"
+  ],
+  "tiers": []
+ },
+ "Salvage Bin+": {
+  "api_names": [
+   "DA_SalvageBinPlus",
+   "TFT8_Augment_SalvageBinPlus"
+  ],
+  "tiers": []
+ },
+ "Savings Account": {
+  "api_names": [
+   "TFT_Augment_SavingsAccount"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Scapegoat": {
+  "api_names": [
+   "TFT10_Augment_Scapegoat"
+  ],
+  "tiers": []
+ },
+ "Scoreboard Scrapper": {
+  "api_names": [
+   "TFT11_Augment_ScoreboardScrapper"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Second Wind": {
+  "api_names": [
+   "TFT6_Augment_SecondWind1"
+  ],
+  "tiers": []
+ },
+ "Second Wind II": {
+  "api_names": [
+   "TFT6_Augment_SecondWind2"
+  ],
+  "tiers": []
+ },
+ "Seraphim's Staff": {
+  "api_names": [
+   "DA_SeraphimsStaff",
+   "TFT_Augment_SeraphimsStaff"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Shimmerscale Essence": {
+  "api_names": [
+   "DA_ShimmerscaleEssence",
+   "TFT_Augment_ShimmerscaleEssence"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Shopping Spree": {
+  "api_names": [
+   "DA_ShoppingSpree",
+   "TFT9_Augment_HighEndSector",
+   "TFT9_Augment_Legend_HighEndSector"
+  ],
+  "tiers": []
+ },
+ "Side Effects": {
+  "api_names": [
+   "TFT_Augment_SideEffects"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Silver Destiny": {
+  "api_names": [
+   "DA_SilverDestiny",
+   "TFT_Augment_SilverDestiny"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Silver Destiny+": {
+  "api_names": [
+   "DA_SilverDestinyPlus",
+   "TFT_Augment_SilverDestinyPlus"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Silver Destiny++": {
+  "api_names": [
+   "DA_SilverDestinyPlusPlus",
+   "TFT_Augment_SilverDestinyPlusPlus"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Silver Spoon": {
+  "api_names": [
+   "DA_SilverSpoon",
+   "TFT9_Augment_SilverSpoon"
+  ],
+  "tiers": []
+ },
+ "Size Matters": {
+  "api_names": [
+   "TFT_Augment_SizeMatters"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Slammin'": {
+  "api_names": [
+   "DA_Slammin",
+   "TFT11_Augment_Slammin"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Slammin'+": {
+  "api_names": [
+   "DA_SlamminPlus",
+   "TFT11_Augment_Slammin_Plus"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Slice of Life": {
+  "api_names": [
+   "DA_SliceOfLife",
+   "TFT_Augment_SliceOfLife"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Slightly Magic Roll": {
+  "api_names": [
+   "DA_SlightlyMagicRoll",
+   "TFT_Augment_MagicRollMinus"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Small Furry Friend": {
+  "api_names": [
+   "DA_18_SprykinAugment"
+  ],
+  "tiers": []
+ },
+ "Small Grab Bag": {
+  "api_names": [
+   "DA_SmallGrabBag",
+   "TFT_Augment_SmallGrabBag"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Solo Leveling": {
+  "api_names": [
+   "DA_SoloLeveling",
+   "TFT_Augment_SoloLeveling"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Solo Plate": {
+  "api_names": [
+   "DA_SoloPlate",
+   "TFT_Augment_ItemGargoyleStoneplate"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Soul Awakening": {
+  "api_names": [
+   "DA_SoulAwakening",
+   "TFT_Augment_AwakenedSoul"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Spear's Will": {
+  "api_names": [
+   "TFT_Augment_ShojinSpirit"
+  ],
+  "tiers": []
+ },
+ "Speedy Double Kill": {
+  "api_names": [
+   "DA_SpeedyDoubleKill",
+   "TFT_Augment_SpeedyDoubleKill"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Spirit Link": {
+  "api_names": [
+   "TFT_Augment_SpiritLink1"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Spirit Of Redemption": {
+  "api_names": [
+   "DA_SpiritOfRedemption"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Spirit of Redemption": {
+  "api_names": [
+   "TFT_Augment_ItemSpiritVisage"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Spoils of War I": {
+  "api_names": [
+   "TFT9_Augment_DravenSpoilsOfWar"
+  ],
+  "tiers": []
+ },
+ "Spoils of War II": {
+  "api_names": [
+   "TFT9_Augment_DravenSpoilsOfWar2"
+  ],
+  "tiers": []
+ },
+ "Spoils of War III": {
+  "api_names": [
+   "TFT9_Augment_DravenSpoilsOfWar3"
+  ],
+  "tiers": []
+ },
+ "Spreading Roots": {
+  "api_names": [
+   "DA_SpreadingRoots",
+   "TFT_Augment_SpreadingRoots"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Spreading Roots+": {
+  "api_names": [
+   "DA_SpreadingRootsPlus",
+   "TFT_Augment_SpreadingRootsPlus"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Staffsmith": {
+  "api_names": [
+   "DA_Staffsmith",
+   "TFT_Augment_ForgeRod"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Stand United": {
+  "api_names": [
+   "DA_StandUnited",
+   "TFT6_Augment_Diversify1"
+  ],
+  "tiers": []
+ },
+ "Stars Are Born": {
+  "api_names": [
+   "TFT9_Augment_StarsAreBorn"
+  ],
+  "tiers": []
+ },
+ "Starter Kit": {
+  "api_names": [
+   "TFT9_Augment_StarterKit"
+  ],
+  "tiers": []
+ },
+ "Subscription Service": {
+  "api_names": [
+   "TFT_Augment_SubscriptionService"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Sun and Moon": {
+  "api_names": [
+   "DA_18_LunarTraitAugment"
+  ],
+  "tiers": []
+ },
+ "Sun and Moon+": {
+  "api_names": [
+   "DA_18_LunarTraitAugmentPlus"
+  ],
+  "tiers": []
+ },
+ "Sunfire Board": {
+  "api_names": [
+   "TFT6_Augment_SunfireBoard"
+  ],
+  "tiers": []
+ },
+ "Survivor": {
+  "api_names": [
+   "TFT_Augment_Survivor"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Sweet Treats": {
+  "api_names": [
+   "DA_SweetTreats",
+   "TFT_Augment_SweetTreats"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Sword Overflow": {
+  "api_names": [
+   "DA_SwordOverflow",
+   "TFT_Augment_SwordOverflow"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Swordsmith": {
+  "api_names": [
+   "DA_Swordsmith",
+   "TFT_Augment_ForgeSword"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "TONS of Stats!": {
+  "api_names": [
+   "DA_TonsOfStatsII"
+  ],
+  "tiers": []
+ },
+ "Table Scraps": {
+  "api_names": [
+   "TFT_Augment_TableScraps"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Tactician's Kitchen": {
+  "api_names": [
+   "DA_TacticiansKitchen",
+   "TFT_Augment_TacticiansKitchen"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Team Building": {
+  "api_names": [
+   "DA_TeamBuilding",
+   "TFT9_Augment_ArmyBuilding"
+  ],
+  "tiers": []
+ },
+ "Teaming Up": {
+  "api_names": [
+   "TFT9_Augment_Commander_TeamingUp1"
+  ],
+  "tiers": []
+ },
+ "Tesla Coil": {
+  "api_names": [
+   "TFT_Augment_TeslaCoil"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "The Golden Dragon": {
+  "api_names": [
+   "DA_TheGoldenDragon",
+   "TFT_Augment_TheGoldenDragon"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "The Golden Egg": {
+  "api_names": [
+   "DA_GoldenEgg",
+   "TFT6_Augment_TheGoldenEgg"
+  ],
+  "tiers": []
+ },
+ "The Tower": {
+  "api_names": [
+   "DA_TheTower",
+   "TFT_Augment_TheTower"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "The Trait Tree": {
+  "api_names": [
+   "DA_TheTraitTree",
+   "TFT_Augment_TraitTree"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "The Trait Tree+": {
+  "api_names": [
+   "DA_TheTraitTreePlus",
+   "TFT_Augment_TraitTreePlus"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Thorn-Plated Armor": {
+  "api_names": [
+   "TFT_Augment_ThornPlatedArmor"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Time Skip": {
+  "api_names": [
+   "DA_TimeSkip",
+   "TFT_Augment_TimeSkip"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Tiniest Titan": {
+  "api_names": [
+   "TFT9_Augment_TiniestTitanPlus"
+  ],
+  "tiers": []
+ },
+ "Tiny Titans": {
+  "api_names": [
+   "TFT6_Augment_TinyTitans"
+  ],
+  "tiers": []
+ },
+ "Tiny, but Deadly": {
+  "api_names": [
+   "TFT11_Augment_TinyButDeadly"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Titanic Titan": {
+  "api_names": [
+   "TFT_Augment_TitanicTitan"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Tomb Raider I": {
+  "api_names": [
+   "TFT_Augment_TombRaider1"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Tomb Raider II": {
+  "api_names": [
+   "TFT_Augment_TombRaider2"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Tons of Stats!": {
+  "api_names": [
+   "DA_TonsOfStatsI",
+   "TFT9_Augment_TonsOfStats"
+  ],
+  "tiers": []
+ },
+ "Trade Sector": {
+  "api_names": [
+   "DA_TradeSector",
+   "TFT6_Augment_TradeSector"
+  ],
+  "tiers": []
+ },
+ "Trade Sector+": {
+  "api_names": [
+   "DA_TradeSectorPlus"
+  ],
+  "tiers": []
+ },
+ "Trait Ladder": {
+  "api_names": [
+   "DA_TraitLadder"
+  ],
+  "tiers": []
+ },
+ "Treasure Hunt": {
+  "api_names": [
+   "TFT_Augment_TreasureHunt"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Trifecta I": {
+  "api_names": [
+   "TFT_Augment_Trifecta1"
+  ],
+  "tiers": []
+ },
+ "Trifecta II": {
+  "api_names": [
+   "TFT_Augment_Trifecta2"
+  ],
+  "tiers": []
+ },
+ "Twin Guardians": {
+  "api_names": [
+   "DA_TwinGuardians",
+   "TFT_Augment_TwinGuardians"
+  ],
+  "tiers": [
+   "silver"
+  ]
+ },
+ "Two Much Value": {
+  "api_names": [
+   "TFT_Augment_TwoMuchValue"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Two Tanky": {
+  "api_names": [
+   "TFT_Augment_TwoTanky"
+  ],
+  "tiers": []
+ },
+ "Two Trick": {
+  "api_names": [
+   "TFT_Augment_TwoTrick"
+  ],
+  "tiers": []
+ },
+ "U.R.F": {
+  "api_names": [
+   "DA_URF",
+   "TFT16_Augment_UltraRapidFire"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Underdogs": {
+  "api_names": [
+   "TFT_Augment_Underdogs"
+  ],
+  "tiers": []
+ },
+ "Unlimited Power": {
+  "api_names": [
+   "TFT_Augment_UnlimitedPower"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Unrivaled": {
+  "api_names": [
+   "DA_18_RivalsAugment"
+  ],
+  "tiers": []
+ },
+ "Upward Mobility": {
+  "api_names": [
+   "DA_UpwardMobility",
+   "TFT_Augment_UpwardMobility"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Urf's Gambit": {
+  "api_names": [
+   "TFT_Augment_UrfsGambit"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Urf's Grab Bag": {
+  "api_names": [
+   "DA_UrfsGrabBag",
+   "TFT7_Augment_UrfsGrabBag2"
+  ],
+  "tiers": []
+ },
+ "Vampiric Vitality I": {
+  "api_names": [
+   "TFT_Augment_Dhampyr1"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Verticality I": {
+  "api_names": [
+   "DA_VerticalityI"
+  ],
+  "tiers": []
+ },
+ "Verticality II": {
+  "api_names": [
+   "DA_VerticalityII"
+  ],
+  "tiers": []
+ },
+ "Verticality III": {
+  "api_names": [
+   "DA_VerticalityIII"
+  ],
+  "tiers": []
+ },
+ "Wand Overflow": {
+  "api_names": [
+   "DA_WandOverflow",
+   "TFT_Augment_WandOverflow"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Warlord's Honor": {
+  "api_names": [
+   "TFT_Augment_Unforgotten"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Warpath": {
+  "api_names": [
+   "DA_Warpath",
+   "TFT_Augment_Warpath"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Water Lotus I": {
+  "api_names": [
+   "TFT_Augment_WaterLotus1"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Water Lotus II": {
+  "api_names": [
+   "TFT_Augment_WaterLotus2"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "We Stick Together": {
+  "api_names": [
+   "DA_WeStickTogether",
+   "TFT_Augment_WeStickTogether"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Weight The Worth": {
+  "api_names": [
+   "DA_18_WeightTheWorth"
+  ],
+  "tiers": []
+ },
+ "Win Out": {
+  "api_names": [
+   "TFT_Augment_WinOut"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Wise Spending": {
+  "api_names": [
+   "TFT6_Augment_ThriftShop"
+  ],
+  "tiers": []
+ },
+ "Wisp Rebate": {
+  "api_names": [
+   "DA_18_WispRebatePlus"
+  ],
+  "tiers": []
+ },
+ "Wisp Rebate+": {
+  "api_names": [
+   "DA_18_WispRebatePlusPlus"
+  ],
+  "tiers": []
+ },
+ "Worth the Wait": {
+  "api_names": [
+   "DA_WorththeWait",
+   "TFT_Augment_WorthTheWaitGold"
+  ],
+  "tiers": [
+   "gold"
+  ]
+ },
+ "Worth the Wait II": {
+  "api_names": [
+   "DA_WorththeWaitII",
+   "TFT_Augment_WorthTheWaitPrismatic"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "Woven Magic": {
+  "api_names": [
+   "DA_WovenMagic",
+   "TFT_Augment_TheVidalion"
+  ],
+  "tiers": [
+   "prismatic"
+  ]
+ },
+ "You Have My Bow": {
+  "api_names": [
+   "TFT9_Augment_YouHaveMyBow"
+  ],
+  "tiers": []
+ },
+ "Young and Wild and Free": {
+  "api_names": [
+   "DA_YoungAndWildAndFree",
+   "TFT9_Augment_YoungAndWildAndFree"
+  ],
+  "tiers": []
+ }
+}

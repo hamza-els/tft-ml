@@ -68,13 +68,21 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("result", help="JSON pasted from the review page")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--kind", choices=["items", "augments"], default="items",
+                        help="Which templates: item icons under units' bars, or the augment bar's icons")
     args = parser.parse_args()
     review = json.loads(Path(args.result).read_text(encoding="utf-8"))
 
+    global FOLDER
+    if args.kind == "augments":
+        FOLDER = _ROOT / vision_cfg["augments"]["template_dir"]
     files = sorted(FOLDER.glob("*.png"))
     ids = sorted({f.stem.split("__")[0] for f in files})
     game = load_game_data()
-    known = sorted(set(game.items) | {i for i in ids if not i.startswith("uitem_")})
+    if args.kind == "augments":
+        known = sorted(set(game.augments) | {i for i in ids if not i.startswith("aug_")})
+    else:
+        known = sorted(set(game.items) | {i for i in ids if not i.startswith("uitem_")})
 
     parent = {i: i for i in ids}
 
@@ -98,7 +106,7 @@ def main():
     final: dict[str, str] = {}
     for members in groups.values():
         names = [typed[m] for m in members if m in typed]
-        auto = sorted((m for m in members if not m.startswith("uitem_")), key=len)
+        auto = sorted((m for m in members if not m.startswith(("uitem_", "aug_"))), key=len)
         name = (max(set(names), key=names.count) if names else auto[0] if auto else sorted(members)[0])
         for m in members:
             final[m] = name
@@ -112,7 +120,7 @@ def main():
     if args.dry_run:
         return
 
-    backup = paths.LOCAL / "backup" / f"unit_items_{time.strftime('%Y%m%d_%H%M%S')}"   # local, not in the repo
+    backup = paths.LOCAL / "backup" / f"{FOLDER.name}_{time.strftime('%Y%m%d_%H%M%S')}"   # local, not in the repo
     shutil.copytree(FOLDER, backup)
     junk = set(review.get("junk", []))          # IDs Hamza marked "not an item": deleted
     files = [f for f in files if f.stem.split("__")[0] not in junk or f.unlink()]

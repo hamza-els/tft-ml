@@ -20,6 +20,7 @@ import argparse
 import json
 
 from src.state.sequence import clean_game, quality_report
+from src.utils import paths
 
 
 def main():
@@ -32,13 +33,16 @@ def main():
     if not files:
         sys.exit(f"No game_*.jsonl files in {args.states}")
 
+    labels_path = paths.REPO / "data" / "processed" / "augment_labels.json"
+    augment_labels = json.loads(labels_path.read_text(encoding="utf-8")) if labels_path.exists() else {}
     for path in files:
         rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line]
         rows = [r for r in rows if r.get("in_game")]
         if not rows:
             print(f"{path.name}: no in-game frames")
             continue
-        cleaned = clean_game(rows)
+        label = augment_labels.get(f"{path.parent.name}/{path.stem}")
+        cleaned = clean_game(rows, label)
         out = path.with_name(path.stem + ".clean.jsonl")
         out.write_text("".join(json.dumps(r) + "\n" for r in cleaned), encoding="utf-8")
 

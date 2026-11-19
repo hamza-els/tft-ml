@@ -19,6 +19,10 @@ Rows, in order, padded to MAX_ROWS:
     group 2 bench  (up to 9)                champion, star, items (slot left out: meaningless)
     group 3 shop   (up to 5, by slot)       champion, slot
     group 4 item   (up to 10)               item   (the unequipped item column; no slot: meaningless)
+    group 5 augment (up to 3)               augment, tier (1 silver, 2 gold, 3 prismatic), slot = pick order
+
+Augment tiers are variations of one augment (Hamza, 2026-11-19): "New Recruit+"
+and "Celestial Blessing II" are their base augment's ID with a tier.
 
 tok_int fields (int16, -1 = not applicable): see INT_FIELDS.
 tok_float fields (float32): see FLOAT_FIELDS.
@@ -28,11 +32,12 @@ import numpy as np
 
 from src.state.game_data import GameData, load_game_data
 
-GROUPS = {"board": 1, "bench": 2, "shop": 3, "item": 4}
-LIMITS = {"board": 14, "bench": 9, "shop": 5, "item": 10}
+GROUPS = {"board": 1, "bench": 2, "shop": 3, "item": 4, "augment": 5}
+LIMITS = {"board": 14, "bench": 9, "shop": 5, "item": 10, "augment": 3}
 MAX_ROWS = sum(LIMITS.values())
 INT_FIELDS = ["group", "unit", "star", "item0", "item1", "item2", "radiant0", "radiant1", "radiant2",
-              "item", "item_radiant", "hex_row", "hex_col", "slot"]
+              "item", "item_radiant", "hex_row", "hex_col", "slot", "augment", "augment_tier"]
+AUGMENT_TIERS = {"silver": 1, "gold": 2, "prismatic": 3}
 CERTAINTY = ["confidence", "carried", "filled", "loose"]
 
 
@@ -43,6 +48,8 @@ class TokenEncoder:
         self.items = self.game.item_vocab()
         self.unit_id = {n: i for i, n in enumerate(self.units)}
         self.item_id = {n: i for i, n in enumerate(self.items)}
+        self.augments = self.game.augment_vocab()
+        self.augment_id = {n: i for i, n in enumerate(self.augments)}
         self.traits = self.game.trait_names
         self.float_fields = CERTAINTY + ["cost"] + [f"trait_{t}" for t in self.traits]
         self._f = {n: i for i, n in enumerate(self.float_fields)}
@@ -57,6 +64,10 @@ class TokenEncoder:
         """(item ID, radiant); an icon read but not recognised (None) or an unnamed ID is _unknown."""
         base, radiant = self.game.item_base(name.split("~")[0] if name else None)
         return self.item_id.get(base, self.item_id["_unknown"]), int(radiant)
+
+    def augment(self, name: str | None) -> int:
+        """Base augment ID; unnamed template IDs (aug_XXX) and unread icons are _unknown."""
+        return self.augment_id.get(self.game.augment_base(name), self.augment_id["_unknown"])
 
     # ── rows ──────────────────────────────────────────────────────────────────
 
@@ -121,6 +132,16 @@ class TokenEncoder:
                 rows.append((ints, floats))
         for name in (row.get("bench_items") or [])[:LIMITS["item"]]:
             rows.append(self._item_row(name))
+        tiers = row.get("augment_tiers") or []
+        for k, name in enumerate((row.get("augments") or [])[:LIMITS["augment"]]):
+            ints = [-1] * len(INT_FIELDS)
+            floats = [0.0] * len(self.float_fields)
+            ints[self._i["group"]] = GROUPS["augment"]
+            ints[self._i["augment"]] = self.augment(name)
+            ints[self._i["augment_tier"]] = AUGMENT_TIERS.get(tiers[k] if k < len(tiers) else None, 0)
+            ints[self._i["slot"]] = k                   # pick order: 2-1, 3-2, 4-2
+            floats[self._f["confidence"]] = 1.0
+            rows.append((ints, floats))
 
         tok_int = np.full((MAX_ROWS, len(INT_FIELDS)), -1, np.int16)
         tok_int[:, self._i["group"]] = 0
@@ -139,7 +160,7 @@ class TokenEncoder:
         return tuple(np.stack(p) for p in zip(*parts))
 
     def vocab(self) -> dict:
-        return {"units": self.units, "items": self.items, "traits": self.traits,
+        return {"units": self.units, "items": self.items, "augments": self.augments, "traits": self.traits,
                 "int_fields": INT_FIELDS, "float_fields": self.float_fields,
                 "groups": GROUPS, "limits": LIMITS}
 
@@ -148,7 +169,7 @@ class TokenEncoder:
                  f"tok_int   {len(INT_FIELDS)}: " + ", ".join(INT_FIELDS),
                  f"tok_float {len(self.float_fields)}: " + ", ".join(CERTAINTY + ["cost"])
                  + f", trait_* x{len(self.traits)}",
-                 f"vocab: {len(self.units)} units, {len(self.items)} items (0 = padding)"])
+                 f"vocab: {len(self.units)} units, {len(self.items)} items, {len(self.augments)} augments (0 = padding)"])
 
 
 def placement(rows: list[dict]) -> int:

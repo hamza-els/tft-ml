@@ -93,14 +93,34 @@ def test_quality_report_counts_reads_and_corrections():
 
 
 def test_augments_carry_forward_when_bar_hidden():
-    rows = _rows(hp=[100] * 6)
-    seen = [[], ["a"], [], ["a", "b"], ["a"], []]
+    # Augments are decided per game, per bar position: once picked they stay,
+    # whatever single frames show (bar hidden, an icon missed).
+    rows = _rows(hp=[100] * 7)
+    seen = [[], ["a"], [], ["a", "b"], ["a"], ["a", "b"], []]
     for row, augs in zip(rows, seen):
         row["augments"], row["augment_tiers"] = augs, ["gold"] * len(augs)
     cleaned = clean_game(rows)
-    assert _col(cleaned, "augments") == [[], ["a"], ["a"], ["a", "b"], ["a", "b"], ["a", "b"]]
+    assert _col(cleaned, "augments") == [[], ["a"], ["a"], ["a", "b"], ["a", "b"], ["a", "b"], ["a", "b"]]
     assert cleaned[5]["augment_tiers"] == ["gold", "gold"]
     assert "augments" in cleaned[2]["filled"] and "augments" not in cleaned[3]["filled"]
+
+
+def test_augment_name_is_the_most_common_reading_and_labels_win():
+    rows = _rows(hp=[100] * 5)
+    seen = [["a"], ["a"], ["x"], ["a"], ["a"]]          # one misread
+    for row, augs in zip(rows, seen):
+        row["augments"], row["augment_tiers"] = augs, ["gold"] * len(augs)
+    assert _col(clean_game(rows), "augments") == [["a"]] * 5
+    labelled = clean_game(rows, {"augments": ["Cursed Crown"], "tiers": ["gold"]})
+    assert _col(labelled, "augments") == [["Cursed Crown"]] * 5
+
+
+def test_one_phantom_icon_is_not_a_pick():
+    rows = _rows(hp=[100] * 4)
+    seen = [["a"], ["a", "q"], ["a"], ["a"]]
+    for row, augs in zip(rows, seen):
+        row["augments"], row["augment_tiers"] = augs, ["gold"] * len(augs)
+    assert _col(clean_game(rows), "augments") == [["a"]] * 4
 
 
 def test_home_board_uses_augment_side_then_arena_colour():
@@ -121,9 +141,10 @@ def test_home_board_uses_augment_side_then_arena_colour():
 
 def test_augments_seen_while_away_are_not_taken():
     rows = _rows(hp=[100] * 3)
-    for row, (augs, away) in zip(rows, [(["a"], 0), (["x", "y", "z"], 3), ([], 0)]):
+    rows = _rows(hp=[100] * 4)
+    for row, (augs, away) in zip(rows, [(["a"], 0), (["x", "y", "z"], 3), ([], 0), (["a"], 0)]):
         row.update(augments=augs, augment_tiers=["gold"] * len(augs), away_augments=away)
-    assert _col(clean_game(rows), "augments") == [["a"], ["a"], ["a"]]
+    assert _col(clean_game(rows), "augments") == [["a"], ["a"], ["a"], ["a"]]
 
 
 def test_planning_ends_at_first_timer_refill_in_a_round():

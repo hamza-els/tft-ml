@@ -100,3 +100,17 @@ def test_placement_label():
     rows = [{"other_hp": [100] * 7}, {"other_hp": [50, 0, 0, 20, 0, 0, 0]}]
     assert placement(rows) == 3
     assert placement([{}]) == -1
+
+
+def test_augment_rows(enc):
+    r = {"augments": ["New Recruit+", "aug_005"], "augment_tiers": ["prismatic", "silver"]}
+    ti, tf, mask = enc.encode(r)
+    assert mask.sum() == 2
+    assert get(enc, ti, tf, 0, "group") == 5
+    # a tier of an augment is that augment's ID with a tier, not a different augment
+    assert enc.augments[get(enc, ti, tf, 0, "augment")] == "New Recruit"
+    assert get(enc, ti, tf, 0, "augment_tier") == 3 and get(enc, ti, tf, 0, "slot") == 0
+    plain = enc.encode({"augments": ["New Recruit"], "augment_tiers": ["gold"]})[0]
+    assert get(enc, plain, tf, 0, "augment") == get(enc, ti, tf, 0, "augment")
+    # an unnamed template ID is unknown until the templates are named
+    assert enc.augments[get(enc, ti, tf, 1, "augment")] == "_unknown" and get(enc, ti, tf, 1, "slot") == 1

@@ -9,6 +9,7 @@ state vector, so they are sorted by name and never depend on what was seen.
 """
 
 import json
+import re
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -31,9 +32,11 @@ class Champion:
 
 
 class GameData:
-    def __init__(self, raw: dict, items: dict | None = None, extra_units: list[str] | None = None):
+    def __init__(self, raw: dict, items: dict | None = None, extra_units: list[str] | None = None,
+                 augments: dict | None = None):
         self.set_name: str = raw["set"]
         self.items: dict = items or {}
+        self.augments: dict = augments or {}         # name -> {api_names, tiers} (fetch_augment_icons.py)
 
         # Form variants ("Lux (Coven)") share one shop card and one unit slot;
         # keep the base entry so names match what OCR and the detector produce.
@@ -124,6 +127,21 @@ class GameData:
             return name[len("Radiant "):], True
         return name, False
 
+    @staticmethod
+    def augment_base(name: str | None) -> str | None:
+        """
+        The augment an augment name is a tier of: "New Recruit+" -> "New Recruit",
+        "Celestial Blessing II" -> "Celestial Blessing" (Hamza, 2026-11-19: tiers
+        of one augment are variations, not different augments).
+        """
+        if not name:
+            return name
+        return re.sub(r"\s*(\+|\b(?:I{1,3}))$", "", name).strip()
+
+    def augment_vocab(self) -> list[str]:
+        """Augment IDs: 0 = padding, every augment of the set by base name, then unknown."""
+        return ["<pad>"] + sorted({self.augment_base(n) for n in self.augments}) + ["_unknown"]
+
     def unit_vocab(self) -> list[str]:
         """Champion IDs for the token table: 0 = padding, then every unit of the set, then unknown.
         Fixed by the set data, so IDs never shift with what was seen."""
@@ -168,4 +186,6 @@ def load_game_data(set_name: str | None = None) -> GameData:
     items_path = path.with_name(f"{set_name}_items.json")
     items = json.loads(items_path.read_text(encoding="utf-8")) if items_path.exists() else {}
     extra = vision_cfg["game_data"].get("extra_units") or []
-    return GameData(json.loads(path.read_text(encoding="utf-8")), items, extra)
+    aug_path = path.with_name(f"{set_name}_augments.json")
+    augments = json.loads(aug_path.read_text(encoding="utf-8")) if aug_path.exists() else {}
+    return GameData(json.loads(path.read_text(encoding="utf-8")), items, extra, augments)

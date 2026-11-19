@@ -28,6 +28,8 @@ directly from that frame.
 """
 
 
+from collections import Counter
+
 from src.state.game_data import load_game_data
 from src.state.units import clean_units
 from src.vision.arena import home_board_rows, planning_rows
@@ -127,13 +129,68 @@ def _forward_fill(values: list) -> list:
     return out
 
 
-def clean_game(rows: list[dict]) -> list[dict]:
+AUGMENT_SLOTS = 3
+AUGMENT_PRESENT = 0.5     # a slot counts as picked from the first frame after which at least this
+AUGMENT_CONFIRM = 2       # share of the readings that show the bar show the slot, and at least
+                          # this many readings show it (one phantom icon is not a pick)
+
+
+def game_augments(rows: list[dict], home: list[bool], label: dict | None = None) -> tuple[list, list, list]:
+    """
+    The game's augments, decided once per game instead of per frame.
+
+    A game has exactly three, picked at 2-1, 3-2 and 4-2 and never changed,
+    each in its own place in the bar (left to right in pick order). Per bar
+    position: the slot is picked from the first own-board frame after which
+    at least AUGMENT_PRESENT of the readings that show the bar (an empty
+    reading is a hidden bar, not a lost augment) show an icon there, with
+    at least AUGMENT_CONFIRM readings in all; its name and tier are the most
+    common readings from then on. A per-game label from
+    scripts/label_augments.py (data/processed/augment_labels.json) replaces the
+    names and tiers.
+
+    Returns (names, tiers, picked_at): picked_at is the row index from which
+    each slot shows, or None if it was never seen.
+    """
+    readings = [(i, r.get("augments") or [], r.get("augment_tiers") or [])
+                for i, r in enumerate(rows) if home[i]]
+    names, tiers, picked = [], [], []
+    for k in range(AUGMENT_SLOTS):
+        has = [len(a) > k for _, a, _ in readings]
+        bar = [len(a) > 0 for _, a, _ in readings]
+        start = None
+        # From the end backwards: share of bar-showing readings that show slot k.
+        total, shown = 0, 0
+        for j in range(len(readings) - 1, -1, -1):
+            total += bar[j]
+            shown += has[j]
+            if has[j] and shown >= AUGMENT_CONFIRM and shown / total >= AUGMENT_PRESENT:
+                start = j
+        if start is None:
+            break
+        after = [(a[k], t[k] if k < len(t) else None) for _, a, t in readings[start:] if len(a) > k]
+        name_votes = Counter(n for n, _ in after if n)
+        tier_votes = Counter(t for _, t in after if t)
+        names.append(name_votes.most_common(1)[0][0] if name_votes else None)
+        tiers.append(tier_votes.most_common(1)[0][0] if tier_votes else None)
+        picked.append(readings[start][0])
+    if label:
+        for k, n in enumerate(label.get("augments") or []):
+            if k < len(names):
+                names[k] = n
+                if label.get("tiers") and k < len(label["tiers"]) and label["tiers"][k]:
+                    tiers[k] = label["tiers"][k]
+    return names, tiers, picked
+
+
+def clean_game(rows: list[dict], augment_label: dict | None = None) -> list[dict]:
     """
     Return cleaned copies of one game's rows, in frame order.
 
     Each cleaned row has every SCALARS field filled where any earlier frame
     provided it, plus `filled`: the fields that were corrected or carried
-    forward rather than read from that frame.
+    forward rather than read from that frame. augment_label: Hamza's labels
+    for this game's augments (scripts/label_augments.py), if any.
     """
     rows = sorted(rows, key=lambda r: r["frame"])
     raw = {k: [r.get(k) for r in rows] for k in SCALARS}
@@ -160,10 +217,9 @@ def clean_game(rows: list[dict]) -> list[dict]:
     rounds = list(zip(final["stage"], final["round_num"]))
     units, _ = clean_units(rows, final["level"], load_game_data(), rounds)
 
-    # Augments are never lost, and the bar is hidden in some scenes: carry the
-    # fullest reading so far forward. Readings off someone else's board are ignored.
-    augments: list = []
-    tiers: list = []
+    # Augments: decided once per game, per bar position (game_augments);
+    # readings off someone else's board are ignored.
+    aug_names, aug_tiers, aug_picked = game_augments(rows, home, augment_label)
 
     cleaned = []
     for i, row in enumerate(rows):
@@ -177,12 +233,10 @@ def clean_game(rows: list[dict]) -> list[dict]:
         new["board"], new["bench"] = units[i]["board"], units[i]["bench"]
         if not units[i]["read"] and (new["board"] or new["bench"]):
             filled.append("board")
-        seen =(row.get("augments") or []) if home[i] else []
-        if len(seen) >= len(augments) and seen:
-            augments, tiers = seen, row.get("augment_tiers") or []
-        elif augments:
+        held = sum(1 for p in aug_picked if i >= p)
+        new["augments"], new["augment_tiers"] = aug_names[:held], aug_tiers[:held]
+        if new["augments"] != (row.get("augments") or []):
             filled.append("augments")
-        new["augments"], new["augment_tiers"] = list(augments), list(tiers)
         for k in SCALARS:
             new[k] = final[k][i]
             if final[k][i] is not None and final[k][i] != raw[k][i]:
