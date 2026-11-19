@@ -273,6 +273,12 @@ def main():
                 continue
             t0 = time.time()
             path = download(url, VOD_DIR, ffmpeg, args.fragments)
+            if path is None:
+                # YouTube sometimes answers 403 at the start (the first background download,
+                # 2026-11-19, while the same video then downloaded fine in its own turn): one retry.
+                print(f"  {video_id}: download failed, retrying in 2 min")
+                time.sleep(120)
+                path = download(url, VOD_DIR, ffmpeg, args.fragments)
             print(f"  {video_id}: {'downloaded' if path else 'download FAILED'} in {(time.time() - t0) / 60:.1f} min")
             failed += path is None
         sys.exit(1 if failed else 0)

@@ -20,6 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import json
 from collections import Counter, defaultdict
 
+from src.state.game_data import GameData
 from src.utils import paths
 from src.vision.arena import home_board_rows
 
@@ -47,7 +48,8 @@ def main():
                 continue
             for k, tid in enumerate(r.get("augments") or []):
                 if tid and k < len(lab["augments"]) and lab["augments"][k] != "_unknown":
-                    votes[tid][lab["augments"][k]] += 1
+                    # "+" versions share the icon: one name (GameData.augment_label)
+                    votes[tid][GameData.augment_label(lab["augments"][k])] += 1
     names, unsure = {}, {}
     for tid, c in sorted(votes.items()):
         name, n = c.most_common(1)[0]

@@ -40,6 +40,7 @@ import numpy as np
 
 from scripts.label_common import load, merge_save, search_champions as fuzzy, to_photo
 from src.state.sequence import game_augments
+from src.state.game_data import GameData
 from src.utils import paths
 from src.vision.arena import home_board_rows
 from src.vision.augments import AugmentReader, expected_counts
@@ -93,13 +94,14 @@ def official_icons() -> list[tuple[str, np.ndarray]]:
 class AugmentLabeler:
     def __init__(self, show_all: bool):
         self.reader = AugmentReader()
+        # "+" versions share their augment's icon, so they are one label (GameData.augment_label)
         self.official = []
         for stem, img in official_icons():
             name, _, tier = stem.rpartition("__")
-            self.official.append((name, tier, img, (feats(img), feats(img, bright=True))))
+            self.official.append((GameData.augment_label(name), tier, img, (feats(img), feats(img, bright=True))))
         aug_file = next(AUG_DATA.glob("*_augments.json"), None)
-        self.names = sorted(json.loads(aug_file.read_text(encoding="utf-8"))) if aug_file else \
-            sorted({n for n, _, _, _ in self.official})
+        names = json.loads(aug_file.read_text(encoding="utf-8")) if aug_file else [n for n, _, _, _ in self.official]
+        self.names = sorted({GameData.augment_label(n) for n in names})
         labels = load(LABELS)
         self.games = []
         for states in sorted(paths.STATES.glob("*/game_*.jsonl")):

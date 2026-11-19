@@ -138,6 +138,16 @@ class GameData:
             return name
         return re.sub(r"\s*(\+|\b(?:I{1,3}))$", "", name).strip()
 
+    @staticmethod
+    def augment_label(name: str | None) -> str | None:
+        """
+        The name an augment is labelled under: "+" versions folded in ("Money Hungry+",
+        "Booster Pack++" -> "Money Hungry", "Booster Pack"). They share the icon, so a
+        frame can't tell them apart (Hamza, 2026-11-19). Unlike augment_base, roman-numeral
+        tiers (I/II/III) stay apart here.
+        """
+        return name.rstrip("+").rstrip() if name else name
+
     def augment_vocab(self) -> list[str]:
         """Augment IDs: 0 = padding, every augment of the set by base name, then unknown."""
         return ["<pad>"] + sorted({self.augment_base(n) for n in self.augments}) + ["_unknown"]
