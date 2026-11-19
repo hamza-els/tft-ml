@@ -18,7 +18,7 @@ Rows, in order, padded to MAX_ROWS:
     group 1 board  (up to 14, by hex)       champion, star, items, hex
     group 2 bench  (up to 9)                champion, star, items (slot left out: meaningless)
     group 3 shop   (up to 5, by slot)       champion, slot
-    group 4 item   (up to 10, by slot)      item, slot   (the unequipped item column)
+    group 4 item   (up to 10)               item   (the unequipped item column; no slot: meaningless)
 
 tok_int fields (int16, -1 = not applicable): see INT_FIELDS.
 tok_float fields (float32): see FLOAT_FIELDS.
@@ -93,12 +93,12 @@ class TokenEncoder:
                 floats[self._f[f"trait_{t}"]] = 1.0
         return ints, floats
 
-    def _item_row(self, name: str, slot: int) -> tuple[list, list]:
+    def _item_row(self, name: str) -> tuple[list, list]:
+        """An unequipped item. Its place in the item column means nothing (Hamza, 2026-11-19): no slot."""
         ints = [-1] * len(INT_FIELDS)
         floats = [0.0] * len(self.float_fields)
         ints[self._i["group"]] = GROUPS["item"]
         ints[self._i["item"]], ints[self._i["item_radiant"]] = self.item(name)
-        ints[self._i["slot"]] = slot
         floats[self._f["confidence"]] = 1.0
         return ints, floats
 
@@ -115,8 +115,8 @@ class TokenEncoder:
                 ints, floats = self._champion_row("shop", name, None)
                 ints[self._i["slot"]] = slot
                 rows.append((ints, floats))
-        for slot, name in enumerate((row.get("bench_items") or [])[:LIMITS["item"]]):
-            rows.append(self._item_row(name, slot))
+        for name in (row.get("bench_items") or [])[:LIMITS["item"]]:
+            rows.append(self._item_row(name))
 
         tok_int = np.full((MAX_ROWS, len(INT_FIELDS)), -1, np.int16)
         tok_int[:, self._i["group"]] = 0
