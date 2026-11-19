@@ -37,7 +37,94 @@ def data_uri(img: np.ndarray) -> str:
     return "data:image/png;base64," + base64.b64encode(buf.tobytes()).decode()
 
 
+def official_page():
+    """
+    For each unnamed template, the three closest official item icons
+    (Community Dragon art, as on metatft.com) to pick from.
+    """
+    files = sorted(FOLDER.glob("*.png"))
+    official_dir = _ROOT / vision_cfg["template_matching"]["item_dir"]
+    size = vision_cfg["unit_bar"]["item_size"]
+    official = {}
+    for p in sorted(official_dir.glob("*.png")):
+        img = cv2.imread(str(p))
+        if img is not None:
+            small = cv2.resize(img, (size, size), interpolation=cv2.INTER_AREA)
+            official[p.stem] = (item_vec(small), item_hue(small), img)
+    rows = []
+    seen = set()
+    for f in files:
+        tid = f.stem.split("__")[0]
+        if not tid.startswith("uitem_") or tid in seen:
+            continue
+        seen.add(tid)
+        img = cv2.imread(str(f))
+        v, h = item_vec(img), item_hue(img)
+        top = sorted(((float(o[0] @ v) * float(o[1] @ h), n) for n, o in official.items()), reverse=True)[:3]
+        opts = "".join(
+            f'<button class="opt" data-name="{html.escape(n)}"><img src="{data_uri(cv2.resize(official[n][2], (75, 75)))}">'
+            f'<span>{html.escape(n)}<br><small>{s:.2f}</small></span></button>' for s, n in top)
+        rows.append(f'<div class="row" data-id="{html.escape(tid)}"><figure><img src="{data_uri(img)}">'
+                    f'<figcaption>{html.escape(tid)}</figcaption></figure>{opts}'
+                    f'<input placeholder="or type the name"></div>')
+    out = OUT.with_name("item_names.html")
+    out.write_text(f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Item names review</title>
+<style>
+:root {{ --bg:#1b1c21; --card:#26272e; --fg:#e8e8ea; --dim:#9a9ca6; --pick:#3c8d5a; }}
+body {{ margin:0; padding:16px; background:var(--bg); color:var(--fg); font:14px system-ui,sans-serif; }}
+p {{ color:var(--dim); max-width:760px; }}
+.row {{ background:var(--card); border-radius:8px; padding:8px; margin-bottom:8px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; }}
+figure {{ margin:0; text-align:center; width:90px; }} figcaption {{ font-size:11px; color:var(--dim); }}
+img {{ width:75px; height:75px; image-rendering:pixelated; border-radius:4px; }}
+.opt {{ display:flex; gap:8px; align-items:center; background:#33353f; color:var(--fg); border:2px solid transparent;
+       border-radius:6px; padding:4px 8px; cursor:pointer; text-align:left; width:230px; }}
+.opt.picked {{ border-color:var(--pick); background:#2c3a31; }}
+small {{ color:var(--dim); }}
+input {{ background:#33353f; color:var(--fg); border:0; border-radius:5px; padding:6px 8px; width:180px; }}
+#out {{ width:100%; max-width:760px; height:100px; background:#111216; color:var(--fg); border:1px solid #333; }}
+.bar {{ position:sticky; top:0; background:var(--bg); padding:8px 0; z-index:1; }}
+button#copy {{ background:#33353f; color:var(--fg); border:0; border-radius:5px; padding:6px 12px; cursor:pointer; }}
+</style></head><body>
+<h1 style="font-size:20px">Name the unnamed item templates</h1>
+<p>Left: an item icon cut from the footage (unnamed ID). Right: the three closest official item icons with a
+similarity score. Click the one it is, type a name if none fit, or leave the row alone if unsure. Watch for
+Radiant vs normal: Radiant art has a gold frame. Then <b>Copy result</b> and paste it in the chat.</p>
+<div class="bar"><button id="copy">Copy result</button> <span id="count"></span></div>
+{''.join(rows)}
+<textarea id="out" readonly></textarea>
+<script>
+function result() {{
+  const names = {{}};
+  for (const r of document.querySelectorAll('.row')) {{
+    const typed = r.querySelector('input').value.trim();
+    const picked = r.querySelector('.opt.picked');
+    if (typed) names[r.dataset.id] = typed; else if (picked) names[r.dataset.id] = picked.dataset.name;
+  }}
+  return {{same: [], different: [], names}};
+}}
+function update() {{ const r = result(); document.getElementById('out').value = JSON.stringify(r);
+  document.getElementById('count').textContent = Object.keys(r.names).length + ' named'; }}
+for (const r of document.querySelectorAll('.row')) {{
+  for (const b of r.querySelectorAll('.opt')) b.onclick = () => {{
+    const was = b.classList.contains('picked');
+    r.querySelectorAll('.opt').forEach(x => x.classList.remove('picked'));
+    if (!was) b.classList.add('picked'); update(); }};
+  r.querySelector('input').oninput = update;
+}}
+document.getElementById('copy').onclick = async () => {{ update(); const t = document.getElementById('out');
+  try {{ await navigator.clipboard.writeText(t.value); }} catch (e) {{ t.select(); document.execCommand('copy'); }}
+  document.getElementById('copy').textContent = 'Copied'; }};
+update();
+</script></body></html>""", encoding="utf-8")
+    print(f"{len(rows)} unnamed templates -> {out}")
+
+
 def main():
+    if "--official" in sys.argv:
+        official_page()
+        return
     files = sorted(FOLDER.glob("*.png"))
     imgs = [cv2.imread(str(f)) for f in files]
     stems = [f.stem for f in files]

@@ -15,6 +15,7 @@ Usage:
   can't tell Radiant from normal at 25 px); between automatic names the
   shortest (the non-Radiant one) wins; a group with no name keeps its
   lowest uitem_ ID.
+- "junk": IDs that are not items (scenery); their files are deleted.
 - Files are renamed to Name.png, Name__2.png, ...; "different" pairs that
   end up in one group are reported and the run stops.
 
@@ -31,8 +32,10 @@ import argparse
 import difflib
 import json
 import shutil
+import time
 
 from src.state.game_data import load_game_data
+from src.utils import paths
 from src.utils.config import vision_cfg
 from src.vision.items import _ROOT
 
@@ -109,10 +112,10 @@ def main():
     if args.dry_run:
         return
 
-    backup = FOLDER.parent / (FOLDER.name + "_before_review")
-    if backup.exists():
-        shutil.rmtree(backup)
+    backup = paths.LOCAL / "backup" / f"unit_items_{time.strftime('%Y%m%d_%H%M%S')}"   # local, not in the repo
     shutil.copytree(FOLDER, backup)
+    junk = set(review.get("junk", []))          # IDs Hamza marked "not an item": deleted
+    files = [f for f in files if f.stem.split("__")[0] not in junk or f.unlink()]
     staged = []
     for f in files:
         staged.append((f.read_bytes(), final[f.stem.split("__")[0]]))
