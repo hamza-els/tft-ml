@@ -170,3 +170,15 @@ def test_board_carried_through_unread_frames():
     out, _ = clean_units(rows, [3] * 3)
     assert out[2]["board"][0]["name"] == "Ashe" and not out[2]["read"]
     assert out[2]["bench"][0]["slot"] == 4
+
+
+def test_loose_unit_kept_only_when_counter_is_short():
+    a, b = _unit("h00", "Ashe"), _unit("h01", "Taric")
+    dragged = dict(_unit("h05", "Sona", p=0.8), loose=True)
+    rows = _counted([[a, b, dragged]] * 3, 3)        # counter: 3 on the board
+    out, _ = clean_units(rows, [9] * 3, load_game_data(), [(4, 1)] * 3)
+    assert sorted(u["name"] for u in out[1]["board"]) == ["Ashe", "Sona", "Taric"]
+    rows = _counted([[a, b, dragged]] * 3, 2)        # counter: 2, the loose one is from the bench
+    out, stats = clean_units(rows, [9] * 3, load_game_data(), [(4, 1)] * 3)
+    assert sorted(u["name"] for u in out[1]["board"]) == ["Ashe", "Taric"]
+    assert stats["loose_dropped"] == 3
