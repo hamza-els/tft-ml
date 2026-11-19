@@ -108,13 +108,20 @@ def planning_rows(rows: list[dict], cfg: dict | None = None) -> list[bool]:
         fill = row.get("timer_fill")
         if key != current_round:
             current_round, last_fill, in_combat = key, None, False
-        if fill is not None:
-            if last_fill is not None and fill - last_fill >= refill:
-                in_combat = True
-            last_fill = fill
         # An empty timer is the instant planning ends: units are already
         # turning to face the enemy.
         ending = fill is not None and fill <= empty
+        # A reading at (near) zero is also what a hidden timer looks like: the
+        # augment choice covers it at the start of 3-2 and 4-2. Such a reading
+        # must not be the "before" of a refill, or the timer reappearing
+        # (0.0 -> 0.85) reads as combat starting and the whole round's planning
+        # is lost (86 of 254 x-2 rounds had no planning frame). A real combat
+        # start still shows: the timer drains gradually, so the jump from its
+        # last visible value (e.g. 0.10 -> 0.52) is a refill.
+        if fill is not None and not ending:
+            if last_fill is not None and fill - last_fill >= refill:
+                in_combat = True
+            last_fill = fill
         out.append(bool(row.get("planning")) and not in_combat and not ending and None not in key)
     return out
 

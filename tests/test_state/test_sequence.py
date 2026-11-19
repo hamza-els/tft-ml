@@ -135,3 +135,13 @@ def test_planning_ends_at_first_timer_refill_in_a_round():
     rows[7]["planning"] = False               # health bars on the far side: not planning
     assert _col(clean_game(rows), "planning") == [True, True, True, False, False, False,
                                                   True, False, True]
+
+
+def test_hidden_timer_at_round_start_is_not_a_refill():
+    # 3-2: the augment choice hides the timer (reads 0.0); it then shows at 0.85.
+    # That is not combat starting; the real refill comes after the drain.
+    rows = _rows(stage=[3] * 8, round_num=[2] * 8)
+    fills = [0.0, 0.85, 0.0, 0.77, 0.5, 0.1, 0.01, 0.52]
+    for row, fill in zip(rows, fills):
+        row.update(timer_fill=fill, planning=True)
+    assert _col(clean_game(rows), "planning") == [False, True, False, True, True, True, False, False]
