@@ -236,23 +236,49 @@ class UnitItemReader:
                     best = (self.names[i], float(scores[i]))
         return best
 
-    def read(self, frame: np.ndarray, bar: Bar) -> list[str | None]:
+    def slots(self, frame: np.ndarray, bar: Bar) -> list[dict]:
         """
-        One entry per item the unit holds, left to right: the item's template
-        name, or None for an icon that is there but matches no template.
-
-        Items fill the slots from the left, so a slot before one that clearly
-        holds an item must hold one too, even if it was read poorly.
+        Evidence for each of the three slots: outline score, best template and
+        score, "item" (clearly an icon) and "maybe" (some sign of one).
         """
-        slots = []                             # (is_item, name) per slot
+        out = []
         for region in bar.item_regions():
             outline = outline_score(frame, region)
             name, score = self.identify(frame, region)
             named = score >= _CFG["item_sure_score"] or (outline >= _CFG["item_min_outline"]
                                                           and score >= _CFG["item_min_score"])
-            slots.append((named or outline >= _CFG["item_sure_outline"], name if named else None))
-        count = max((i + 1 for i, (is_item, _) in enumerate(slots) if is_item), default=0)
-        return [name for _, name in slots[:count]]
+            out.append({"outline": outline, "name": name if named else None, "score": score,
+                        "item": named or outline >= _CFG["item_sure_outline"],
+                        "maybe": outline >= _CFG["item_maybe_outline"] or score >= _CFG["item_maybe_score"]})
+        return out
+
+    def read(self, frame: np.ndarray, bar: Bar) -> list[str | None]:
+        """
+        One entry per item the unit holds, left to right: the item's template
+        name, or None for an icon that is there but matches no template.
+        """
+        slots = self.slots(frame, bar)
+        return [s["name"] for s in slots[:held_count(slots)]]
+
+
+def held_count(slots: list[dict]) -> int:
+    """
+    How many items a unit holds, from the evidence per slot (left to right).
+
+    Items fill the slots from the left: a slot can only hold an item if every
+    slot before it does. So the count is the run of item slots from the left;
+    a slot with only some sign of an icon ("maybe") still counts when the slot
+    right after it clearly holds one (a half-hidden first item). Something
+    that looks like an item further right, after an empty slot, is scenery.
+    """
+    count = 0
+    for i, s in enumerate(slots):
+        nxt = slots[i + 1] if i + 1 < len(slots) else None
+        if s["item"] or (s["maybe"] and nxt is not None and nxt["item"]):
+            count = i + 1
+        else:
+            break
+    return count
 
 
 _STARS: dict[int, np.ndarray] | None = None

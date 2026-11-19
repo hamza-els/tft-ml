@@ -215,6 +215,8 @@ unit_bar:
   item_sure_outline: 0.85
   item_sure_score: 0.80                # a match this strong is an item even without a visible outline (shape x colour score)
   item_min_score: 0.60                 # match needed to name an outlined item (outlined items: median 0.92, 95% above 0.68)
+  item_maybe_outline: 0.30             # some sign of an icon: counts only right before a clear item (items fill from the left)
+  item_maybe_score: 0.40
 
 # Own-board and planning-phase detection (src/vision/arena.py).
 arena:

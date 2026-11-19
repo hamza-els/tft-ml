@@ -17,6 +17,8 @@ How it works:
   - By default crops come in runs of 5 with the same guess, cycling through
     every item, so each run is mostly Enter, Enter, Enter and every item is
     covered early.
+  - Items fill a unit's slots from the left, so a crop with an empty slot to
+    its left can't be an item and is skipped (--all shows them anyway).
 
 Keys:
     Enter        first search result (or first guess when the box is empty)
@@ -48,7 +50,8 @@ import numpy as np
 from scripts.label_units import search_champions as fuzzy_search, to_photo
 from src.state.game_data import load_game_data
 from src.utils import paths
-from src.vision.unit_bar import UnitItemReader
+from src.utils.config import vision_cfg
+from src.vision.unit_bar import Bar, UnitItemReader
 
 NONE, UNKNOWN, COVERED = "_none", "_unknown", "_covered"
 SPECIAL = {NONE: "not an item", UNKNOWN: "item, can't tell which", COVERED: "covered by a tooltip"}
@@ -59,9 +62,12 @@ BG, FG, DIM, ACCENT = "#1e1f24", "#e8e8ea", "#8b8d98", "#f2c14e"
 
 
 class ItemLabeler:
-    def __init__(self, mode: str, relabel: str | None):
+    def __init__(self, mode: str, relabel: str | None, show_all: bool = False):
         game = load_game_data()
         self.reader = UnitItemReader()
+        self.reader_cfg = vision_cfg["unit_bar"]
+        self.show_all = show_all
+        self.hidden = 0
         template_names = {n for n in self.reader.names}
         self.names = sorted(set(game.items) | set(game.emblems) | template_names)
         self.index = json.loads((paths.ITEM_DIR / "index.json").read_text(encoding="utf-8"))
@@ -197,10 +203,33 @@ class ItemLabeler:
 
     # ── flow ──────────────────────────────────────────────────────────────────
 
+    def impossible(self, name: str) -> bool:
+        """
+        True if a slot to the left of this one shows no sign of an item: items
+        fill from the left, so this one can't hold one (scenery on the right
+        of the bar). Re-checked on the frame, as the left slots may not have
+        been cut (a repeat of an earlier crop).
+        """
+        info = self.index[name]
+        slot = info.get("slot", 0)
+        if slot == 0 or self.show_all:
+            return False
+        frame = cv2.imread(info["frame_path"])
+        if frame is None:
+            return False
+        x, y = info["region"][0], info["region"][1]
+        cfg = self.reader_cfg
+        bar = Bar(left=x - cfg["item_dx"] - cfg["item_pitch"] * slot, right=0, top=y - cfg["item_dy"])
+        evidence = self.reader.slots(frame, bar)
+        return any(not (s["item"] or s["maybe"]) for s in evidence[:slot])
+
     def show(self):
         while self.pos < len(self.queue):
             name = self.queue[self.pos]
             icon = cv2.imread(str(paths.ITEM_IMAGES / name))
+            if icon is not None and name not in self.labels and self.impossible(name):
+                self.hidden += 1
+                icon = None
             if icon is not None:
                 break
             self.queue.pop(self.pos)
@@ -225,6 +254,7 @@ class ItemLabeler:
         self._buttons(self.guess_row, self.guesses, "F", self.guess_scores)
         current = self.labels.get(name)
         self.status.config(text=f"{len(self.labels)} of {self.total} labelled   |   {len(self.queue) - self.pos} left"
+                                f"   |   {self.hidden} skipped (empty slot to their left)"
                                 + (f"   |   current label: {current}" if current else ""))
         self.query.set("")
         self.refresh_results()
@@ -283,11 +313,13 @@ def main():
     parser.add_argument("--review", action="store_true", help="Show already-labelled crops")
     parser.add_argument("--unsure", action="store_true", help="Least certain matches first")
     parser.add_argument("--relabel", metavar="LABEL", help="Every crop with this label again")
+    parser.add_argument("--all", action="store_true",
+                        help="Also show crops that can't hold an item (a slot to their left is empty)")
     args = parser.parse_args()
     if not (paths.ITEM_DIR / "index.json").exists():
         sys.exit("No item crops yet - run scripts/collect_item_crops.py first")
     mode = "review" if args.review else "unsure" if args.unsure else "new"
-    app = ItemLabeler(mode, args.relabel)
+    app = ItemLabeler(mode, args.relabel, args.all)
     app.root.mainloop()
     print(f"{len(app.labels)} of {app.total} item crops labelled -> {app.labels_path}")
 
