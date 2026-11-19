@@ -16,7 +16,7 @@ set / transformer model (docs/gameplay_model.md). Decided with Hamza
 
 Rows, in order, padded to MAX_ROWS:
     group 1 board  (up to 14, by hex)       champion, star, items, hex
-    group 2 bench  (up to 9, by slot)       champion, star, items, slot
+    group 2 bench  (up to 9)                champion, star, items (slot left out: meaningless)
     group 3 shop   (up to 5, by slot)       champion, slot
     group 4 item   (up to 10, by slot)      item, slot   (the unequipped item column)
 
@@ -75,8 +75,8 @@ class TokenEncoder:
                 ints[self._i[f"radiant{k}"]] = rad
             if "hex" in unit:
                 ints[self._i["hex_row"]], ints[self._i["hex_col"]] = int(unit["hex"][0]), int(unit["hex"][1])
-            if "slot" in unit:
-                ints[self._i["slot"]] = int(unit["slot"])
+            # The bench slot a unit sits in carries no meaning (Hamza, 2026-11-19);
+            # only shop slots keep theirs (buying is per slot).
             floats[self._f["confidence"]] = float(unit.get("p", 1.0))
             for flag in ("carried", "filled", "loose"):
                 floats[self._f[flag]] = float(bool(unit.get(flag)))

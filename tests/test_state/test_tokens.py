@@ -63,7 +63,7 @@ def test_board_unit(enc):
 
 def test_bench_shop_items(enc):
     ti, tf, _ = enc.encode(row())
-    assert enc.units[get(enc, ti, tf, 1, "unit")] == "Ashe" and get(enc, ti, tf, 1, "slot") == 4
+    assert enc.units[get(enc, ti, tf, 1, "unit")] == "Ashe" and get(enc, ti, tf, 1, "slot") == -1
     assert get(enc, ti, tf, 1, "filled") == 1.0 and get(enc, ti, tf, 1, "hex_row") == -1
     assert enc.units[get(enc, ti, tf, 3, "unit")] == "Rakan" and get(enc, ti, tf, 3, "slot") == 2
     assert enc.items[get(enc, ti, tf, 4, "item")] == "B.F. Sword"

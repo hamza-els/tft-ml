@@ -257,3 +257,37 @@ def test_dedup_reduces_count_on_real_footage(tmp_path):
     assert kept + deleted == len(sample)
     assert len(list(tmp_path.glob("frame_*.jpg"))) == kept
     assert deleted > 0, "no frames removed from real footage — threshold may be too high"
+
+
+# ── per-slot comparison and board watching (2026-11-19) ───────────────────────
+
+def test_one_bench_slot_change_is_detected():
+    # One slot of nine changes by 40: averaged over the whole strip that is
+    # ~4.4 (below the threshold); per slot it is 40.
+    base = _blank(0)
+    x, y, w, h = WATCH_REGIONS["bench"]
+    one_slot = _fill(base, (x, y, w // 9, h), 40)
+    assert _region_diff(one_slot, base, WATCH_REGIONS["bench"]) < CHANGE_THRESHOLD
+    assert _has_changed(one_slot, base)
+
+
+def test_board_change_keeps_a_frame_at_most_every_two_seconds(tmp_path, monkeypatch):
+    import src.data_collection.frame_dedup as D
+    # 12 identical frames (2 fps = 6 s); the board "changes" on every frame.
+    _write(tmp_path, [_blank(0)] * 12)
+    boards = iter([(i % 2 == 0,) for i in range(100)])
+    monkeypatch.setattr(D, "board_signature", lambda frame, board=None: next(boards))
+    monkeypatch.setattr(D, "is_planning", lambda frame: True)
+    kept, _ = deduplicate_frames(str(tmp_path), quiet=True, watch_board=True, board_min_gap_sec=2.0)
+    # first frame + a board keep every 2 s (frames 1, 5, 9) - not one per frame
+    assert kept == 4
+
+
+def test_board_is_not_watched_in_combat(tmp_path, monkeypatch):
+    import src.data_collection.frame_dedup as D
+    _write(tmp_path, [_blank(0)] * 12)
+    boards = iter([(i % 2 == 0,) for i in range(100)])
+    monkeypatch.setattr(D, "board_signature", lambda frame, board=None: next(boards))
+    monkeypatch.setattr(D, "is_planning", lambda frame: False)
+    kept, _ = deduplicate_frames(str(tmp_path), quiet=True, watch_board=True)
+    assert kept == 1
