@@ -35,6 +35,7 @@ from src.utils import paths
 from src.vision.arena import home_board_rows
 
 LABELS = paths.REPO / "data" / "processed" / "augment_labels.json"
+TEMPLATE_LABELS = paths.REPO / "data" / "processed" / "augment_template_labels.json"   # label_new_augments.py
 OUT = paths.REPO / "assets" / "templates" / "augment_names.json"
 MIN_READS = 3
 AGREE = 0.8
@@ -83,6 +84,18 @@ def main():
                 by_tier += 1
         if not any(split.values()):
             unsure[tid] = dict(c.most_common(3))
+    # Names Hamza gave a template directly (scripts/label_new_augments.py) come before the votes;
+    # "_junk" leaves it unnamed.
+    direct = json.loads(TEMPLATE_LABELS.read_text(encoding="utf-8")) if TEMPLATE_LABELS.exists() else {}
+    for tid, name in direct.items():
+        for key in [k for k in names if k == tid or k.startswith(tid + "@")]:
+            del names[key]
+        unsure.pop(tid, None)
+        if name and not name.startswith("_"):
+            names[tid] = GameData.augment_label(name)
+    if direct:
+        print(f"{sum(1 for n in direct.values() if n and not n.startswith('_'))} templates named directly, "
+              f"{sum(1 for n in direct.values() if n == '_junk')} marked junk")
     OUT.write_text(json.dumps(names, indent=1, sort_keys=True), encoding="utf-8")
     n_tid = sum(1 for k in names if "@" not in k)
     print(f"{len(labels)} labelled games: {n_tid} templates named, {by_tier} more names by tier, "
