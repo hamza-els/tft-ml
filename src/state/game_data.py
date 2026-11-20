@@ -136,7 +136,8 @@ class GameData:
         """
         if not name:
             return name
-        return re.sub(r"\s*(\+|\b(?:I{1,3}))$", "", name).strip()
+        # every trailing "+" ("Invested++", "Pandora's Items II+"), then the tier numeral
+        return re.sub(r"\s*\b(?:I{1,3})$", "", name.rstrip("+").rstrip()).strip()
 
     @staticmethod
     def augment_label(name: str | None) -> str | None:
