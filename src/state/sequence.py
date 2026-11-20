@@ -28,7 +28,10 @@ directly from that frame.
 """
 
 
+import json
 from collections import Counter
+from functools import lru_cache
+from pathlib import Path
 
 from src.state.game_data import load_game_data
 from src.state.units import clean_units
@@ -130,6 +133,27 @@ def _forward_fill(values: list) -> list:
     return out
 
 
+AUGMENT_NAMES = Path(__file__).resolve().parents[2] / "assets" / "templates" / "augment_names.json"
+
+
+@lru_cache(maxsize=1)
+def _augment_names() -> dict:
+    try:
+        return json.loads(AUGMENT_NAMES.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def augment_name(template: str | None, tier: str | None) -> str | None:
+    """
+    An augment template's name from scripts/name_augment_templates.py: by template, or by
+    template and tier where one template stands for two augments that differ only by tier
+    colour (Silver / Gold Destiny). Unnamed templates keep their ID.
+    """
+    names = _augment_names()
+    return names.get(template) or names.get(f"{template}@{tier}") or template
+
+
 AUGMENT_SLOTS = MAX_AUGMENTS   # 3 picks, and a 4th seen in some games
 AUGMENT_PRESENT = 0.5     # a slot counts as picked from the first frame after which at least this
 AUGMENT_CONFIRM = 2       # share of the readings that show the bar show the slot, and at least
@@ -170,7 +194,8 @@ def game_augments(rows: list[dict], home: list[bool], label: dict | None = None)
                 start = j
         if start is None:
             break
-        after = [(a[k], t[k] if k < len(t) else None) for _, a, t in readings[start:] if len(a) > k]
+        after = [(augment_name(a[k], t[k] if k < len(t) else None), t[k] if k < len(t) else None)
+                 for _, a, t in readings[start:] if len(a) > k]
         name_votes = Counter(n for n, _ in after if n)
         tier_votes = Counter(t for _, t in after if t)
         names.append(name_votes.most_common(1)[0][0] if name_votes else None)

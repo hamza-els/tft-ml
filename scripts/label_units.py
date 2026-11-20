@@ -9,6 +9,7 @@ Usage:
 
     python scripts/label_units.py --relabel _none   # go through every crop labelled "not a unit" again
     python scripts/label_units.py --rare 40         # crops the model guesses are champions with < 40 labels
+    python scripts/label_units.py --files LIST.json # exactly these crops, in this order (a JSON list of names)
     python scripts/label_units.py --relabel Ashe    # ...or any other label
 
 --unsure gives the most value per label: crops the model already gets
@@ -94,7 +95,7 @@ def fingerprint(img: np.ndarray) -> np.ndarray:
 
 class Labeler:
     def __init__(self, review: bool, unsure: float | None = None, relabel: str | None = None,
-                 rare: int | None = None):
+                 rare: int | None = None, files_list: str | None = None):
         self.game = load_game_data()
         # Shop champions plus trait/augment units (Stonebark Tree, Training Dummy, ...)
         self.names = self.game.unit_names
@@ -137,6 +138,11 @@ class Labeler:
             self.queue = self._unsure_first(self.queue, unsure)
         if rare is not None and not review:
             self.queue = self._rare_guesses(self.queue, rare)
+        if files_list:
+            wanted = json.loads(Path(files_list).read_text(encoding="utf-8"))
+            have = set(files)
+            self.queue = [f for f in wanted if f in have and f not in self.labels]
+            print(f"{len(self.queue)} crops from {files_list} still to label")
 
         self._build_window()
         self.show()
@@ -488,13 +494,14 @@ def main():
                              "least sure first")
     parser.add_argument("--rare", type=int, nargs="?", const=40, default=None, metavar="FEWER_THAN",
                         help="Only crops the model guesses are champions with fewer labels than this (default 40)")
+    parser.add_argument("--files", metavar="LIST.json", help="Label exactly these crops (a JSON list of names), in order")
     parser.add_argument("--relabel", metavar="LABEL",
                         help="Go through every crop with this label again (e.g. _none)")
     args = parser.parse_args()
 
     if not (IMAGES).exists() or not any((IMAGES).glob("*.jpg")):
         sys.exit(f"No crops in {IMAGES} - run scripts/collect_unit_crops.py first")
-    app = Labeler(args.review, args.unsure, args.relabel, args.rare)
+    app = Labeler(args.review, args.unsure, args.relabel, args.rare, args.files)
     app.root.mainloop()
     print(f"{len(app.labels)} of {app.total} crops labelled -> {app.labels_path}")
 
