@@ -41,6 +41,9 @@ Labels are stored in data/processed/unit_crops/labels.json as
 "_unknown" a unit that can't be recognised, "_covered" a crop hidden by a
 tooltip. The classifier learns all three: "_unknown" still counts as an
 occupied hex in the game states, "_covered" as no information at all.
+"_wrong_frame" (Ctrl+W) marks every crop of a frame that should not have been
+used (combat, someone else's board, a round transition): it is not a class,
+training skips it, and it is kept to check the planning / own-board detection.
 """
 
 import sys
@@ -69,7 +72,9 @@ SEED_DIR = Path("data/processed/champion_crops")   # auto-labelled bench crops, 
 NONE = "_none"
 UNKNOWN = "_unknown"
 COVERED = "_covered"
-SPECIAL = {NONE: "not a unit", UNKNOWN: "unit, can't tell which", COVERED: "covered by a tooltip"}
+WRONG_FRAME = "_wrong_frame"
+SPECIAL = {NONE: "not a unit", UNKNOWN: "unit, can't tell which", COVERED: "covered by a tooltip",
+           WRONG_FRAME: "wrong frame (combat / away / transition)"}
 MAX_SUGGESTIONS = 4
 
 BG, FG, DIM, ACCENT = "#1e1f24", "#e8e8ea", "#8b8d98", "#f2c14e"
@@ -247,7 +252,8 @@ class Labeler:
         actions.grid(row=5, column=0, columnspan=2, sticky="we", padx=12, pady=(4, 12))
         for text, command in (("Not a unit  (Tab)", self.mark_none),
                               ("Unit, can't tell which  (Shift+Tab)", self.mark_unknown),
-                              ("Covered by tooltip  (Ctrl+T)", self.mark_covered), ("Skip  (Esc)", self.skip),
+                              ("Covered by tooltip  (Ctrl+T)", self.mark_covered),
+                              ("Wrong frame: combat / away  (Ctrl+W)", self.mark_wrong_frame), ("Skip  (Esc)", self.skip),
                               ("Undo  (Ctrl+Z)", self.undo), ("Quit  (Ctrl+Q)", self.quit)):
             tk.Button(actions, text=text, command=command, font=small, bg="#33353f", fg=FG,
                       activebackground="#444754", activeforeground=FG, relief="flat", padx=10, pady=4) \
@@ -264,6 +270,7 @@ class Labeler:
         self.root.bind("<Escape>", lambda e: self.skip())
         self.root.bind("<Control-z>", lambda e: self.undo())
         self.root.bind("<Control-t>", lambda e: (self.mark_covered(), "break")[1])
+        self.root.bind("<Control-w>", lambda e: (self.mark_wrong_frame(), "break")[1])
         self.root.bind("<Control-q>", lambda e: self.quit())
         for n in range(1, MAX_RESULTS + 1):
             self.root.bind(str(n), lambda e, k=n: (self.pick_result(k - 1), "break")[1])
@@ -375,6 +382,22 @@ class Labeler:
     def mark_covered(self):
         self.assign(COVERED)
 
+    def mark_wrong_frame(self):
+        """Label every crop of this crop's frame "_wrong_frame" and take them out of the queue."""
+        if self.pos >= len(self.queue):
+            return
+        frame = self.index.get(self.queue[self.pos], {}).get("frame_path")
+        group = [n for n, info in self.index.items() if frame and info.get("frame_path") == frame
+                 and n not in self.labels] or [self.queue[self.pos]]
+        for name in group:
+            self.labels[name] = WRONG_FRAME
+            self.changed[name] = WRONG_FRAME
+        self.history.append(group)          # one undo puts the whole frame back
+        self.save()
+        later = set(group)
+        self.queue = self.queue[:self.pos] + [n for n in self.queue[self.pos:] if n not in later]
+        self.show()
+
     def skip(self):
         if self.pos < len(self.queue):
             self.queue.append(self.queue.pop(self.pos))
@@ -383,14 +406,20 @@ class Labeler:
     def undo(self):
         if not self.history:
             return
-        name = self.history.pop()
-        self.labels.pop(name, None)
-        self.changed[name] = None
+        entry = self.history.pop()
+        group = entry if isinstance(entry, list) else [entry]     # a "wrong frame" is one undo
+        for name in group:
+            self.labels.pop(name, None)
+            self.changed[name] = None
         self.save()
+        name = group[0]
         if name in self.queue:
             self.pos = self.queue.index(name)
         else:
             self.queue.insert(self.pos, name)
+        for other in group[1:]:
+            if other not in self.queue:
+                self.queue.insert(self.pos + 1, other)
         self.show()
 
     def quit(self):
