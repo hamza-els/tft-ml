@@ -8,6 +8,7 @@ Usage:
     python scripts/label_units.py --unsure 0.7    # ...below 70% confidence (default 90%)
 
     python scripts/label_units.py --relabel _none   # go through every crop labelled "not a unit" again
+    python scripts/label_units.py --rare 40         # crops the model guesses are champions with < 40 labels
     python scripts/label_units.py --relabel Ashe    # ...or any other label
 
 --unsure gives the most value per label: crops the model already gets
@@ -68,6 +69,7 @@ from src.vision.unit_classifier import WEIGHTS, UnitClassifier
 CROP_DIR = paths.CROP_DIR          # index.json, labels.json (repo)
 IMAGES = paths.CROP_IMAGES         # crop images (local disk, src/utils/paths.py)
 SCORE_CACHE = paths.CROP_SCORE_CACHE   # --unsure scores (local disk); rebuilt when the model changes
+RARE_QUEUE = paths.LOCAL / "unit_crops" / "rare_queue.json"   # crops shown by --rare (the next test set)
 SEED_DIR = Path("data/processed/champion_crops")   # auto-labelled bench crops, used for suggestions
 NONE = "_none"
 UNKNOWN = "_unknown"
@@ -91,7 +93,8 @@ def fingerprint(img: np.ndarray) -> np.ndarray:
 
 
 class Labeler:
-    def __init__(self, review: bool, unsure: float | None = None, relabel: str | None = None):
+    def __init__(self, review: bool, unsure: float | None = None, relabel: str | None = None,
+                 rare: int | None = None):
         self.game = load_game_data()
         # Shop champions plus trait/augment units (Stonebark Tree, Training Dummy, ...)
         self.names = self.game.unit_names
@@ -132,6 +135,8 @@ class Labeler:
                             self._learn(p, folder.name)
         if unsure is not None:
             self.queue = self._unsure_first(self.queue, unsure)
+        if rare is not None and not review:
+            self.queue = self._rare_guesses(self.queue, rare)
 
         self._build_window()
         self.show()
@@ -143,6 +148,54 @@ class Labeler:
         if img is not None:
             self.known_vecs.append(fingerprint(img))
             self.known_names.append(name)
+
+    def _rare_guesses(self, files: list[str], fewer_than: int, per_class: int = 60) -> list[str]:
+        """
+        Unlabelled crops the model thinks show a rare champion (fewer than `fewer_than`
+        labels): its first guess, or a top-3 guess at 15%+. Rarest champions first,
+        most confident guesses first within each, at most `per_class` per champion.
+        The crops shown are listed in RARE_QUEUE, so labels given here can be scored as
+        a test set against the model that picked them (it never trained on them). Note
+        that picking by the model's own guesses measures how often a rare guess is
+        right, not how many rare units it misses.
+        """
+        if self.classifier is None:
+            sys.exit("--rare needs a trained model: python scripts/train_unit_classifier.py")
+        counts: dict[str, int] = {}
+        for name in self.labels.values():
+            counts[name] = counts.get(name, 0) + 1
+        rare = {c for c in self.classifier.classes if not c.startswith("_") and counts.get(c, 0) < fewer_than}
+        print(f"Rare champions (< {fewer_than} labels): "
+              + ", ".join(f"{c} {counts.get(c, 0)}" for c in sorted(rare, key=lambda c: counts.get(c, 0))))
+        picked: dict[str, list[tuple[float, str]]] = {c: [] for c in rare}
+        cls = self.classifier.classes
+        for start in tqdm(range(0, len(files), 64), unit="batch", dynamic_ncols=True, desc="guessing"):
+            imgs, names = [], []
+            for f in files[start:start + 64]:
+                img = cv2.imread(str(IMAGES / f))
+                if img is not None:
+                    imgs.append(img)
+                    names.append(f)
+            if not imgs:
+                continue
+            probs = self.classifier.probabilities(imgs)
+            for f, row in zip(names, probs):
+                top = np.argsort(row)[::-1][:3]
+                for rank, i in enumerate(top):
+                    if cls[i] in rare and (rank == 0 or row[i] >= 0.15):
+                        picked[cls[i]].append((float(row[i]), f))
+                        break
+        queue = []
+        for c in sorted(rare, key=lambda c: counts.get(c, 0)):
+            best = sorted(picked[c], reverse=True)[:per_class]
+            print(f"  {c}: {len(picked[c])} crops guessed, {len(best)} queued")
+            queue += [f for _, f in best]
+        try:
+            RARE_QUEUE.write_text(json.dumps({"model": f"{WEIGHTS.stat().st_mtime:.0f}", "crops": queue}),
+                                  encoding="utf-8")
+        except OSError:
+            pass
+        return queue
 
     def _unsure_first(self, files: list[str], below: float) -> list[str]:
         """The crops whose best guess is under `below`, least confident first."""
@@ -433,13 +486,15 @@ def main():
     parser.add_argument("--unsure", type=float, nargs="?", const=0.9, default=None, metavar="BELOW",
                         help="Only crops whose best guess is below this confidence (default 0.9), "
                              "least sure first")
+    parser.add_argument("--rare", type=int, nargs="?", const=40, default=None, metavar="FEWER_THAN",
+                        help="Only crops the model guesses are champions with fewer labels than this (default 40)")
     parser.add_argument("--relabel", metavar="LABEL",
                         help="Go through every crop with this label again (e.g. _none)")
     args = parser.parse_args()
 
     if not (IMAGES).exists() or not any((IMAGES).glob("*.jpg")):
         sys.exit(f"No crops in {IMAGES} - run scripts/collect_unit_crops.py first")
-    app = Labeler(args.review, args.unsure, args.relabel)
+    app = Labeler(args.review, args.unsure, args.relabel, args.rare)
     app.root.mainloop()
     print(f"{len(app.labels)} of {app.total} crops labelled -> {app.labels_path}")
 
