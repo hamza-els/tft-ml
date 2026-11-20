@@ -42,6 +42,20 @@ def tooltip_boxes(frame: np.ndarray) -> list[tuple[int, int, int, int]]:
     return boxes
 
 
+def panel_in_crop(crop: np.ndarray) -> bool:
+    """
+    A tooltip panel over a unit's own crop: in the crop's lower part (below its health
+    bar), at least CFG["crop_panel_rows"] of the rows are mostly near-black (max channel
+    under dark_below on 60%+ of the row). Catches what tooltip_boxes misses: panels with
+    icons and coloured text are not a clean rectangle after closing (2026-11-20: 81% of
+    Hamza's "covered" crops, 1.0% of 1,500 ordinary units; tooltip_boxes found 7 of 37).
+    """
+    if crop is None or crop.size == 0:
+        return False
+    low = crop[int(crop.shape[0] * 0.35):].max(axis=2) < CFG["dark_below"]
+    return float((low.mean(axis=1) > 0.6).mean()) >= float(CFG["crop_panel_rows"])
+
+
 def covered_share(boxes: list[tuple[int, int, int, int]], region: tuple[int, int, int, int]) -> float:
     """Share of a region (x, y, w, h) that lies under the tooltip boxes."""
     x, y, w, h = region

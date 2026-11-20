@@ -39,9 +39,11 @@ import numpy as np
 from tqdm import tqdm
 
 from src.utils import paths
+from src.utils.config import vision_cfg
 from src.vision.arena import home_board_rows, is_planning, planning_rows
 from src.vision.bench import BenchSlots
 from src.vision.board import BoardHexes
+from src.vision.tooltip import panel_in_crop
 from src.vision.unit_reader import occupied
 
 OUT_DIR = paths.CROP_DIR            # index.json (in the repo)
@@ -106,7 +108,8 @@ def main():
             for row in reversed(frames):
                 frame_path = vod_dir / states.stem / f"frame_{row['frame']:06d}.jpg"
                 frame = cv2.imread(str(frame_path))
-                if frame is not None and is_planning(frame):
+                vetoed = (row.get("combat_p") or 0.0) >= float(vision_cfg["arena"]["combat_veto"])
+                if frame is not None and is_planning(frame) and not vetoed:
                     chosen.append((row, frame_path, frame))
                     kept += 1
                     if kept == FRAMES_PER_ROUND:
@@ -118,6 +121,9 @@ def main():
 
             for wid, (x, y, w, h), _ in occupied(frame, board, bench):
                 crop = frame[max(0, y):y + h, max(0, x):x + w]
+                if panel_in_crop(crop):          # a tooltip over the unit: nothing to label
+                    skipped += 1
+                    continue
                 fp = _fingerprint(crop)
                 if wid in last and float(fp @ last[wid]) >= SAME_UNIT:
                     skipped += 1

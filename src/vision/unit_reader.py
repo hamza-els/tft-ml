@@ -26,7 +26,7 @@ import numpy as np
 
 from src.vision.bench import BenchSlots
 from src.vision.board_counter import BoardCounter
-from src.vision.tooltip import CFG as TOOLTIP_CFG, covered_share, tooltip_boxes
+from src.vision.tooltip import CFG as TOOLTIP_CFG, covered_share, panel_in_crop, tooltip_boxes
 from src.vision.board import BoardHexes
 from src.utils.config import vision_cfg
 from src.vision.unit_bar import (Bar, UnitItemReader, bench_bar, board_bar, expected_left, green_bars,
@@ -76,6 +76,13 @@ class UnitReader:
         if not found:
             return units
         crops = [frame[max(0, y):y + h, max(0, x):x + w] for _, (x, y, w, h), _ in found]
+        # a tooltip over the unit's own crop (the bar above it still shows): covered, not read
+        panel = [panel_in_crop(c) for c in crops]
+        units += [{"at": at, "covered": True} for (at, _, _), p in zip(found, panel) if p]
+        found = [f for f, p in zip(found, panel) if not p]
+        crops = [c for c, p in zip(crops, panel) if not p]
+        if not found:
+            return units
         probs = self.classifier.probabilities(crops)
         keep = []
         for (at, _, bar), p in zip(found, probs):

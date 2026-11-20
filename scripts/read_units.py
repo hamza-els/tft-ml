@@ -34,6 +34,7 @@ from concurrent.futures import ProcessPoolExecutor
 import cv2
 from tqdm import tqdm
 
+from src.utils.config import vision_cfg
 from src.vision.arena import home_board_rows, is_planning, planning_rows
 from src.vision.unit_reader import UnitReader
 
@@ -47,6 +48,18 @@ def _reader() -> UnitReader:
     if _READER is None:
         _READER = UnitReader()
     return _READER
+
+
+_FRAME_CLF = None
+
+
+def _frame_clf():
+    """The planning-or-combat frame classifier, if trained (one per process)."""
+    global _FRAME_CLF
+    if _FRAME_CLF is None:
+        from src.vision.frame_classifier import FrameClassifier
+        _FRAME_CLF = FrameClassifier() if FrameClassifier.available() else False
+    return _FRAME_CLF or None
 
 
 def process_game(states_path: str, vod_dir_path: str, light: bool, progress: bool = True) -> str:
@@ -94,6 +107,13 @@ def process_game(states_path: str, vod_dir_path: str, light: bool, progress: boo
         if not is_planning(frame):
             row["planning"] = False
             continue
+        # The frame classifier vetoes a fight that passed the rules for an instant
+        # (arena.planning_rows reads combat_p); its units are not read.
+        clf = _frame_clf()
+        if clf is not None:
+            row["combat_p"] = round(clf.combat_p([frame])[0], 3)
+            if row["combat_p"] >= float(vision_cfg["arena"]["combat_veto"]):
+                continue
         row["units_raw"] = reader.read(frame)
         row["board_counter"] = reader.read_counter(frame)
         read += 1

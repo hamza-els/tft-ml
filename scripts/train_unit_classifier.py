@@ -42,7 +42,7 @@ def load_examples() -> list[tuple[np.ndarray, str, str]]:
     labels = json.loads((CROP_DIR / "labels.json").read_text(encoding="utf-8"))
     out = []
     for name, label in sorted(labels.items()):
-        if label == "_wrong_frame":      # a frame that should not have been used, not a class
+        if label in ("_wrong_frame", "_covered"):   # not classes: a wrong frame; a tooltip (now detected, tooltip.panel_in_crop)
             continue
         img = cv2.imread(str(IMAGES / name))
         m = re.search(r"__(game_\d+)__", name)

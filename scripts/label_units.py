@@ -311,7 +311,6 @@ class Labeler:
         actions.grid(row=5, column=0, columnspan=2, sticky="we", padx=12, pady=(4, 12))
         for text, command in (("Not a unit  (Tab)", self.mark_none),
                               ("Unit, can't tell which  (Shift+Tab)", self.mark_unknown),
-                              ("Covered by tooltip  (Ctrl+T)", self.mark_covered),
                               ("Wrong frame: combat / away  (Ctrl+W)", self.mark_wrong_frame), ("Skip  (Esc)", self.skip),
                               ("Undo  (Ctrl+Z)", self.undo), ("Quit  (Ctrl+Q)", self.quit)):
             tk.Button(actions, text=text, command=command, font=small, bg="#33353f", fg=FG,
@@ -328,7 +327,6 @@ class Labeler:
             pass
         self.root.bind("<Escape>", lambda e: self.skip())
         self.root.bind("<Control-z>", lambda e: self.undo())
-        self.root.bind("<Control-t>", lambda e: (self.mark_covered(), "break")[1])
         self.root.bind("<Control-w>", lambda e: (self.mark_wrong_frame(), "break")[1])
         self.root.bind("<Control-q>", lambda e: self.quit())
         for n in range(1, MAX_RESULTS + 1):

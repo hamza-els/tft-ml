@@ -233,6 +233,7 @@ arena:
   # health bars are drawn. Empty during planning.
   enemy_half: [460, 150, 1000, 150]
   max_bar_pixels: 150                  # allows for stray effects; a single enemy bar is ~500
+  combat_veto: 0.7                     # frame classifier's combat probability at or above which a "planning" frame is a fight
   # Round timer bar under the stage bar: drains as the clock runs down and
   # refills when the next phase starts.
   timer_bar: [600, 43, 700, 10]
@@ -270,3 +271,4 @@ tooltip:
   min_size: [140, 60]                  # w, h in frame pixels
   min_fill: 0.80                       # component area / bounding box: panels are rectangles
   covered_share: 0.25                  # a unit window this much under a panel is "covered"
+  crop_panel_rows: 0.40                # or: this share of a crop's lower rows mostly near-black (tooltip.panel_in_crop)

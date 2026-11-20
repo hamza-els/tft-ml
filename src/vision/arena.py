@@ -127,7 +127,10 @@ def planning_rows(rows: list[dict], cfg: dict | None = None) -> list[bool]:
             if last_fill is not None and fill - last_fill >= refill:
                 in_combat = True
             last_fill = fill
-        out.append(bool(row.get("planning")) and not in_combat and not ending and None not in key)
+        # the frame classifier's veto (src/vision/frame_classifier.py, stored by read_units.py):
+        # a fight that passed the rules for an instant
+        vetoed = (row.get("combat_p") or 0.0) >= float(cfg.get("combat_veto", 1.1))
+        out.append(bool(row.get("planning")) and not in_combat and not ending and None not in key and not vetoed)
     return out
 
 
