@@ -30,6 +30,9 @@ Options for long batches:
                           batch (do it later with scripts/redo_augments.py).
     --wait-on-bot-check H when YouTube asks to confirm we're not a bot, wait H hours
                           and carry on instead of stopping the batch.
+    --no-augment-rebuild  at the end of the batch, don't rebuild the augment templates from the
+                          newly named games (scripts/apply_augment_names.py: templates from every
+                          game named by label or overlay, then every finished VOD read again).
     --no-prefetch         don't download the next VOD in the background. By default,
                           once a VOD's frames are split and deduped, the next VOD's video
                           file is downloaded while this one is read (log:
@@ -78,7 +81,7 @@ def run(step: str, args: list[str]) -> bool:
 
 COOKIES: list[str] = []   # extra run_pipeline arguments, set from --cookies-from-browser
 JOBS = [3]                # games read in parallel by the state and unit readers (--jobs)
-OPTS = {"skip_augments": False, "slim": False, "keep_frames_gb": 0.0, "min_free_gb": 0.0, "prefetch": True, "prefetch_gb": 25.0}
+OPTS = {"augment_rebuild": True, "skip_augments": False, "slim": False, "keep_frames_gb": 0.0, "min_free_gb": 0.0, "prefetch": True, "prefetch_gb": 25.0}
 PREFETCH_LOG = paths.LOGS / "prefetch.log"
 _prefetch: dict = {}      # the next VOD's background download: {"url", "proc", "log", "start"}
 
@@ -226,6 +229,8 @@ def main():
                         help="On YouTube's bot check, wait this long and retry instead of stopping")
     parser.add_argument("--min-free-gb", type=float, default=30,
                         help="Stop before downloading when less disk is free (default 30; a 9 h VOD peaks at ~34 GB)")
+    parser.add_argument("--no-augment-rebuild", action="store_true",
+                        help="Don't rebuild the augment templates and re-read every VOD at the end of the batch")
     parser.add_argument("--no-prefetch", action="store_true",
                         help="Don't download the next VOD in the background while the current one is read")
     parser.add_argument("--prefetch-gb", type=float, default=25,
@@ -235,7 +240,7 @@ def main():
     JOBS[0] = args.jobs
     OPTS.update(skip_augments=args.skip_augment_icons, slim=args.slim_frames, keep_frames_gb=args.keep_frames_gb,
                 min_free_gb=args.min_free_gb,
-                prefetch=not args.no_prefetch, prefetch_gb=args.prefetch_gb)
+                prefetch=not args.no_prefetch, augment_rebuild=not args.no_augment_rebuild, prefetch_gb=args.prefetch_gb)
     if args.cookies_from_browser:
         COOKIES.extend(["--cookies-from-browser", args.cookies_from_browser])
 
@@ -274,6 +279,10 @@ def main():
         print(f"\nDone. {len(urls) - len(failed)}/{len(urls)} VODs processed.", flush=True)
         for url in failed:
             print(f"  failed: {url}  (details in {LOG})", flush=True)
+        if OPTS["augment_rebuild"] and len(failed) < len(urls):
+            # Grow the augment templates from the games the overlay or labels just named, and
+            # read every finished VOD again with them: streams without the overlay depend on them.
+            run("augment templates", ["scripts/apply_augment_names.py"])
     finally:
         finish_prefetch(stop=True)    # batch stopped early: don't leave a download running
         ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS)
