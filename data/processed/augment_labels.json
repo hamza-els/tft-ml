@@ -250,6 +250,183 @@
 "gold"
 ]
 },
+"TRYn_hEfx7Y/game_00": {
+"augments": [
+"Flowing Tears",
+"Team Building",
+"Ascension"
+],
+"frame": "frame_004705.jpg",
+"tiers": [
+"silver",
+"unknown",
+"unknown"
+]
+},
+"TRYn_hEfx7Y/game_01": {
+"augments": [
+"Calculated Loss",
+"Jeweled Lotus I",
+"Explosive Growth"
+],
+"frame": "frame_009017.jpg",
+"tiers": [
+"unknown",
+"unknown",
+"gold"
+]
+},
+"TRYn_hEfx7Y/game_02": {
+"augments": [
+"Silver Destiny",
+"Electrocharge I",
+"Item Grab Bag I",
+"Verticality III"
+],
+"frame": "frame_015502.jpg",
+"tiers": [
+"silver",
+"unknown",
+"unknown",
+"prismatic"
+]
+},
+"TRYn_hEfx7Y/game_03": {
+"augments": [
+"Caretaker's Ally",
+"Silver Destiny",
+"Missed Connections",
+"Hold the Line"
+],
+"frame": "frame_016332.jpg",
+"tiers": [
+"unknown",
+"silver",
+"unknown",
+"prismatic"
+]
+},
+"TRYn_hEfx7Y/game_04": {
+"augments": [
+"Quick Streaks",
+"Team Building",
+"Heroic Grab Bag"
+],
+"frame": "frame_021366.jpg",
+"tiers": [
+"silver",
+"unknown",
+"unknown"
+]
+},
+"TRYn_hEfx7Y/game_05": {
+"augments": [
+"Carve a Path",
+"Slammin'",
+"Bronze For Life I"
+],
+"frame": "frame_026004.jpg",
+"tiers": [
+"silver",
+"gold",
+"gold"
+]
+},
+"TRYn_hEfx7Y/game_06": {
+"augments": [
+"Bodyguard Training",
+"Trifecta I",
+"Salvage Bin"
+],
+"frame": "frame_030624.jpg",
+"tiers": [
+"gold",
+"unknown",
+"unknown"
+]
+},
+"TRYn_hEfx7Y/game_07": {
+"augments": [
+"Calculated Loss",
+"Seraphim's Staff",
+"U.R.F"
+],
+"frame": "frame_035415.jpg",
+"tiers": [
+"unknown",
+"gold",
+"gold"
+]
+},
+"TRYn_hEfx7Y/game_08": {
+"augments": [
+"Iron Assets",
+"Wisp Rebate",
+"Baron's Lair"
+],
+"frame": "frame_039910.jpg",
+"tiers": [
+"unknown",
+"silver",
+"prismatic"
+]
+},
+"TRYn_hEfx7Y/game_09": {
+"augments": [
+"Slightly Magic Roll",
+"Radiant Relics",
+"Call To Chaos"
+],
+"frame": "frame_044692.jpg",
+"tiers": [
+"silver",
+"unknown",
+"prismatic"
+]
+},
+"TRYn_hEfx7Y/game_10": {
+"augments": [
+"Team Building",
+"Solo Plate",
+"Staffsmith"
+],
+"frame": "frame_050483.jpg",
+"tiers": [
+"unknown",
+"gold",
+"gold"
+]
+},
+"TRYn_hEfx7Y/game_11": {
+"augments": [
+"Warpath",
+"Radiant Relics",
+"Staffsmith"
+],
+"frame": "frame_055080.jpg",
+"tiers": [
+"gold",
+"unknown",
+"gold"
+]
+},
+"TRYn_hEfx7Y/game_12": {
+"augments": [
+"Silver Destiny",
+"One Two Three",
+"Wisp Rebate",
+"It's Me, Baby",
+"It's Me, Baby"
+],
+"frame": "frame_059586.jpg",
+"tiers": [
+"silver",
+"unknown",
+"silver",
+"gold",
+null
+]
+},
 "eUOJYk4MKaY/game_00": {
 "augments": [
 "Promised Protection",
@@ -691,6 +868,32 @@ null
 "unknown",
 "gold",
 "gold"
+]
+},
+"t8ER_nNdjpk/game_02": {
+"augments": [
+"Nature's Shelter",
+"Late Game Specialist",
+"Max Build"
+],
+"frame": "frame_015866.jpg",
+"tiers": [
+"gold",
+"unknown",
+"gold"
+]
+},
+"t8ER_nNdjpk/game_03": {
+"augments": [
+"Deadlier Caps",
+"Cry Me A River",
+"Cybernetic Uplink"
+],
+"frame": "frame_020595.jpg",
+"tiers": [
+"prismatic",
+"gold",
+"unknown"
 ]
 },
 "t8ER_nNdjpk/game_04": {
