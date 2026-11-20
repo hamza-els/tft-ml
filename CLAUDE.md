@@ -104,6 +104,7 @@ Tests: `python -m pytest tests -q` (about 40-90 s; the OCR tests load EasyOCR an
 - Other players' boards are ignored. Scouting is not modelled.
 - Augment and item icons are matched to templates cut from footage and identified by ID (`aug_007`, `item_031`). Names are optional: the model only needs consistent IDs.
 - No hard-coded thresholds in the decision logic; the Win Predictor's output is to be a model input.
+- Frames stay on disk (full while space allows, else augment-only copies) until the unit classifier is really good (Hamza, 2026-11-20): every retrain means re-reading units from frames. After that, the plan is to keep only states plus a small augment crop store (about 30 icon crops per game and slot, ~2-3 MB per VOD, enough to rebuild templates and re-name games) and delete all frames.
 
 ## State on 2026-11-19 (items 1-5 written 2026-11-18, updated since)
 
