@@ -187,13 +187,13 @@ def process(url: str, next_url: str | None = None) -> bool:
     steps = [
         ("read states", ["scripts/extract_states.py", "--frames", str(frames), "--jobs", str(JOBS[0])]),
         # augment names from the stream overlay; needs the full frames, so before any slimming
-        ("augment overlay", ["scripts/read_augment_overlay.py", vid]),
+        ("augment overlay", ["scripts/read_augment_overlay.py", "--", vid]),
         ("item icons", ["scripts/harvest_item_icons.py", "--frames", str(frames), "--update-states", str(states)]),
         ("read units", ["scripts/read_units.py", "--frames", str(frames), "--states", str(states), "--jobs", str(JOBS[0])]),
         ("clean states", ["scripts/clean_states.py", "--states", str(states)]),
         ("encode dataset", ["scripts/build_dataset.py", "--states", str(states)]),
         ("unit crops", ["scripts/collect_unit_crops.py", "--frames", str(frames), "--states", str(states)]),
-        ("upload states", ["scripts/upload_states.py", vid]),
+        ("upload states", ["scripts/upload_states.py", "--", vid]),
     ]
     if OPTS["skip_augments"]:
         steps = [s for s in steps if s[0] != "augment icons"]
@@ -207,7 +207,7 @@ def process(url: str, next_url: str | None = None) -> bool:
             print(f"    keeping full frames ({free_gb:.0f} GB free, slimming below {OPTS['keep_frames_gb']:.0f})",
                   flush=True)
         else:
-            run("slim frames", ["scripts/slim_frames.py", vid, "--delete-full"])
+            run("slim frames", ["scripts/slim_frames.py", "--delete-full", "--", vid])
     return True
 
 

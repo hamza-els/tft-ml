@@ -53,7 +53,7 @@ def steps(vid: str, frames: Path) -> list[tuple[str, list[str]]]:
         ("augments", ["scripts/backfill_states.py", "--augments-only", "--frames", str(frames), "--states", str(states)]),
         ("clean states", ["scripts/clean_states.py", "--states", str(states)]),
         ("encode dataset", ["scripts/build_dataset.py", "--states", str(states)]),
-        ("upload states", ["scripts/upload_states.py", vid]),
+        ("upload states", ["scripts/upload_states.py", "--", vid]),
     ]
 
 

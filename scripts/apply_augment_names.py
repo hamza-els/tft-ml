@@ -60,7 +60,7 @@ def main():
                                          "--frames", str(frames), "--states", states])
         ok = (reread and run(["scripts/clean_states.py", "--states", states])
               and run(["scripts/build_dataset.py", "--states", states])
-              and run(["scripts/upload_states.py", vod]))
+              and run(["scripts/upload_states.py", "--", vod]))
         note = "" if frames else " (no frames on disk: augments not re-read)"
         print(f"  {vod}: {'ok' if ok else 'FAILED'}{note}", flush=True)
 
