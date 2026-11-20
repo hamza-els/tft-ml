@@ -4,6 +4,7 @@ Label each game's three augments, one screen per game.
 Usage:
     python scripts/label_augments.py              # games not labelled yet
     python scripts/label_augments.py --all        # every game, labelled ones too
+    python scripts/label_augments.py --recheck    # labelled games where the stream overlay names other augments
 
 A game has exactly three augments, picked at 2-1, 3-2 and 4-2 and kept to the
 end, so one look at a late own-board frame labels the whole game. The screen
@@ -92,7 +93,7 @@ def official_icons() -> list[tuple[str, np.ndarray]]:
 
 
 class AugmentLabeler:
-    def __init__(self, show_all: bool):
+    def __init__(self, show_all: bool, recheck: bool = False):
         self.reader = AugmentReader()
         # "+" versions share their augment's icon, so they are one label (GameData.augment_label)
         self.official = []
@@ -103,12 +104,21 @@ class AugmentLabeler:
         names = json.loads(aug_file.read_text(encoding="utf-8")) if aug_file else [n for n, _, _, _ in self.official]
         self.names = sorted({GameData.augment_label(n) for n in names})
         labels = load(LABELS)
-        self.games = []
+        self.games, self.overlay = [], {}
         for states in sorted(paths.STATES.glob("*/game_*.jsonl")):
             if states.name.endswith(".clean.jsonl"):
                 continue
             key = f"{states.parent.name}/{states.stem}"
-            if show_all or key not in labels:
+            ov = load(states.parent / "augment_overlay.json").get(states.stem, {})
+            self.overlay[key] = ov
+            if recheck:
+                # the overlay (typed by the stream team) and the label name different augments
+                base = GameData.augment_base
+                lab = [base(n) for n in (labels.get(key) or {}).get("augments", []) if not n.startswith("_")]
+                seen = [base(n) for n in ov.get("augments") or []]
+                if key in labels and seen and set(lab) != set(seen):
+                    self.games.append((key, states))
+            elif show_all or key not in labels:
                 self.games.append((key, states))
         self.g = 0
         self._build_window()
@@ -275,8 +285,12 @@ class AugmentLabeler:
             b.pack(fill="x", pady=1)
         self.query.set("")
         self.refresh_results()
+        ov = self.overlay.get(self.key, {})
+        old = load(LABELS).get(self.key, {}).get("augments")
         self.status.configure(text=f"Game {self.g + 1} of {len(self.games)}: {self.key}   |   frame {self.c + 1} of "
-                                   f"{len(self.cands)} (Ctrl+N for another)   |   chosen so far: {self.chosen}")
+                                   f"{len(self.cands)} (Ctrl+N for another)   |   chosen so far: {self.chosen}"
+                                   + ("\nStream overlay says: " + ", ".join(ov["augments"]) if ov.get("augments") else "")
+                                   + ("\nYour earlier label: " + ", ".join(old) if old else ""))
         self.entry.focus_set()
 
     def refresh_results(self):
@@ -340,8 +354,10 @@ class AugmentLabeler:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--all", action="store_true", help="Every game, labelled ones too")
+    parser.add_argument("--recheck", action="store_true",
+                        help="Only labelled games whose stream overlay names other augments (overlay shown on screen)")
     args = parser.parse_args()
-    app = AugmentLabeler(args.all)
+    app = AugmentLabeler(args.all, args.recheck)
     app.root.mainloop()
 
 

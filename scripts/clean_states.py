@@ -35,6 +35,11 @@ def main():
 
     labels_path = paths.REPO / "data" / "processed" / "augment_labels.json"
     augment_labels = json.loads(labels_path.read_text(encoding="utf-8")) if labels_path.exists() else {}
+    # The stream overlay's augment list (scripts/read_augment_overlay.py), typed by the streamer's
+    # team: in bar order on 18 of 19 games checked. Used where Hamza hasn't labelled the game;
+    # his label wins where both exist.
+    overlay_path = Path(args.states) / "augment_overlay.json"
+    overlay = json.loads(overlay_path.read_text(encoding="utf-8")) if overlay_path.exists() else {}
     for path in files:
         rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line]
         rows = [r for r in rows if r.get("in_game")]
@@ -42,7 +47,14 @@ def main():
             print(f"{path.name}: no in-game frames")
             continue
         label = augment_labels.get(f"{path.parent.name}/{path.stem}")
+        seen = overlay.get(path.stem) or {}
+        if label is None and seen.get("augments"):
+            label = {"augments": seen["augments"], "tiers": []}
         cleaned = clean_game(rows, label)
+        for r in cleaned:
+            r["portal"] = seen.get("portal")
+            r["augment_source"] = ("label" if augment_labels.get(f"{path.parent.name}/{path.stem}")
+                                   else "overlay" if seen.get("augments") else "icons")
         out = path.with_name(path.stem + ".clean.jsonl")
         out.write_text("".join(json.dumps(r) + "\n" for r in cleaned), encoding="utf-8")
 
