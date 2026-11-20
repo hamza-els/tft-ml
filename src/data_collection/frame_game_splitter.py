@@ -174,6 +174,13 @@ def find_game_segments(
     for i, (start, end) in enumerate(ranges):
         # The first/last sample are up to one scan step inside the true boundary.
         lo, hi = start - step, end + step
+        # ...but games can be back to back (a new game found from the stage-1 layout, no gap):
+        # never let the padding overlap the neighbours, or a frame is moved twice
+        # (wszJroIjlMs, 2026-11-19: game 6 ended at 28866, game 7 began at 28876).
+        if i > 0:
+            lo = max(lo, (ranges[i - 1][1] + start) // 2 + 1)
+        if i + 1 < len(ranges):
+            hi = min(hi, (end + ranges[i + 1][0]) // 2)
         frames = [p for p in paths if lo <= frame_number(p) <= hi]
         segments.append(FrameGameSegment(i, start, end, frames))
         print(f"  Game {i}: frames {start}–{end}  "
