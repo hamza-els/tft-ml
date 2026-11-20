@@ -185,7 +185,6 @@ def process(url: str, next_url: str | None = None) -> bool:
         ("read states", ["scripts/extract_states.py", "--frames", str(frames), "--jobs", str(JOBS[0])]),
         # augment names from the stream overlay; needs the full frames, so before any slimming
         ("augment overlay", ["scripts/read_augment_overlay.py", vid]),
-        ("augment icons", ["scripts/harvest_augment_icons.py", "--frames", str(frames), "--update-states", str(states)]),
         ("item icons", ["scripts/harvest_item_icons.py", "--frames", str(frames), "--update-states", str(states)]),
         ("read units", ["scripts/read_units.py", "--frames", str(frames), "--states", str(states), "--jobs", str(JOBS[0])]),
         ("clean states", ["scripts/clean_states.py", "--states", str(states)]),

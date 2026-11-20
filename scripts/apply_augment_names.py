@@ -1,16 +1,21 @@
 """
-After labelling augments: name the templates, then re-clean, re-encode and
-upload every finished VOD so the names reach the states and datasets.
+After labelling augments (or once new videos have overlay names): rebuild the
+augment templates from every named game, read the augment bars again with
+them, and re-clean, re-encode and upload every finished VOD.
 
 Usage:
-    python scripts/apply_augment_names.py          # every finished VOD (~/tft_data/state_vectors/*/.done)
-    python scripts/apply_augment_names.py VOD ...  # only these
+    python scripts/apply_augment_names.py           # every finished VOD (~/tft_data/state_vectors/*/.done)
+    python scripts/apply_augment_names.py VOD ...   # re-read and re-clean only these (templates still rebuilt)
+    python scripts/apply_augment_names.py --eval    # also the held-out test (slower)
 
-Runs scripts/name_augment_templates.py (game labels from label_augments.py and
-template names from label_new_augments.py -> assets/templates/augment_names.json),
-then per VOD clean_states.py, build_dataset.py and upload_states.py, then
-eval_augments.py --tier for the held-out score. VODs a batch is still working
-on (no .done) are left alone. Needs no frames: it only reads the state files.
+Steps:
+  1. scripts/build_augment_templates.py --write: medoid templates per augment from
+     games named by Hamza's label or the stream overlay, same-icon names merged
+     (assets/templates/augments_v2/: names.json, aliases.json, groups.json).
+  2. per VOD with frames on disk (full or augment-only copies):
+     backfill_states.py --augments-only, so every frame's reading uses those templates.
+  3. per VOD: clean_states.py (label > overlay > reader), build_dataset.py, upload_states.py.
+VODs a batch is still working on (no .done) are left alone.
 """
 
 import sys
@@ -34,19 +39,30 @@ def run(args: list[str], quiet: bool = True) -> bool:
     return result.returncode == 0
 
 
+def frames_for(vod: str) -> Path | None:
+    for root in (paths.FRAMES, paths.AUG_FRAMES):
+        if (root / vod).exists():
+            return root / vod
+    return None
+
+
 def main():
-    vods = sys.argv[1:] or sorted(p.parent.name for p in paths.STATES.glob("*/.done"))
-    print("Naming templates ...")
-    if not run(["scripts/name_augment_templates.py"], quiet=False):
-        sys.exit("name_augment_templates.py failed")
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    evaluate = "--eval" in sys.argv
+    vods = args or sorted(p.parent.name for p in paths.STATES.glob("*/.done"))
+    print("Building templates from named games ...")
+    if not run(["scripts/build_augment_templates.py", "--write"] + (["--eval"] if evaluate else []), quiet=False):
+        sys.exit("build_augment_templates.py failed")
     for vod in vods:
         states = str(paths.STATES / vod)
-        ok = (run(["scripts/clean_states.py", "--states", states])
+        frames = frames_for(vod)
+        reread = frames is None or run(["scripts/backfill_states.py", "--augments-only",
+                                         "--frames", str(frames), "--states", states])
+        ok = (reread and run(["scripts/clean_states.py", "--states", states])
               and run(["scripts/build_dataset.py", "--states", states])
               and run(["scripts/upload_states.py", vod]))
-        print(f"  {vod}: {'ok' if ok else 'FAILED'}")
-    print("Held-out score:")
-    run(["scripts/eval_augments.py", "--tier"], quiet=False)
+        note = "" if frames else " (no frames on disk: augments not re-read)"
+        print(f"  {vod}: {'ok' if ok else 'FAILED'}{note}", flush=True)
 
 
 if __name__ == "__main__":

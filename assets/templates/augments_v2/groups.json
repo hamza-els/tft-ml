@@ -1,0 +1,156 @@
+{
+ "merged": [
+  {
+   "names": [
+    "Nesting Anvils",
+    "Living Forge"
+   ],
+   "kept": "Nesting Anvils",
+   "similarity": 0.998,
+   "tier": "prismatic"
+  },
+  {
+   "names": [
+    "Challenger's Grace",
+    "Trifecta I"
+   ],
+   "kept": "Challenger's Grace",
+   "similarity": 0.996,
+   "tier": "gold"
+  },
+  {
+   "names": [
+    "Spreading Roots",
+    "Max Build"
+   ],
+   "kept": "Spreading Roots",
+   "similarity": 0.995,
+   "tier": "gold"
+  },
+  {
+   "names": [
+    "Pandora's Items II",
+    "Solo Plate"
+   ],
+   "kept": "Pandora's Items II",
+   "similarity": 0.993,
+   "tier": "gold"
+  },
+  {
+   "names": [
+    "Patient Study",
+    "Caretaker's Ally"
+   ],
+   "kept": "Patient Study",
+   "similarity": 0.992,
+   "tier": "gold"
+  },
+  {
+   "names": [
+    "Woven Magic",
+    "Caretaker's Ally"
+   ],
+   "kept": "Woven Magic",
+   "similarity": 0.992,
+   "tier": "gold"
+  },
+  {
+   "names": [
+    "Team Building",
+    "Pandora's Bench"
+   ],
+   "kept": "Team Building",
+   "similarity": 0.99,
+   "tier": "silver"
+  },
+  {
+   "names": [
+    "Commerce Core",
+    "Shopping Spree"
+   ],
+   "kept": "Commerce Core",
+   "similarity": null,
+   "tier": null,
+   "manual": true
+  }
+ ],
+ "by_tier": [
+  {
+   "names": [
+    "Silver Destiny",
+    "Spirit Of Redemption"
+   ],
+   "tiers": [
+    "silver",
+    "gold"
+   ],
+   "similarity": 0.987
+  },
+  {
+   "names": [
+    "Ascension",
+    "Partial Ascension"
+   ],
+   "tiers": [
+    "gold",
+    "silver"
+   ],
+   "similarity": 0.962
+  },
+  {
+   "names": [
+    "Glass Cannon I",
+    "Glass Cannon II"
+   ],
+   "tiers": [
+    "silver",
+    "gold"
+   ],
+   "similarity": 0.956
+  },
+  {
+   "names": [
+    "Gold Destiny",
+    "Silver Destiny"
+   ],
+   "tiers": [
+    "gold",
+    "silver"
+   ],
+   "similarity": 0.922
+  },
+  {
+   "names": [
+    "Band of Thieves",
+    "Band of Thieves II"
+   ],
+   "tiers": [
+    "silver",
+    "prismatic"
+   ],
+   "similarity": 0.919
+  },
+  {
+   "names": [
+    "Prismatic Destiny",
+    "Silver Destiny"
+   ],
+   "tiers": [
+    "prismatic",
+    "silver"
+   ],
+   "similarity": 0.909
+  },
+  {
+   "names": [
+    "Healing Orbs I",
+    "Healing Orbs II"
+   ],
+   "tiers": [
+    "silver",
+    "gold"
+   ],
+   "similarity": 0.902
+  }
+ ]
+}

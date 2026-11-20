@@ -133,7 +133,8 @@ def _forward_fill(values: list) -> list:
     return out
 
 
-AUGMENT_NAMES = Path(__file__).resolve().parents[2] / "assets" / "templates" / "augment_names.json"
+AUGMENT_NAMES = Path(__file__).resolve().parents[2] / "assets" / "templates" / "augments_v2" / "names.json"
+AUGMENT_ALIASES = AUGMENT_NAMES.with_name("aliases.json")   # same icon, two names -> one (build_augment_templates.py)
 
 
 @lru_cache(maxsize=1)
@@ -144,6 +145,23 @@ def _augment_names() -> dict:
         return {}
 
 
+@lru_cache(maxsize=1)
+def _augment_aliases() -> dict:
+    try:
+        return json.loads(AUGMENT_ALIASES.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def canonical_augment(name: str | None) -> str | None:
+    """One name for augments that share an icon in the game (Spreading Roots / Max Build, ...)."""
+    if not name:
+        return name
+    from src.state.game_data import GameData
+    folded = GameData.augment_label(name)
+    return _augment_aliases().get(folded, folded)
+
+
 def augment_name(template: str | None, tier: str | None) -> str | None:
     """
     An augment template's name from scripts/name_augment_templates.py: by template, or by
@@ -151,7 +169,7 @@ def augment_name(template: str | None, tier: str | None) -> str | None:
     colour (Silver / Gold Destiny). Unnamed templates keep their ID.
     """
     names = _augment_names()
-    return names.get(template) or names.get(f"{template}@{tier}") or template
+    return canonical_augment(names.get(f"{template}@{tier}") or names.get(template) or template)
 
 
 AUGMENT_SLOTS = MAX_AUGMENTS   # 3 picks, and a 4th seen in some games
@@ -205,7 +223,7 @@ def game_augments(rows: list[dict], home: list[bool], label: dict | None = None)
         for k, n in enumerate(label.get("augments") or []):
             # "_unknown": an augment Hamza saw but couldn't read - keep the reader's guess
             if k < len(names) and n != "_unknown":
-                names[k] = n
+                names[k] = canonical_augment(n)
                 if label.get("tiers") and k < len(label["tiers"]) and label["tiers"][k]:
                     tiers[k] = label["tiers"][k]
     return names, tiers, picked

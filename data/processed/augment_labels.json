@@ -146,6 +146,142 @@
 "unknown"
 ]
 },
+"Lg5Nucgkfqo/game_00": {
+"augments": [
+"Team Building",
+"Wisp Rebate",
+"Baron's Lair"
+],
+"frame": "frame_004210.jpg",
+"tiers": [
+"unknown",
+"silver",
+"prismatic"
+]
+},
+"Lg5Nucgkfqo/game_01": {
+"augments": [
+"Prismatic Destiny",
+"Tactician's Kitchen",
+"Jeweled Lotus II",
+"Big Grab Bag"
+],
+"frame": "frame_007959.jpg",
+"tiers": [
+"prismatic",
+"prismatic",
+"unknown",
+"unknown"
+]
+},
+"Lg5Nucgkfqo/game_02": {
+"augments": [
+"Prismatic Destiny",
+"Shimmerscale Essence",
+"Golden Gamble",
+"Jeweled Lotus I"
+],
+"frame": "frame_012819.jpg",
+"tiers": [
+"prismatic",
+"prismatic",
+"prismatic",
+"unknown"
+]
+},
+"Lg5Nucgkfqo/game_03": {
+"augments": [
+"Legion Of Threes",
+"Prismatic Destiny",
+"Urf's Grab Bag",
+"Booster Pack"
+],
+"frame": "frame_017222.jpg",
+"tiers": [
+"gold",
+"prismatic",
+"unknown",
+"gold"
+]
+},
+"Lg5Nucgkfqo/game_04": {
+"augments": [
+"Spreading Roots",
+"Stand United",
+"Spreading Roots"
+],
+"frame": "frame_020872.jpg",
+"tiers": [
+"gold",
+"unknown",
+"gold"
+]
+},
+"Lg5Nucgkfqo/game_05": {
+"augments": [
+"The Trait Tree",
+"Tons of Stats!",
+"Invested"
+],
+"frame": "frame_025108.jpg",
+"tiers": [
+"prismatic",
+"unknown",
+"unknown"
+]
+},
+"Lg5Nucgkfqo/game_06": {
+"augments": [
+"Trade Sector",
+"Seraphim's Staff",
+"Max Build"
+],
+"frame": "frame_028791.jpg",
+"tiers": [
+"unknown",
+"gold",
+"gold"
+]
+},
+"Lg5Nucgkfqo/game_07": {
+"augments": [
+"Spreading Roots",
+"Nesting Anvils",
+"Max Build"
+],
+"frame": "frame_054914.jpg",
+"tiers": [
+"gold",
+"prismatic",
+"gold"
+]
+},
+"Lg5Nucgkfqo/game_08": {
+"augments": [
+"Salvage Bin",
+"Augmented Power",
+"Radiant Relics"
+],
+"frame": "frame_058349.jpg",
+"tiers": [
+"unknown",
+"silver",
+"unknown"
+]
+},
+"Lg5Nucgkfqo/game_09": {
+"augments": [
+"Pandora's Items II",
+"Seraphim's Staff",
+"Soul Awakening"
+],
+"frame": "frame_062714.jpg",
+"tiers": [
+"unknown",
+"gold",
+"prismatic"
+]
+},
 "QLRxiF-_y_4/game_00": {
 "augments": [
 "Trade Sector",
@@ -424,6 +560,187 @@
 "unknown",
 "silver",
 "gold",
+null
+]
+},
+"XbjcgGAy1U4/game_00": {
+"augments": [
+"Speedy Double Kill",
+"Slammin'",
+"Staffsmith"
+],
+"frame": "frame_005072.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"XbjcgGAy1U4/game_01": {
+"augments": [
+"Speedy Double Kill",
+"Baron's Lair",
+"Glass Cannon I"
+],
+"frame": "frame_008518.jpg",
+"tiers": [
+"gold",
+"prismatic",
+"silver"
+]
+},
+"XbjcgGAy1U4/game_02": {
+"augments": [
+"Booster Pack",
+"Nesting Anvils",
+"Silver Destiny",
+"Residual Magic"
+],
+"frame": "frame_012809.jpg",
+"tiers": [
+"gold",
+"prismatic",
+"silver",
+"silver"
+]
+},
+"ZXj0GIXDaV0/game_00": {
+"augments": [
+"Warpath",
+"Jeweled Lotus I",
+"Explosive Growth"
+],
+"frame": "frame_005764.jpg",
+"tiers": [
+"gold",
+"unknown",
+"gold"
+]
+},
+"ZXj0GIXDaV0/game_01": {
+"augments": [
+"Expedition",
+"Healing Orbs I",
+"Call To Chaos"
+],
+"frame": "frame_010393.jpg",
+"tiers": [
+"silver",
+"unknown",
+"prismatic"
+]
+},
+"ZXj0GIXDaV0/game_02": {
+"augments": [
+"Patient Study",
+"Bronze For Life II",
+"Arcane Viktor-y"
+],
+"frame": "frame_014875.jpg",
+"tiers": [
+"gold",
+"prismatic",
+"gold"
+]
+},
+"ZXj0GIXDaV0/game_03": {
+"augments": [
+"Prismatic Destiny",
+"Band of Thieves II",
+"Spirit Of Redemption",
+"Malicious Monetization"
+],
+"frame": "frame_018979.jpg",
+"tiers": [
+"prismatic",
+"unknown",
+"gold",
+"gold"
+]
+},
+"ZXj0GIXDaV0/game_04": {
+"augments": [
+"Spreading Roots",
+"Cognitive Overload",
+"Big Grab Bag"
+],
+"frame": "frame_023741.jpg",
+"tiers": [
+"gold",
+"gold",
+"unknown"
+]
+},
+"ZXj0GIXDaV0/game_05": {
+"augments": [
+"Backup Bows",
+"Bonus Gifts",
+"Bronze For Life I"
+],
+"frame": "frame_027440.jpg",
+"tiers": [
+"silver",
+"gold",
+"gold"
+]
+},
+"ZXj0GIXDaV0/game_06": {
+"augments": [
+"Slightly Magic Roll",
+"Trade Sector",
+"TONS of Stats!"
+],
+"frame": "frame_032032.jpg",
+"tiers": [
+"silver",
+"unknown",
+"prismatic"
+]
+},
+"ZXj0GIXDaV0/game_07": {
+"augments": [
+"Worth the Wait",
+"It's Me, Baby",
+"Commerce Core"
+],
+"frame": "frame_037119.jpg",
+"tiers": [
+"gold",
+"gold",
+"prismatic"
+]
+},
+"ZXj0GIXDaV0/game_08": {
+"augments": [
+"Buried Treasures III",
+"Prismatic Destiny",
+"Jeweled Lotus II",
+"Call To Chaos"
+],
+"frame": "frame_041086.jpg",
+"tiers": [
+"unknown",
+"prismatic",
+"unknown",
+"prismatic"
+]
+},
+"ZXj0GIXDaV0/game_09": {
+"augments": [
+"Latent Forge",
+"The Golden Dragon",
+"Giant and Mighty",
+"Giant and Mighty",
+"Giant and Mighty",
+"Giant and Mighty"
+],
+"frame": "frame_044922.jpg",
+"tiers": [
+"unknown",
+"gold",
+"prismatic",
+null,
+null,
 null
 ]
 },

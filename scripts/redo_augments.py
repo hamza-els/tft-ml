@@ -48,8 +48,6 @@ def frames_for(vid: str) -> Path | None:
 def steps(vid: str, frames: Path) -> list[tuple[str, list[str]]]:
     states = paths.STATES / vid
     return [
-        # new icon templates (the stage per frame comes from the states, to cut each icon on its own)
-        ("augment icons", ["scripts/harvest_augment_icons.py", "--frames", str(frames), "--update-states", str(states)]),
         # read both bars again with every template: own augments and away_augments (harvest doesn't
         # write away_augments, which decides home_board)
         ("augments", ["scripts/backfill_states.py", "--augments-only", "--frames", str(frames), "--states", str(states)]),

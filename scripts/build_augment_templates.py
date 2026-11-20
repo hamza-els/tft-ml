@@ -52,6 +52,8 @@ from src.vision.augments import AugmentReader, expected_counts
 LABELS = paths.REPO / "data" / "processed" / "augment_labels.json"
 OUT_DIR = paths.REPO / "assets" / "templates" / "augments_v2"
 SAME = 0.90
+# Same icon by Hamza's word (2026-11-20), merged even where no game shows both: (kept, merged in)
+MANUAL_MERGES = [("Commerce Core", "Shopping Spree")]
 
 
 def frame_dir(vod: str, game: str) -> Path | None:
@@ -170,6 +172,11 @@ def build(crops: list[dict], k: int) -> tuple[list[np.ndarray], list[str], dict]
             merged.append({"names": [keep, drop], "kept": keep, "similarity": round(s, 3), "tier": tier_of[a]})
         else:
             by_tier.append({"names": [a, b], "tiers": [tier_of[a], tier_of[b]], "similarity": round(s, 3)})
+    for keep, drop in MANUAL_MERGES:
+        if not any(set(m["names"]) == {keep, drop} for m in merged):
+            merged.append({"names": [keep, drop], "kept": keep, "similarity": None, "tier": None, "manual": True})
+        canon.setdefault(keep, keep)
+        canon.setdefault(drop, drop)
     for m in merged:                                    # follow chains (a->b->c) to one name
         for n in list(canon):
             if canon[n] == m["names"][1]:
@@ -265,6 +272,8 @@ def write(crops: list[dict], k: int):
             if n != name:
                 names[f"{stem}@{tier}"] = n
     (OUT_DIR / "names.json").write_text(json.dumps(names, indent=1, sort_keys=True), encoding="utf-8")
+    aliases = {n: c for n, c in groups["canonical"].items() if n != c}
+    (OUT_DIR / "aliases.json").write_text(json.dumps(aliases, indent=1, sort_keys=True), encoding="utf-8")
     (OUT_DIR / "groups.json").write_text(json.dumps({k: v for k, v in groups.items() if k != "canonical"}, indent=1),
                                         encoding="utf-8")
     print(f"{len(tmpl)} templates for {len(set(tname))} augments -> {OUT_DIR}")

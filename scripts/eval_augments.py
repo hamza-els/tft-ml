@@ -47,6 +47,10 @@ def load_game(key: str):
 
 
 def main():
+    # Score the template IDs themselves: game_augments would otherwise turn them into names
+    # with today's lookup, which was built from every VOD's labels (the held-out VOD's too).
+    import src.state.sequence as sequence
+    sequence.augment_name = lambda template, tier: template
     parser = argparse.ArgumentParser()
     parser.add_argument("--tier", action="store_true",
                         help="Name a template per tier where its votes split between names")
