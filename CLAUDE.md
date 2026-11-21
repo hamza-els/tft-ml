@@ -136,6 +136,7 @@ Working: game splitting, dedup, stage, gold, level, XP, streak, own and lobby HP
 
 ## Suggestions
 
+- **Agreed, pending (do after batch 2, before the next batch; remind Hamza if he starts one):** rewrite the first pipeline step as a streaming per-game pass: probe the video every 15-30 s and binary-search each game's start/end (22% of stream time is outside games, 9-42% per VOD), decode only game ranges, dedup in memory (today all ~43k JPEGs/VOD are written, read back by split and dedup, ~3/4 deleted, ~22 GB peak), then read states / units / items / overlay in the same pass, buffering a round until its phase is known; keep writing kept frames. Verify kept frames and states against the old pipeline on one VOD first. Estimated ~2x faster per VOD, unmeasured.
 - Get more same-layout VODs before anything else; rare champions (5-costs) have few or no crops.
 - Overlay misses are mostly names the vote dropped: more frames, or voting per name rather than per list length, would close part of it.
 - Store per-layout calibration under a layout name in the config, so a second streamer doesn't mean overwriting the first.
