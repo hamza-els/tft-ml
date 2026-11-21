@@ -69,6 +69,8 @@ def load_urls(path: Path) -> list[str]:
 
 
 COOKIES_FROM_BROWSER: str | None = None   # set by --cookies-from-browser
+STREAM = [False]                          # --stream: the streaming first step (stream_extract.py)
+STREAM_WORKERS = [3]
 
 
 def download(url: str, out_dir: Path, ffmpeg: str, fragments: int) -> Path | None:
@@ -77,6 +79,12 @@ def download(url: str, out_dir: Path, ffmpeg: str, fragments: int) -> Path | Non
     # Using set-difference was racy when two workers download simultaneously.
     video_id = url.rstrip("/").split("=")[-1].split("/")[-1]
     out_path = out_dir / f"{video_id}.mp4"
+    # yt-dlp only writes the final name after merging, so an existing file is complete.
+    # Skipping the call matters: yt-dlp still asks YouTube for the video's details first,
+    # which can hit the "confirm you're not a bot" block for a file we already have.
+    if out_path.exists():
+        print(f"  {video_id}.mp4 already downloaded ({out_path.stat().st_size / 1e9:.1f} GB)")
+        return out_path
     cmd = [
         sys.executable, "-m", "yt_dlp",
         "--ffmpeg-location", ffmpeg,
@@ -161,6 +169,31 @@ def process_url(
 
     t_start = time.time()
 
+    if STREAM[0] and "extract" not in done:
+        # One streaming pass (src/data_collection/stream_extract.py): probe for the games,
+        # decode only them, find their exact bounds and dedup as frames arrive, write only
+        # kept frames. Replaces extract + split + dedup below.
+        _bar_update(overall_bar, desc=f"VOD {idx}/{total} — downloading")
+        log(f"\n  [ 1 / 2 ]  Downloading VOD")
+        vod_path = download(url, VOD_DIR, ffmpeg, fragments)
+        if vod_path is None:
+            tqdm.write(f"  VOD {idx} — download failed, skipping.")
+            _bar_update(overall_bar, increment=1)
+            return False
+        _bar_update(overall_bar, desc=f"VOD {idx}/{total} — streaming games")
+        log(f"\n  [ 2 / 2 ]  Finding games and keeping changed frames (streaming)")
+        from src.data_collection.stream_extract import stream_extract
+        summary = stream_extract(str(vod_path), str(local_dir), workers=STREAM_WORKERS[0], log=log)
+        if not summary["games"]:
+            tqdm.write(f"  VOD {idx}/{total} — {video_id} — no games detected (check the hud section of "
+                       "configs/vision_config.yaml)")
+            _bar_update(overall_bar, increment=1)
+            return False
+        vod_path.unlink()
+        for step in ("extract", "split", "dedup"):
+            _mark_done(local_dir, step)
+        done |= {"extract", "split", "dedup"}
+
     if "extract" not in done:
         # ── Step 1: Download ──────────────────────────────────────
         _bar_update(overall_bar, desc=f"VOD {idx}/{total} — downloading")
@@ -243,6 +276,10 @@ def main():
                         help="Concurrent download fragments per VOD (default: 4)")
     parser.add_argument("--cookies-from-browser", default=None, metavar="BROWSER",
                         help="Use this browser's YouTube login (e.g. firefox) when YouTube asks to confirm you're not a bot")
+    parser.add_argument("--stream", action="store_true",
+                        help="One streaming pass instead of extract + split + dedup: probe the video for games, "
+                             "decode only them and write only kept frames (src/data_collection/stream_extract.py)")
+    parser.add_argument("--stream-workers", type=int, default=3, help="Game stretches decoded at once with --stream")
     parser.add_argument("--download-only", action="store_true",
                         help="Only download the videos (skipped if their frames are already extracted); "
                              "a later normal run finds the file and goes on from extraction. "
@@ -251,6 +288,7 @@ def main():
 
     global COOKIES_FROM_BROWSER
     COOKIES_FROM_BROWSER = args.cookies_from_browser
+    STREAM[0], STREAM_WORKERS[0] = args.stream, args.stream_workers
 
     url_path = Path(args.urls)
     if not url_path.exists():

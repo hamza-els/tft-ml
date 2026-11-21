@@ -81,7 +81,7 @@ def run(step: str, args: list[str]) -> bool:
 
 COOKIES: list[str] = []   # extra run_pipeline arguments, set from --cookies-from-browser
 JOBS = [3]                # games read in parallel by the state and unit readers (--jobs)
-OPTS = {"augment_rebuild": True, "skip_augments": False, "slim": False, "keep_frames_gb": 0.0, "min_free_gb": 0.0, "prefetch": True, "prefetch_gb": 25.0}
+OPTS = {"stream": True, "augment_rebuild": True, "skip_augments": False, "slim": False, "keep_frames_gb": 0.0, "min_free_gb": 0.0, "prefetch": True, "prefetch_gb": 25.0}
 PREFETCH_LOG = paths.LOGS / "prefetch.log"
 _prefetch: dict = {}      # the next VOD's background download: {"url", "proc", "log", "start"}
 
@@ -172,7 +172,8 @@ def process(url: str, next_url: str | None = None) -> bool:
         f.write(url + "\n")
         single = f.name
     try:
-        if not run("download + split + dedup", ["scripts/run_pipeline.py", "--urls", single, *COOKIES]):
+        first = ["--stream"] if OPTS["stream"] else []
+        if not run("download + split + dedup", ["scripts/run_pipeline.py", "--urls", single, *first, *COOKIES]):
             if "not a bot" in _log_tail():
                 raise BotCheck()
             return False
@@ -229,6 +230,8 @@ def main():
                         help="On YouTube's bot check, wait this long and retry instead of stopping")
     parser.add_argument("--min-free-gb", type=float, default=30,
                         help="Stop before downloading when less disk is free (default 30; a 9 h VOD peaks at ~34 GB)")
+    parser.add_argument("--no-stream", action="store_true",
+                        help="Old first step (extract every frame, split, dedup) instead of the streaming pass")
     parser.add_argument("--no-augment-rebuild", action="store_true",
                         help="Don't rebuild the augment templates and re-read every VOD at the end of the batch")
     parser.add_argument("--no-prefetch", action="store_true",
@@ -240,7 +243,7 @@ def main():
     JOBS[0] = args.jobs
     OPTS.update(skip_augments=args.skip_augment_icons, slim=args.slim_frames, keep_frames_gb=args.keep_frames_gb,
                 min_free_gb=args.min_free_gb,
-                prefetch=not args.no_prefetch, augment_rebuild=not args.no_augment_rebuild, prefetch_gb=args.prefetch_gb)
+                prefetch=not args.no_prefetch, augment_rebuild=not args.no_augment_rebuild, stream=not args.no_stream, prefetch_gb=args.prefetch_gb)
     if args.cookies_from_browser:
         COOKIES.extend(["--cookies-from-browser", args.cookies_from_browser])
 

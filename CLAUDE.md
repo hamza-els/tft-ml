@@ -30,7 +30,7 @@ plain language and say plainly what was and wasn't verified.
 ```
 python scripts/process_vods.py --urls FILE        # all of the below, one VOD at a time (preferred)
 
-python scripts/run_pipeline.py                    # urls in data/raw/urls.txt: download, extract, split games, dedup
+python scripts/run_pipeline.py [--stream]         # urls in data/raw/urls.txt: download, extract, split games, dedup (--stream: one pass, see Suggestions)
 python scripts/extract_states.py --frames ~/tft_frames_temp/VOD   # OCR etc. -> ~/tft_data/state_vectors/VOD/game_XX.jsonl
 python scripts/read_units.py     --frames ~/tft_frames_temp/VOD --states ~/tft_data/state_vectors/VOD   # board/bench units -> units_raw (re-run after retraining)
 python scripts/clean_states.py   --states ~/tft_data/state_vectors/VOD   # -> game_XX.clean.jsonl (incl. cleaned board/bench) + quality report
@@ -136,7 +136,7 @@ Working: game splitting, dedup, stage, gold, level, XP, streak, own and lobby HP
 
 ## Suggestions
 
-- **Agreed, pending (do after batch 2, before the next batch; remind Hamza if he starts one):** rewrite the first pipeline step as a streaming per-game pass: probe the video every 15-30 s and binary-search each game's start/end (22% of stream time is outside games, 9-42% per VOD), decode only game ranges, dedup in memory (today all ~43k JPEGs/VOD are written, read back by split and dedup, ~3/4 deleted, ~22 GB peak), then read states / units / items / overlay in the same pass, buffering a round until its phase is known; keep writing kept frames. Verify kept frames and states against the old pipeline on one VOD first. Estimated ~2x faster per VOD, unmeasured.
+- **Streaming first step: part 1 done (2026-11-20), part 2 pending.** `src/data_collection/stream_extract.py` replaces extract + split + dedup (default in `process_vods.py`; `--no-stream` for the old way; `run_pipeline.py --stream`): probe one frame every 20 s with OpenCV seeks, decode only the padded game ranges (ffmpeg pipes raw 2 fps frames, several ranges in parallel), find each game's exact frame bounds with the old 5-frame scan rules in-stream, run the old dedup rules on the decoded frames, write only kept frames (JPEG quality 88 = same size as the old ffmpeg `-q:v 2`, ~355 KB). No `lobby/` folder (nothing reads it). Tested on a 90-min stretch of htwxJLXZE_g (`scripts/test_stream_extract.py`): 7.2 min vs 36.9 (5x), peak disk = the video + kept frames instead of ~2.4 GB raw frames per hour, the same 4 games with identical first/last frames; 90-94% of the old kept frames kept, 7% fewer in all, every old-only frame within 2.5 s of a new one (the old step compared JPEG-decoded frames, so near-threshold frames go either way), max gap 5 s as before. `run_pipeline.download` now skips yt-dlp when `<id>.mp4` already exists (yt-dlp asks YouTube first and hit the bot check for a file already on disk). First used on batch 3 (`data/raw/urls_batch3.txt`, the last 6 VODs of batch 2, started 2026-11-20 22:08). **Part 2, pending:** read states / units / items / overlay in the same pass, buffering a round until its phase is known; verify against the step scripts on one VOD first. Remind Hamza before another batch if it isn't done.
 - Get more same-layout VODs before anything else; rare champions (5-costs) have few or no crops.
 - Overlay misses are mostly names the vote dropped: more frames, or voting per name rather than per list length, would close part of it.
 - Store per-layout calibration under a layout name in the config, so a second streamer doesn't mean overwriting the first.
