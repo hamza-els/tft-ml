@@ -196,6 +196,9 @@ def load_game_data(set_name: str | None = None) -> GameData:
         raise FileNotFoundError(f"{path} not found — run scripts/fetch_game_data.py")
     items_path = path.with_name(f"{set_name}_items.json")
     items = json.loads(items_path.read_text(encoding="utf-8")) if items_path.exists() else {}
+    # Trait-granted items with no official entry (configs/vision_config.yaml).
+    for name in vision_cfg["game_data"].get("extra_items") or []:
+        items.setdefault(name, {"api_name": None, "kind": "trait", "recipe": []})
     extra = vision_cfg["game_data"].get("extra_units") or []
     aug_path = path.with_name(f"{set_name}_augments.json")
     augments = json.loads(aug_path.read_text(encoding="utf-8")) if aug_path.exists() else {}

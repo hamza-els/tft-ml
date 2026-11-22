@@ -98,6 +98,13 @@ game_data:
     - Small Furry Friend               # Sprykin variant
     - Training Dummy                   # Found Friend / Returning Friend / Dummify augments
     - Golem                            # Golemify augment, Golem assist item
+  # Items the set's item list leaves out (trait-granted, no official art on
+  # Community Dragon), so the labelers can name their footage templates and
+  # the token table gives them an ID. Hand-maintained per set. Checked
+  # 2026-11-22: every Set 18 trait and the set's item list; the only real
+  # item missing was Riftbeast's (the other 10 missing are debug items).
+  extra_items:
+    - Alpha Mark                       # Riftbeast: "Use the Alpha Mark to grant a Riftbeast their unique Buff"
 
 # Augment bar: up to three icons above the board, centred on center_x.
 # One icon wide after the first pick, growing to three; absent before that.
