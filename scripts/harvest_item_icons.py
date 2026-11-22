@@ -41,6 +41,10 @@ from src.vision.hud import HudDetector
 from src.vision.items import ItemColumnReader
 
 MIN_SIGHTINGS = 5
+# ...spread over at least this many frames (60 s at 2 fps): an item stays in the column for
+# minutes, while the mouse cursor resting on an item, a pop-up or an overlay passing over the
+# column lasts seconds. Without it those gave templates of items with a cursor on top.
+MIN_SPAN_FRAMES = 120
 BATCH = 32          # frames decoded at a time by the thread pool (bounds memory)
 
 
@@ -85,7 +89,7 @@ def main():
     reader = ItemColumnReader(cfg)
     reader.seen_dir.mkdir(parents=True, exist_ok=True)
     start_count = len(reader.seen.names)
-    pending: list[list] = []      # [icon, sightings]
+    pending: list[list] = []      # [icon, sightings, first frame seen]
 
     def save_new(icon) -> str:
         official, score = reader.official.best(icon)
@@ -115,18 +119,21 @@ def main():
                 icons_by_frame[frame_number(path)] = icons
                 if not stage_visible:
                     continue
+                n = frame_number(path)
                 for icon, ok in icons:
                     if not ok or reader.seen.best(icon)[1] >= reader.seen_threshold:
                         continue
+                    if reader.cursor_score(icon) >= reader.cursor_threshold:
+                        continue                     # the mouse cursor rests on it
                     for k, cand in enumerate(pending):
                         if float(reader.seen.prepare(cand[0]) @ reader.seen.prepare(icon)) >= reader.seen_threshold:
                             cand[1] += 1
-                            if cand[1] >= MIN_SIGHTINGS:
+                            if cand[1] >= MIN_SIGHTINGS and n - cand[2] >= MIN_SPAN_FRAMES:
                                 save_new(cand[0])
                                 del pending[k]   # list.remove would compare arrays
                             break
                     else:
-                        pending.append([icon.copy(), 1])
+                        pending.append([icon.copy(), 1, n])
 
             if args.update_states:
                 states = Path(args.update_states) / f"{folder.name}.jsonl"

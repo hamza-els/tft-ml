@@ -90,6 +90,10 @@ class ItemColumnReader:
         self.edge_min = np.array(cfg.get("edge_min", [40, 0, 50, 20]), np.float32)
         self.channel = cfg.get("edge_channel", "max")
         self.empty_dark = float(cfg.get("empty_dark", 0.5))
+        # The mouse cursor's tip (cream outline; 1 = outline pixel), for cursor_score().
+        tip = cv2.imread(str(_ROOT / "assets" / "templates" / "hud" / "cursor_tip.png"), cv2.IMREAD_GRAYSCALE)
+        self.cursor_tip = None if tip is None else (tip > 127).astype(np.float32)
+        self.cursor_threshold = float(cfg.get("cursor_threshold", 0.75))
 
         # Bundles ("2 Reforgers": same icon as "Reforger") and loot rewards ("10 gold") are no
         # column items: official art of those is not loaded, and names are folded on the way out.
@@ -203,6 +207,17 @@ class ItemColumnReader:
             ok = bool((self._edges(g, sx, sy - y0) >= self.edge_min).all())
             out.append((frame[y:y + h, x:x + w], ok))
         return out if any(ok for _, ok in out) else []
+
+    def cursor_score(self, icon: np.ndarray) -> float:
+        """How much the icon shows the mouse cursor's tip (its cream outline; 0-1). The cursor
+        often rests on the column for minutes, so templates must not be cut with it on top.
+        Cursor templates 0.78-1.00, clean ones at most 0.73 (2026-11-22, 125 templates)."""
+        if self.cursor_tip is None:
+            return 0.0
+        cream = (icon.min(axis=2) > 140).astype(np.float32)
+        th, tw = self.cursor_tip.shape
+        cream = cv2.copyMakeBorder(cream, 0, th // 2, 0, tw // 2, cv2.BORDER_CONSTANT, value=0)
+        return float(cv2.matchTemplate(cream, self.cursor_tip, cv2.TM_CCORR_NORMED).max())
 
     def slot_icons(self, frame: np.ndarray) -> list[np.ndarray]:
         """Icon crops (inside the outline) of the slots showing a settled item, top to bottom."""
