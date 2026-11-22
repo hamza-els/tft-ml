@@ -60,8 +60,9 @@ def _look(path: Path, reader: ItemColumnReader):
     frame = cv2.imread(str(path))
     if frame is None:
         return None
-    # copies: a slice would keep the whole frame alive
-    return hud.detect(frame).stage_visible, [icon.copy() for icon in reader.slot_icons(frame)]
+    # copies: a slice would keep the whole frame alive. (icon, settled) per filled slot:
+    # only settled slots give templates; the others are read as None.
+    return hud.detect(frame).stage_visible, [(icon.copy(), ok) for icon, ok in reader.column(frame)]
 
 
 def looks(paths: list[Path], reader: ItemColumnReader, pool: ThreadPoolExecutor):
@@ -114,8 +115,8 @@ def main():
                 icons_by_frame[frame_number(path)] = icons
                 if not stage_visible:
                     continue
-                for icon in icons:
-                    if reader.seen.best(icon)[1] >= reader.seen_threshold:
+                for icon, ok in icons:
+                    if not ok or reader.seen.best(icon)[1] >= reader.seen_threshold:
                         continue
                     for k, cand in enumerate(pending):
                         if float(reader.seen.prepare(cand[0]) @ reader.seen.prepare(icon)) >= reader.seen_threshold:
@@ -137,7 +138,7 @@ def main():
                     icons = icons_by_frame.get(row["frame"])
                     if icons is None or not row.get("in_game"):
                         continue
-                    row["bench_items"] = [base_name(n) if n else None for n in map(reader.identify, icons)]
+                    row["bench_items"] = [base_name(n) if n else None for n in reader.names(icons)]
                 states.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
 
     named = sum(1 for n in reader.seen.names if not n.startswith("item_"))

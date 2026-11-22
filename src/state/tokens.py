@@ -62,7 +62,7 @@ class TokenEncoder:
 
     def item(self, name: str | None) -> tuple[int, int]:
         """(item ID, radiant); an icon read but not recognised (None) or an unnamed ID is _unknown."""
-        base, radiant = self.game.item_base(name.split("~")[0] if name else None)
+        base, radiant = self.game.item_base(self.game.canonical_item(name.split("~")[0]) if name else None)
         return self.item_id.get(base, self.item_id["_unknown"]), int(radiant)
 
     def augment(self, name: str | None) -> int:

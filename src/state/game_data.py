@@ -24,6 +24,35 @@ BASIC_COMPONENTS = {
 }
 
 
+_BUNDLE = re.compile(r"^\d+\s+(.+)$")
+
+
+def fold_item_bundles(items: dict) -> tuple[dict, dict[str, str | None]]:
+    """
+    The set's item list also holds loot-table entries whose name starts with a
+    number: bundles of one item ("2 Reforgers", "6 Lesser Champion Duplicators",
+    same icon as the single item) and rewards that are no item at all ("10 gold",
+    "2-star 3-cost champion", "4 components"). The item column only ever shows
+    single items, so bundles fold into their item and the rest is dropped.
+    Returns (items without those entries, {entry: single item, or None if dropped}).
+    """
+    kept, aliases = {}, {}
+    for name, info in items.items():
+        if not name[:1].isdigit():
+            kept[name] = info
+            continue
+        single = None
+        m = _BUNDLE.match(name)
+        if m:
+            rest = m.group(1)
+            for cand in (rest, rest[:-1], re.sub(r"s' ", "'s ", rest)[:-1]):   # Tacticians' Capes
+                if cand in items and not cand[:1].isdigit():
+                    single = cand
+                    break
+        aliases[name] = single
+    return kept, aliases
+
+
 @dataclass(frozen=True)
 class Champion:
     name: str
@@ -35,7 +64,8 @@ class GameData:
     def __init__(self, raw: dict, items: dict | None = None, extra_units: list[str] | None = None,
                  augments: dict | None = None):
         self.set_name: str = raw["set"]
-        self.items: dict = items or {}
+        # Bundles ("2 Reforgers") fold into their item; loot rewards ("10 gold") are no items.
+        self.items, self.item_aliases = fold_item_bundles(items or {})
         self.augments: dict = augments or {}         # name -> {api_names, tiers} (fetch_augment_icons.py)
 
         # Form variants ("Lux (Coven)") share one shop card and one unit slot;
@@ -120,6 +150,12 @@ class GameData:
     def active_tier(self, trait: str, count: int) -> int:
         """How many of the trait's breakpoints are reached (0 = inactive)."""
         return sum(1 for b in self.breakpoints.get(trait, []) if count >= b)
+
+    def canonical_item(self, name: str | None) -> str | None:
+        """'2 Reforgers' -> 'Reforger'; '10 gold' -> None (no item); any other name unchanged."""
+        if name in self.item_aliases:
+            return self.item_aliases[name]
+        return name
 
     def item_base(self, name: str | None) -> tuple[str | None, bool]:
         """(base item, radiant): "Radiant Warmog's Armor" -> ("Warmog's Armor", True)."""

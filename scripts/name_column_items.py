@@ -315,7 +315,8 @@ def apply() -> None:
     "not an item" ones to items_seen_removed/, and rewrite bench_items in the local state
     files to match (not-an-item readings are dropped from the list; "can't tell" stays item_XXX).
     """
-    answers = load_answers()
+    aliases = load_game_data().item_aliases      # "2 Reforgers" -> "Reforger", "10 gold" -> None
+    answers = {t: (aliases[l] or NONE) if l in aliases else l for t, l in load_answers().items()}
     taken = {p.stem for p in SEEN.glob("*.png")}
     rename: dict[str, str | None] = {}
     for tmpl, label in sorted(answers.items()):
@@ -336,8 +337,7 @@ def apply() -> None:
         rename[tmpl] = label          # bench_items hold base names
     print(f"templates: {sum(v is not None for v in rename.values())} named, "
           f"{sum(v is None for v in rename.values())} moved to {REMOVED.name}/")
-    if not rename:
-        return
+    rename.update(aliases)            # older readings may hold bundle names: fold or drop them too
     pat = re.compile('"(' + "|".join(map(re.escape, rename)) + ')"')
     changed_vods = set()
     for f in sorted(paths.STATES.glob("*/game_??.jsonl")):

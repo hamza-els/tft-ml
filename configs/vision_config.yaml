@@ -138,6 +138,16 @@ item_column:
   seen_dir: "assets/templates/items_seen"   # icons cut from footage (harvest_item_icons.py)
   seen_threshold: 0.85                 # match against icons cut from footage
   official_threshold: 0.75             # match against official art (weaker likeness)
+  # The column is found per frame (it sits ~4 px left on ~1% of frames) within this many px,
+  # and a slot is read only when its frame (dark line + gold) shows on every side at least
+  # this strongly (left, right, top, bottom steps on the brightest channel, better half of
+  # each edge; clean slots: 1st percentile 79 / 19 / 100 / 45). Dragged, hovered or covered
+  # items fail and are read as None. A slot more than empty_dark near-black is empty (an
+  # empty slot with the cursor over it).
+  align_search: 6
+  edge_channel: max
+  edge_min: [40, 0, 50, 20]
+  empty_dark: 0.5
 
 # Bench: nine fixed slots along the bottom of the board.
 bench:
