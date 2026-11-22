@@ -71,6 +71,7 @@ def load_urls(path: Path) -> list[str]:
 COOKIES_FROM_BROWSER: str | None = None   # set by --cookies-from-browser
 STREAM = [False]                          # --stream: the streaming first step (stream_extract.py)
 STREAM_WORKERS = [3]
+STREAM_READ = [0]                         # --stream-read N: also read each game in the pass, N workers after decoding
 
 
 def download(url: str, out_dir: Path, ffmpeg: str, fragments: int) -> Path | None:
@@ -183,7 +184,11 @@ def process_url(
         _bar_update(overall_bar, desc=f"VOD {idx}/{total} — streaming games")
         log(f"\n  [ 2 / 2 ]  Finding games and keeping changed frames (streaming)")
         from src.data_collection.stream_extract import stream_extract
-        summary = stream_extract(str(vod_path), str(local_dir), workers=STREAM_WORKERS[0], log=log)
+        from src.utils import paths
+        # with --stream-read, each game is also read (states, overlay, units) while the rest decodes;
+        # <states>/.stream_read then tells process_vods.py to skip those steps
+        read = dict(states_dir=str(paths.STATES / video_id), read_jobs=STREAM_READ[0]) if STREAM_READ[0] else {}
+        summary = stream_extract(str(vod_path), str(local_dir), workers=STREAM_WORKERS[0], log=log, **read)
         if not summary["games"]:
             tqdm.write(f"  VOD {idx}/{total} — {video_id} — no games detected (check the hud section of "
                        "configs/vision_config.yaml)")
@@ -280,6 +285,9 @@ def main():
                         help="One streaming pass instead of extract + split + dedup: probe the video for games, "
                              "decode only them and write only kept frames (src/data_collection/stream_extract.py)")
     parser.add_argument("--stream-workers", type=int, default=3, help="Game stretches decoded at once with --stream")
+    parser.add_argument("--stream-read", type=int, default=0, metavar="JOBS",
+                        help="With --stream: also read every game (states, augment overlay, units) as it finishes, "
+                             "JOBS reading workers once decoding is done (fewer while it runs, by free memory)")
     parser.add_argument("--download-only", action="store_true",
                         help="Only download the videos (skipped if their frames are already extracted); "
                              "a later normal run finds the file and goes on from extraction. "
@@ -288,7 +296,7 @@ def main():
 
     global COOKIES_FROM_BROWSER
     COOKIES_FROM_BROWSER = args.cookies_from_browser
-    STREAM[0], STREAM_WORKERS[0] = args.stream, args.stream_workers
+    STREAM[0], STREAM_WORKERS[0], STREAM_READ[0] = args.stream, args.stream_workers, args.stream_read
 
     url_path = Path(args.urls)
     if not url_path.exists():

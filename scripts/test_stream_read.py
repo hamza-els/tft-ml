@@ -1,5 +1,5 @@
 """
-Streaming with reading (stream_extract_next, part 2) vs streaming then the
+Streaming with reading (stream_extract with states_dir) vs streaming then the
 step scripts, on the same clip: same kept frames, same state rows, same
 overlay, and the time each takes.
 
@@ -23,7 +23,7 @@ import shutil
 import subprocess
 import time
 
-from src.data_collection.stream_extract_next import stream_extract
+from src.data_collection.stream_extract import stream_extract
 
 SCRIPTS = Path(__file__).resolve().parent
 
