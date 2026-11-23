@@ -81,6 +81,8 @@ def main():
     parser.add_argument("--update-states", help="Folder of game_XX.jsonl files to fill bench_items into")
     parser.add_argument("--seen-dir", help="Template folder to grow (default: the config's, in the repo)")
     parser.add_argument("--threads", type=int, default=4, help="Frames decoded in parallel")
+    parser.add_argument("--no-harvest", action="store_true",
+                        help="Only fill bench_items with the templates as they are (cut no new ones)")
     args = parser.parse_args()
 
     cfg = dict(vision_cfg["item_column"])
@@ -117,7 +119,7 @@ def main():
                     continue
                 stage_visible, icons = look
                 icons_by_frame[frame_number(path)] = icons
-                if not stage_visible:
+                if not stage_visible or args.no_harvest:
                     continue
                 n = frame_number(path)
                 for icon, ok in icons:
