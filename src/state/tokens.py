@@ -58,6 +58,7 @@ class TokenEncoder:
     # ── ids ───────────────────────────────────────────────────────────────────
 
     def unit(self, name: str | None) -> int:
+        name = self.game.canonical_unit(name)
         return self.unit_id.get(name, self.unit_id["_unknown"]) if name else self.unit_id["_unknown"]
 
     def item(self, name: str | None) -> tuple[int, int]:

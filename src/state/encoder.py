@@ -160,7 +160,7 @@ class StateEncoder:
         index = self.game.unit_index if units else self.game.champion_index
         vec = np.zeros(len(index), dtype=np.float32)
         for name in names:
-            i = index.get(name)
+            i = index.get(self.game.canonical_unit(name))
             if i is not None:
                 vec[i] += 1.0 / top
         return np.minimum(vec, 1.0)

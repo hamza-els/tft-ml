@@ -95,9 +95,13 @@ game_data:
     - Lifebloom                        # Elderwood (also the Potted Lifebloom augment)
     - Deepwood Protector               # Elderwood
     - Big Furry Friend                 # Sprykin
-    - Small Furry Friend               # Sprykin variant
     - Training Dummy                   # Found Friend / Returning Friend / Dummify augments
     - Golem                            # Golemify augment, Golem assist item
+  # Names folded into another unit (Hamza, 2026-11-23): Small Furry Friend (from its augment)
+  # has the same picture as Big Furry Friend, only less health; two Big Furry Friends on the
+  # board mean one is the small one, and the augment in the state says so. One ID for both.
+  unit_aliases:
+    Small Furry Friend: Big Furry Friend
   # Items the set's item list leaves out (trait-granted, no official art on
   # Community Dragon), so the labelers can name their footage templates and
   # the token table gives them an ID. Hand-maintained per set. Checked

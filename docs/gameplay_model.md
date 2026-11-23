@@ -12,7 +12,7 @@ game is going. It never clicks anything (Riot Vanguard would ban the account).
 ## Pieces and how they connect
 
 ```
-frames ──> state rows ──> cleaned rows ──> encoded states (376 numbers per frame)
+frames ──> state rows ──> cleaned rows ──> encoded states (374 numbers per frame)
                                │                    │
                                │                    ▼
                                └──> actions ──> Macro Engine ──> policy   (what to do next)

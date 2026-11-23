@@ -22,3 +22,12 @@ def test_game_data_items():
     assert g.canonical_item("10 gold") is None
     assert g.canonical_item("Reforger") == "Reforger"
     assert "Alpha Mark" in g.items and "Alpha Mark" in g.item_vocab()
+
+
+def test_unit_aliases():
+    g = load_game_data()
+    assert g.canonical_unit("Small Furry Friend") == "Big Furry Friend"
+    assert g.canonical_unit("Rammus") == "Rammus"
+    assert "Small Furry Friend" not in g.unit_names and "Big Furry Friend" in g.unit_names
+    assert "Small Furry Friend" not in g.unit_vocab()
+    assert g.slots("Big Furry Friend") == 0

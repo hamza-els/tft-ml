@@ -62,7 +62,7 @@ class Champion:
 
 class GameData:
     def __init__(self, raw: dict, items: dict | None = None, extra_units: list[str] | None = None,
-                 augments: dict | None = None):
+                 augments: dict | None = None, unit_aliases: dict[str, str] | None = None):
         self.set_name: str = raw["set"]
         # Bundles ("2 Reforgers") fold into their item; loot rewards ("10 gold") are no items.
         self.items, self.item_aliases = fold_item_bundles(items or {})
@@ -88,7 +88,11 @@ class GameData:
         # Everything that can stand on the board or bench: shop champions plus
         # trait/augment units (Stonebark Tree, Training Dummy, ...), which have
         # no cost and no traits.
-        self.extra_units: list[str] = sorted(set(extra_units or []) - set(self.champions))
+        # Units drawn exactly like another one are folded into it (unit_aliases in the config:
+        # Small Furry Friend -> Big Furry Friend), so they share one name and one ID.
+        self.unit_aliases: dict[str, str] = dict(unit_aliases or {})
+        self.extra_units: list[str] = sorted(set(extra_units or []) - set(self.champions)
+                                             - set(self.unit_aliases))
         self.unit_names: list[str] = sorted(self.champion_names + self.extra_units)
         self.unit_index: dict[str, int] = {n: i for i, n in enumerate(self.unit_names)}
 
@@ -150,6 +154,10 @@ class GameData:
     def active_tier(self, trait: str, count: int) -> int:
         """How many of the trait's breakpoints are reached (0 = inactive)."""
         return sum(1 for b in self.breakpoints.get(trait, []) if count >= b)
+
+    def canonical_unit(self, name: str | None) -> str | None:
+        """'Small Furry Friend' -> 'Big Furry Friend' (same picture); any other name unchanged."""
+        return self.unit_aliases.get(name, name) if name else name
 
     def canonical_item(self, name: str | None) -> str | None:
         """'2 Reforgers' -> 'Reforger'; '10 gold' -> None (no item); any other name unchanged."""
@@ -238,4 +246,5 @@ def load_game_data(set_name: str | None = None) -> GameData:
     extra = vision_cfg["game_data"].get("extra_units") or []
     aug_path = path.with_name(f"{set_name}_augments.json")
     augments = json.loads(aug_path.read_text(encoding="utf-8")) if aug_path.exists() else {}
-    return GameData(json.loads(path.read_text(encoding="utf-8")), items, extra, augments)
+    aliases = vision_cfg["game_data"].get("unit_aliases") or {}
+    return GameData(json.loads(path.read_text(encoding="utf-8")), items, extra, augments, aliases)
