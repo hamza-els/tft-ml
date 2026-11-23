@@ -219,6 +219,13 @@ unit_bar:
     zone: [420, 280, 1100, 360]        # x, y, w, h: the board area where such bars are looked for
     bar_top: [31, 29, 41, 42]          # usual bar top below each row's hex region top (median)
     max_distance: 180                  # px from a free hex's usual bar position; further = not assigned
+  # A champion riding the Big Furry Friend (Sprykin) has its own bar just above the BFF's
+  # (unit_reader.rider_bars): upper bar top minus lower bar top in dy, left minus left in dx.
+  # Measured 2026-11-23 on 39 rider pairs: about dy -21, dx -6; 4 non-Sprykin games had no
+  # such pair. Before this the hex behind took the rider's bar (12 of 39) or it went loose.
+  rider:
+    dy: [-32, -10]
+    dx: [-20, 5]
   item_dx: -9                          # first item icon: dx, dy from the bar; icons are item_size square
   item_dy: 12
   item_size: 25

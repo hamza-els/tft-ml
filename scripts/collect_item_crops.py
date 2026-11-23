@@ -77,7 +77,10 @@ def main():
         if frame is None:
             continue
         for unit_name in by_frame[frame_path]:
-            vod, game, _, pos = re.match(r"(.+?)__(game_\d+)__f(\d+)__([hs]\d+)\.jpg$", unit_name).groups()
+            m = re.match(r"(.+?)__(game_\d+)__f(\d+)__([hs]\d+)\.jpg$", unit_name)
+            if not m:       # propagated (__p) and rider-pair (__top/__bot) crops: no bar at their own position
+                continue
+            vod, game, _, pos = m.groups()
             bar = (board_bar(frame, board, int(pos[1]), int(pos[2])) if pos[0] == "h"
                    else bench_bar(frame, bench, int(pos[1:])))
             if bar is None:

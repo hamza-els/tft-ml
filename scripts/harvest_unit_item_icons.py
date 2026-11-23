@@ -92,7 +92,10 @@ def main():
         if frame is None:
             continue
         for name in names:
-            kind, num = re.search(r"__([hs])(\d+)\.jpg$", name).groups()
+            m = re.search(r"__([hs])(\d+)\.jpg$", name)
+            if m is None:   # propagated / rider / pair crops
+                continue
+            kind, num = m.groups()
             bar = (board_bar(frame, board, int(num[0]), int(num[1])) if kind == "h"
                    else bench_bar(frame, bench, int(num)))
             if bar is None:

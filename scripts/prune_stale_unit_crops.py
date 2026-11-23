@@ -47,6 +47,8 @@ IMAGES = paths.CROP_IMAGES
 
 def has_bar(frame, name: str, board: BoardHexes, bench: BenchSlots) -> bool:
     pos = re.search(r"__([hs])(\d+)\.jpg$", name)
+    if pos is None:     # propagated (__p), rider (h..r) and pair (__top/__bot) crops: never pruned
+        return True
     kind, num = pos.group(1), pos.group(2)
     if kind == "h":
         return board_bar(frame, board, int(num[0]), int(num[1])) is not None

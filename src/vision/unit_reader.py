@@ -16,7 +16,9 @@ For each board hex and bench slot with a unit's health bar over it (occupied()):
 Positions: "at" is "h<row><col>" for a board hex (row 0 = front row) or
 "s<slot>" for a bench slot (0 = leftmost), the same ids as the unit crops.
 A unit whose bar no hex claimed (being dragged, off its hex: loose_bars())
-gets the nearest free hex; its position is then approximate.
+gets the nearest free hex; its position is then approximate. A champion
+riding the Big Furry Friend has its own bar just above the BFF's
+(rider_bars()): it is "h<row><col>r", on the BFF's hex.
 
 A position under a tooltip panel, or whose crop the classifier calls
 "_covered", comes back as {"at": ..., "covered": True}: unknown, not empty.
@@ -35,6 +37,8 @@ from src.vision.unit_classifier import UnitClassifier
 
 NONE = "_none"
 COVERED = "_covered"      # label: the crop is hidden behind a tooltip
+RIDDEN = "Big Furry Friend"   # the unit a rider ("h<row><col>r") sits on
+UNKNOWN = "_unknown"          # label: a unit, but which one can't be told
 
 
 class UnitReader:
@@ -94,6 +98,24 @@ class UnitReader:
                 units.append({"at": at, "covered": True})
                 continue
             keep.append((at, bar, name, float(p[k])))
+        # The lower unit of a stacked pair is the BFF (Hamza: bottom bar = BFF): the rider sitting on it
+        # often fills its crop (held out, 11 of 18 BFF crops under a Rengar read as Rengar, BFF second),
+        # so it is taken as the BFF whenever the BFF is among the model's top 3 for it.
+        ridden = self.classifier.classes.index(RIDDEN) if RIDDEN in self.classifier.classes else None
+        has_rider = {at[:-1] for at, _, _, _ in keep if at.endswith("r")}
+        p_of = {at: p for (at, _, _), p in zip(found, probs)}
+        if ridden is not None:
+            keep = [(at, bar, RIDDEN, float(p_of[at][ridden]))
+                    if at in has_rider and name != RIDDEN and ridden in np.argsort(-p_of[at])[:3]
+                    else (at, bar, name, prob) for at, bar, name, prob in keep]
+        # A stacked bar is only a rider when the unit under it reads as the BFF; otherwise
+        # (a unit dragged over another) it is treated like any loose bar, as before.
+        below = {at: name for at, _, name, _ in keep}
+        loose_ids |= {id(bar) for at, bar, _, _ in keep if at.endswith("r") and below.get(at[:-1]) != RIDDEN}
+        # Hamza (2026-11-23): the BFF always carries a rider. Without a rider bar above it the
+        # two bars overlap (or one is hidden) and the crop can't say whose bar it is: a unit, name unknown.
+        keep = [(at, bar, UNKNOWN if name == RIDDEN and at + "r" not in below else name, prob)
+                for at, bar, name, prob in keep]
         # Items of every unit in the frame in one batched model call.
         items = self.items.read_many(frame, [bar for _, bar, _, _ in keep])
         for (at, bar, name, prob), held in zip(keep, items):
@@ -136,6 +158,7 @@ def occupied_split(frame: np.ndarray, board: BoardHexes,
         bar = board_bar(frame, board, r, c)
         if bar is not None:
             out.append((f"h{r}{c}", board.window(r, c, bar), bar))
+    out = rider_bars(frame, board, out)
     for i in range(bench.slots):
         bar = bench_bar(frame, bench, i)
         if bar is not None:
@@ -145,6 +168,64 @@ def occupied_split(frame: np.ndarray, board: BoardHexes,
 
 _BAR_CFG = vision_cfg["unit_bar"]
 _LOOSE = _BAR_CFG["loose"]
+_RIDER = _BAR_CFG["rider"]
+
+
+def _badged_bars(frame: np.ndarray) -> list[Bar]:
+    """Every green bar in the board area with a star badge on its left (a unit's, not a nameplate)."""
+    x0, y0, w, h = _LOOSE["zone"]
+    out = []
+    for left, right, top in green_bars(frame[y0:y0 + h, x0:x0 + w]):
+        bar = Bar(left + x0, right + x0, top + y0)
+        if max(star_scores(frame, bar).values(), default=0.0) >= _BAR_CFG["badge_min_score"]:
+            out.append(bar)
+    return out
+
+
+def rider_bars(frame: np.ndarray, board: BoardHexes,
+               claimed: list[tuple[str, tuple, Bar]]) -> list[tuple[str, tuple, Bar]]:
+    """
+    The champion riding a Big Furry Friend (Sprykin) has its own bar just
+    above the BFF's (config unit_bar.rider), and the hex claims the BFF's.
+    Hamza (2026-11-23): top bar = the rider, bottom bar = Big Furry Friend.
+    Before this the hex behind took the rider's bar as its own unit (12 of 39
+    pairs) or it went loose to some free hex (27).
+
+    The pair confuses the hexes either way: on 39 labelled pairs the BFF's hex
+    took the BFF's bar in 14, another hex took the rider's in 12, and neither
+    bar was taken in 13. So pairs are found among all badged bars (claimed or
+    not), each pair's lower bar gets the hex it fits best among those no
+    other unit holds (as loose bars do), and the two become "h<row><col>"
+    (the BFF) and "h<row><col>r" (the rider). Returns the entries, hex claims
+    on either bar replaced.
+    """
+    (dy0, dy1), (dx0, dx1) = _RIDER["dy"], _RIDER["dx"]
+    hexes = [o for o in claimed if o[0][0] == "h"]
+    bars = [b for _, _, b in hexes]
+    bars += [b for b in _badged_bars(frame) if not any(_same_bar(b, t) for t in bars)]
+    pairs, taken = [], set()
+    for low in sorted(bars, key=lambda b: -b.top):                  # lowest on screen first
+        if id(low) in taken:
+            continue
+        ups = [b for b in bars if b is not low and id(b) not in taken
+               and dy0 <= b.top - low.top <= dy1 and dx0 <= b.left - low.left <= dx1]
+        if len(ups) == 1:
+            taken |= {id(low), id(ups[0])}
+            pairs.append((low, ups[0]))
+    if not pairs:
+        return claimed
+    keep = [o for o in claimed if id(o[2]) not in taken]
+    used = {(int(at[1]), int(at[2])) for at, _, _ in keep if at[0] == "h"}
+    out = []
+    for low, up in pairs:
+        spot = _nearest_free_hex(board, low, used, _LOOSE)
+        if spot is None:            # nowhere to put it: leave the hexes' own claims as they were
+            keep += [o for o in claimed if o[2] is low or o[2] is up]
+            continue
+        used.add(spot)
+        r, c = spot
+        out += [(f"h{r}{c}", board.window(r, c, low), low), (f"h{r}{c}r", board.window(r, c, up), up)]
+    return keep + out
 
 
 def _same_bar(a: Bar, b: Bar) -> bool:

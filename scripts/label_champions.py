@@ -113,8 +113,9 @@ class ChampionLabeler:
         img = cv2.imread(str(paths.CROP_IMAGES / name))
         if frame is None or img is None:
             return None
-        pos = re.search(r"__([hs]\d+)\.jpg$", name).group(1)
-        bar = (board_bar(frame, self.board, int(pos[1]), int(pos[2])) if pos[0] == "h"
+        m = re.search(r"__([hs]\d+)\.jpg$", name)
+        pos = m.group(1) if m else None     # propagated / rider / pair crops: no bar of their own position
+        bar = (None if pos is None else board_bar(frame, self.board, int(pos[1]), int(pos[2])) if pos[0] == "h"
                else bench_bar(frame, self.bench, int(pos[1:])))
         guesses = self.classifier.predict(img, top_k=4)
         star = star_level(frame, bar) if bar else None

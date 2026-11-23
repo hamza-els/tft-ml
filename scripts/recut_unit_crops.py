@@ -32,9 +32,11 @@ CROP_DIR = paths.CROP_DIR          # index.json, labels.json (repo)
 IMAGES = paths.CROP_IMAGES         # crop images (local disk, src/utils/paths.py)
 
 
-def window_for(frame, name: str, board: BoardHexes, bench: BenchSlots) -> tuple[int, int, int, int]:
+def window_for(frame, name: str, board: BoardHexes, bench: BenchSlots) -> tuple[int, int, int, int] | None:
     """Anchored to the unit's health bar when one is found there, else the fixed window."""
     pos = re.search(r"__([hs])(\d+)\.jpg$", name)
+    if pos is None:     # propagated (__p), rider (h..r) and pair (__top/__bot) crops: not re-cut
+        return None
     kind, num = pos.group(1), pos.group(2)
     if kind == "h":
         r, c = int(num[0]), int(num[1])
@@ -59,7 +61,10 @@ def main():
             missing.extend(names)
             continue
         for name in names:
-            x, y, w, h = window_for(frame, name, board, bench)
+            win = window_for(frame, name, board, bench)
+            if win is None:
+                continue
+            x, y, w, h = win
             cv2.imwrite(str(IMAGES / name), frame[max(0, y):y + h, max(0, x):x + w])
             new_windows[name] = [x, y, w, h]
 

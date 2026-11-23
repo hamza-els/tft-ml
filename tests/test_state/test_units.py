@@ -73,6 +73,16 @@ def test_trait_units_do_not_count_against_level():
     assert len(out[0]["board"]) == 3 and stats["over_level_frames"] == 0
 
 
+def test_rider_shares_the_bff_hex():
+    # a champion riding the Big Furry Friend is read as "h31r" (unit_reader.rider_bars)
+    rows = _rows([[_unit("h31", "Big Furry Friend"), _unit("h31r", "Teemo", star=2), _unit("h20", "Veigar")]] * 3)
+    out, stats = clean_units(rows, [2] * 3, load_game_data())
+    board = {u["name"]: u for u in out[1]["board"]}
+    assert set(board) == {"Big Furry Friend", "Teemo", "Veigar"} and stats["over_level_frames"] == 0
+    assert board["Teemo"]["hex"] == board["Big Furry Friend"]["hex"] == [3, 1]
+    assert board["Teemo"]["star"] == 2
+
+
 def test_team_size_item_raises_the_cap():
     rows = _rows([[_unit("h00", "Ashe", items=["Tactician's Crown"]), _unit("h01", "Taric"),
                    _unit("h02", "Sona", p=0.3)]])
