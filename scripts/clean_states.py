@@ -10,6 +10,10 @@ Output:  <states>/game_XX.clean.jsonl    (misreads fixed, gaps forward-filled,
                                           game: sequence.own_span drops the previous game's
                                           tail and another player's HUD after he is out)
 
+Games of another mode (sequence.special_mode: Choncc's Treasure) get no
+cleaned file but <states>/game_XX.excluded.json saying why, so they never
+reach the dataset.
+
 The report shows how often each value was read and how many readings broke
 the game's rules — a quick check that the OCR regions are still calibrated.
 """
@@ -21,7 +25,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import argparse
 import json
 
-from src.state.sequence import clean_game, own_span, quality_report
+from src.state.sequence import clean_game, own_span, quality_report, special_mode
 from src.utils import paths
 
 
@@ -57,6 +61,17 @@ def main():
         rows = rows[start:end]
         if not rows:
             continue
+        # Not a normal game (Choncc's Treasure: other rules): no cleaned file, so no dataset entry;
+        # a note says why (Hamza, 2026-11-24: never to be included).
+        out = path.with_name(path.stem + ".clean.jsonl")
+        note = path.with_name(path.stem + ".excluded.json")
+        mode, why = special_mode(rows)
+        if mode:
+            out.unlink(missing_ok=True)
+            note.write_text(json.dumps({"mode": mode, "evidence": why}) + "\n", encoding="utf-8")
+            print(f"{path.name}: EXCLUDED, {mode} game ({why})")
+            continue
+        note.unlink(missing_ok=True)
         label = augment_labels.get(f"{path.parent.name}/{path.stem}")
         seen = overlay.get(path.stem) or {}
         if label is None and seen.get("augments"):
@@ -66,7 +81,6 @@ def main():
             r["portal"] = seen.get("portal")
             r["augment_source"] = ("label" if augment_labels.get(f"{path.parent.name}/{path.stem}")
                                    else "overlay" if seen.get("augments") else "icons")
-        out = path.with_name(path.stem + ".clean.jsonl")
         out.write_text("".join(json.dumps(r) + "\n" for r in cleaned), encoding="utf-8")
 
         rep = quality_report(rows, cleaned)

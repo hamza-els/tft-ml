@@ -90,10 +90,13 @@ def build(raw: dict, set_key: str) -> dict:
     # Items that raise max team size while held (Tactician's Crown, ...), and
     # emblems: "<Trait> Emblem" gives its holder that trait.
     team_size_items, emblems = {}, {}
+    set_items = set(data.get("items") or [])
     for it in raw.get("items", []):
         name = it.get("name") or ""
         bonus = (it.get("effects") or {}).get("MaxArmySizeIncrease")
-        if bonus and "Augment" not in (it.get("apiName") or ""):
+        # this set's items only: Choncc's Chalice/Crown add team size too, but only exist in the
+        # Choncc's Treasure event mode (TFTSetEventCT), never in a normal game
+        if bonus and "Augment" not in (it.get("apiName") or "") and it.get("apiName") in set_items:
             team_size_items[name] = int(bonus)
         if name.endswith(" Emblem") and name[:-len(" Emblem")] in traits:
             emblems[name] = name[:-len(" Emblem")]

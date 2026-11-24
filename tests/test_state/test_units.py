@@ -362,3 +362,27 @@ def test_doubted_reading_takes_a_next_guess_that_had_a_way_there():
     lux = next(u for u in out[2]["board"] if u["name"] == "Lux")
     assert lux["doubted"] and lux["p"] == 0.4
     assert stats["doubted_renamed"] == 1 and stats["doubted"] == 1
+
+
+from src.state.sequence import special_mode
+
+
+def test_choncc_game_found_by_a_stage_one_four_cost():
+    rows = [{"frame": i, "stage": 1, "round_num": 2, "units_raw": [_unit("s0", "Sett", p=0.95)]} for i in range(3)]
+    mode, why = special_mode(rows)
+    assert mode == "choncc" and "Sett" in why
+    assert special_mode(rows[:2])[0] is None                      # two frames could be misreads
+    rows[0]["units_raw"][0]["p"] = 0.5
+    assert special_mode(rows)[0] is None                          # unsure readings don't count
+
+
+def test_choncc_game_found_by_its_items_and_normal_games_pass():
+    assert special_mode([{"frame": 0, "stage": 3, "bench_items": ["Choncc's Spork"]}])[0] == "choncc"
+    normal = [{"frame": i, "stage": 1, "units_raw": [_unit("s0", "Karma")], "shop_slots": ["Akali", "Leona"]}
+              for i in range(5)]
+    normal += [{"frame": 9, "stage": 3, "units_raw": [_unit("h00", "Sett")]}]   # a 4-cost later is normal
+    assert special_mode(normal) == (None, "")
+
+
+def test_choncc_items_are_not_set_items():
+    assert not any("Choncc" in i for i in load_game_data().team_size_items)

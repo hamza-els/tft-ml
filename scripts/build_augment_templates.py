@@ -95,8 +95,8 @@ def collect(per_game: int) -> list[dict]:
     for key, (names, source) in tqdm(sorted(known_names().items()), desc="games", unit="game"):
         vod, game = key.split("/")
         states, folder = paths.STATES / vod / f"{game}.jsonl", frame_dir(vod, game)
-        if not states.exists() or folder is None:
-            continue
+        if not states.exists() or folder is None or states.with_name(f"{game}.excluded.json").exists():
+            continue                            # (excluded: another game mode, clean_states.py)
         rows = sorted((json.loads(l) for l in states.read_text(encoding="utf-8").splitlines() if l),
                       key=lambda r: r["frame"])
         rows = [r for r in rows if r.get("in_game")]

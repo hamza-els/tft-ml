@@ -317,6 +317,58 @@ def own_span(rows: list[dict]) -> tuple[int, int, str | None]:
     return start, start + end, reason
 
 
+SPECIAL_SURE = 0.9      # a unit reading this sure counts as evidence of a special mode
+SPECIAL_FRAMES = 3      # ...on this many frames (one misread frame proves nothing)
+
+
+def special_mode(rows: list[dict], game=None) -> tuple[str | None, str]:
+    """
+    (mode, evidence) when a game is not a normal Set game, else (None, "").
+    Choncc's Treasure (Hamza, 2026-11-24: different rules, never to be used):
+      - it starts with a 4- or 5-cost champion in stage 1, impossible otherwise
+        (shop odds at levels 1-3 have no 4- or 5-costs; no portal hands one out):
+        a 4/5-cost read with p >= SPECIAL_SURE on SPECIAL_FRAMES+ stage-1 frames,
+        or one in the stage-1 shop on SPECIAL_FRAMES+ frames;
+      - its items (Choncc's Chalice, Crown, Spork, ...) exist only in that mode
+        (Community Dragon lists them under the event sets TFTSetEventCT/ER, not
+        TFTSet18): any one read on a unit or in the item column, or "Choncc" in
+        the portal text.
+    On 2026-11-24 none of the 202 stored games was flagged (no sure 4/5-cost
+    before 2-3; 48 games have no stage-1 unit readings, 34 of them read from
+    2-1, where no 4/5-cost showed either).
+    """
+    game = game or load_game_data()
+
+    def cost(name):
+        try:
+            return game.cost(name) if name else 0
+        except (KeyError, ValueError):
+            return 0
+
+    units, shop = Counter(), Counter()
+    for r in rows:
+        if "honcc" in str(r.get("portal") or ""):
+            return "choncc", f"portal {r.get('portal')!r}"
+        items = [i for i in r.get("bench_items") or [] if i]
+        items += [i for u in r.get("units_raw") or [] for i in u.get("items") or [] if i]
+        hit = next((i for i in items if "Choncc" in i), None)
+        if hit:
+            return "choncc", f"{hit} at frame {r.get('frame')}"
+        if r.get("stage") != 1:
+            continue
+        for u in r.get("units_raw") or []:
+            if u.get("name") and u.get("p", 0) >= SPECIAL_SURE and cost(u["name"]) >= 4:
+                units[u["name"]] += 1
+        for n in set(r.get("shop_slots") or []):
+            if n and cost(n) >= 4:
+                shop[n] += 1
+    for what, seen in (("on the board/bench", units), ("in the shop", shop)):
+        name, n = (seen.most_common(1) or [(None, 0)])[0]
+        if n >= SPECIAL_FRAMES:
+            return "choncc", f"{name} ({cost(name)}-cost) {what} on {n} stage-1 frames"
+    return None, ""
+
+
 def clean_game(rows: list[dict], augment_label: dict | None = None) -> list[dict]:
     """
     Return cleaned copies of one game's rows, in frame order.

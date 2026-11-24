@@ -220,7 +220,7 @@ class GameData:
         return self.team_slots.get(name, 1)
 
     def item_team_size(self, items) -> int:
-        """Team size from team-size items (Tactician's Crown/Cape/Shield, Choncc's ...) among `items`."""
+        """Team size from team-size items (Tactician's Crown/Cape/Shield) among `items`."""
         return sum(self.team_size_items.get(i, 0) for i in items if i)
 
     def team_size(self, level: int, board: list[dict], items_elsewhere=(), augments=(),
