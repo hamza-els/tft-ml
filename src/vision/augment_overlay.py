@@ -32,7 +32,14 @@ AUG_BOX = (12, 950, 280, 128)      # x, y, w, h
 PORTAL_BOX = (12, 880, 280, 52)
 MIN_SIM = 0.72                    # a word span must be this like a name to count as it
 SKIP_COST = 0.6                   # per word left unmatched (characters' worth, scaled below)
-ALLOW = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ,.'+:()!-&"
+# The box is beige (BGR ~181, 208, 239). On 2,775 picked frames of the 14 full-frame VODs
+# (2026-11-24): every frame OCR read augments on had >= 23% of AUG_BOX beige, every
+# portal read >= 51% of PORTAL_BOX; frames without the box mostly < 5%. At 10%
+# no OCR reading was lost and 628 augment-box / 115 portal OCRs were skipped.
+BEIGE = np.array([181, 208, 239], np.int16)
+BEIGE_TOL = 30
+SHOWN_MIN = 0.10
+ALLOW ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ,.'+:()!-&"
 
 
 def _words(text: str) -> list[str]:
@@ -100,10 +107,25 @@ def _ocr_text(img: np.ndarray, box: tuple[int, int, int, int], reader) -> str:
     return " ".join(t for _, _, t in sorted(items))
 
 
+def shown(img: np.ndarray, box: tuple[int, int, int, int]) -> float:
+    """Share of the box in the overlay's beige (every channel within BEIGE_TOL of BEIGE)."""
+    x, y, w, h = box
+    crop = img[y:y + h, x:x + w].astype(np.int16)
+    return float((np.abs(crop - BEIGE).max(axis=2) < BEIGE_TOL).mean())
+
+
 def read(img: np.ndarray, reader) -> tuple[str | None, list[str]]:
-    """(portal text or None, augment names in overlay order) from one frame."""
-    text = _ocr_text(img, AUG_BOX, reader)
-    augs = parse(text) if re.search(r"ugment", text, re.I) else []
-    ptext = _ocr_text(img, PORTAL_BOX, reader)
-    m = re.search(r"ortal\s*[:;.]?\s*(.+)", ptext, re.I)
-    return (m.group(1).strip() if m else None), augs
+    """
+    (portal text or None, augment names in overlay order) from one frame. A box is
+    OCR'd only when it is shown (>= SHOWN_MIN beige): newer streams have the overlay
+    off (htwxJLXZE_g, OGLPl4JkAmQ after its first game), and a sponsor pop-up often
+    covers the augments box while the portal line still shows.
+    """
+    augs, portal = [], None
+    if shown(img, AUG_BOX) >= SHOWN_MIN:
+        text = _ocr_text(img, AUG_BOX, reader)
+        augs = parse(text) if re.search(r"ugment", text, re.I) else []
+    if shown(img, PORTAL_BOX) >= SHOWN_MIN:
+        m = re.search(r"ortal\s*[:;.]?\s*(.+)", _ocr_text(img, PORTAL_BOX, reader), re.I)
+        portal = m.group(1).strip() if m else None
+    return portal, augs

@@ -12,7 +12,10 @@ Needs the full frames (~/tft_frames_temp/<VOD>): the augment-only copies
 
 Per game: up to --frames frames after the last augment pick (4-2), spread over
 the rest of the game; the overlay is the player's own whatever board is on
-screen. Readings are voted per position: the length is the longest one at
+screen. A box is OCR'd only on frames where it is shown (its beige colour,
+augment_overlay.shown): newer streams have the overlay off, and then a game
+costs only the frame loads ("shown": 0 in the output).
+Readings are voted per position: the length is the longest one at
 least 3 frames (and 30% of the readable ones) agree on, then each position
 takes its commonest name among those frames.
 """
@@ -31,7 +34,7 @@ from tqdm import tqdm
 
 from src.state.game_data import GameData
 from src.utils import paths
-from src.vision.augment_overlay import read
+from src.vision.augment_overlay import AUG_BOX, PORTAL_BOX, SHOWN_MIN, read, shown
 from src.vision.ocr_pipeline import _get_reader
 
 LABELS = paths.REPO / "data" / "processed" / "augment_labels.json"
@@ -55,17 +58,18 @@ def read_game(states: Path, frames_dir: Path, reader, n_frames: int) -> dict:
     if not late:
         late = [r for r in rows if r.get("in_game")][-n_frames:]
     picks = [late[i] for i in np.unique(np.linspace(0, len(late) - 1, min(n_frames, len(late))).astype(int))] if late else []
-    readings, portals = [], Counter()
+    readings, portals, seen = [], Counter(), 0
     for r in picks:
         img = cv2.imread(str(frames_dir / f"frame_{r['frame']:06d}.jpg"))
         if img is None:
             continue
-        portal, augs = read(img, reader)
+        seen += max(shown(img, AUG_BOX), shown(img, PORTAL_BOX)) >= SHOWN_MIN
+        portal, augs = read(img, reader)      # OCRs only the boxes that are shown
         readings.append(augs)
         if portal:
             portals[portal] += 1
     return {"augments": vote(readings), "portal": portals.most_common(1)[0][0] if portals else None,
-            "frames": len(picks), "readable": sum(1 for r in readings if r)}
+            "frames": len(picks), "readable": sum(1 for r in readings if r), "shown": seen}
 
 
 def main():
@@ -88,6 +92,9 @@ def main():
                 out[states.stem] = read_game(states, frames_dir, reader, args.frames)
         (paths.STATES / vod / "augment_overlay.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
         results.update({f"{vod}/{g}": v for g, v in out.items()})
+        off = [g for g, v in out.items() if not v["shown"]]
+        if off:
+            print(f"  {vod}: overlay not shown in {len(off)} of {len(out)} games ({', '.join(off)}): not OCR'd")
 
     if args.eval:
         labels = json.loads(LABELS.read_text(encoding="utf-8"))
