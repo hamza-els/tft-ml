@@ -55,6 +55,9 @@ class AugmentReader:
         self.max_slots = int(cfg["max_slots"])
         self.dark_below = int(cfg["dark_below"])
         self.match_threshold = float(cfg["match_threshold"])
+        # templates rendered from official art (art__*, src/vision/augment_art.py) match less
+        # closely than footage ones (the right render scores ~0.78 median)
+        self.art_threshold = float(cfg.get("art_match_threshold", self.match_threshold))
         self.template_dir = _ROOT / cfg["template_dir"]
         self.templates: dict[str, np.ndarray] = {}
         self._tm_key, self._tm = None, None      # template matrix for match(), see _template_matrix
@@ -266,7 +269,8 @@ class AugmentReader:
             return None, 0.0
         k = int(scores.argmax())
         best = float(scores[k])
-        return (names[k], best) if best >= self.match_threshold else (None, best)
+        need = self.art_threshold if names[k].startswith("art__") else self.match_threshold
+        return (names[k], best) if best >= need else (None, best)
 
     def scores(self, icon: np.ndarray) -> tuple[list[str], np.ndarray]:
         """Every template's score against the icon (see match), in template order."""

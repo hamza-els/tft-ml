@@ -124,6 +124,7 @@ augments:
   max_slots: 4                         # 3 picks, plus a possible 4th from some effects
   dark_below: 60                       # bar background is near-black
   match_threshold: 0.80
+  art_match_threshold: 0.60           # templates rendered from official art (art__*, augments never seen in footage): the right render scores ~0.78
   template_dir: "assets/templates/augments_v2"   # medoid templates named directly (scripts/build_augment_templates.py); the old harvest set is assets/templates/augments
 
 # Unequipped items: column of square slots on the left edge.
