@@ -203,3 +203,73 @@ def test_sure_unit_not_erased_between_empty_frames():
     rows = _rows([[], [], [_unit("h10", "Rammus", p=0.4)], [], []])
     out, _ = clean_units(rows, [5] * 5)
     assert out[2]["board"] == []
+
+
+# --- step 6: stretches with the same gold and bench (Hamza, 2026-11-24) ---
+
+def _stretch_rows(boards, gold, bench=("s0", "Vi")):
+    """Read rows of one round: each board plus the same bench unit, with the given gold per row."""
+    return [{"frame": i * 2, "units_raw": b + [_unit(*bench)]} for i, b in enumerate(boards)], gold
+
+
+def test_unit_missing_longer_than_a_flicker_is_filled_when_nothing_else_changed():
+    ashe, jinx = _unit("h03", "Ashe"), _unit("h05", "Jinx", p=0.7)
+    boards = [[ashe, jinx]] * 3 + [[ashe]] * 4 + [[ashe, jinx]] * 3     # 4 frames: no flicker
+    rows, gold = _stretch_rows(boards, [10] * 10)
+    out, stats = clean_units(rows, [5] * 10, rounds=[(2, 1)] * 10, gold=gold)
+    assert all(sorted(u["name"] for u in o["board"]) == ["Ashe", "Jinx"] for o in out)
+    assert out[4]["board"][1]["hex"] == [0, 5] and out[4]["board"][1]["filled"]
+    assert stats["stretch_filled"] == 4
+
+
+def test_gold_change_ends_the_stretch():
+    ashe, jinx = _unit("h03", "Ashe"), _unit("h05", "Jinx", p=0.7)
+    boards = [[ashe, jinx]] * 3 + [[ashe]] * 4 + [[ashe, jinx]] * 3
+    rows, _ = _stretch_rows(boards, None)
+    gold = [10] * 3 + [12] * 4 + [10] * 3      # sold then bought back: two changes
+    out, _ = clean_units(rows, [5] * 10, rounds=[(2, 1)] * 10, gold=gold)
+    assert [len(o["board"]) for o in out] == [2] * 3 + [1] * 4 + [2] * 3
+
+
+def test_bench_change_ends_the_stretch():
+    ashe, jinx = _unit("h03", "Ashe"), _unit("h05", "Jinx", p=0.7)
+    rows = [{"frame": i * 2, "units_raw": b} for i, b in enumerate(
+        [[ashe, jinx]] * 3 + [[ashe, _unit("s2", "Jinx")]] * 4 + [[ashe, jinx]] * 3)]
+    out, _ = clean_units(rows, [5] * 10, rounds=[(2, 1)] * 10, gold=[10] * 10)
+    assert [len(o["board"]) for o in out] == [2] * 3 + [1] * 4 + [2] * 3
+
+
+def test_unread_gold_links_only_when_the_readings_around_agree():
+    ashe, jinx = _unit("h03", "Ashe"), _unit("h05", "Jinx", p=0.7)
+    boards = [[ashe, jinx]] * 3 + [[ashe]] * 4 + [[ashe, jinx]] * 3
+    rows, _ = _stretch_rows(boards, None)
+    out, _ = clean_units(rows, [5] * 10, rounds=[(2, 1)] * 10, gold=[10] * 3 + [None] * 4 + [10] * 3)
+    assert [len(o["board"]) for o in out] == [2] * 10
+    out, _ = clean_units(rows, [5] * 10, rounds=[(2, 1)] * 10, gold=[10] * 3 + [None] * 4 + [13] * 3)
+    assert [len(o["board"]) for o in out] == [2] * 3 + [1] * 4 + [2] * 3
+
+
+def test_stretch_drops_a_lasting_misread_extra_unit():
+    ashe = _unit("h03", "Ashe")
+    boards = [[ashe]] * 5 + [[ashe, _unit("h12", "Lux", p=0.4)]] * 3 + [[ashe]] * 4
+    rows, gold = _stretch_rows(boards, [10] * 12)
+    out, stats = clean_units(rows, [5] * 12, rounds=[(2, 1)] * 12, gold=gold)
+    assert all([u["name"] for u in o["board"]] == ["Ashe"] for o in out)
+    assert stats["stretch_removed"] == 3
+
+
+def test_stretch_gives_one_star_level():
+    boards = [[_unit("h03", "Ashe", star=2)]] * 5 + [[_unit("h03", "Ashe", star=1, p=0.6)]] * 3
+    rows, gold = _stretch_rows(boards, [10] * 8)
+    out, _ = clean_units(rows, [5] * 8, rounds=[(2, 1)] * 8, gold=gold)
+    assert [o["board"][0]["star"] for o in out] == [2] * 8
+
+
+def test_stretch_takes_the_counters_count():
+    ashe, jinx = _unit("h03", "Ashe"), _unit("h05", "Jinx", p=0.9)
+    boards = [[ashe, jinx]] * 2 + [[ashe]] * 6                  # Jinx mostly hidden: the vote alone drops it
+    rows, gold = _stretch_rows(boards, [10] * 8)
+    for r in rows:
+        r["board_counter"] = [2, 5]
+    out, _ = clean_units(rows, [5] * 8, rounds=[(2, 1)] * 8, gold=gold)
+    assert [len(o["board"]) for o in out] == [2] * 8

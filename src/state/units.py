@@ -55,6 +55,25 @@ a tooltip. The sequence fixes most of it:
    is already counted on its new hex), and never more than the counter says.
    Carried units have "carried": true.
 
+6. Stretches where the board can't change (Hamza, 2026-11-24). Between two
+   read frames of one round with the same gold and the same bench (by name),
+   no unit can have joined or left the board: a unit goes on or off the
+   board through the bench, and a sale or a purchase changes gold. (Units
+   can still swap hexes and take items.) Such frames form a stretch, and
+   after step 2 each stretch gets one set of board units: every copy of a
+   champion is voted over the stretch's frames (weight x confidence for,
+   EMPTY_WEIGHT x weight against), and where the counter was read in the
+   stretch (two agreeing readings) the best supported copies are taken up
+   to its count. Each frame then drops the copies it has too many of (least
+   supported first) and gets the missing ones at the hex they stood on in
+   the nearest frame of the stretch ("filled"). A champion with one copy
+   gets one star level over the stretch (stars only change by buying the
+   third copy, which costs gold). Gold unread (shop bar hidden) counts as
+   unchanged only when the readings around agree. On 7 re-read games: the
+   board changed between such frames in 14.9% of pairs before, 2.3% after;
+   with the counter hidden on a quarter of frames, the board count matched
+   it on 60.2% -> 68.8% there; held-out labelled crops 89.6% -> 89.8%.
+
 Frames that were not read (combat, away fights, scouting) carry the last
 planning board forward: the units only move during combat and come back.
 """
@@ -225,7 +244,124 @@ def _keep_loose(units: list[dict], counter: int | None, stats: dict) -> list[dic
     return fixed + keep
 
 
-def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None = None) -> tuple[list[dict], dict]:
+_UNREAD = object()
+
+
+def _bracket(values: list) -> list:
+    """
+    An unread value (None) takes the value read around it when the readings
+    before and after agree; otherwise a marker equal to nothing, so a change
+    somewhere in an unread stretch is not missed (no telling where it was).
+    """
+    out = list(values)
+    for i, v in enumerate(values):
+        if v is None:
+            a = next((values[j] for j in range(i - 1, -1, -1) if values[j] is not None), _UNREAD)
+            b = next((values[j] for j in range(i + 1, len(values)) if values[j] is not None), _UNREAD)
+            out[i] = a if (a is not _UNREAD and a == b) else object()
+    return out
+
+
+def board_stretches(cleaned: list[dict], read: list[int], rounds: list, gold: list) -> list[int]:
+    """
+    A stretch id per read frame (step 6): consecutive read frames of one
+    round with the same gold and the same bench (champion names) share one.
+    cleaned: per read frame {position: unit}; rounds and gold per row.
+    """
+    g = _bracket([gold[i] for i in read])
+    bench = [tuple(sorted(u["name"] for at, u in c.items() if at[0] == "s")) for c in cleaned]
+    out, s = [], 0
+    for k in range(len(read)):
+        if k and not (rounds[read[k]] == rounds[read[k - 1]] and g[k] == g[k - 1] and bench[k] == bench[k - 1]):
+            s += 1
+        out.append(s)
+    return out
+
+
+def _stretch_board(cleaned: list[dict], ks: list[int], w: list[float], counts: dict, slots) -> Counter:
+    """The champions (with copies) on the board throughout one stretch of read frames ks."""
+    per = {k: defaultdict(list) for k in ks}          # frame -> champion -> confidences, best first
+    for k in ks:
+        for at, u in cleaned[k].items():
+            if at[0] == "h":
+                per[k][u["name"]].append(u["p"])
+        for c in per[k]:
+            per[k][c].sort(reverse=True)
+    cand = []
+    for c in {c for k in ks for c in per[k]}:
+        for n in range(1, 1 + max(len(per[k][c]) for k in ks)):
+            yes = sum(w[k] * per[k][c][n - 1] for k in ks if len(per[k][c]) >= n)
+            no = sum(w[k] * EMPTY_WEIGHT for k in ks if len(per[k][c]) < n)
+            cand.append((yes - no, c))
+    cand.sort(key=lambda t: -t[0])
+    target = None
+    read_counts = [counts[k] for k in ks if counts.get(k) is not None]
+    if read_counts:
+        value, n = Counter(read_counts).most_common(1)[0]
+        target = value if n >= 2 else None
+    chosen, used = Counter(), 0
+    for score, c in cand:
+        need = slots(c)
+        if target is None or need == 0:
+            ok = score > 0
+        else:                       # up to the counter's count, seen copies only
+            ok = used + need <= target and (score > 0 or used < target)
+        if ok:
+            chosen[c] += 1
+            used += need
+    return chosen
+
+
+def _reconcile_stretches(cleaned: list[dict], stretch: list[int], w: list[float], counts: dict,
+                         slots, stats: dict) -> None:
+    """Step 6: give every frame of a stretch the stretch's board units (in place)."""
+    by = defaultdict(list)
+    for k, s in enumerate(stretch):
+        by[s].append(k)
+    for ks in by.values():
+        if len(ks) < 2:
+            continue
+        before = {k: [(at, u) for at, u in cleaned[k].items() if at[0] == "h"] for k in ks}
+        chosen = _stretch_board(cleaned, ks, w, counts, slots)
+        for k in ks:
+            units = cleaned[k]
+            have = defaultdict(list)
+            for at, u in before[k]:
+                have[u["name"]].append(at)
+            for c, ats in have.items():
+                for at in sorted(ats, key=lambda a: units[a]["support"])[:max(len(ats) - chosen[c], 0)]:
+                    del units[at]
+                    stats["stretch_removed"] += 1
+            for c, n in chosen.items():
+                miss = n - sum(1 for at in units if at[0] == "h" and units[at]["name"] == c)
+                for j in sorted(ks, key=lambda j: abs(j - k)):
+                    if miss <= 0:
+                        break
+                    for at, u in before[j]:
+                        if miss > 0 and u["name"] == c and at not in units and not u.get("filled"):
+                            units[at] = dict(u, filled=True, support=u["support"] * EMPTY_WEIGHT)
+                            miss -= 1
+                            stats["stretch_filled"] += 1
+        for c, n in chosen.items():
+            if n != 1:
+                continue
+            votes = Counter()
+            for k in ks:
+                for at, u in before[k]:
+                    if u["name"] == c and u["star"] and not u.get("filled"):
+                        votes[u["star"]] += w[k] * u["p"]
+            if not votes:
+                continue
+            star = votes.most_common(1)[0][0]
+            for k in ks:
+                for at, u in cleaned[k].items():
+                    if at[0] == "h" and u["name"] == c and u["star"] != star:
+                        cleaned[k][at] = dict(u, star=star)
+                        stats["stretch_stars"] += 1
+
+
+def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None = None,
+                gold: list | None = None) -> tuple[list[dict], dict]:
     """
     Cleaned board and bench for one game's rows (in frame order).
 
@@ -237,6 +373,8 @@ def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None =
             Without it every unit takes one slot and there are no bonuses.
         rounds: the cleaned (stage, round) of each row, to group counter
             readings by round. Without it the counter is not used.
+        gold: the gold read on each row (None where unread; not carried
+            forward), for step 6. Without it step 6 is skipped.
 
     Returns:
         (per-row {"board": [...], "bench": [...], "read": bool}, stats)
@@ -251,7 +389,8 @@ def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None =
              "names_changed": 0, "over_level_frames": 0, "units_dropped_level": 0,
              "team_size_bonus_frames": 0, "team_size_from_counter": 0, "units_from_counter": 0,
              "counter_more_than_read": 0, "units_carried": 0, "covered_filled": 0,
-             "loose_kept": 0, "loose_dropped": 0}
+             "loose_kept": 0, "loose_dropped": 0,
+             "stretch_removed": 0, "stretch_filled": 0, "stretch_stars": 0}
     rounds = rounds or [None] * len(rows)
     out = [{"board": [], "bench": [], "read": False} for _ in rows]
     if not read:
@@ -317,6 +456,8 @@ def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None =
                               "loose": bool(u and u.get("loose") and not hidden[k])}
 
     slots = game.slots if game is not None else (lambda name: 1)
+    if gold is not None and rounds[0] is not None:
+        _reconcile_stretches(cleaned, board_stretches(cleaned, read, rounds, gold), w, counts, slots, stats)
     team_sizes = _counter_team_sizes(rows, read, levels, rounds)
     counts = _counter_units(rows, read, rounds)
     last_seen: dict[str, tuple[dict, int]] = {}      # board hex -> (unit, read-frame index last seen)
