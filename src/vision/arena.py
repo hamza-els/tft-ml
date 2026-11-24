@@ -129,9 +129,24 @@ def planning_rows(rows: list[dict], cfg: dict | None = None) -> list[bool]:
             last_fill = fill
         # the frame classifier's veto (src/vision/frame_classifier.py, stored by read_units.py):
         # a fight that passed the rules for an instant
-        vetoed = (row.get("combat_p") or 0.0) >= float(cfg.get("combat_veto", 1.1))
+        vetoed = combat_vetoed(row.get("combat_p"), row.get("board_counter"), cfg)
         out.append(bool(row.get("planning")) and not in_combat and not ending and None not in key and not vetoed)
     return out
+
+
+def combat_vetoed(combat_p: float | None, counter: list | None, cfg: dict | None = None) -> bool:
+    """
+    A frame that passed the planning rules is a fight after all: the frame classifier
+    says combat (>= arena.combat_veto) and the game's "units / team size" counter, drawn
+    only in planning, was not read. On Hamza's labels (2026-11-23, model trained on the
+    timer): his 28 wrong frames, 22 vetoed at 0.3 (the counter was read on 2 of them,
+    both units flying back at the first instant of planning); his 2,355 unit-labelled
+    frames, 108 vetoed (4.6%; the model alone at 0.3 would veto more, the counter is read
+    on 65% of them). Without the counter rule the same catch rate cost 6-15%.
+    """
+    cfg = cfg or vision_cfg["arena"]
+    team_size = counter[1] if isinstance(counter, (list, tuple)) and len(counter) > 1 else None
+    return (combat_p or 0.0) >= float(cfg.get("combat_veto", 1.1)) and not team_size
 
 
 _COMBAT_WORD: np.ndarray | None = None
@@ -157,6 +172,27 @@ def combat_banner(frame: np.ndarray, cfg: dict | None = None) -> bool:
     zone = cv2.cvtColor(frame[y:y + h, x:x + w], cv2.COLOR_BGR2GRAY).astype(np.float32)
     score = float(cv2.matchTemplate(zone, _COMBAT_WORD, cv2.TM_CCOEFF_NORMED).max())
     return score >= float(cfg["combat_banner_score"])
+
+
+_PLANNING_WORD: np.ndarray | None = None
+
+
+def planning_banner_score(frame: np.ndarray, cfg: dict | None = None) -> float:
+    """
+    How well the "Planning" banner's word matches at the Combat banner's spot (the
+    first ~2 s of planning). Greyscale median of 629 banners (2026-11-23): banners
+    score ~0.99; everything else, "Combat" banners included, below 0.55.
+    Units can still be flying back to their hexes at the banner's first instant
+    (3 of Hamza's 28 wrong frames), but most banner frames are fine (123 of his
+    2,355 unit-labelled frames show it), so it is no rule on its own.
+    """
+    global _PLANNING_WORD
+    cfg = cfg or vision_cfg["arena"]
+    if _PLANNING_WORD is None:
+        _PLANNING_WORD = cv2.imread(str(_ROOT / cfg["planning_word"]), cv2.IMREAD_GRAYSCALE).astype(np.float32)
+    x, y, w, h = cfg["combat_banner_zone"]
+    zone = cv2.cvtColor(frame[y:y + h, x:x + w], cv2.COLOR_BGR2GRAY).astype(np.float32)
+    return float(cv2.matchTemplate(zone, _PLANNING_WORD, cv2.TM_CCOEFF_NORMED).max())
 
 
 def is_planning(frame: np.ndarray, cfg: dict | None = None) -> bool:

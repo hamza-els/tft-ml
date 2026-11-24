@@ -35,7 +35,7 @@ import cv2
 from tqdm import tqdm
 
 from src.utils.config import vision_cfg
-from src.vision.arena import home_board_rows, is_planning, planning_rows
+from src.vision.arena import combat_vetoed, home_board_rows, is_planning, planning_rows
 from src.vision.unit_reader import UnitReader
 
 
@@ -107,15 +107,18 @@ def process_game(states_path: str, vod_dir_path: str, light: bool, progress: boo
         if not is_planning(frame):
             row["planning"] = False
             continue
-        # The frame classifier vetoes a fight that passed the rules for an instant
-        # (arena.planning_rows reads combat_p); its units are not read.
+        # The frame classifier vetoes a fight that passed the rules for an instant, unless the
+        # planning-only "units / team size" counter is up (arena.combat_vetoed, also read by
+        # arena.planning_rows); a vetoed frame's units are not read.
+        counter = reader.read_counter(frame)
         clf = _frame_clf()
         if clf is not None:
             row["combat_p"] = round(clf.combat_p([frame])[0], 3)
-            if row["combat_p"] >= float(vision_cfg["arena"]["combat_veto"]):
+            if combat_vetoed(row["combat_p"], counter):
+                row["board_counter"] = counter
                 continue
         row["units_raw"] = reader.read(frame)
-        row["board_counter"] = reader.read_counter(frame)
+        row["board_counter"] = counter
         read += 1
     states.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
     return f"  {states.name}: {len(rows)} rows, units read on {read}, {missing} frames missing"

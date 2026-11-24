@@ -261,7 +261,8 @@ arena:
   # health bars are drawn. Empty during planning.
   enemy_half: [460, 150, 1000, 150]
   max_bar_pixels: 150                  # allows for stray effects; a single enemy bar is ~500
-  combat_veto: 0.7                     # frame classifier's combat probability at or above which a "planning" frame is a fight
+  combat_veto: 0.3                     # frame classifier's combat probability at or above which a "planning" frame is a fight,
+                                       # unless the units/team-size counter was read (arena.combat_vetoed)
   # Round timer bar under the stage bar: drains as the clock runs down and
   # refills when the next phase starts.
   timer_bar: [600, 43, 700, 10]
@@ -272,6 +273,9 @@ arena:
   combat_word: assets/templates/hud/combat_word.png
   combat_banner_zone: [850, 110, 230, 90]
   combat_banner_score: 0.65
+  # "Planning" banner at the same spot (arena.planning_banner_score): ~0.99 when up, < 0.55 otherwise.
+  planning_word: assets/templates/hud/planning_word.png
+  planning_banner_score: 0.65
 
 # Board counter "units / team size" in the middle of the arena during
 # planning (src/vision/board_counter.py). Regions are x ranges inside the
