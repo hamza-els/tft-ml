@@ -67,7 +67,10 @@ def test_standing_loose_unit_kept_without_the_counter_but_not_while_dragging():
     assert [u["name"] for u in out[1]["board"]] == ["Vi"]
 
 
-def test_stretch_carries_across_combat_when_the_bench_is_unchanged():
+def test_stretch_carries_across_combat_when_the_bench_is_unchanged(monkeypatch):
+    # off by default (it made held-out crops worse); the rule itself still works when switched on
+    import src.state.units as U
+    monkeypatch.setattr(U, "ACROSS_COMBAT", True)
     vi, sett = _u("h00", "Vi"), _u("h01", "Sett", p=0.92)
     boards = [[vi, sett]] * 3 + [[vi]] * 3          # Sett's bar hidden after the fight, round 2-3
     rows = [{"frame": i * 2, "units_raw": b + [_u("s0", "Lux")]} for i, b in enumerate(boards)]
