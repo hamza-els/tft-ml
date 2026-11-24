@@ -119,10 +119,13 @@ def planning_rows(rows: list[dict], cfg: dict | None = None, pve_candidates: boo
     planning phase (timer not yet refilled this round, and no health bars on
     the far part of the board).
 
-    PvE rounds (pve_round): the far-half rule fails on the monsters, and the
-    timer misses fights whose round kept no planning frame before them, so a
-    frame there counts only with the game's "units / team size" counter read
-    on it (drawn in planning only; stored by read_units.py). pve_candidates:
+    PvE rounds (pve_round): the far-half rule fails where the monsters stand
+    in the far half, and the timer misses fights whose round kept no planning
+    frame before them, so a frame there that fails the far-half rule counts
+    only with the game's "units / team size" counter read on it (drawn in
+    planning only; stored by read_units.py). One that passes it counts as
+    usual (knB6dE8Rbgg's x-7 monsters stand outside the band; requiring the
+    counter there lost 77 of Hamza's labelled crops, the monster covering it). pve_candidates:
     every PvE frame the timer allows, for read_units.py to check the counter on.
     """
     cfg = cfg or vision_cfg["arena"]

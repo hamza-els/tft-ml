@@ -106,11 +106,13 @@ def process_game(states_path: str, vod_dir_path: str, light: bool, progress: boo
         # Re-checked on the frame: states extracted before the "Combat"
         # banner check existed still count those frames as planning.
         pve = pve_round(row.get("stage"), row.get("round_num"))
-        if not is_planning(frame, pve=pve):
+        far_half_clear = is_planning(frame)                  # the usual rule (no bars on the far half)
+        if not (far_half_clear or (pve and is_planning(frame, pve=True))):
             row["planning"] = False
             continue
+        row["planning"] = far_half_clear
         counter = reader.read_counter(frame)
-        if pve and not (counter and counter[1] is not None):
+        if pve and not far_half_clear and not (counter and counter[1] is not None):
             # PvE round: only frames showing the planning-only "units / team size" counter
             # (arena.planning_rows); in a fight the monsters' bars don't tell it apart
             row["board_counter"] = counter
