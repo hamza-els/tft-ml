@@ -32,6 +32,7 @@ from src.vision.tooltip import CFG as TOOLTIP_CFG, covered_share, panel_in_crop,
 from src.vision.board import BoardHexes
 from src.utils.config import vision_cfg
 from src.vision.unit_bar import (Bar, UnitItemReader, bench_bar, board_bar, expected_left, green_bars,
+                                 prefetch_star_scores,
                                  star_level, star_scores)
 from src.vision.unit_classifier import UnitClassifier
 
@@ -153,6 +154,8 @@ def occupied_split(frame: np.ndarray, board: BoardHexes,
     board but is not on it until dropped, so cleaning only keeps a loose
     reading where the board counter says the board is short.
     """
+    # every green bar where any hex or slot looks for one, badge-scored in one batch first
+    prefetch_star_scores(frame, _search_box(board, bench))
     out = []
     for r, c in board.hexes():
         bar = board_bar(frame, board, r, c)
@@ -167,6 +170,19 @@ def occupied_split(frame: np.ndarray, board: BoardHexes,
 
 
 _BAR_CFG = vision_cfg["unit_bar"]
+
+
+def _search_box(board: BoardHexes, bench: BenchSlots) -> tuple[int, int, int, int]:
+    """x, y, w, h around every zone unit_bar.find_bar searches (all hexes and slots) and the loose zone."""
+    spots = [(board.center(r, c)[0], board.region(r, c)[1]) for r, c in board.hexes()]
+    spots += [(bench.center_x(i), bench.region(i)[1]) for i in range(bench.slots)]
+    x0 = min(expected_left(cx) for cx, _ in spots) - 40
+    x1 = max(expected_left(cx) for cx, _ in spots) + 110
+    y0 = min(top for _, top in spots) - _BAR_CFG["search_above"]
+    y1 = max(top for _, top in spots) + _BAR_CFG["search_below"]
+    lx, ly, lw, lh = _BAR_CFG["loose"]["zone"]
+    x0, y0, x1, y1 = min(x0, lx), min(y0, ly), max(x1, lx + lw), max(y1, ly + lh)
+    return int(x0), int(y0), int(x1 - x0), int(y1 - y0)
 _LOOSE = _BAR_CFG["loose"]
 _RIDER = _BAR_CFG["rider"]
 

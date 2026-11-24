@@ -39,7 +39,11 @@ URLS_FILE  = Path("data/raw/urls.txt")
 VOD_DIR    = Path.home() / "tft_vods_temp"    # local — never inside Google Drive folder
 LOCAL_TEMP = Path.home() / "tft_frames_temp"
 STEPS_FILE = ".pipeline_steps"   # one finished step name per line, inside each VOD folder
-FORMAT     = "bestvideo[height<=1080][vcodec^=avc]+bestaudio/best"
+# Video only (2026-11-24): nothing reads the audio (~3% of the bytes), and without it yt-dlp
+# writes the video stream straight to <id>.mp4: no ffmpeg merge pass, no second ~11 GB copy on
+# disk while it runs. Checked on one 12-min 1080p60 video: frame count, OpenCV seeks and the
+# ffmpeg range decode identical to the merged file, pixel for pixel.
+FORMAT     = "bestvideo[height<=1080][vcodec^=avc]/best[height<=1080]"
 W          = 60
 
 ES_CONTINUOUS      = 0x80000000

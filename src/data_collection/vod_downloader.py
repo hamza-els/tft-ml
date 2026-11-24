@@ -23,7 +23,8 @@ def download_vod(url: str, output_dir: str, quality: str = "1080p") -> str:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     out_template = str(out_dir / "%(id)s.%(ext)s")
-    format_str = f"bestvideo[height<={quality.replace('p', '')}]+bestaudio/best"
+    height = quality.replace('p', '')
+    format_str = f"bestvideo[height<={height}]/best[height<={height}]"   # video only: no audio is used
 
     cmd = [
         "yt-dlp",

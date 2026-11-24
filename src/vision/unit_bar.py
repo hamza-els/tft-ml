@@ -335,6 +335,12 @@ def held_count(slots: list[dict]) -> int:
 
 
 _STARS: dict[int, np.ndarray] | None = None
+_STAR_MAT: tuple | None = None
+_ROOT = Path(__file__).resolve().parents[2]
+# Scores of the frame last scored, by (bar left, bar top): one bar is checked by its hex, by the
+# loose/rider search and for its star level, so each is computed once. The frame is kept
+# (identity check), so a frame changed in place after scoring would get stale scores.
+_SCORED: dict = {"frame": None, "scores": {}}
 
 
 def star_templates() -> dict[int, np.ndarray]:
@@ -346,22 +352,104 @@ def star_templates() -> dict[int, np.ndarray]:
     global _STARS
     if _STARS is None:
         folder = Path(_CFG["star_templates"])
+        if not folder.is_absolute():
+            folder = _ROOT / folder      # not the working directory: elsewhere no badge matched, so no units
         _STARS = {int(p.stem.split("_")[1]): cv2.imread(str(p)).astype(np.float32)
                   for p in sorted(folder.glob("star_*.png"))}
+        if not _STARS:
+            raise FileNotFoundError(f"no star templates in {folder}")
     return _STARS
+
+
+def _star_matrix() -> tuple[list[int], np.ndarray, tuple[int, int]]:
+    """Star levels, templates minus their per-channel mean and scaled to unit length (one row
+    each), and the template size (h, w): the TM_CCOEFF_NORMED template side."""
+    global _STAR_MAT
+    if _STAR_MAT is None:
+        tmpl = star_templates()
+        keys = sorted(tmpl)
+        shape = tmpl[keys[0]].shape
+        rows = []
+        for k in keys:
+            t = tmpl[k] - tmpl[k].reshape(-1, 3).mean(0)
+            rows.append((t / max(float(np.linalg.norm(t)), 1e-9)).ravel())
+        _STAR_MAT = keys, np.stack(rows).astype(np.float32), shape[:2]
+    return _STAR_MAT
+
+
+def _zone(frame: np.ndarray, bar: Bar) -> np.ndarray:
+    dx, dy, w, h = _CFG["badge"]
+    sx, sy = _CFG["badge_slack"]
+    return crop(frame, (bar.left + dx - sx, bar.top + dy - sy, w + 2 * sx, h + 2 * sy))
+
+
+def star_scores_many(frame: np.ndarray, bars: list[Bar]) -> list[dict[int, float]]:
+    """
+    star_scores for several bars of one frame. Every badge position of every
+    bar is one row of a single matrix product with the templates (normalised
+    correlation as cv2.TM_CCOEFF_NORMED, the same numbers to float precision):
+    one cv2.matchTemplate per template and bar was ~40% of reading a frame's units.
+    """
+    if _SCORED["frame"] is not frame:
+        _SCORED["frame"], _SCORED["scores"] = frame, {}
+    cache = _SCORED["scores"]
+    keys, T, (th, tw) = _star_matrix()
+    _, _, w, h = _CFG["badge"]
+    sx, sy = _CFG["badge_slack"]
+    full = (h + 2 * sy, w + 2 * sx)
+    todo, zones = [], []
+    for bar in bars:
+        key = (bar.left, bar.top)
+        if key in cache or key in todo:
+            continue
+        zone = _zone(frame, bar)
+        if zone.shape[0] < th or zone.shape[1] < tw:
+            cache[key] = {}                          # badge cut off by the screen edge
+        elif zone.shape[:2] != full:                 # partly off screen: fewer positions, one at a time
+            cache[key] = _star_scores_cv(zone)
+        else:
+            todo.append(key)
+            zones.append(zone)
+    if zones:
+        z = np.stack(zones).astype(np.float32)                                   # (n, H, W, 3)
+        win = np.lib.stride_tricks.sliding_window_view(z, (th, tw), axis=(1, 2))  # (n, py, px, 3, th, tw)
+        n, py, px = win.shape[:3]
+        flat = win.transpose(0, 1, 2, 4, 5, 3).reshape(n * py * px, th * tw * 3)
+        num = (flat @ T.T).astype(np.float64)            # templates are zero-mean: no window mean needed
+        # per window: sum and sum of squares from summed-area tables (float64, as OpenCV)
+        z64 = z.astype(np.float64)
+        def box(a):
+            c = np.zeros((n, a.shape[1] + 1, a.shape[2] + 1, 3))
+            c[:, 1:, 1:] = a.cumsum(1).cumsum(2)
+            return c[:, th:th + py, tw:tw + px] - c[:, :py, tw:tw + px] - c[:, th:th + py, :px] + c[:, :py, :px]
+        s1, s2 = box(z64), box(z64 * z64)                # (n, py, px, 3)
+        var = (s2.sum(3) - (s1 * s1).sum(3) / (th * tw)).reshape(-1, 1)
+        t = np.sqrt(np.maximum(var, 0))
+        # as OpenCV: |num| < t -> num / t; up to 1.125 t -> +-1 (rounding); beyond (a flat window) -> 0
+        with np.errstate(divide="ignore", invalid="ignore"):
+            score = np.where(np.abs(num) < t, num / t, np.where(np.abs(num) < 1.125 * t, np.sign(num), 0.0))
+        best = score.reshape(n, py * px, len(keys)).max(1)
+        for key, row in zip(todo, best):
+            cache[key] = {k: float(v) for k, v in zip(keys, row)}
+    return [cache[(b.left, b.top)] for b in bars]
+
+
+def _star_scores_cv(zone: np.ndarray) -> dict[int, float]:
+    zone = zone.astype(np.float32)
+    return {k: float(cv2.matchTemplate(zone, t, cv2.TM_CCOEFF_NORMED).max()) for k, t in star_templates().items()}
 
 
 def star_scores(frame: np.ndarray, bar: Bar) -> dict[int, float]:
     """Best normalised correlation of each star template around the badge position."""
-    dx, dy, w, h = _CFG["badge"]
-    sx, sy = _CFG["badge_slack"]
-    zone = crop(frame, (bar.left + dx - sx, bar.top + dy - sy, w + 2 * sx, h + 2 * sy)).astype(np.float32)
-    scores = {}
-    for stars, tmpl in star_templates().items():
-        if zone.shape[0] < tmpl.shape[0] or zone.shape[1] < tmpl.shape[1]:
-            return {}
-        scores[stars] = float(cv2.matchTemplate(zone, tmpl, cv2.TM_CCOEFF_NORMED).max())
-    return scores
+    return star_scores_many(frame, [bar])[0]
+
+
+def prefetch_star_scores(frame: np.ndarray, region: tuple[int, int, int, int]) -> None:
+    """Score every green bar in a region of the frame in one go (later star_scores calls on the
+    same frame are then lookups)."""
+    x, y, w, h = region
+    x, y = max(0, x), max(0, y)
+    star_scores_many(frame, [Bar(l + x, r + x, t + y) for l, r, t in green_bars(frame[y:y + h, x:x + w])])
 
 
 def star_level(frame: np.ndarray, bar: Bar) -> int | None:

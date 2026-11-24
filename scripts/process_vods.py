@@ -100,7 +100,7 @@ def start_prefetch(url: str | None):
     if (STATES / vid / ".done").exists() or (FRAMES / vid).exists():
         return
     # Disk is the batch's limit: the download needs room for itself (a 9 h VOD's mp4 is
-    # ~11.5 GB, and yt-dlp's merge briefly holds two copies) on top of what the next VOD's
+    # ~11.5 GB; video only since 2026-11-24, so no merge copy any more) on top of what the next VOD's
     # own turn still wants free (--min-free-gb).
     free_gb = shutil.disk_usage(FRAMES.parent).free / 1e9
     if free_gb < OPTS["min_free_gb"] + OPTS["prefetch_gb"]:
@@ -247,7 +247,8 @@ def main():
                         help="Don't download the next VOD in the background while the current one is read")
     parser.add_argument("--prefetch-gb", type=float, default=25,
                         help="Download the next VOD in the background only when this much more than "
-                             "--min-free-gb is free (default 25: the mp4 plus yt-dlp's merge copy)")
+                             "--min-free-gb is free (default 25: set when yt-dlp's audio merge briefly held two "
+                             "copies of the mp4; video-only downloads need about half)")
     args = parser.parse_args()
     JOBS[0] = args.jobs
     OPTS.update(skip_augments=args.skip_augment_icons, slim=args.slim_frames, keep_frames_gb=args.keep_frames_gb,

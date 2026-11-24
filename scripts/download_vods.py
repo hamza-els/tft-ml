@@ -20,7 +20,7 @@ import imageio_ffmpeg
 
 URLS_FILE = Path("data/raw/urls.txt")
 OUTPUT_DIR = Path("data/raw/vods")
-FORMAT = "bestvideo[height<=1080][vcodec^=avc]+bestaudio/best"
+FORMAT = "bestvideo[height<=1080][vcodec^=avc]/best[height<=1080]"   # video only, as run_pipeline.FORMAT
 
 
 def load_urls(path: Path) -> list[str]:
