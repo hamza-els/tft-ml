@@ -718,12 +718,12 @@
 "augments": [
 "Spreading Roots",
 "Stand United",
-"Spreading Roots"
+"Max Build"
 ],
 "frame": "frame_020872.jpg",
 "tiers": [
 "gold",
-"unknown",
+"silver",
 "gold"
 ]
 },
@@ -1197,9 +1197,9 @@
 ],
 "frame": "frame_016332.jpg",
 "tiers": [
-"unknown",
 "silver",
-"unknown",
+"silver",
+"silver",
 "prismatic"
 ]
 },
@@ -1287,9 +1287,9 @@
 "Solo Plate",
 "Staffsmith"
 ],
-"frame": "frame_050483.jpg",
+"frame": "frame_050537.jpg",
 "tiers": [
-"unknown",
+"silver",
 "gold",
 "gold"
 ]
@@ -1460,12 +1460,16 @@ null
 "augments": [
 "Solo Plate",
 "Verticality I",
+"Big Grab Bag",
+"Big Grab Bag",
 "Big Grab Bag"
 ],
 "frame": "frame_031349.jpg",
 "tiers": [
 "gold",
 "silver",
+"gold",
+"gold",
 "gold"
 ]
 },
@@ -1750,25 +1754,25 @@ null
 "augments": [
 "Replication",
 "Partial Ascension",
-"Verticality I"
+"Verticality II"
 ],
 "frame": "frame_031800.jpg",
 "tiers": [
-"unknown",
-"unknown",
+"gold",
+"silver",
 "gold"
 ]
 },
 "eUOJYk4MKaY/game_07": {
 "augments": [
-"Big Grab Bag",
+"Capital Gains II",
 "Pandora's Items II",
 "Duo Queue"
 ],
 "frame": "frame_036785.jpg",
 "tiers": [
-"unknown",
-"unknown",
+"gold",
+"gold",
 "gold"
 ]
 },
@@ -2677,7 +2681,7 @@ null
 "Glass Cannon I",
 "Exclusive Customization"
 ],
-"frame": "frame_024429.jpg",
+"frame": "frame_024311.jpg",
 "tiers": [
 "silver",
 "silver",

@@ -15,53 +15,8 @@
     "Trifecta I"
    ],
    "kept": "Challenger's Grace",
-   "similarity": 0.996,
-   "tier": "gold"
-  },
-  {
-   "names": [
-    "Spreading Roots",
-    "Max Build"
-   ],
-   "kept": "Spreading Roots",
-   "similarity": 0.995,
-   "tier": "gold"
-  },
-  {
-   "names": [
-    "Pandora's Items II",
-    "Solo Plate"
-   ],
-   "kept": "Pandora's Items II",
-   "similarity": 0.993,
-   "tier": "gold"
-  },
-  {
-   "names": [
-    "Patient Study",
-    "Caretaker's Ally"
-   ],
-   "kept": "Patient Study",
-   "similarity": 0.992,
-   "tier": "gold"
-  },
-  {
-   "names": [
-    "Woven Magic",
-    "Caretaker's Ally"
-   ],
-   "kept": "Woven Magic",
-   "similarity": 0.992,
-   "tier": "gold"
-  },
-  {
-   "names": [
-    "Team Building",
-    "Pandora's Bench"
-   ],
-   "kept": "Team Building",
    "similarity": 0.99,
-   "tier": "silver"
+   "tier": "gold"
   },
   {
    "names": [
@@ -77,17 +32,6 @@
  "by_tier": [
   {
    "names": [
-    "Silver Destiny",
-    "Spirit Of Redemption"
-   ],
-   "tiers": [
-    "silver",
-    "gold"
-   ],
-   "similarity": 0.987
-  },
-  {
-   "names": [
     "Ascension",
     "Partial Ascension"
    ],
@@ -95,7 +39,7 @@
     "gold",
     "silver"
    ],
-   "similarity": 0.962
+   "similarity": 0.965
   },
   {
    "names": [
@@ -106,7 +50,29 @@
     "silver",
     "gold"
    ],
-   "similarity": 0.956
+   "similarity": 0.951
+  },
+  {
+   "names": [
+    "Verticality I",
+    "Verticality II"
+   ],
+   "tiers": [
+    "silver",
+    "gold"
+   ],
+   "similarity": 0.927
+  },
+  {
+   "names": [
+    "Healing Orbs I",
+    "Healing Orbs II"
+   ],
+   "tiers": [
+    "silver",
+    "gold"
+   ],
+   "similarity": 0.925
   },
   {
    "names": [
@@ -116,6 +82,17 @@
    "tiers": [
     "gold",
     "silver"
+   ],
+   "similarity": 0.924
+  },
+  {
+   "names": [
+    "Caretaker's Ally",
+    "Caretaker's Favor"
+   ],
+   "tiers": [
+    "silver",
+    "gold"
    ],
    "similarity": 0.922
   },
@@ -128,7 +105,18 @@
     "silver",
     "prismatic"
    ],
-   "similarity": 0.919
+   "similarity": 0.914
+  },
+  {
+   "names": [
+    "Pandora's Items I",
+    "Pandora's Items II"
+   ],
+   "tiers": [
+    "silver",
+    "gold"
+   ],
+   "similarity": 0.914
   },
   {
    "names": [
@@ -140,17 +128,7 @@
     "silver"
    ],
    "similarity": 0.909
-  },
-  {
-   "names": [
-    "Healing Orbs I",
-    "Healing Orbs II"
-   ],
-   "tiers": [
-    "silver",
-    "gold"
-   ],
-   "similarity": 0.902
   }
- ]
+ ],
+ "odd": []
 }

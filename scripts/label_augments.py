@@ -5,6 +5,7 @@ Usage:
     python scripts/label_augments.py              # games not labelled yet
     python scripts/label_augments.py --all        # every game, labelled ones too
     python scripts/label_augments.py --recheck    # labelled games where the stream overlay names other augments
+    python scripts/label_augments.py --games VOD/game_XX ...   # just these games (e.g. the slips build_augment_templates.py lists)
 
 A game has exactly three augments, picked at 2-1, 3-2 and 4-2 and kept to the
 end, so one look at a late own-board frame labels the whole game. The screen
@@ -46,6 +47,7 @@ from src.state.game_data import GameData
 from src.utils import paths
 from src.vision.arena import home_board_rows
 from src.vision.augments import AugmentReader, expected_counts
+from src.vision.augment_art import render as render_art
 from src.vision.unit_bar import item_hue, item_vec
 
 LABELS = paths.REPO / "data" / "processed" / "augment_labels.json"
@@ -73,6 +75,12 @@ def feats(img, bright: bool = False, trim: int = 0):
 OFFICIAL_CACHE = paths.LOCAL / "cache" / "augments_official.pkl"
 
 
+def _unit(a: np.ndarray) -> np.ndarray:
+    a = a.astype(np.float32)
+    a = a - a.reshape(-1, 3).mean(axis=0)
+    return (a / max(float(np.linalg.norm(a)), 1e-6)).ravel()
+
+
 def official_icons() -> list[tuple[str, np.ndarray]]:
     """
     (file stem, image) of every official augment icon. Read from one local cache
@@ -94,7 +102,7 @@ def official_icons() -> list[tuple[str, np.ndarray]]:
 
 
 class AugmentLabeler:
-    def __init__(self, show_all: bool, recheck: bool = False):
+    def __init__(self, show_all: bool, recheck: bool = False, only: set[str] | None = None):
         self.reader = AugmentReader()
         # "+" versions share their augment's icon, so they are one label (GameData.augment_label)
         self.official = []
@@ -110,6 +118,7 @@ class AugmentLabeler:
         self.official_tiers = {}
         for n, t, _, _ in self.official:
             self.official_tiers.setdefault(n, set()).add(t)
+        self._art_mat = None                    # official art rendered as bar icons (official_suggestions)
         labels = load(LABELS)
         self.games, self.overlay = [], {}
         for states in sorted(paths.STATES.glob("*/game_*.jsonl")):
@@ -124,6 +133,9 @@ class AugmentLabeler:
                 lab = [base(n) for n in (labels.get(key) or {}).get("augments", []) if not n.startswith("_")]
                 seen = [base(n) for n in ov.get("augments") or []]
                 if key in labels and seen and set(lab) != set(seen):
+                    self.games.append((key, states))
+            elif only is not None:
+                if key in only:
                     self.games.append((key, states))
             elif show_all or key not in labels:
                 self.games.append((key, states))
@@ -202,7 +214,7 @@ class AugmentLabeler:
         for n, (sc, stem) in sorted(best.items(), key=lambda kv: -kv[1][0])[:n_footage]:
             tiers = self.official_tiers.get(n, set()) - {"unknown"}
             tier = next(iter(tiers)) if len(tiers) == 1 else self.reader.tier(icon)
-            out.append((n, tier, sc, self.reader.templates[stem], "footage"))
+            out.append((n, tier, sc, self.reader.templates[stem], "art" if stem.startswith("art__") else "footage"))
             seen.add(n)
         for n, t, sc in self.official_suggestions(icon):
             if len(out) >= total:
@@ -213,23 +225,29 @@ class AugmentLabeler:
                 out.append((n, t, sc, img, "art"))
         return out
 
-    def official_suggestions(self, icon, per_method: int = 4):
+    def official_suggestions(self, icon, n: int = 8):
         """
-        Closest official icons by two measures - as is, and both brightness-
-        stretched (footage icons are dim) - the top few of each, interleaved.
-        Each finds icons the other misses; on 7 icons checked by eye the
-        right one was in the combined list far more often than in either.
+        Official art rendered to look like a bar icon (src/vision/augment_art.py), matched as the
+        reader matches templates; best (name, tier) first. On augments left out of fitting the
+        render, the right one came first for 93% of labelled icons (feature comparison: 62%).
         """
-        lists = []
-        for m, f in enumerate((feats(icon), feats(icon, bright=True, trim=2))):
-            lists.append(sorted(((float(f[0] @ o[m][0]) * float(f[1] @ o[m][1]), n, t)
-                                 for n, t, _, o in self.official), reverse=True)[:per_method * 2])
+        if self._art_mat is None:
+            self._art_mat = np.stack([_unit(render_art(img)[2:-2, 2:-2]) for _, _, img, _ in self.official])
+        h, w = icon.shape[:2]
+        if (h, w) != (38, 37):
+            icon = cv2.resize(icon, (37, 38))
+        win = np.lib.stride_tricks.sliding_window_view(icon.astype(np.float32), (34, 33, 3))[:, :, 0]
+        p = win.reshape(-1, 34 * 33, 3)
+        p = (p - p.mean(axis=1, keepdims=True)).reshape(len(p), -1)
+        scores = (self._art_mat @ (p / np.maximum(np.linalg.norm(p, axis=1, keepdims=True), 1e-6)).T).max(axis=1)
         out, seen = [], set()
-        for k in range(per_method * 2):
-            for lst in lists:
-                if k < len(lst) and (lst[k][1], lst[k][2]) not in seen and len(out) < per_method * 2:
-                    seen.add((lst[k][1], lst[k][2]))
-                    out.append((lst[k][1], lst[k][2], lst[k][0]))
+        for k in np.argsort(-scores):
+            nm, t = self.official[k][0], self.official[k][1]
+            if (nm, t) not in seen:
+                seen.add((nm, t))
+                out.append((nm, t, float(scores[k])))
+            if len(out) >= n:
+                break
         return out
 
     # ── window ────────────────────────────────────────────────────────────────
@@ -398,8 +416,9 @@ def main():
     parser.add_argument("--all", action="store_true", help="Every game, labelled ones too")
     parser.add_argument("--recheck", action="store_true",
                         help="Only labelled games whose stream overlay names other augments (overlay shown on screen)")
+    parser.add_argument("--games", nargs="+", metavar="VOD/game_XX", help="Just these games (labelled or not)")
     args = parser.parse_args()
-    app = AugmentLabeler(args.all, args.recheck)
+    app = AugmentLabeler(args.all, args.recheck, set(args.games) if args.games else None)
     app.root.mainloop()
 
 
