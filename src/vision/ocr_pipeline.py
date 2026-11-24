@@ -19,6 +19,7 @@ import torch
 
 from src.utils.config import vision_cfg
 from src.vision.hud import HudDetector, HudState, shift
+from src.vision.text_bank import EMPTY, text_bank
 
 _ROOT = Path(__file__).resolve().parents[2]
 
@@ -207,9 +208,17 @@ def extract_ui_and_lobby(
     others: list[float] = []
 
     def read(key: str, region, allowlist: str) -> str:
-        if cache is None:
+        def look():
+            # the text bank first (a picture seen before, src/vision/text_bank.py), else OCR
+            bank = text_bank()
+            if bank is not None:
+                value = bank.lookup(key, cv2.cvtColor(crop_region(frame, region), cv2.COLOR_BGR2GRAY))
+                if value:
+                    return value
             return _read_text(frame, region, allowlist)
-        return cache.get(key, frame, region, lambda: _read_text(frame, region, allowlist))
+        if cache is None:
+            return look()
+        return cache.get(key, frame, region, look)
 
     if hud.stage_visible:
         ix, iy = hud.stage_icon_xy
@@ -318,6 +327,11 @@ def read_shop(frame: np.ndarray, hud: HudState | None = None,
         region = shift(slot, dx)
 
         def read(region=region):
+            bank = text_bank()
+            if bank is not None:
+                value = bank.lookup("shop", cv2.cvtColor(crop_region(frame, region), cv2.COLOR_BGR2GRAY))
+                if value is not None:
+                    return None if value == EMPTY else value
             boxes = sorted(_read_boxes(frame, region, _ALLOWLIST["shop"], scale=2))
             return snap_name(" ".join(text for _, text, _ in boxes), CHAMPIONS)
         names.append(read() if cache is None else cache.get(f"shop{i}", frame, region, read))
