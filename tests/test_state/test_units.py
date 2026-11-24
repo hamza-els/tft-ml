@@ -192,3 +192,14 @@ def test_loose_unit_kept_only_when_counter_is_short():
     out, stats = clean_units(rows, [9] * 3, load_game_data(), [(4, 1)] * 3)
     assert sorted(u["name"] for u in out[1]["board"]) == ["Ashe", "Taric"]
     assert stats["loose_dropped"] == 3
+
+
+def test_sure_unit_not_erased_between_empty_frames():
+    # bar hidden on most frames, but the one reading is sure: the unit was there
+    rows = _rows([[], [], [_unit("h10", "Rammus", p=0.96)], [], []])
+    out, _ = clean_units(rows, [5] * 5)
+    assert [u["name"] for u in out[2]["board"]] == ["Rammus"]
+    # an unsure lone reading between empty frames is still taken as noise
+    rows = _rows([[], [], [_unit("h10", "Rammus", p=0.4)], [], []])
+    out, _ = clean_units(rows, [5] * 5)
+    assert out[2]["board"] == []

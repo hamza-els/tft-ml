@@ -20,7 +20,12 @@ a tooltip. The sequence fixes most of it:
    noise and takes their value: the unit never left, or was never something
    else. "Longer" is by weight (time x classifier confidence), and only runs
    of up to MAX_BLIP_FRAMES frames are overwritten, so a real swap that
-   lasted a while stays.
+   lasted a while stays. A unit read with confidence >= P_SURE is never
+   overwritten by "empty": a sure reading is strong evidence the unit was
+   there, a missing bar is weak (2026-11-24: on 1,596 held-out labelled
+   crops, emptying such readings removed 34 correctly read units; many sat
+   between frames where the same unit's bar was hidden, and the empty
+   frames outweighed it).
 
 3. Star level and items are smoothed the same way within each stretch of the
    same unit standing on the same spot, and missing readings (badge hidden)
@@ -64,6 +69,9 @@ EMPTY = None
 # overlapping units hide health bars for a frame far more often than a
 # unit appears from nowhere. An empty reading counts this much of a sure one.
 EMPTY_WEIGHT = 0.5
+# A unit reading at least this sure is not erased as a flicker of "empty"
+# (it can still be renamed by agreeing neighbours). 0.5-0.8 scored the same.
+P_SURE = 0.8
 
 
 def frame_weights(frames: list[int], max_seconds: float = MAX_STABLE_SECONDS) -> list[float]:
@@ -75,13 +83,15 @@ def frame_weights(frames: list[int], max_seconds: float = MAX_STABLE_SECONDS) ->
     return out
 
 
-def smooth(labels: list, weights: list[float], max_blip: int = MAX_BLIP_FRAMES) -> list:
+def smooth(labels: list, weights: list[float], max_blip: int = MAX_BLIP_FRAMES,
+           sure: list[bool] | None = None) -> list:
     """
     Overwrite short runs that interrupt two longer runs of the same label.
 
     labels: one label per reading (any hashable; None is a label too, e.g. "empty").
     weights: how much each reading counts. A run is overwritten when it has at
     most `max_blip` readings and no more total weight than each neighbour run.
+    sure: per reading, True where it may not be overwritten by EMPTY (a sure unit reading).
     """
     runs: list[list] = []          # [label, [indices], weight]
     for i, (lab, w) in enumerate(zip(labels, weights)):
@@ -100,7 +110,8 @@ def smooth(labels: list, weights: list[float], max_blip: int = MAX_BLIP_FRAMES) 
         for j in candidates:
             before, blip, after = runs[j - 1], runs[j], runs[j + 1]
             if (before[0] == after[0] and len(blip[1]) <= max_blip
-                    and blip[2] <= min(before[2], after[2])):
+                    and blip[2] <= min(before[2], after[2])
+                    and not (before[0] is EMPTY and sure is not None and any(sure[i] for i in blip[1]))):
                 for i in blip[1]:
                     out[i] = before[0]
                 before[1].extend(blip[1] + after[1])
@@ -262,7 +273,8 @@ def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None =
         known = [k for k in range(len(seen)) if not hidden[k]]
         names = [seen[k]["name"] if seen[k] else EMPTY for k in known]
         conf_known = [w[k] * (seen[k]["p"] if seen[k] else EMPTY_WEIGHT) for k in known]
-        smoothed = smooth(names, conf_known)
+        smoothed = smooth(names, conf_known,
+                          sure=[bool(seen[k]) and seen[k].get("p", 0) >= P_SURE for k in known])
         names2: list = [EMPTY] * len(seen)
         source = list(range(len(seen)))          # which reading each frame's value comes from
         for j, k in enumerate(known):
