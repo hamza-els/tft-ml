@@ -214,6 +214,17 @@ unit_bar:
   # least this at its badge position: the Little Legend's nameplate bar has a
   # level box there instead.
   badge_min_score: 0.35
+  # ...or at least weak_badge_score when the bar has a unit bar's shape and colour (unit_bar.is_unit_bar):
+  # height and width in px (planning: full health), and mean blue and red of its green pixels at most
+  # this (unit bars ~40, the nameplate's mint bar ~65-130). weak_badge_score 1.0 turns this off.
+  weak_badge_score: 0.15
+  unit_bar_height: [3, 6]
+  unit_bar_width: [56, 68]
+  unit_bar_max_blue_red: 70
+  # Bar finding (unit_bar._bars_in_mask): bridge 1-2 px gaps along a row (tick marks on tanky
+  # units' bars split them), and split a blob of two touching stacked bars into its bands.
+  bridge_gaps: true
+  split_stacked: true
   # Bars no hex claimed (a unit being dragged or off its hex; unit_reader.loose_bars).
   # Board bars' tops span y 299-619 (measured on 150 frames), bench bars start at 654.
   loose:

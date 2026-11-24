@@ -53,14 +53,104 @@ def expected_left(cx: float) -> float:
     return cx + _CFG["x_offset"] + _CFG["x_lean"] * (cx - 960)
 
 
+_GREEN_LO, _GREEN_HI = (0, 151, 0), (129, 255, 129)     # B < 130, G > 150, R < 130
+
+
+_BRIDGE = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 1))
+
+
+def _bars_in_mask(mask: np.ndarray) -> list[tuple[int, int, int]]:
+    """
+    Bars in a green mask: (left, right, top). Two things are mended first:
+    - gaps of 1-2 px along a row are bridged: tanky units' bars carry dark
+      tick marks, and a tick through every row split the bar, so the piece
+      left over started ~25 px right of the bar and its badge wasn't found;
+    - a blob of two bars stacked a few px apart (a rider's bar over the Big
+      Furry Friend's, touching through a half-filled row) is split into its
+      bands, each band's own left and top (the badge sits by the lower one).
+    """
+    if _CFG.get("bridge_gaps", True):
+        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, _BRIDGE)
+    n, labels, stats, _ = cv2.connectedComponentsWithStats(mask)
+    out = []
+    for i, (x, y, w, h, area) in enumerate(stats[1:n], start=1):
+        if w < _CFG["min_width"] or h > 12 or area < 2 * w:
+            continue
+        if h >= 8 and _CFG.get("split_stacked", True):
+            bands = _bands(labels[y:y + h, x:x + w] == i)
+            if len(bands) > 1:
+                out += [(int(x + l), int(x + r), int(y + t)) for l, r, t in bands if r - l >= _CFG["min_width"]]
+                continue
+        out.append((int(x), int(x + w), int(y)))
+    return out
+
+
+def _bands(blob: np.ndarray) -> list[tuple[int, int, int]]:
+    """Horizontal bands of a blob split at rows less than 80% filled, each at least 3 rows:
+    (left, right, top) within the blob. One band: the blob is one bar."""
+    fill = blob.sum(1) / blob.shape[1]
+    bands, start = [], None
+    for k, full in enumerate(list(fill >= 0.8) + [False]):
+        if full and start is None:
+            start = k
+        elif not full and start is not None:
+            if k - start >= 3:
+                cols = np.flatnonzero(blob[start:k].any(0))
+                bands.append((int(cols[0]), int(cols[-1]) + 1, start))
+            start = None
+    return bands
+
+
 def green_bars(img: np.ndarray) -> list[tuple[int, int, int]]:
     """Own (green) health bars in an image: (left, right, top) in image coordinates."""
-    px = img.astype(np.int16)
-    b, g, r = px[..., 0], px[..., 1], px[..., 2]
-    mask = ((g > 150) & (r < 130) & (b < 130)).astype(np.uint8)
-    n, _, stats, _ = cv2.connectedComponentsWithStats(mask)
-    return [(int(x), int(x + w), int(y)) for x, y, w, h, area in stats[1:n]
-            if w >= _CFG["min_width"] and h <= 12 and area >= 2 * w]
+    return _bars_in_mask(cv2.inRange(img, _GREEN_LO, _GREEN_HI))
+
+
+def green_bars_at(frame: np.ndarray, region: tuple[int, int, int, int]) -> list[tuple[int, int, int]]:
+    """
+    green_bars(frame[region]), in frame coordinates, from the frame's green
+    mask made once per frame (the same pixels, so the same bars): making it
+    per hex and bench slot was most of the bar search's time.
+    """
+    x, y, w, h = region
+    x, y = max(0, x), max(0, y)
+    cache = _frame_cache(frame)
+    if cache.get("mask") is None:
+        cache["mask"] = cv2.inRange(frame, _GREEN_LO, _GREEN_HI)
+    return [(l + x, r + x, t + y) for l, r, t in _bars_in_mask(cache["mask"][y:y + h, x:x + w])]
+
+
+def is_unit_bar(frame: np.ndarray, bar: Bar) -> bool:
+    """
+    A green bar is an own unit's when a star badge sits on its left: the
+    Little Legend's nameplate bar has a level box there instead. A badge
+    scoring at least badge_min_score is enough. A weaker one (down to
+    weak_badge_score: mostly the dark bronze 1-star badge on dark ground, or
+    one half behind another unit) counts when the bar itself is a unit's:
+    unit bars are 3-6 px tall, 56-68 px wide at full health (planning) and
+    pure green; nameplate bars are 12 px tall or mint (blue and red ~65-130).
+    On 600 planning frames (2026-11-24), 340 bars scored 0.15-0.35; the
+    unit-shaped ones looked at were units, and the three nameplates of that
+    shape (scores 0.09-0.14, all mint) fail on both counts.
+    """
+    score = max(star_scores(frame, bar).values(), default=0.0)
+    if score >= _CFG["badge_min_score"]:
+        return True
+    if score < _CFG["weak_badge_score"]:
+        return False
+    lo, hi = _CFG["unit_bar_width"]
+    if not lo <= bar.right - bar.left <= hi:
+        return False
+    strip = frame[max(0, bar.top):bar.top + 13, bar.left:bar.right]
+    green = cv2.inRange(strip, _GREEN_LO, _GREEN_HI) > 0
+    rows = green.mean(1) > 0.3
+    height = int(np.argmin(rows)) if not rows.all() else len(rows)
+    hlo, hhi = _CFG["unit_bar_height"]
+    if not hlo <= height <= hhi:
+        return False
+    px = strip[green]
+    limit = _CFG["unit_bar_max_blue_red"]
+    return bool(len(px)) and float(px[:, 0].mean()) <= limit and float(px[:, 2].mean()) <= limit
 
 
 def find_bar(frame: np.ndarray, cx: float, top: int) -> Bar | None:
@@ -79,12 +169,12 @@ def find_bar(frame: np.ndarray, cx: float, top: int) -> Bar | None:
     """
     want = expected_left(cx)
     x0, y0 = max(0, int(want) - 40), max(0, top - _CFG["search_above"])
-    zone = frame[y0:top + _CFG["search_below"], x0:int(want) + 110]
-    near = sorted((abs(l + x0 - want), l + x0, r + x0, t + y0) for l, r, t in green_bars(zone)
-                  if abs(l + x0 - want) <= _CFG["max_dx"])
+    zone = (x0, y0, int(want) + 110 - x0, top + _CFG["search_below"] - y0)
+    near = sorted((abs(l - want), l, r, t) for l, r, t in green_bars_at(frame, zone)
+                  if abs(l - want) <= _CFG["max_dx"])
     for _, left, right, top_y in near:
         bar = Bar(left, right, top_y)
-        if max(star_scores(frame, bar).values(), default=0.0) >= _CFG["badge_min_score"]:
+        if is_unit_bar(frame, bar):
             return bar
     return None
 
@@ -337,10 +427,17 @@ def held_count(slots: list[dict]) -> int:
 _STARS: dict[int, np.ndarray] | None = None
 _STAR_MAT: tuple | None = None
 _ROOT = Path(__file__).resolve().parents[2]
-# Scores of the frame last scored, by (bar left, bar top): one bar is checked by its hex, by the
-# loose/rider search and for its star level, so each is computed once. The frame is kept
-# (identity check), so a frame changed in place after scoring would get stale scores.
+# Per frame (the last one seen): badge scores by (bar left, bar top), as one bar is checked by its
+# hex, by the loose/rider search and for its star level; and the green mask. The frame is kept
+# (identity check), so a frame changed in place after scoring would get stale results.
 _SCORED: dict = {"frame": None, "scores": {}}
+
+
+def _frame_cache(frame: np.ndarray) -> dict:
+    if _SCORED["frame"] is not frame:
+        _SCORED.clear()
+        _SCORED.update(frame=frame, scores={})
+    return _SCORED
 
 
 def star_templates() -> dict[int, np.ndarray]:
@@ -390,9 +487,7 @@ def star_scores_many(frame: np.ndarray, bars: list[Bar]) -> list[dict[int, float
     correlation as cv2.TM_CCOEFF_NORMED, the same numbers to float precision):
     one cv2.matchTemplate per template and bar was ~40% of reading a frame's units.
     """
-    if _SCORED["frame"] is not frame:
-        _SCORED["frame"], _SCORED["scores"] = frame, {}
-    cache = _SCORED["scores"]
+    cache = _frame_cache(frame)["scores"]
     keys, T, (th, tw) = _star_matrix()
     _, _, w, h = _CFG["badge"]
     sx, sy = _CFG["badge_slack"]
@@ -447,9 +542,7 @@ def star_scores(frame: np.ndarray, bar: Bar) -> dict[int, float]:
 def prefetch_star_scores(frame: np.ndarray, region: tuple[int, int, int, int]) -> None:
     """Score every green bar in a region of the frame in one go (later star_scores calls on the
     same frame are then lookups)."""
-    x, y, w, h = region
-    x, y = max(0, x), max(0, y)
-    star_scores_many(frame, [Bar(l + x, r + x, t + y) for l, r, t in green_bars(frame[y:y + h, x:x + w])])
+    star_scores_many(frame, [Bar(l, r, t) for l, r, t in green_bars_at(frame, region)])
 
 
 def star_level(frame: np.ndarray, bar: Bar) -> int | None:

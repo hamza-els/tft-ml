@@ -31,8 +31,8 @@ from src.vision.board_counter import BoardCounter
 from src.vision.tooltip import CFG as TOOLTIP_CFG, covered_share, panel_in_crop, tooltip_boxes
 from src.vision.board import BoardHexes
 from src.utils.config import vision_cfg
-from src.vision.unit_bar import (Bar, UnitItemReader, bench_bar, board_bar, expected_left, green_bars,
-                                 prefetch_star_scores,
+from src.vision.unit_bar import (Bar, UnitItemReader, bench_bar, board_bar, expected_left, green_bars_at,
+                                 is_unit_bar, prefetch_star_scores,
                                  star_level, star_scores)
 from src.vision.unit_classifier import UnitClassifier
 
@@ -191,9 +191,9 @@ def _badged_bars(frame: np.ndarray) -> list[Bar]:
     """Every green bar in the board area with a star badge on its left (a unit's, not a nameplate)."""
     x0, y0, w, h = _LOOSE["zone"]
     out = []
-    for left, right, top in green_bars(frame[y0:y0 + h, x0:x0 + w]):
-        bar = Bar(left + x0, right + x0, top + y0)
-        if max(star_scores(frame, bar).values(), default=0.0) >= _BAR_CFG["badge_min_score"]:
+    for left, right, top in green_bars_at(frame, (x0, y0, w, h)):
+        bar = Bar(left, right, top)
+        if is_unit_bar(frame, bar):
             out.append(bar)
     return out
 
@@ -282,11 +282,11 @@ def loose_bars(frame: np.ndarray, board: BoardHexes,
     taken = [bar for _, _, bar in claimed]
     used = {(int(at[1]), int(at[2])) for at, _, _ in claimed if at[0] == "h"}
     out = []
-    for left, right, top in green_bars(frame[y0:y0 + h, x0:x0 + w]):
-        bar = Bar(left + x0, right + x0, top + y0)
+    for left, right, top in green_bars_at(frame, (x0, y0, w, h)):
+        bar = Bar(left, right, top)
         if any(_same_bar(bar, t) for t in taken):
             continue
-        if max(star_scores(frame, bar).values(), default=0.0) < _BAR_CFG["badge_min_score"]:
+        if not is_unit_bar(frame, bar):
             continue
         spot = _nearest_free_hex(board, bar, used, cfg)
         if spot is None:

@@ -85,3 +85,68 @@ def test_templates_found_from_any_working_directory(tmp_path, monkeypatch):
     monkeypatch.setattr(ub, "_STAR_MAT", None)
     monkeypatch.chdir(tmp_path)
     assert sorted(ub.star_templates()) == [1, 2, 3]
+
+
+# ── green bars and the unit-bar rule ─────────────────────────────────────────
+
+def test_green_bars_at_equals_green_bars_on_the_slice(frames):
+    for frame in frames:
+        for x, y, w, h in [(420, 280, 1100, 360), (300, 650, 400, 150), (-20, -10, 300, 200), (1800, 1000, 300, 200)]:
+            x0, y0 = max(0, x), max(0, y)
+            want = [(l + x0, r + x0, t + y0) for l, r, t in green_bars(frame[y0:y + h, x0:x + w])]
+            assert ub.green_bars_at(frame, (x, y, w, h)) == want
+
+
+def _bar_frame(color, w=63, h=5):
+    frame = np.zeros((1080, 1920, 3), np.uint8)
+    frame[500:500 + h, 900:900 + w] = color
+    return frame, Bar(900, 900 + w, 500)
+
+
+PURE_GREEN, MINT = (40, 222, 43), (110, 190, 95)        # BGR: unit bar, nameplate bar
+
+
+@pytest.mark.parametrize("color, w, h, score, want", [
+    (PURE_GREEN, 63, 5, 0.40, True),     # clear badge: enough on its own
+    (MINT, 63, 12, 0.40, True),
+    (PURE_GREEN, 63, 5, 0.20, True),     # weak badge, unit-shaped pure green bar
+    (PURE_GREEN, 63, 4, 0.16, True),
+    (PURE_GREEN, 63, 5, 0.10, False),    # badge too weak whatever the bar
+    (MINT, 63, 5, 0.20, False),          # nameplate colour
+    (PURE_GREEN, 63, 12, 0.20, False),   # nameplate height
+    (PURE_GREEN, 90, 5, 0.20, False),    # too wide (scenery strips)
+    (PURE_GREEN, 40, 5, 0.20, False),    # half hidden: needs a clear badge
+])
+def test_is_unit_bar(monkeypatch, color, w, h, score, want):
+    frame, bar = _bar_frame(color, w, h)
+    monkeypatch.setattr(ub, "star_scores", lambda f, b: {1: score, 2: score - 0.1, 3: score - 0.2})
+    assert ub.is_unit_bar(frame, bar) is want
+
+
+def test_real_unit_bars_pass(frames):
+    for row, col in [(2, 6)]:
+        bar = ub.board_bar(frames[2], BoardHexes(), row, col)
+        assert bar is not None and ub.is_unit_bar(frames[2], bar)
+
+
+def test_tick_split_bar_is_one_bar():
+    # a 63 px bar cut by a 1 px tick through every row: one bar from its real left end
+    frame, _ = _bar_frame(PURE_GREEN)
+    frame[500:505, 923] = (20, 40, 20)
+    assert ub.green_bars_at(frame, (850, 480, 200, 40)) == [(900, 963, 500)]
+
+
+def test_stacked_bars_are_split_into_their_bands():
+    # rider's bar (4 rows) over the BFF's (4 rows), touching through a half-filled row
+    frame = np.zeros((1080, 1920, 3), np.uint8)
+    frame[407:411, 1267:1330] = PURE_GREEN
+    frame[411, 1275:1310] = PURE_GREEN
+    frame[412:416, 1272:1334] = PURE_GREEN
+    assert sorted(ub.green_bars_at(frame, (1200, 380, 200, 60))) == [(1267, 1330, 407), (1272, 1334, 412)]
+
+
+def test_solid_tall_blob_is_not_split():
+    frame, _ = _bar_frame(MINT, 63, 12)              # a nameplate bar: one solid block, one bar
+    assert ub.green_bars_at(frame, (850, 480, 200, 40)) == [(900, 963, 500)]
+    frame, _ = _bar_frame(PURE_GREEN, 63, 10)
+    assert ub.green_bars_at(frame, (850, 480, 200, 40)) == [(900, 963, 500)]
