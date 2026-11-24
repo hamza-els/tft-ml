@@ -37,6 +37,7 @@ from collections import Counter
 from functools import lru_cache
 from pathlib import Path
 
+from src.state.events import bought_by_row
 from src.state.game_data import load_game_data
 from src.state.units import clean_units
 from src.vision.arena import home_board_rows, planning_rows
@@ -405,7 +406,8 @@ def clean_game(rows: list[dict], augment_label: dict | None = None) -> list[dict
     # readings off someone else's board are ignored.
     aug_names, aug_tiers, aug_picked = game_augments(rows, home, augment_label)
     held_augments = [[a for a, p in zip(aug_names, aug_picked) if i >= p] for i in range(len(rows))]
-    units, _ = clean_units(rows, final["level"], load_game_data(), rounds, checked["gold"], held_augments)
+    bought = bought_by_row(rows, load_game_data())              # src/state/events.py
+    units, _ = clean_units(rows, final["level"], load_game_data(), rounds, checked["gold"], held_augments, bought)
 
     cleaned = []
     for i, row in enumerate(rows):
@@ -417,6 +419,8 @@ def clean_game(rows: list[dict], augment_label: dict | None = None) -> list[dict
         new.pop("units_raw", None)
         new.pop("board_counter", None)
         new["board"], new["bench"] = units[i]["board"], units[i]["bench"]
+        new["item_events"] = units[i].get("item_events", [])     # src/state/items.py
+        new["bought"] = bought[i]                                  # champions bought on this frame
         if not units[i]["read"] and (new["board"] or new["bench"]):
             filled.append("board")
         held = sum(1 for p in aug_picked if i >= p)

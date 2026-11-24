@@ -95,6 +95,8 @@ planning board forward: the units only move during combat and come back.
 
 from collections import Counter, defaultdict
 
+from src.state.items import track_items
+
 MAX_STABLE_SECONDS = 10.0
 MAX_BLIP_FRAMES = 2
 FPS = 2.0                      # frame numbers are at 2 fps (frame / 2 = seconds)
@@ -188,6 +190,9 @@ SKEPTIC = 0.5             # confidence factor of a champion that had no way onto
 SKEPTIC_SURE = 0.9        # a reading this sure shows the champion is there (board 541/543 right at 0.9)
 ALT_MIN = 0.1             # a next guess this likely may replace a doubted reading
 STACKS = True             # step 6: put a unit dragged over another back on its hex
+ACROSS_COMBAT = False     # step 6: carry a stretch into the next round when the bench is unchanged (worse: crops broken 28 -> 35 with it)
+STANDING_LOOSE = True     # keep a loose unit standing still (no sell panel) without the counter
+ITEM_TRACKS = True        # follow units' items: keep a dropped item unless the column got items back (items.py)
 
 
 def free_unit_round(key) -> bool:
@@ -236,6 +241,51 @@ def accounted(rows: list[dict], rounds: list, always: set) -> list[set | None]:
                     ok[key] |= {n for n, c in seen[prev].items() if c >= 2}
         prev = key
     return [ok[key] for key in rounds]
+
+
+BUY_FRAMES = 3            # read frames after a purchase where the bought unit is looked for on the bench
+
+
+def _apply_purchases(raws: list[list[dict]], read: list[int], bought: list, stats: dict) -> list[list[dict]]:
+    """
+    Readings per read frame with purchases (events.purchases) applied: in the BUY_FRAMES read
+    frames from a purchase of C, a bench slot that was empty on the read frame before and now
+    holds something read as another champion becomes C when the model's next guesses include
+    C or the reading is unsure (p < P_SURE). With no new bench reading at all, and no copies
+    of C it could combine with (2 one-stars), C is put in the leftmost empty bench slot, where
+    the game puts a bought unit ("bought": True on such units).
+    """
+    raws = [list(r) for r in raws]
+    for k, i in enumerate(read):
+        names = bought[i] if bought else []
+        for c in names:
+            before = raws[k - 1] if k else []
+            empty_before = {j for j in range(9)} - {int(u["at"][1:]) for u in before
+                                                     if u["at"][0] == "s" and u.get("name")}
+            for k2 in range(k, min(len(read), k + BUY_FRAMES)):
+                units = raws[k2]
+                if any(u.get("name") == c for u in units):
+                    break
+                new = [u for u in units if u["at"][0] == "s" and u.get("name")
+                       and int(u["at"][1:]) in empty_before]
+                swap = next((u for u in new if any(n == c for n, q in u.get("alt") or [])
+                             or u.get("p", 0) < P_SURE), None)
+                if swap is not None:
+                    q = next((q for n, q in swap.get("alt") or [] if n == c), 0.5)
+                    raws[k2] = [dict(u, name=c, p=round(max(q, 0.5), 3), bought=True, renamed=u["name"])
+                                if u is swap else u for u in units]
+                    stats["bought_renamed"] += 1
+                    continue
+                if new:
+                    continue
+                ones = sum(1 for u in before if u.get("name") == c and (u.get("star") or 1) == 1)
+                taken = {int(u["at"][1:]) for u in units if u["at"][0] == "s"}
+                free = [j for j in range(9) if j not in taken]
+                if ones < 2 and free:
+                    raws[k2] = units + [{"at": f"s{free[0]}", "name": c, "p": 0.5, "star": 1, "items": [],
+                                         "bought": True}]
+                    stats["bought_filled"] += 1
+    return raws
 
 
 def _doubt(units: list[dict], ok: set | None, stats: dict) -> list[dict]:
@@ -321,13 +371,22 @@ def _flags(u: dict) -> dict:
     return {k: True for k in ("carried", "filled", "loose", "doubted") if u.get(k)}
 
 
-def _keep_loose(units: list[dict], counter: int | None, stats: dict) -> list[dict]:
+def sell_panel(row: dict) -> bool:
+    """The shop bar is up but shows no card: the sell panel, shown while a unit is held."""
+    return bool(row.get("shop_visible")) and len(row.get("shop_slots") or []) == 5 and not any(row["shop_slots"])
+
+
+def _keep_loose(units: list[dict], counter: int | None, stats: dict, still: set | None = None) -> list[dict]:
     """
     A frame's readings with its loose ones (bars no hex claimed: a unit being
     dragged, or one off its hex) kept only as far as the board counter says
     the board is short: a unit dragged from the bench floats over the board
-    but the game doesn't count it until it is dropped. Without a trusted
-    count, loose readings are left out. Most confident first.
+    but the game doesn't count it until it is dropped. Most confident first.
+    Without a trusted count, a loose reading is kept when the unit stands
+    still (`still`: (name, position) also loose there on the read frames
+    before and after) and no unit is being held (no sell panel; the caller
+    passes an empty set then): a dragged unit moves and shows the sell panel,
+    a unit standing off its hex (a Big Furry Friend's high bar, ...) doesn't.
     """
     loose = [u for u in units if u.get("loose")]
     if not loose:
@@ -337,7 +396,10 @@ def _keep_loose(units: list[dict], counter: int | None, stats: dict) -> list[dic
     if counter is not None:
         on_board = sum(1 for u in fixed if u["at"][0] == "h" and not u.get("covered"))
         short = max(0, counter - on_board)
-    keep = sorted(loose, key=lambda u: -u.get("p", 0))[:short]
+        keep = sorted(loose, key=lambda u: -u.get("p", 0))[:short]
+    else:
+        keep = [u for u in loose if STANDING_LOOSE and (u.get("name"), u["at"]) in (still or set())]
+        stats["loose_standing"] += len(keep)
     stats["loose_kept"] += len(keep)
     stats["loose_dropped"] += len(loose) - len(keep)
     return fixed + keep
@@ -371,8 +433,15 @@ def board_stretches(cleaned: list[dict], read: list[int], rounds: list, gold: li
     bench = [tuple(sorted(u["name"] for at, u in c.items() if at[0] == "s")) for c in cleaned]
     out, s = [], 0
     for k in range(len(read)):
-        if k and not (rounds[read[k]] == rounds[read[k - 1]] and g[k] == g[k - 1] and bench[k] == bench[k - 1]):
-            s += 1
+        if k:
+            a, b = rounds[read[k - 1]], rounds[read[k]]
+            same = a == b and g[k] == g[k - 1]
+            # Across combat (ACROSS_COMBAT): the board is locked in combat and units come back to
+            # their hexes; it changes between rounds only through the bench (the game fills an
+            # unfull board from the bench at combat start). Gold changes then (income) anyway.
+            nxt = ACROSS_COMBAT and a is not None and b is not None and a != b
+            if not ((same or nxt) and bench[k] == bench[k - 1]):
+                s += 1
         out.append(s)
     return out
 
@@ -472,7 +541,8 @@ def _reconcile_stretches(cleaned: list[dict], stretch: list[int], w: list[float]
 
 
 def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None = None,
-                gold: list | None = None, augments: list | None = None) -> tuple[list[dict], dict]:
+                gold: list | None = None, augments: list | None = None,
+                bought: list | None = None) -> tuple[list[dict], dict]:
     """
     Cleaned board and bench for one game's rows (in frame order).
 
@@ -488,6 +558,8 @@ def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None =
             forward), for step 6. Without it step 6 is skipped.
         augments: the augment names held on each row (cleaned), for the
             team size (team-size augments). Without it none are counted.
+        bought: per row, champions bought on it (events.purchases), to find
+            the bought unit on the bench. Without it not used.
 
     Returns:
         (per-row {"board": [...], "bench": [...], "read": bool}, stats)
@@ -504,7 +576,9 @@ def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None =
              "counter_more_than_read": 0, "units_carried": 0, "covered_filled": 0,
              "loose_kept": 0, "loose_dropped": 0,
              "stretch_removed": 0, "stretch_filled": 0, "stretch_stars": 0, "stretch_stacked": 0,
-             "doubted": 0, "doubted_renamed": 0}
+             "doubted": 0, "doubted_renamed": 0, "loose_standing": 0,
+             "items_kept": 0, "item_equip": 0, "item_combine": 0, "item_removed": 0, "item_reforged": 0,
+             "item_sold": 0, "item_lost": 0, "bought_renamed": 0, "bought_filled": 0}
     rounds = rounds or [None] * len(rows)
     out = [{"board": [], "bench": [], "read": False} for _ in rows]
     if not read:
@@ -514,8 +588,13 @@ def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None =
     counts = _counter_units(rows, read, rounds)
     always = {"_unknown"} | set(game.extra_units if game is not None else ())
     ok = accounted(rows, rounds, always) if SKEPTIC < 1 and rounds[0] is not None else [None] * len(rows)
-    raw = [{u["at"]: u for u in _keep_loose(_doubt(rows[i]["units_raw"], ok[i], stats), counts.get(k), stats)}
-           for k, i in enumerate(read)]
+    loose_at = [{(u.get("name"), u["at"]) for u in rows[i]["units_raw"] if u.get("loose")} for i in read]
+    still = [set() if sell_panel(rows[i]) or k == 0 or k == len(read) - 1
+             else loose_at[k - 1] & loose_at[k] & loose_at[k + 1] for k, i in enumerate(read)]
+    readings = _apply_purchases([rows[i]["units_raw"] for i in read], read, bought, stats) if bought \
+        else [rows[i]["units_raw"] for i in read]
+    raw = [{u["at"]: u for u in _keep_loose(_doubt(units, ok[i], stats), counts.get(k), stats, still[k])}
+           for k, (i, units) in enumerate(zip(read, readings))]
     positions = sorted({at for frame in raw for at in frame})
 
     # Smoothed reading per (read frame, position).
@@ -685,6 +764,9 @@ def clean_units(rows: list[dict], levels: list, game=None, rounds: list | None =
                       if at[0] == "s"],
             "read": True,
         }
+
+    if ITEM_TRACKS:
+        track_items(out, rows, read, game, stats)
 
     # Carry the last planning board through combat and away frames.
     last = None

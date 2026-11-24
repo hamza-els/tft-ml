@@ -35,7 +35,7 @@ import cv2
 from tqdm import tqdm
 
 from src.utils.config import vision_cfg
-from src.vision.arena import combat_vetoed, home_board_rows, is_planning, planning_rows
+from src.vision.arena import combat_vetoed, home_board_rows, is_planning, planning_rows, pve_round
 from src.vision.unit_reader import UnitReader
 
 
@@ -70,7 +70,8 @@ def process_game(states_path: str, vod_dir_path: str, light: bool, progress: boo
     in_game = sorted((r for r in rows if r.get("in_game")), key=lambda r: r["frame"])
     if not any(r.get("timer_fill") is not None for r in in_game):
         return f"  {states.name}: no timer readings - run scripts/backfill_states.py first"
-    wanted = {r["frame"] for r, home, plan in zip(in_game, home_board_rows(in_game), planning_rows(in_game))
+    wanted = {r["frame"] for r, home, plan in zip(in_game, home_board_rows(in_game),
+                                                  planning_rows(in_game, pve_candidates=True))
               if home and plan}
     bar = tqdm(rows, desc=states.stem, unit="row", dynamic_ncols=True, smoothing=0, mininterval=1.0,
                disable=not progress)
@@ -104,13 +105,19 @@ def process_game(states_path: str, vod_dir_path: str, light: bool, progress: boo
             continue
         # Re-checked on the frame: states extracted before the "Combat"
         # banner check existed still count those frames as planning.
-        if not is_planning(frame):
+        pve = pve_round(row.get("stage"), row.get("round_num"))
+        if not is_planning(frame, pve=pve):
             row["planning"] = False
+            continue
+        counter = reader.read_counter(frame)
+        if pve and not (counter and counter[1] is not None):
+            # PvE round: only frames showing the planning-only "units / team size" counter
+            # (arena.planning_rows); in a fight the monsters' bars don't tell it apart
+            row["board_counter"] = counter
             continue
         # The frame classifier vetoes a fight that passed the rules for an instant, unless the
         # planning-only "units / team size" counter is up (arena.combat_vetoed, also read by
         # arena.planning_rows); a vetoed frame's units are not read.
-        counter = reader.read_counter(frame)
         clf = _frame_clf()
         if clf is not None:
             row["combat_p"] = round(clf.combat_p([frame])[0], 3)

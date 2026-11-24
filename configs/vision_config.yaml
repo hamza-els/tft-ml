@@ -283,6 +283,10 @@ arena:
   # health bars are drawn. Empty during planning.
   enemy_half: [460, 150, 1000, 150]
   max_bar_pixels: 150                  # allows for stray effects; a single enemy bar is ~500
+  # A grass arena (TRYn_hEfx7Y) lights up thousands of "green bar" pixels (5,000-13,000 in the far
+  # half; real bars and effects stay under ~2,000): from this many on, only bar-shaped green counts
+  # (blobs <= 8 px tall, >= 15 wide). Not used below it: crowded bars in a fight merge into blobs.
+  grass_green_pixels: 3000
   combat_veto: 0.3                     # frame classifier's combat probability at or above which a "planning" frame is a fight,
                                        # unless the units/team-size counter was read (arena.combat_vetoed)
   # Round timer bar under the stage bar: drains as the clock runs down and

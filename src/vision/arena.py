@@ -63,6 +63,17 @@ def home_board_mask(signatures: list, cfg: dict | None = None) -> list[bool]:
     return [bool(s) and float(np.abs(np.array(s) - median).mean()) <= limit for s in signatures]
 
 
+def pve_round(stage, round_num) -> bool:
+    """
+    Rounds against monsters: stage 1 from 1-2 on, and x-7. The monsters stand on the far half
+    with their health bars all through planning, so is_planning's far-half rule can't be used
+    there (2026-11-24: no stage-1 frame of TRYn_hEfx7Y had passed it, so stage-1 units were never read).
+    """
+    if stage is None or round_num is None:
+        return False
+    return (int(stage) == 1 and int(round_num) >= 2) or (int(stage) >= 2 and int(round_num) == 7)
+
+
 def home_board_rows(rows: list[dict], cfg: dict | None = None) -> list[bool]:
     """
     For one game's state rows: True where the player's own board is on screen.
@@ -74,7 +85,12 @@ def home_board_rows(rows: list[dict], cfg: dict | None = None) -> list[bool]:
     by_colour = home_board_mask(sigs, cfg) if any(sigs) else [True] * len(rows)
     out = []
     for row, colour in zip(rows, by_colour):
-        if row.get("away_augments") and row.get("augments"):
+        if row.get("stage") == 1:
+            # No augments exist before 2-1: a bar read then is something else (2026-11-24: in
+            # wszJroIjlMs and 4U1ElMhf6m8 a "bar" on the right marked most of stage 1 as someone
+            # else's board, so its units were never read).
+            out.append(colour)
+        elif row.get("away_augments") and row.get("augments"):
             # In combat both players' bars show (the board owner's on the left, the
             # visitor's on the right), so the bars don't say whose board it is.
             out.append(colour)
@@ -97,11 +113,17 @@ def timer_fill(frame: np.ndarray, cfg: dict | None = None) -> float:
     return round(min(1.0, float(lit.sum()) / float(cfg["timer_bar_length"])), 3)
 
 
-def planning_rows(rows: list[dict], cfg: dict | None = None) -> list[bool]:
+def planning_rows(rows: list[dict], cfg: dict | None = None, pve_candidates: bool = False) -> list[bool]:
     """
     For one game's state rows in frame order: True where the frame is in the
     planning phase (timer not yet refilled this round, and no health bars on
     the far part of the board).
+
+    PvE rounds (pve_round): the far-half rule fails on the monsters, and the
+    timer misses fights whose round kept no planning frame before them, so a
+    frame there counts only with the game's "units / team size" counter read
+    on it (drawn in planning only; stored by read_units.py). pve_candidates:
+    every PvE frame the timer allows, for read_units.py to check the counter on.
     """
     cfg = cfg or vision_cfg["arena"]
     refill = float(cfg["timer_refill"])
@@ -130,7 +152,11 @@ def planning_rows(rows: list[dict], cfg: dict | None = None) -> list[bool]:
         # the frame classifier's veto (src/vision/frame_classifier.py, stored by read_units.py):
         # a fight that passed the rules for an instant
         vetoed = combat_vetoed(row.get("combat_p"), row.get("board_counter"), cfg)
-        out.append(bool(row.get("planning")) and not in_combat and not ending and None not in key and not vetoed)
+        # PvE rounds: the stored flag fails on the monsters' bars (pve_round); timer and veto decide
+        counter = row.get("board_counter")
+        counted = isinstance(counter, (list, tuple)) and len(counter) > 1 and counter[1] is not None
+        flag = bool(row.get("planning")) or (pve_round(*key) and (pve_candidates or counted))
+        out.append(flag and not in_combat and not ending and None not in key and not vetoed)
     return out
 
 
@@ -195,12 +221,33 @@ def planning_banner_score(frame: np.ndarray, cfg: dict | None = None) -> float:
     return float(cv2.matchTemplate(zone, _PLANNING_WORD, cv2.TM_CCOEFF_NORMED).max())
 
 
-def is_planning(frame: np.ndarray, cfg: dict | None = None) -> bool:
+def far_half_bar_pixels(crop: np.ndarray, cfg: dict | None = None) -> tuple[int, int]:
     """
-    True if no health bars are drawn on the far (enemy) half of the board and
-    the "Combat" banner is not up.
+    (green, red) health-bar pixels in the far half, grass-proof: when the green count reaches
+    arena.grass_green_pixels (a grass arena: TRYn_hEfx7Y had planning on 24% of frames and units
+    read on 4.4%, other VODs 28-46%), only green in bar-shaped blobs counts. On 150 frames each
+    of 5 normal games 0-4 changed; on TRYn's 41-53% changed, all checked by eye planning.
     """
     cfg = cfg or vision_cfg["arena"]
+    green, red = health_bar_pixels(crop)
+    if green >= int(cfg.get("grass_green_pixels", 10 ** 9)):
+        px = crop.astype(np.int16)
+        mask = ((px[..., 1] > 150) & (px[..., 2] < 120) & (px[..., 0] < 120)).astype(np.uint8)
+        _, _, st, _ = cv2.connectedComponentsWithStats(mask, connectivity=8)
+        keep = (st[1:, cv2.CC_STAT_HEIGHT] <= 8) & (st[1:, cv2.CC_STAT_WIDTH] >= 15)
+        green = int(st[1:, cv2.CC_STAT_AREA][keep].sum())
+    return green, red
+
+
+def is_planning(frame: np.ndarray, cfg: dict | None = None, pve: bool = False) -> bool:
+    """
+    True if no health bars are drawn on the far (enemy) half of the board and
+    the "Combat" banner is not up. pve: a round against monsters (pve_round),
+    whose bars stand on the far half during planning: only the banner counts.
+    """
+    cfg = cfg or vision_cfg["arena"]
+    if pve:
+        return not combat_banner(frame, cfg)
     x, y, w, h = cfg["enemy_half"]
-    green, red = health_bar_pixels(frame[y:y + h, x:x + w])
+    green, red = far_half_bar_pixels(frame[y:y + h, x:x + w], cfg)
     return green + red < int(cfg["max_bar_pixels"]) and not combat_banner(frame, cfg)
