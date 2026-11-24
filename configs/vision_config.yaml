@@ -242,6 +242,12 @@ unit_bar:
     # bar's), the upper bar without one. Seen in Cu-Mg0jpCSs/game_02 (dy -5, dx -5; Rengar riding).
     tight_dy: [-8, -3]
     tight_dx: [-12, 3]
+    # ...or high (2026-11-24, Hamza: Veigar riding a BFF on h36, ZXj0GIXDaV0/game_07): the BFF's bar so
+    # high over its hex that no hex claims it, the rider's 85-95 px above. Only between bars no hex
+    # claimed: two units two rows apart (both claimed) sit 110-140 px apart.
+    high_dy: [-100, -60]
+    high_dx: [-20, 20]
+    high_drop: 85                      # a high BFF's bar sits 77-95 px over its hex's usual bar spot
   item_dx: -9                          # first item icon: dx, dy from the bar; icons are item_size square
   item_dy: 12
   item_size: 25

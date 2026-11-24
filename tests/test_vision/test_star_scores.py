@@ -172,3 +172,16 @@ def test_sparse_first_row_does_not_hide_a_unit_bar(monkeypatch):
     bar = Bar(900, 963, 499)
     monkeypatch.setattr(ub, "star_scores", lambda f, b: {1: 0.25, 2: 0.1, 3: 0.05})
     assert ub.is_unit_bar(frame, bar)
+
+
+def test_high_stacked_bff_and_rider_share_their_hex():
+    # Hamza, 2026-11-24: Veigar riding a Big Furry Friend on h36; the BFF's bar sits ~85 px over the
+    # hex's usual bar spot (loose), the rider's ~87 px above that. Before: two loose bars on h16 and h36.
+    import cv2
+    from src.vision.unit_reader import UnitReader
+    path = Path.home() / "tft_frames_temp/ZXj0GIXDaV0/game_07/frame_033700.jpg"
+    if not path.exists():
+        pytest.skip("full frames of ZXj0GIXDaV0 not on disk")
+    units = {u["at"]: u for u in UnitReader().read(cv2.imread(str(path)))}
+    assert units["h36"]["name"] == "Big Furry Friend" and "h36r" in units
+    assert not units["h36"].get("loose") and "h16" not in units

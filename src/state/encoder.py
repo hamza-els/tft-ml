@@ -230,8 +230,9 @@ class StateEncoder:
         board_traits = set(g.trait_counts(board, board_units))
         tiers, active = self._trait_tiers(board, board_units)
         level = row.get("level") or 0
-        # Team size the board shows (level + trait/item bonuses) minus slots used.
-        team_size = level + g.team_size_bonus(board_units) if level else 0
+        # Team size (level, traits, augments, team-size items anywhere: GameData.team_size) minus slots used.
+        elsewhere = [i for u in bench_units for i in u.get("items") or []] + [i for i in row.get("bench_items") or [] if i]
+        team_size = g.team_size(level, board_units, elsewhere, row.get("augments") or []) if level else 0
         slots_used = sum(g.slots(n) for n in board)
 
         parts = [

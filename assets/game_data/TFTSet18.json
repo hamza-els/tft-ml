@@ -1208,5 +1208,13 @@
   "Spellweaver Emblem": "Spellweaver",
   "Sprykin Emblem": "Sprykin",
   "Vanguard Emblem": "Vanguard"
+ },
+ "team_size_augments": {
+  "Cursed Crown": 2,
+  "New Recruit": 1,
+  "New Recruit+": 1
+ },
+ "augment_items": {
+  "Coronation": "Tactician's Crown"
  }
 }

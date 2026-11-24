@@ -9,6 +9,7 @@ state vector, so they are sorted by name and never depend on what was seen.
 """
 
 import json
+from collections import Counter
 import re
 from dataclasses import dataclass
 from functools import lru_cache
@@ -109,6 +110,10 @@ class GameData:
             if c.get("grants_trait"):
                 self.grants_trait[base] = c["grants_trait"]
         self.team_size_items: dict[str, int] = raw.get("team_size_items") or {}
+        # Augments that raise team size (New Recruit +1, Cursed Crown +2) and augments that hand
+        # out a team-size item at once (Coronation: Tactician's Crown); scripts/fetch_game_data.py.
+        self.team_size_augments: dict[str, int] = raw.get("team_size_augments") or {}
+        self.augment_items: dict[str, str] = raw.get("augment_items") or {}
         self.emblems: dict[str, str] = raw.get("emblems") or {}
 
     def cost(self, name: str) -> int:
@@ -213,6 +218,41 @@ class GameData:
         if name in self.extra_units:
             return 0
         return self.team_slots.get(name, 1)
+
+    def item_team_size(self, items) -> int:
+        """Team size from team-size items (Tactician's Crown/Cape/Shield, Choncc's ...) among `items`."""
+        return sum(self.team_size_items.get(i, 0) for i in items if i)
+
+    def team_size(self, level: int, board: list[dict], items_elsewhere=(), augments=(),
+                  kept_items: dict[str, int] | None = None) -> int:
+        """
+        Max team size worked out from the state (Hamza, 2026-11-24), instead of read off the
+        arena: level + active team-size traits (Riftbeast 10: +2) + team-size augments (New
+        Recruit +1, Cursed Crown +2) + team-size items. The items count wherever they are:
+        held by board or bench units or lying in the item column (`items_elsewhere`); their
+        text is "your team gains +1 max team size", and on footage the counter shows the +1
+        with a Tactician's Cape in the column. `kept_items` ({item: copies}) are items known
+        to be owned from earlier frames (they can't disappear), counted when more than seen
+        now; an augment that hands one out (Coronation) counts as owning it.
+        Against the counter's own team-size number on 3,984 rounds of 202 games (augments from
+        Hamza's labels, items kept once seen on 3 frames of a round): 98.4% equal; level +
+        traits + board items alone 96.1%.
+        """
+        counts = self.trait_counts([u["name"] for u in board], board)
+        size = int(level)
+        for trait, sizes in self.trait_team_size.items():
+            tier = self.active_tier(trait, counts.get(trait, 0))
+            if tier:
+                size += sizes[tier - 1]
+        size += sum(self.team_size_augments.get(a, 0) for a in augments if a)
+        held = Counter(i for u in board for i in (u.get("items") or []) if i in self.team_size_items)
+        held.update(i for i in items_elsewhere if i in self.team_size_items)
+        owned = Counter(kept_items or {})
+        for a in augments:
+            if a in self.augment_items:
+                owned[self.augment_items[a]] = max(owned[self.augment_items[a]], 1)
+        items = held | owned                                     # per item, the larger count
+        return size + sum(self.team_size_items[i] * n for i, n in items.items())
 
     def team_size_bonus(self, units: list[dict]) -> int:
         """

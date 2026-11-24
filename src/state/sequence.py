@@ -349,11 +349,11 @@ def clean_game(rows: list[dict], augment_label: dict | None = None) -> list[dict
     home = home_board_rows(rows)
     planning = planning_rows(rows)
     rounds = list(zip(final["stage"], final["round_num"]))
-    units, _ = clean_units(rows, final["level"], load_game_data(), rounds, checked["gold"])
-
     # Augments: decided once per game, per bar position (game_augments);
     # readings off someone else's board are ignored.
     aug_names, aug_tiers, aug_picked = game_augments(rows, home, augment_label)
+    held_augments = [[a for a, p in zip(aug_names, aug_picked) if i >= p] for i in range(len(rows))]
+    units, _ = clean_units(rows, final["level"], load_game_data(), rounds, checked["gold"], held_augments)
 
     cleaned = []
     for i, row in enumerate(rows):
@@ -399,7 +399,8 @@ def quality_report(rows: list[dict], cleaned: list[dict]) -> dict:
     ordered = sorted(rows, key=lambda r: r["frame"])
     _, report["units"] = clean_units(ordered, [c["level"] for c in cleaned],
                                      load_game_data(), [(c["stage"], c["round_num"]) for c in cleaned],
-                                     _despike([r.get("gold") for r in ordered]))
+                                     _despike([r.get("gold") for r in ordered]),
+                                     [c.get("augments") or [] for c in cleaned])
     first, last = cleaned[0], cleaned[-1]
     report["first"] = {k: first[k] for k in ("stage", "round_num", "hp", "level")}
     report["last"] = {k: last[k] for k in ("stage", "round_num", "hp", "level")}

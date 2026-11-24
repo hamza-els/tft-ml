@@ -108,6 +108,29 @@ def build(raw: dict, set_key: str) -> dict:
     }
 
 
+def augment_team_size(raw: dict, augment_apis: set[str] | None) -> tuple[dict, dict]:
+    """
+    Augments that raise max team size ({name: +n}, "MaxArmySizeIncrease": New Recruit,
+    Cursed Crown) and augments that hand out a team-size item at once ({name: item},
+    "Gain a Tactician's Crown": Coronation; a delayed one, "After 3 rounds, gain ...",
+    is left to the item readers). augment_apis: the set's augment api names
+    (assets/game_data/<set>_augments.json), None = every augment.
+    """
+    sizes, gives = {}, {}
+    items = {it.get("name") for it in raw.get("items", []) if (it.get("effects") or {}).get("MaxArmySizeIncrease")}
+    for it in raw.get("items", []):
+        api, name = it.get("apiName") or "", it.get("name") or ""
+        if "Augment" not in api or (augment_apis is not None and api not in augment_apis):
+            continue
+        bonus = (it.get("effects") or {}).get("MaxArmySizeIncrease")
+        if bonus:
+            sizes[name] = int(bonus)
+        m = re.match(r"\s*Gain an? ([^.<]+?)\.", re.sub(r"<[^>]+>", "", it.get("desc") or ""))
+        if m and m.group(1) in items:
+            gives[name] = m.group(1)
+    return dict(sorted(sizes.items())), dict(sorted(gives.items()))
+
+
 def shop_names(champions: dict) -> list[str]:
     """Names as printed on shop cards: form variants like 'Lux (Coven)' collapse to 'Lux'."""
     return sorted({name.split(" (")[0] for name in champions})
@@ -117,6 +140,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--set", default=vision_cfg["game_data"]["set"])
     parser.add_argument("--from-file", help="Use an already downloaded en_us.json instead of downloading")
+    parser.add_argument("--team-size-only", action="store_true",
+                        help="Only add the augment team-size fields to the existing <set>.json")
     args = parser.parse_args()
 
     if args.from_file:
@@ -128,9 +153,17 @@ def main():
         resp.raise_for_status()
         raw = resp.json()
 
-    game = build(raw, args.set)
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
     out = OUT_DIR / f"{args.set}.json"
+    aug_path = OUT_DIR / f"{args.set}_augments.json"
+    apis = ({a for v in json.loads(aug_path.read_text(encoding="utf-8")).values() for a in v["api_names"]}
+            if aug_path.exists() else None)
+    game = json.loads(out.read_text(encoding="utf-8")) if args.team_size_only else build(raw, args.set)
+    game["team_size_augments"], game["augment_items"] = augment_team_size(raw, apis)
+    print(f"team size augments {game['team_size_augments']}, augments giving team-size items {game['augment_items']}")
+    if args.team_size_only:
+        out.write_text(json.dumps(game, indent=1), encoding="utf-8")
+        return
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(game, indent=1), encoding="utf-8")
     print(f"{len(game['champions'])} champions, {len(game['traits'])} traits -> {out}")
 

@@ -119,11 +119,17 @@ class UnitReader:
                 for at, bar, name, prob in keep]
         # Items of every unit in the frame in one batched model call.
         items = self.items.read_many(frame, [bar for _, bar, _, _ in keep])
+        idx = {c: i for i, c in enumerate(self.classifier.classes)}
         for (at, bar, name, prob), held in zip(keep, items):
+            # the model's next two guesses, for cleaning to fall back on (units.py step 7)
+            probs_here = p_of[at]
+            alt = [[self.classifier.classes[i], round(float(probs_here[i]), 3)]
+                   for i in np.argsort(-probs_here)[:3] if i != idx.get(name) and probs_here[i] >= 0.02][:2]
             units.append({
                 "at": at,
                 "name": name,
                 "p": round(prob, 3),
+                **({"alt": alt} if alt else {}),
                 "star": star_level(frame, bar),
                 "items": held,
                 **({"loose": True} if id(bar) in loose_ids else {}),
@@ -219,12 +225,13 @@ def rider_bars(frame: np.ndarray, board: BoardHexes,
     (ty0, ty1), (tx0, tx1) = _RIDER["tight_dy"], _RIDER["tight_dx"]
     hexes = [o for o in claimed if o[0][0] == "h"]
     bars = [b for _, _, b in hexes]
+    claimed_bars = list(bars)
     bars += [b for b in _badged_bars(frame) if not any(_same_bar(b, t) for t in bars)]
     # all other green bars: a tightly stacked rider's has no badge of its own (below)
     x0, y0, w, h = _LOOSE["zone"]
     plain = [Bar(*g) for g in green_bars_at(frame, (x0, y0, w, h))]
     plain = [b for b in plain if not any(_same_bar(b, t) for t in bars)]
-    pairs, taken = [], set()
+    pairs, taken, high = [], set(), set()
     for low in sorted(bars, key=lambda b: -b.top):                  # lowest on screen first
         if id(low) in taken:
             continue
@@ -235,6 +242,13 @@ def rider_bars(frame: np.ndarray, board: BoardHexes,
             # BFF's, sharing the one badge (by the lower bar), so the upper bar may have none of its own.
             ups = [b for b in bars + plain if b is not low and id(b) not in taken
                    and ty0 <= b.top - low.top <= ty1 and tx0 <= b.left - low.left <= tx1]
+        if not ups and "high_dy" in _RIDER and not any(b is low for b in claimed_bars):
+            # High stack: the BFF's bar too high for any hex (loose), its rider's far above it, also loose.
+            (hy0, hy1), (hx0, hx1) = _RIDER["high_dy"], _RIDER["high_dx"]
+            ups = [b for b in bars if b is not low and id(b) not in taken and not any(b is c for c in claimed_bars)
+                   and hy0 <= b.top - low.top <= hy1 and hx0 <= b.left - low.left <= hx1]
+            if len(ups) == 1:
+                high.add(id(low))
         if len(ups) == 1:
             taken |= {id(low), id(ups[0])}
             pairs.append((low, ups[0]))
@@ -244,13 +258,18 @@ def rider_bars(frame: np.ndarray, board: BoardHexes,
     used = {(int(at[1]), int(at[2])) for at, _, _ in keep if at[0] == "h"}
     out = []
     for low, up in pairs:
-        spot = _nearest_free_hex(board, low, used, _LOOSE)
+        # a high stack's BFF bar sits ~85 px over its hex's usual bar spot: find the hex from there
+        drop = _RIDER.get("high_drop", 0) if id(low) in high else 0
+        spot = _nearest_free_hex(board, Bar(low.left, low.right, low.top + drop), used, _LOOSE)
         if spot is None:            # nowhere to put it: leave the hexes' own claims as they were
             keep += [o for o in claimed if o[2] is low or o[2] is up]
             continue
         used.add(spot)
         r, c = spot
-        out += [(f"h{r}{c}", board.window(r, c, low), low), (f"h{r}{c}r", board.window(r, c, up), up)]
+        # A high stack's rider bar floats far above the rider, whose crop would show grass: cut it
+        # where a usual rider's bar sits (config dy/dx: ~21 px over and ~6 px left of the BFF's).
+        at_bar = up if id(low) not in high else Bar(low.left - 6, low.right - 6, low.top - 21)
+        out += [(f"h{r}{c}", board.window(r, c, low), low), (f"h{r}{c}r", board.window(r, c, at_bar), up)]
     return keep + out
 
 
