@@ -238,6 +238,10 @@ unit_bar:
   rider:
     dy: [-32, -10]
     dx: [-20, 5]
+    # ...or tightly stacked (2026-11-24): the rider's bar 3-8 px over the BFF's, one badge (the lower
+    # bar's), the upper bar without one. Seen in Cu-Mg0jpCSs/game_02 (dy -5, dx -5; Rengar riding).
+    tight_dy: [-8, -3]
+    tight_dx: [-12, 3]
   item_dx: -9                          # first item icon: dx, dy from the bar; icons are item_size square
   item_dy: 12
   item_size: 25

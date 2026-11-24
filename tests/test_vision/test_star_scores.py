@@ -150,3 +150,25 @@ def test_solid_tall_blob_is_not_split():
     assert ub.green_bars_at(frame, (850, 480, 200, 40)) == [(900, 963, 500)]
     frame, _ = _bar_frame(PURE_GREEN, 63, 10)
     assert ub.green_bars_at(frame, (850, 480, 200, 40)) == [(900, 963, 500)]
+
+
+def test_tight_stack_is_a_rider_pair(frames):
+    # a real badged unit bar, and a badge-less green bar 6 px above it (a rider's, tightly stacked)
+    from src.vision.unit_reader import rider_bars
+    board = BoardHexes()
+    bar = ub.board_bar(frames[2], board, 2, 6)
+    frame = frames[2].copy()             # a new array: the per-frame caches don't carry over
+    frame[bar.top - 6:bar.top - 2, bar.left - 4:bar.left + 59] = PURE_GREEN
+    out = rider_bars(frame, board, [("h26", board.window(2, 6, bar), bar)])
+    ats = sorted(at for at, _, _ in out)
+    assert len(ats) == 2 and ats[1] == ats[0] + "r"
+    low = next(b for at, _, b in out if not at.endswith("r"))
+    assert (low.left, low.top) == (bar.left, bar.top)                # the badged, lower bar is the BFF's
+
+
+def test_sparse_first_row_does_not_hide_a_unit_bar(monkeypatch):
+    frame, bar = _bar_frame(PURE_GREEN, 63, 5)
+    frame[499, 900:910] = PURE_GREEN                     # a few green pixels just above: the blob's top row
+    bar = Bar(900, 963, 499)
+    monkeypatch.setattr(ub, "star_scores", lambda f, b: {1: 0.25, 2: 0.1, 3: 0.05})
+    assert ub.is_unit_bar(frame, bar)

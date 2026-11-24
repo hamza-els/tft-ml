@@ -86,19 +86,26 @@ def _bars_in_mask(mask: np.ndarray) -> list[tuple[int, int, int]]:
 
 
 def _bands(blob: np.ndarray) -> list[tuple[int, int, int]]:
-    """Horizontal bands of a blob split at rows less than 80% filled, each at least 3 rows:
-    (left, right, top) within the blob. One band: the blob is one bar."""
+    """
+    A blob 8+ rows tall is two bars stacked (one bar is 3-6 rows): split at
+    its least filled row, at least 3 rows from either end, when that row is
+    clearly emptier than the rest (< 95% of their median fill; the joining
+    row was 49-88% filled where the bars were ~91%). A solid block (the
+    nameplate's bar) has no such row and stays one. Returns the bands'
+    (left, right, top) within the blob; one band: not split.
+    """
     fill = blob.sum(1) / blob.shape[1]
-    bands, start = [], None
-    for k, full in enumerate(list(fill >= 0.8) + [False]):
-        if full and start is None:
-            start = k
-        elif not full and start is not None:
-            if k - start >= 3:
-                cols = np.flatnonzero(blob[start:k].any(0))
-                bands.append((int(cols[0]), int(cols[-1]) + 1, start))
-            start = None
-    return bands
+    h = len(fill)
+    k = 3 + int(np.argmin(fill[3:h - 3])) if h >= 7 else None
+    if k is None or fill[k] >= 0.95 * float(np.median(np.delete(fill, k))):
+        return [(0, blob.shape[1], 0)]
+    out = []
+    for lo, hi in ((0, k), (k + 1, h)):
+        rows = np.flatnonzero(fill[lo:hi] > 0)
+        cols = np.flatnonzero(blob[lo:hi].any(0))
+        if len(rows) >= 3 and len(cols):
+            out.append((int(cols[0]), int(cols[-1]) + 1, lo + int(rows[0])))
+    return out if len(out) == 2 else [(0, blob.shape[1], 0)]
 
 
 def green_bars(img: np.ndarray) -> list[tuple[int, int, int]]:
@@ -143,8 +150,9 @@ def is_unit_bar(frame: np.ndarray, bar: Bar) -> bool:
         return False
     strip = frame[max(0, bar.top):bar.top + 13, bar.left:bar.right]
     green = cv2.inRange(strip, _GREEN_LO, _GREEN_HI) > 0
-    rows = green.mean(1) > 0.3
-    height = int(np.argmin(rows)) if not rows.all() else len(rows)
+    rows = np.concatenate([[False], green.mean(1) > 0.3, [False]]).astype(np.int8)
+    edges = np.flatnonzero(np.diff(rows))                # starts and ends of runs of filled rows
+    height = int((edges[1::2] - edges[::2]).max()) if len(edges) else 0   # the longest run (a sparse first row is fine)
     hlo, hhi = _CFG["unit_bar_height"]
     if not hlo <= height <= hhi:
         return False

@@ -216,15 +216,25 @@ def rider_bars(frame: np.ndarray, board: BoardHexes,
     on either bar replaced.
     """
     (dy0, dy1), (dx0, dx1) = _RIDER["dy"], _RIDER["dx"]
+    (ty0, ty1), (tx0, tx1) = _RIDER["tight_dy"], _RIDER["tight_dx"]
     hexes = [o for o in claimed if o[0][0] == "h"]
     bars = [b for _, _, b in hexes]
     bars += [b for b in _badged_bars(frame) if not any(_same_bar(b, t) for t in bars)]
+    # all other green bars: a tightly stacked rider's has no badge of its own (below)
+    x0, y0, w, h = _LOOSE["zone"]
+    plain = [Bar(*g) for g in green_bars_at(frame, (x0, y0, w, h))]
+    plain = [b for b in plain if not any(_same_bar(b, t) for t in bars)]
     pairs, taken = [], set()
     for low in sorted(bars, key=lambda b: -b.top):                  # lowest on screen first
         if id(low) in taken:
             continue
         ups = [b for b in bars if b is not low and id(b) not in taken
                and dy0 <= b.top - low.top <= dy1 and dx0 <= b.left - low.left <= dx1]
+        if not ups:
+            # Tight stack (2026-11-24, Cu-Mg0jpCSs/game_02): the rider's bar only ~5 px over the
+            # BFF's, sharing the one badge (by the lower bar), so the upper bar may have none of its own.
+            ups = [b for b in bars + plain if b is not low and id(b) not in taken
+                   and ty0 <= b.top - low.top <= ty1 and tx0 <= b.left - low.left <= tx1]
         if len(ups) == 1:
             taken |= {id(low), id(ups[0])}
             pairs.append((low, ups[0]))
