@@ -50,6 +50,7 @@ from tqdm import tqdm
 
 from scripts.collect_augment_crops import keep_agreeing
 from src.state.game_data import GameData
+from src.state.sequence import own_span
 from src.utils import paths
 from src.vision.arena import home_board_rows
 from src.vision.augments import AugmentReader, expected_counts
@@ -99,6 +100,8 @@ def collect(per_game: int) -> list[dict]:
         rows = sorted((json.loads(l) for l in states.read_text(encoding="utf-8").splitlines() if l),
                       key=lambda r: r["frame"])
         rows = [r for r in rows if r.get("in_game")]
+        start, end, _ = own_span(rows)          # not another player's HUD after he is out
+        rows = rows[start:end]
         cands = [r for r, h in zip(rows, home_board_rows(rows)) if h and r.get("augments") and not r.get("away_augments")]
         if not cands:
             continue

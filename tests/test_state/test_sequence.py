@@ -166,3 +166,45 @@ def test_hidden_timer_at_round_start_is_not_a_refill():
     for row, fill in zip(rows, fills):
         row.update(timer_fill=fill, planning=True)
     assert _col(clean_game(rows), "planning") == [False, True, False, True, True, True, False, False]
+
+
+# ── own_span: his own game only ───────────────────────────────────────────────
+
+def _hud(n, stage, rnd, hp, level):
+    return [{"frame": 0, "stage": stage, "round_num": rnd, "hp": hp, "level": level}] * n
+
+
+def _framed(rows):
+    return [dict(r, frame=i) for i, r in enumerate(rows)]
+
+
+def test_own_span_cuts_another_players_hud_after_elimination():
+    from src.state.sequence import own_span
+    # HP 7 at 4-4, the death screen (nothing read), then another player at HP 38, level 8
+    rows = _framed(_hud(30, 4, 4, 7, 7) + [{"frame": 0}] * 10 + _hud(40, 5, 5, 38, 8))
+    start, end, reason = own_span(rows)
+    assert (start, end) == (0, 30) and reason.startswith("HP 7 -> 38")
+
+
+def test_own_span_ignores_a_short_misread():
+    from src.state.sequence import own_span
+    # level misread 5 on three frames running at level 8 (--ppQShtXow/game_08)
+    rows = _framed(_hud(30, 5, 7, 12, 8) + _hud(3, 5, 7, 12, 5) + _hud(40, 6, 1, 12, 8))
+    assert own_span(rows) == (0, len(rows), None)
+    # a round or two back is OCR (6-3 settled among 6-5s), not another game
+    rows = _framed(_hud(20, 6, 5, 19, 9) + _hud(4, 6, 3, 19, 9) + _hud(20, 6, 5, 19, 9))
+    assert own_span(rows) == (0, len(rows), None)
+
+
+def test_own_span_drops_the_previous_games_tail():
+    from src.state.sequence import own_span
+    rows = _framed(_hud(10, 6, 5, 4, 9) + _hud(40, 1, 1, 100, 1) + _hud(40, 2, 1, 100, 3))
+    start, end, reason = own_span(rows)
+    assert (start, end) == (10, len(rows)) and reason is None
+
+
+def test_own_span_keeps_a_normal_game():
+    from src.state.sequence import own_span
+    rows = _framed(_hud(20, 1, 1, 100, 1) + _hud(20, 2, 1, 90, 4) + _hud(20, 3, 2, 70, 6)
+                   + _hud(20, 4, 2, 72, 7) + _hud(20, 5, 1, 40, 8))      # a small heal is fine
+    assert own_span(rows) == (0, len(rows), None)

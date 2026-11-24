@@ -6,7 +6,9 @@ Usage:
 
 Input:   <states>/game_XX.jsonl          (from scripts/extract_states.py)
 Output:  <states>/game_XX.clean.jsonl    (misreads fixed, gaps forward-filled,
-                                          board/bench filled from units_raw)
+                                          board/bench filled from units_raw; only his own
+                                          game: sequence.own_span drops the previous game's
+                                          tail and another player's HUD after he is out)
 
 The report shows how often each value was read and how many readings broke
 the game's rules — a quick check that the OCR regions are still calibrated.
@@ -19,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import argparse
 import json
 
-from src.state.sequence import clean_game, quality_report
+from src.state.sequence import clean_game, own_span, quality_report
 from src.utils import paths
 
 
@@ -42,9 +44,18 @@ def main():
     overlay = json.loads(overlay_path.read_text(encoding="utf-8")) if overlay_path.exists() else {}
     for path in files:
         rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line]
-        rows = [r for r in rows if r.get("in_game")]
+        rows = sorted((r for r in rows if r.get("in_game")), key=lambda r: r["frame"])
         if not rows:
             print(f"{path.name}: no in-game frames")
+            continue
+        # only his own game: not the previous game's tail, not another player's HUD after he is out
+        start, end, reason = own_span(rows)
+        if start or end < len(rows):
+            print(f"{path.name}: own game = rows {start}-{end} of {len(rows)}"
+                  + (f" (frames {rows[start]['frame']}-{rows[end - 1]['frame']})" if end > start else "")
+                  + (f"; cut at {reason}" if reason else ""))
+        rows = rows[start:end]
+        if not rows:
             continue
         label = augment_labels.get(f"{path.parent.name}/{path.stem}")
         seen = overlay.get(path.stem) or {}

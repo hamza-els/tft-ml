@@ -42,7 +42,7 @@ import cv2
 import numpy as np
 
 from scripts.label_common import load, merge_save, search_champions as fuzzy, to_photo
-from src.state.sequence import game_augments
+from src.state.sequence import game_augments, own_span
 from src.state.game_data import GameData
 from src.utils import paths
 from src.vision.arena import home_board_rows
@@ -151,6 +151,8 @@ class AugmentLabeler:
             rows = sorted((json.loads(l) for l in states.read_text(encoding="utf-8").splitlines() if l),
                           key=lambda r: r["frame"])
             rows = [r for r in rows if r.get("in_game")]
+            start, end, _ = own_span(rows)      # not another player's HUD after he is out
+            rows = rows[start:end]
             home = home_board_rows(rows)
             names, tiers, picked = game_augments(rows, home)
             # Candidate frames: own board, after the last pick (4-2), as many icons as the bar

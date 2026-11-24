@@ -14,8 +14,12 @@ game constrains how values move:
                neighbours for a single frame is a misread
 
 It also marks which frames show the player's own board (`home_board`): the
-HUD numbers are always the player's own, but while scouting or fighting away
-the units and augment bar on screen belong to someone else.
+HUD numbers are the player's own while he is in the game, but while scouting or
+fighting away the units and augment bar on screen belong to someone else.
+
+After he is knocked out the stream often keeps showing another player's game
+with a full HUD (spectating), and a game folder can start with the previous
+game's last frames; `own_span` finds the stretch that is his one game.
 
 Board and bench units (`units_raw` from scripts/read_units.py) are cleaned in
 src/state/units.py: one-frame flickers and misreads smoothed out, the board
@@ -227,6 +231,90 @@ def game_augments(rows: list[dict], home: list[bool], label: dict | None = None)
                 if label.get("tiers") and k < len(label["tiers"]) and label["tiers"][k]:
                     tiers[k] = label["tiers"][k]
     return names, tiers, picked
+
+
+SETTLE = 3          # a reading counts for own_span once it repeats this many times in a row
+HP_JUMP = 15        # settled HP this far above his lowest settled HP so far = another player's HUD
+LASTING = 20        # a change must hold for most of the next this-many readings of that field
+STAGE_BACK = 10     # settled round counter (stage*10 + round) this far below its highest: a whole stage back
+                    # (OCR swaps 3/5 and settles a 6-3 among 6-5s: SZZrxLQq_gI/game_04, wszJroIjlMs/game_06)
+
+
+def _settled(rows: list[dict], get) -> list[tuple[int, object]]:
+    """(row index, value) of readings that repeat SETTLE times in a row (None skipped):
+    a single misread never counts."""
+    out, run, last = [], 0, object()
+    for i, r in enumerate(rows):
+        v = get(r)
+        if v is None:
+            continue
+        run = run + 1 if v == last else 1
+        last = v
+        if run >= SETTLE:
+            out.append((i, v))
+    return out
+
+
+def _round(r: dict) -> float | None:
+    s, n = r.get("stage"), r.get("round_num")
+    return s * 10 + n if s and n else None
+
+
+def own_span(rows: list[dict]) -> tuple[int, int, str | None]:
+    """
+    (start, end, reason): rows[start:end] are his own game (rows in frame order).
+
+    Start: after the last reset to stage 1 (a folder can begin with the previous
+    game's last frames: stage 6-5 then 1-1, HP back to 100).
+    End: before the HUD stops being his, the first of (settled readings only)
+      - HP 15+ above his lowest HP so far (another player's HUD; heals are a few HP a round),
+      - the stage going back a whole stage (a replay or another game; a round or two back is OCR),
+      - the level going down (levels 1-10 only: a misread 326 is not a level).
+    A change must last (most of the next LASTING readings): a misread can settle for 3 frames.
+    The cut is after his last settled reading of that value before the change.
+    Found on 2026-11-23 in 17 of 202 games (TRYn_hEfx7Y/game_10: HP 7 at 4-4, then 38 at
+    level 8 from 5-5 to 6-5, another player's augments on the bar).
+    """
+    start = 0
+    rounds = _settled(rows, _round)
+    hi = None
+    for i, v in rounds:
+        if hi is not None and v <= 13 < hi:              # back to stage 1 after a later stage
+            start = i - SETTLE + 1
+            while start > 0 and _round(rows[start - 1]) in (None, v):
+                start -= 1
+            hi = None
+        hi = v if hi is None else max(hi, v)
+    own = rows[start:]
+
+    cuts = []
+
+    def first_change(get, changed, update, label):
+        """The first settled reading that `changed` from the reference, where the change lasts
+        (most of the next LASTING readings agree); a passing misread is skipped, not taken as
+        the new reference (--ppQShtXow/game_08 read level 5 three frames running at level 8)."""
+        ref, seq = None, _settled(own, get)
+        for k, (i, v) in enumerate(seq):
+            if ref is not None and changed(v, ref):
+                after = [x for x in (get(r) for r in own[i:]) if x is not None][:LASTING]
+                if sum(changed(x, ref) for x in after) >= 0.6 * len(after):
+                    prev = max((j for j, w in seq[:k] if not changed(w, ref)), default=i - 1)
+                    cuts.append((prev + 1, label(ref, v)))
+                    return
+                continue
+            ref = update(ref, v)
+
+    first_change(lambda r: r.get("hp"), lambda v, low: v >= low + HP_JUMP,
+                 lambda low, v: v if low is None else min(low, v), lambda a, b: f"HP {a:.0f} -> {b:.0f}")
+    first_change(_round, lambda v, hi: v <= hi - STAGE_BACK,
+                 lambda hi, v: v if hi is None else max(hi, v), lambda a, b: f"stage {a / 10:.1f} -> {b / 10:.1f}")
+    first_change(lambda r: r.get("level") if r.get("level") and r["level"] <= 10 else None,
+                 lambda v, hi: v < hi, lambda hi, v: v if hi is None else max(hi, v),
+                 lambda a, b: f"level {a:.0f} -> {b:.0f}")
+    if not cuts:
+        return start, len(rows), None
+    end, reason = min(cuts)
+    return start, start + end, reason
 
 
 def clean_game(rows: list[dict], augment_label: dict | None = None) -> list[dict]:
