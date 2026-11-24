@@ -261,19 +261,25 @@ class AugmentReader:
         templates in one matrix product: one cv2.matchTemplate call per template took
         ~2.6 ms on a busy machine, 0.5 s per icon with 180 templates.
         """
-        mat, names = self._template_matrix(icon.shape)
+        names, scores = self.scores(icon)
         if not names:
             return None, 0.0
+        k = int(scores.argmax())
+        best = float(scores[k])
+        return (names[k], best) if best >= self.match_threshold else (None, best)
+
+    def scores(self, icon: np.ndarray) -> tuple[list[str], np.ndarray]:
+        """Every template's score against the icon (see match), in template order."""
+        mat, names = self._template_matrix(icon.shape)
+        if not names:
+            return [], np.zeros(0, np.float32)
         h, w = icon.shape[:2]
         th, tw = h - 4, w - 4
         windows = np.lib.stride_tricks.sliding_window_view(icon.astype(np.float32), (th, tw, 3))[:, :, 0]
         p = windows.reshape(-1, th * tw, 3)
         p = (p - p.mean(axis=1, keepdims=True)).reshape(len(p), -1)
         norms = np.maximum(np.linalg.norm(p, axis=1), 1e-6)
-        scores = (mat @ p.T / norms).max(axis=1)
-        k = int(scores.argmax())
-        best = float(scores[k])
-        return (names[k], best) if best >= self.match_threshold else (None, best)
+        return names, (mat @ p.T / norms).max(axis=1)
 
     @staticmethod
     def tier(icon: np.ndarray) -> str:

@@ -1,4 +1,514 @@
 {
+"--ppQShtXow/game_00": {
+"augments": [
+"Portable Forge",
+"Ascension",
+"Cybernetic Uplink"
+],
+"frame": "frame_004271.jpg",
+"tiers": [
+"unknown",
+"unknown",
+"unknown"
+]
+},
+"--ppQShtXow/game_01": {
+"augments": [
+"Slightly Magic Roll",
+"Item Grab Bag I",
+"Call To Chaos"
+],
+"frame": "frame_009014.jpg",
+"tiers": [
+"silver",
+"unknown",
+"prismatic"
+]
+},
+"--ppQShtXow/game_02": {
+"augments": [
+"Forged In Strength",
+"Spreading Roots",
+"Big Grab Bag"
+],
+"frame": "frame_012439.jpg",
+"tiers": [
+"prismatic",
+"gold",
+"unknown"
+]
+},
+"--ppQShtXow/game_03": {
+"augments": [
+"Patience Is A Virtue",
+"Item Extraction",
+"Staffsmith"
+],
+"frame": "frame_016401.jpg",
+"tiers": [
+"silver",
+"gold",
+"gold"
+]
+},
+"--ppQShtXow/game_04": {
+"augments": [
+"Legion Of Threes",
+"Jeweled Lotus II",
+"Portable Forge"
+],
+"frame": "frame_019996.jpg",
+"tiers": [
+"gold",
+"unknown",
+"unknown"
+]
+},
+"--ppQShtXow/game_05": {
+"augments": [
+"Gold Destiny",
+"Item Extraction",
+"Wisp Rebate",
+"Heroic Grab Bag"
+],
+"frame": "frame_024722.jpg",
+"tiers": [
+"gold",
+"gold",
+"silver",
+"unknown"
+]
+},
+"--ppQShtXow/game_06": {
+"augments": [
+"Prismatic Ticket",
+"Prismatic Destiny",
+"Retribution",
+"Golden Gamble"
+],
+"frame": "frame_028832.jpg",
+"tiers": [
+"unknown",
+"prismatic",
+"prismatic",
+"prismatic"
+]
+},
+"--ppQShtXow/game_07": {
+"augments": [
+"Early Learnings",
+"Booster Pack",
+"Radiant Relics"
+],
+"frame": "frame_033264.jpg",
+"tiers": [
+"gold",
+"gold",
+"unknown"
+]
+},
+"--ppQShtXow/game_08": {
+"augments": [
+"Booster Pack",
+"Stand United",
+"Exclusive Customization"
+],
+"frame": "frame_037684.jpg",
+"tiers": [
+"gold",
+"unknown",
+"gold"
+]
+},
+"--ppQShtXow/game_09": {
+"augments": [
+"Silver Destiny",
+"Backup Bows",
+"Trade Sector",
+"Soul Awakening"
+],
+"frame": "frame_041909.jpg",
+"tiers": [
+"silver",
+"silver",
+"unknown",
+"prismatic"
+]
+},
+"--ppQShtXow/game_10": {
+"augments": [
+"Future Focused",
+"Gold Destiny",
+"Beast Within",
+"Urf's Grab Bag"
+],
+"frame": "frame_046775.jpg",
+"tiers": [
+"silver",
+"gold",
+"gold",
+"unknown"
+]
+},
+"3xR1M6t_ubk/game_00": {
+"augments": [
+"Silver Destiny",
+"Future Focused",
+"FOURcing",
+"Jeweled Lotus II"
+],
+"frame": "frame_003736.jpg",
+"tiers": [
+"silver",
+"silver",
+"gold",
+"unknown"
+]
+},
+"3xR1M6t_ubk/game_01": {
+"augments": [
+"Pandora's Items III",
+"U.R.F",
+"Portable Forge"
+],
+"frame": "frame_008077.jpg",
+"tiers": [
+"unknown",
+"gold",
+"unknown"
+]
+},
+"3xR1M6t_ubk/game_02": {
+"augments": [
+"Trait Ladder",
+"Branching Out",
+"Cybernetic Uplink"
+],
+"frame": "frame_012293.jpg",
+"tiers": [
+"prismatic",
+"unknown",
+"unknown"
+]
+},
+"3xR1M6t_ubk/game_03": {
+"augments": [
+"Spreading Roots",
+"U.R.F",
+"Booster Pack"
+],
+"frame": "frame_015973.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"3xR1M6t_ubk/game_04": {
+"augments": [
+"Solo Leveling",
+"Augmented Power",
+"Money Monsoon"
+],
+"frame": "frame_020705.jpg",
+"tiers": [
+"gold",
+"silver",
+"prismatic"
+]
+},
+"3xR1M6t_ubk/game_05": {
+"augments": [
+"Bodyguard Training",
+"Slammin'",
+"Glass Cannon II"
+],
+"frame": "frame_025404.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"3xR1M6t_ubk/game_06": {
+"augments": [
+"Capital Gains II",
+"Feeling Lucky",
+"Staffsmith"
+],
+"frame": "frame_029788.jpg",
+"tiers": [
+"gold",
+"silver",
+"gold"
+]
+},
+"3xR1M6t_ubk/game_07": {
+"augments": [
+"Speedy Double Kill",
+"It's Me, Baby",
+"Gilded Steel"
+],
+"frame": "frame_034766.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"3xR1M6t_ubk/game_08": {
+"augments": [
+"Cooking Pot",
+"U.R.F",
+"Coronation"
+],
+"frame": "frame_039393.jpg",
+"tiers": [
+"gold",
+"gold",
+"prismatic"
+]
+},
+"4U1ElMhf6m8/game_00": {
+"augments": [
+"Future Focused",
+"Silver Destiny",
+"Wisp Rebate",
+"Soul Awakening"
+],
+"frame": "frame_004995.jpg",
+"tiers": [
+"silver",
+"silver",
+"silver",
+"prismatic"
+]
+},
+"4U1ElMhf6m8/game_01": {
+"augments": [
+"The Trait Tree",
+"Small Grab Bag",
+"Money Monsoon"
+],
+"frame": "frame_008491.jpg",
+"tiers": [
+"prismatic",
+"silver",
+"prismatic"
+]
+},
+"4U1ElMhf6m8/game_02": {
+"augments": [
+"Epoch",
+"It's Me, Baby",
+"Staffsmith"
+],
+"frame": "frame_012839.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"4U1ElMhf6m8/game_03": {
+"augments": [
+"Trade Sector",
+"Clockwork Accelerator",
+"Booster Pack"
+],
+"frame": "frame_016326.jpg",
+"tiers": [
+"unknown",
+"gold",
+"gold"
+]
+},
+"4U1ElMhf6m8/game_04": {
+"augments": [
+"Warpath",
+"Champ Delivery",
+"Booster Pack"
+],
+"frame": "frame_020957.jpg",
+"tiers": [
+"gold",
+"silver",
+"gold"
+]
+},
+"6Cn4Lf5avdY/game_00": {
+"augments": [
+"Silver Spoon",
+"Branching Out",
+"Booster Pack"
+],
+"frame": "frame_005156.jpg",
+"tiers": [
+"silver",
+"silver",
+"gold"
+]
+},
+"6Cn4Lf5avdY/game_01": {
+"augments": [
+"Unrivaled",
+"Prismatic Destiny",
+"Prismatic Ticket",
+"Jeweled Lotus I"
+],
+"frame": "frame_009873.jpg",
+"tiers": [
+"gold",
+"prismatic",
+"unknown",
+"gold"
+]
+},
+"6Cn4Lf5avdY/game_02": {
+"augments": [
+"Cluttered Mind",
+"Big Grab Bag",
+"Call To Chaos"
+],
+"frame": "frame_014712.jpg",
+"tiers": [
+"gold",
+"gold",
+"prismatic"
+]
+},
+"6Cn4Lf5avdY/game_03": {
+"augments": [
+"Pandora's Items I",
+"Epoch",
+"Radiant Relics"
+],
+"frame": "frame_018077.jpg",
+"tiers": [
+"unknown",
+"gold",
+"prismatic"
+]
+},
+"6Cn4Lf5avdY/game_04": {
+"augments": [
+"Seraphim's Staff",
+"Gold Destiny",
+"Explosive Growth",
+"Omega Riftbeast"
+],
+"frame": "frame_022021.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold",
+"gold"
+]
+},
+"6Cn4Lf5avdY/game_05": {
+"augments": [
+"Slightly Magic Roll",
+"Healing Orbs II",
+"Heroic Grab Bag"
+],
+"frame": "frame_026677.jpg",
+"tiers": [
+"silver",
+"gold",
+"gold"
+]
+},
+"6Cn4Lf5avdY/game_06": {
+"augments": [
+"Pandora's Bench",
+"Big Grab Bag",
+"Portable Forge"
+],
+"frame": "frame_030213.jpg",
+"tiers": [
+"silver",
+"gold",
+"gold"
+]
+},
+"6Cn4Lf5avdY/game_07": {
+"augments": [
+"Cooking Pot",
+"Celestial Blessing II",
+"Urf's Grab Bag"
+],
+"frame": "frame_033800.jpg",
+"tiers": [
+"gold",
+"unknown",
+"prismatic"
+]
+},
+"6Cn4Lf5avdY/game_08": {
+"augments": [
+"Bonus Gifts",
+"Booster Pack",
+"Exclusive Customization"
+],
+"frame": "frame_037227.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"6Cn4Lf5avdY/game_09": {
+"augments": [
+"Salvage Bin",
+"Explosive Growth",
+"Sword Overflow"
+],
+"frame": "frame_041850.jpg",
+"tiers": [
+"gold",
+"gold",
+"prismatic"
+]
+},
+"6Cn4Lf5avdY/game_10": {
+"augments": [
+"Solo Plate",
+"Pandora's Bench",
+"Booster Pack"
+],
+"frame": "frame_046818.jpg",
+"tiers": [
+"gold",
+"silver",
+"gold"
+]
+},
+"6Cn4Lf5avdY/game_11": {
+"augments": [
+"Time Skip",
+"Jeweled Lotus I",
+"Cybernetic Implants"
+],
+"frame": "frame_051712.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"6Cn4Lf5avdY/game_12": {
+"augments": [
+"Spreading Roots",
+"Pandora's Items I",
+"Swordsmith"
+],
+"frame": "frame_055796.jpg",
+"tiers": [
+"gold",
+"unknown",
+"gold"
+]
+},
 "8vvYT3TbJTw/game_00": {
 "augments": [
 "Early Learnings",
@@ -282,6 +792,112 @@
 "prismatic"
 ]
 },
+"OGLPl4JkAmQ/game_00": {
+"augments": [
+"Bonus Gifts",
+"Backline Blueprint",
+"Swordsmith"
+],
+"frame": "frame_004156.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"OGLPl4JkAmQ/game_01": {
+"augments": [
+"Heart of Steel",
+"Replication",
+"Jeweled Lotus II"
+],
+"frame": "frame_008548.jpg",
+"tiers": [
+"gold",
+"gold",
+"prismatic"
+]
+},
+"OGLPl4JkAmQ/game_02": {
+"augments": [
+"Epoch",
+"Bonus Gifts",
+"Cybernetic Implants"
+],
+"frame": "frame_013473.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"OGLPl4JkAmQ/game_03": {
+"augments": [
+"Kick Start",
+"Explosive Growth",
+"Wand Overflow"
+],
+"frame": "frame_018870.jpg",
+"tiers": [
+"silver",
+"gold",
+"prismatic"
+]
+},
+"OGLPl4JkAmQ/game_04": {
+"augments": [
+"Money Hungry",
+"Trade Sector",
+"Baron's Lair"
+],
+"frame": "frame_023381.jpg",
+"tiers": [
+"gold",
+"gold",
+"prismatic"
+]
+},
+"OGLPl4JkAmQ/game_05": {
+"augments": [
+"Cursed Crown",
+"Wisp Rebate",
+"Verticality III"
+],
+"frame": "frame_027535.jpg",
+"tiers": [
+"unknown",
+"silver",
+"prismatic"
+]
+},
+"OGLPl4JkAmQ/game_06": {
+"augments": [
+"Extra Buckles",
+"Gold Destiny",
+"Promised Protection",
+"Big Grab Bag"
+],
+"frame": "frame_031197.jpg",
+"tiers": [
+"silver",
+"gold",
+"gold",
+"gold"
+]
+},
+"OGLPl4JkAmQ/game_07": {
+"augments": [
+"Portable Forge",
+"Explosive Growth",
+"Gilded Steel"
+],
+"frame": "frame_035661.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
 "QLRxiF-_y_4/game_00": {
 "augments": [
 "Trade Sector",
@@ -384,6 +1000,151 @@
 "silver",
 "gold",
 "gold"
+]
+},
+"R26Tm0lwhnA/game_00": {
+"augments": [
+"Patient Study",
+"Twin Guardians",
+"Big Grab Bag"
+],
+"frame": "frame_004792.jpg",
+"tiers": [
+"gold",
+"silver",
+"gold"
+]
+},
+"R26Tm0lwhnA/game_01": {
+"augments": [
+"Expedition",
+"Gain 21 Gold",
+"Money Monsoon"
+],
+"frame": "frame_008605.jpg",
+"tiers": [
+"silver",
+"gold",
+"prismatic"
+]
+},
+"R26Tm0lwhnA/game_02": {
+"augments": [
+"Deadlier Caps",
+"Wand Overflow",
+"The Golden Egg"
+],
+"frame": "frame_013017.jpg",
+"tiers": [
+"gold",
+"prismatic",
+"unknown"
+]
+},
+"R26Tm0lwhnA/game_03": {
+"augments": [
+"Birthday Reunion",
+"Advanced Loan",
+"Wisp Rebate"
+],
+"frame": "frame_017205.jpg",
+"tiers": [
+"gold",
+"gold",
+"silver"
+]
+},
+"R26Tm0lwhnA/game_04": {
+"augments": [
+"Portable Forge",
+"Prismatic Destiny",
+"Giant and Mighty",
+"Item Grab Bag I"
+],
+"frame": "frame_020716.jpg",
+"tiers": [
+"gold",
+"prismatic",
+"prismatic",
+"silver"
+]
+},
+"R26Tm0lwhnA/game_05": {
+"augments": [
+"Portable Forge",
+"Big Grab Bag",
+"Call To Chaos"
+],
+"frame": "frame_024675.jpg",
+"tiers": [
+"gold",
+"gold",
+"prismatic"
+]
+},
+"SZZrxLQq_gI/game_00": {
+"augments": [
+"Cluttered Mind",
+"Beast Within",
+"Gilded Steel"
+],
+"frame": "frame_002965.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"SZZrxLQq_gI/game_01": {
+"augments": [
+"Salvage Bin",
+"Money Hungry",
+"Booster Pack"
+],
+"frame": "frame_008165.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"SZZrxLQq_gI/game_02": {
+"augments": [
+"Patience Is A Virtue",
+"Arcane Viktor-y",
+"Cybernetic Uplink"
+],
+"frame": "frame_013093.jpg",
+"tiers": [
+"silver",
+"gold",
+"gold"
+]
+},
+"SZZrxLQq_gI/game_03": {
+"augments": [
+"Crafted Crafting",
+"Pandora's Items I",
+"Big Grab Bag"
+],
+"frame": "frame_017277.jpg",
+"tiers": [
+"silver",
+"unknown",
+"gold"
+]
+},
+"SZZrxLQq_gI/game_04": {
+"augments": [
+"Carve a Path",
+"Trade Sector",
+"Jeweled Lotus II"
+],
+"frame": "frame_022318.jpg",
+"tiers": [
+"silver",
+"gold",
+"prismatic"
 ]
 },
 "TRYn_hEfx7Y/game_00": {
@@ -602,6 +1363,167 @@ null
 "prismatic",
 "silver",
 "silver"
+]
+},
+"ZFwFTTDukp8/game_00": {
+"augments": [
+"Frontline Foundation",
+"Trade Sector",
+"U.R.F"
+],
+"frame": "frame_003620.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"ZFwFTTDukp8/game_01": {
+"augments": [
+"Caretaker's Ally",
+"Bonus Gifts",
+"Salvage Bin"
+],
+"frame": "frame_006711.jpg",
+"tiers": [
+"unknown",
+"gold",
+"gold"
+]
+},
+"ZFwFTTDukp8/game_02": {
+"augments": [
+"Consuming Flora",
+"Heroic Grab Bag",
+"It's Me, Baby"
+],
+"frame": "frame_011265.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"ZFwFTTDukp8/game_03": {
+"augments": [
+"Latent Forge",
+"Small Grab Bag",
+"Radiant Relics"
+],
+"frame": "frame_015226.jpg",
+"tiers": [
+"silver",
+"silver",
+"prismatic"
+]
+},
+"ZFwFTTDukp8/game_04": {
+"augments": [
+"Salvage Bin",
+"Rolling For Days",
+"Healing Orbs II"
+],
+"frame": "frame_019053.jpg",
+"tiers": [
+"gold",
+"silver",
+"gold"
+]
+},
+"ZFwFTTDukp8/game_05": {
+"augments": [
+"Backline Blueprint",
+"Big Grab Bag",
+"Heroic Grab Bag"
+],
+"frame": "frame_023146.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"ZFwFTTDukp8/game_06": {
+"augments": [
+"Trait Ladder",
+"Rolling For Days",
+"U.R.F"
+],
+"frame": "frame_026827.jpg",
+"tiers": [
+"prismatic",
+"silver",
+"gold"
+]
+},
+"ZFwFTTDukp8/game_07": {
+"augments": [
+"Solo Plate",
+"Verticality I",
+"Big Grab Bag"
+],
+"frame": "frame_031349.jpg",
+"tiers": [
+"gold",
+"silver",
+"gold"
+]
+},
+"ZFwFTTDukp8/game_08": {
+"augments": [
+"Trade Sector",
+"Gain 21 Gold",
+"Staffsmith"
+],
+"frame": "frame_035455.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"ZFwFTTDukp8/game_09": {
+"augments": [
+"Gold Destiny",
+"Birthday Reunion",
+"U.R.F",
+"Pandora's Items II"
+],
+"frame": "frame_039680.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold",
+"gold"
+]
+},
+"ZFwFTTDukp8/game_10": {
+"augments": [
+"U.R.F",
+"Cognitive Tax",
+"Embiggen",
+"Embiggen",
+"Embiggen",
+"Embiggen",
+"Embiggen",
+"Embiggen",
+"Embiggen",
+"Embiggen",
+"Embiggen"
+],
+"frame": "frame_045163.jpg",
+"tiers": [
+"gold",
+"silver",
+"gold",
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null
 ]
 },
 "ZXj0GIXDaV0/game_00": {
@@ -969,6 +1891,166 @@ null
 "prismatic"
 ]
 },
+"htwxJLXZE_g/game_00": {
+"augments": [
+"Gold Destiny",
+"Caretaker's Favor",
+"Big Grab Bag",
+"Booster Pack"
+],
+"frame": "frame_004374.jpg",
+"tiers": [
+"gold",
+"silver",
+"gold",
+"gold"
+]
+},
+"htwxJLXZE_g/game_01": {
+"augments": [
+"Spreading Roots",
+"Money Hungry",
+"Staffsmith"
+],
+"frame": "frame_008314.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"htwxJLXZE_g/game_02": {
+"augments": [
+"Chosen of the Sun",
+"Exclusive Customization",
+"Portable Forge"
+],
+"frame": "frame_012895.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"htwxJLXZE_g/game_03": {
+"augments": [
+"Portable Forge",
+"Pandora's Items II",
+"Booster Pack"
+],
+"frame": "frame_015949.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"htwxJLXZE_g/game_04": {
+"augments": [
+"Kingslayer",
+"Explosive Growth",
+"Glass Cannon II"
+],
+"frame": "frame_019855.jpg",
+"tiers": [
+"silver",
+"gold",
+"gold"
+]
+},
+"htwxJLXZE_g/game_05": {
+"augments": [
+"Cluttered Mind",
+"Small Grab Bag",
+"Jeweled Lotus I"
+],
+"frame": "frame_025148.jpg",
+"tiers": [
+"gold",
+"silver",
+"gold"
+]
+},
+"htwxJLXZE_g/game_06": {
+"augments": [
+"Salvage Bin",
+"Bronze For Life II",
+"Wisp Rebate"
+],
+"frame": "frame_029226.jpg",
+"tiers": [
+"gold",
+"prismatic",
+"silver"
+]
+},
+"htwxJLXZE_g/game_07": {
+"augments": [
+"Portable Forge",
+"Bronze For Life I",
+"Call To Chaos"
+],
+"frame": "frame_033882.jpg",
+"tiers": [
+"gold",
+"gold",
+"prismatic"
+]
+},
+"htwxJLXZE_g/game_08": {
+"augments": [
+"Time Skip",
+"Belt Overflow",
+"Call To Chaos"
+],
+"frame": "frame_037728.jpg",
+"tiers": [
+"gold",
+"prismatic",
+"prismatic"
+]
+},
+"htwxJLXZE_g/game_09": {
+"augments": [
+"Future Focused",
+"Silver Destiny",
+"Rolling For Days",
+"Call To Chaos"
+],
+"frame": "frame_041511.jpg",
+"tiers": [
+"silver",
+"silver",
+"silver",
+"prismatic"
+]
+},
+"htwxJLXZE_g/game_10": {
+"augments": [
+"Backline Blueprint",
+"Explosive Growth",
+"Baron's Lair"
+],
+"frame": "frame_046303.jpg",
+"tiers": [
+"gold",
+"gold",
+"prismatic"
+]
+},
+"htwxJLXZE_g/game_11": {
+"augments": [
+"Portable Forge",
+"Money Hungry",
+"Golden Gamble"
+],
+"frame": "frame_051887.jpg",
+"tiers": [
+"gold",
+"gold",
+"prismatic"
+]
+},
 "kLX5YxRApcc/game_00": {
 "augments": [
 "Warpath",
@@ -1161,6 +2243,209 @@ null
 "gold"
 ]
 },
+"py-M2EuEAl4/game_00": {
+"augments": [
+"Salvage Bin",
+"Advanced Loan",
+"Twin Guardians"
+],
+"frame": "frame_006167.jpg",
+"tiers": [
+"gold",
+"gold",
+"silver"
+]
+},
+"py-M2EuEAl4/game_01": {
+"augments": [
+"Gold Destiny",
+"Cooking Pot",
+"Money Hungry",
+"Nesting Anvils"
+],
+"frame": "frame_009768.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold",
+"prismatic"
+]
+},
+"py-M2EuEAl4/game_02": {
+"augments": [
+"Item Extraction",
+"Feeling Lucky",
+"Malicious Monetization"
+],
+"frame": "frame_014436.jpg",
+"tiers": [
+"gold",
+"silver",
+"gold"
+]
+},
+"py-M2EuEAl4/game_03": {
+"augments": [
+"Gold Destiny",
+"Cluttered Mind",
+"Baron's Lair",
+"Explosive Growth"
+],
+"frame": "frame_018258.jpg",
+"tiers": [
+"gold",
+"gold",
+"prismatic",
+"gold"
+]
+},
+"py-M2EuEAl4/game_04": {
+"augments": [
+"Silver Destiny",
+"Called Shot",
+"Exclusive Customization",
+"Money Monsoon"
+],
+"frame": "frame_023051.jpg",
+"tiers": [
+"silver",
+"silver",
+"gold",
+"prismatic"
+]
+},
+"py-M2EuEAl4/game_05": {
+"augments": [
+"Makeshift Armor I",
+"Cognitive Tax",
+"Bronze For Life II"
+],
+"frame": "frame_027711.jpg",
+"tiers": [
+"silver",
+"silver",
+"prismatic"
+]
+},
+"py-M2EuEAl4/game_06": {
+"augments": [
+"Cluttered Mind",
+"Recombobulator",
+"Staffsmith"
+],
+"frame": "frame_031505.jpg",
+"tiers": [
+"gold",
+"unknown",
+"gold"
+]
+},
+"py-M2EuEAl4/game_07": {
+"augments": [
+"Epoch",
+"Focused Fire",
+"Big Grab Bag"
+],
+"frame": "frame_036818.jpg",
+"tiers": [
+"gold",
+"silver",
+"gold"
+]
+},
+"py-M2EuEAl4/game_08": {
+"augments": [
+"Worth the Wait",
+"Glass Cannon I",
+"Omega Riftbeast"
+],
+"frame": "frame_041938.jpg",
+"tiers": [
+"gold",
+"silver",
+"gold"
+]
+},
+"ruMQysCEqx4/game_00": {
+"augments": [
+"Frontline Foundation",
+"Big Grab Bag",
+"Max Build"
+],
+"frame": "frame_004777.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold"
+]
+},
+"ruMQysCEqx4/game_01": {
+"augments": [
+"Item Grab Bag I",
+"Salvage Bin",
+"Max Build"
+],
+"frame": "frame_008259.jpg",
+"tiers": [
+"silver",
+"gold",
+"gold"
+]
+},
+"ruMQysCEqx4/game_02": {
+"augments": [
+"Early Learnings",
+"Wisp Rebate",
+"Booster Pack"
+],
+"frame": "frame_013094.jpg",
+"tiers": [
+"gold",
+"silver",
+"gold"
+]
+},
+"ruMQysCEqx4/game_03": {
+"augments": [
+"Cluttered Mind",
+"Gold Destiny",
+"It's Me, Baby",
+"Duo Queue"
+],
+"frame": "frame_016253.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold",
+"gold"
+]
+},
+"ruMQysCEqx4/game_04": {
+"augments": [
+"Patient Study",
+"Team Building",
+"Plot Armor"
+],
+"frame": "frame_019696.jpg",
+"tiers": [
+"gold",
+"silver",
+"gold"
+]
+},
+"ruMQysCEqx4/game_05": {
+"augments": [
+"Branching Out",
+"Champ Delivery",
+"Invested"
+],
+"frame": "frame_023199.jpg",
+"tiers": [
+"silver",
+"silver",
+"prismatic"
+]
+},
 "t8ER_nNdjpk/game_00": {
 "augments": [
 "Seraphim's Staff",
@@ -1317,6 +2602,127 @@ null
 "prismatic",
 "gold",
 "gold"
+]
+},
+"wszJroIjlMs/game_00": {
+"augments": [
+"Warpath",
+"Magic Roll",
+"Soul Awakening"
+],
+"frame": "frame_005800.jpg",
+"tiers": [
+"gold",
+"gold",
+"prismatic"
+]
+},
+"wszJroIjlMs/game_01": {
+"augments": [
+"Patience Is A Virtue",
+"Gold Destiny",
+"Slammin'",
+"Radiant Relics"
+],
+"frame": "frame_009174.jpg",
+"tiers": [
+"silver",
+"gold",
+"gold",
+"prismatic"
+]
+},
+"wszJroIjlMs/game_02": {
+"augments": [
+"Spreading Roots",
+"Trade Sector",
+"Call To Chaos"
+],
+"frame": "frame_013601.jpg",
+"tiers": [
+"gold",
+"gold",
+"prismatic"
+]
+},
+"wszJroIjlMs/game_03": {
+"augments": [
+"Slammin'",
+"Rolling For Days",
+"Plot Armor"
+],
+"frame": "frame_017129.jpg",
+"tiers": [
+"gold",
+"silver",
+"gold"
+]
+},
+"wszJroIjlMs/game_04": {
+"augments": [
+"Expedition",
+"Wisp Rebate",
+"Call To Chaos"
+],
+"frame": "frame_020398.jpg",
+"tiers": [
+"silver",
+"silver",
+"prismatic"
+]
+},
+"wszJroIjlMs/game_05": {
+"augments": [
+"Silver Destiny",
+"Glass Cannon I",
+"Exclusive Customization"
+],
+"frame": "frame_024429.jpg",
+"tiers": [
+"silver",
+"silver",
+"gold"
+]
+},
+"wszJroIjlMs/game_06": {
+"augments": [
+"Backline Blueprint",
+"Gold Destiny",
+"Money Hungry",
+"Jeweled Lotus II"
+],
+"frame": "frame_028870.jpg",
+"tiers": [
+"gold",
+"gold",
+"gold",
+"prismatic"
+]
+},
+"wszJroIjlMs/game_07": {
+"augments": [
+"Crafted Crafting",
+"Pandora's Items II",
+"Cybernetic Uplink"
+],
+"frame": "frame_033147.jpg",
+"tiers": [
+"silver",
+"gold",
+"gold"
+]
+},
+"wszJroIjlMs/game_08": {
+"augments": [
+"Buried Treasures III",
+"Recombobulator",
+"Lucky Gloves"
+],
+"frame": "frame_036869.jpg",
+"tiers": [
+"prismatic",
+"unknown",
+"prismatic"
 ]
 }
 }

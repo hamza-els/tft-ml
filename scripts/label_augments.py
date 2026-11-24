@@ -8,9 +8,10 @@ Usage:
 
 A game has exactly three augments, picked at 2-1, 3-2 and 4-2 and kept to the
 end, so one look at a late own-board frame labels the whole game. The screen
-shows that frame's augment bar enlarged and, for each icon in turn, the five
-closest official augment icons (assets/templates/augments_official/, with
-their tier) plus what the reader made of it over the whole game.
+shows that frame's augment bar enlarged and, for each icon in turn, the reader's
+4 best footage templates (assets/templates/augments_v2/, "footage"), then the
+closest official augment icons (assets/templates/augments_official/, "art"),
+plus what the reader made of it over the whole game.
 
 Keys:
     Enter       accept the first suggestion for the highlighted icon
@@ -103,6 +104,12 @@ class AugmentLabeler:
         aug_file = next(AUG_DATA.glob("*_augments.json"), None)
         names = json.loads(aug_file.read_text(encoding="utf-8")) if aug_file else [n for n, _, _, _ in self.official]
         self.names = sorted({GameData.augment_label(n) for n in names})
+        # the reader's footage templates (build_augment_templates.py) and their names
+        self.tmpl_names = {k: GameData.augment_label(v)
+                           for k, v in load(self.reader.template_dir / "names.json").items()}
+        self.official_tiers = {}
+        for n, t, _, _ in self.official:
+            self.official_tiers.setdefault(n, set()).add(t)
         labels = load(LABELS)
         self.games, self.overlay = [], {}
         for states in sorted(paths.STATES.glob("*/game_*.jsonl")):
@@ -177,7 +184,36 @@ class AugmentLabeler:
         self.ctx_view.configure(image=self.ctx_photo)
         self.show_slot()
 
-    def suggestions(self, icon, per_method: int = 4):
+    def suggestions(self, icon, n_footage: int = 4, total: int = 8):
+        """
+        (name, tier, score, image, source) to offer, best first. First the reader's own
+        matcher: the footage templates (assets/templates/augments_v2/, cut from labelled
+        and overlay-named games), best template per augment; held out it named 78% of
+        augments right, 97% of those seen in another VOD. Then official art fills the
+        list (augments with no template yet).
+        """
+        out, seen = [], set()
+        names, scores = self.reader.scores(icon)
+        best = {}
+        for stem, sc in zip(names, scores):
+            n = self.tmpl_names.get(stem)
+            if n and sc > best.get(n, (-1.0, None))[0]:
+                best[n] = (float(sc), stem)
+        for n, (sc, stem) in sorted(best.items(), key=lambda kv: -kv[1][0])[:n_footage]:
+            tiers = self.official_tiers.get(n, set()) - {"unknown"}
+            tier = next(iter(tiers)) if len(tiers) == 1 else self.reader.tier(icon)
+            out.append((n, tier, sc, self.reader.templates[stem], "footage"))
+            seen.add(n)
+        for n, t, sc in self.official_suggestions(icon):
+            if len(out) >= total:
+                break
+            if n not in seen:
+                seen.add(n)
+                img = next(o for nn, tt, o, _ in self.official if nn == n and tt == t)
+                out.append((n, t, sc, img, "art"))
+        return out
+
+    def official_suggestions(self, icon, per_method: int = 4):
         """
         Closest official icons by two measures - as is, and both brightness-
         stretched (footage icons are dim) - the top few of each, interleaved.
@@ -204,10 +240,10 @@ class AugmentLabeler:
         r.configure(bg=BG)
         self.big, self.small = tkfont.Font(size=13), tkfont.Font(size=10)
         self.status = tk.Label(r, bg=BG, fg=DIM, font=self.small, anchor="w", justify="left")
-        self.status.grid(row=0, column=0, columnspan=2, sticky="we", padx=12, pady=(10, 4))
+        self.status.grid(row=0, column=0, columnspan=3, sticky="we", padx=12, pady=(10, 4))
         # Every shortcut as a button, at the top so it is always on screen.
         actions = tk.Frame(r, bg=BG)
-        actions.grid(row=1, column=0, columnspan=2, sticky="w", padx=12, pady=(0, 6))
+        actions.grid(row=1, column=0, columnspan=3, sticky="w", padx=12, pady=(0, 6))
         for text, cmd, colour in (
                 ("Accept top suggestion  [Enter]", self.enter, "#2f6b45"),
                 ("No augment here  [Tab]", lambda: self.choose(NO_AUGMENT, None), "#33353f"),
@@ -219,24 +255,24 @@ class AugmentLabeler:
             tk.Button(actions, text=text, command=cmd, font=self.big, bg=colour, fg=FG, relief="flat",
                       activebackground="#4a4d5a", activeforeground=FG, padx=10, pady=4).pack(side="left", padx=(0, 6))
         self.bar_view = tk.Label(r, bg=BG)
-        self.bar_view.grid(row=2, column=0, columnspan=2, padx=12, sticky="w")
+        self.bar_view.grid(row=2, column=0, columnspan=3, padx=12, sticky="w")
         self.icon_view = tk.Label(r, bg=BG)
         self.icon_view.grid(row=3, column=0, rowspan=3, padx=12, pady=8, sticky="n")
         self.sugg_box = tk.Frame(r, bg=BG)
-        self.sugg_box.grid(row=3, column=1, sticky="nw", padx=6)
+        self.sugg_box.grid(row=3, column=1, rowspan=3, sticky="nw", padx=6)
         q = tk.Frame(r, bg=BG)
-        q.grid(row=4, column=1, sticky="w", padx=6, pady=4)
+        q.grid(row=3, column=2, rowspan=3, sticky="nw", padx=(18, 12))
         self.query = tk.StringVar()
         self.entry = tk.Entry(q, textvariable=self.query, font=self.big, width=28, bg="#2b2d35", fg=FG,
                               insertbackground=FG, relief="flat")
-        self.entry.pack(side="left", ipady=4)
-        tk.Label(q, text="  type to search all augments, then click a result (or press 1-8)", bg=BG, fg=DIM,
-                 font=self.small).pack(side="left")
+        self.entry.pack(side="top", anchor="w", ipady=4)
+        tk.Label(q, text="type to search all augments, then click a result (or press 1-8)", bg=BG, fg=DIM,
+                 font=self.small, justify="left", wraplength=300).pack(side="top", anchor="w")
         self.query.trace_add("write", lambda *_: self.refresh_results())
-        self.result_box = tk.Frame(r, bg=BG)
-        self.result_box.grid(row=5, column=1, sticky="nw", padx=6)
+        self.result_box = tk.Frame(q, bg=BG)
+        self.result_box.pack(side="top", anchor="w", fill="x", pady=(6, 0))
         self.ctx_view = tk.Label(r, bg=BG)
-        self.ctx_view.grid(row=6, column=0, columnspan=2, padx=12, pady=8, sticky="w")
+        self.ctx_view.grid(row=6, column=0, columnspan=3, padx=12, pady=8, sticky="w")
         r.bind("<Return>", lambda e: self.enter())
         r.bind("<Tab>", lambda e: (self.choose(NO_AUGMENT, None), "break")[1])
         r.bind("<Shift-Tab>", lambda e: (self.choose(BLOCKED, None), "break")[1])
@@ -275,10 +311,16 @@ class AugmentLabeler:
         tk.Label(self.sugg_box, text=f"Icon {self.slot + 1} of {self.n_slots}"
                  + ("" if icon is not None else "  - no icon on this frame (Tab if the game has fewer, Ctrl+N for another frame)")
                  + (f"   reader over the game: {read}" if read else ""), bg=BG, fg=DIM, font=self.small).pack(anchor="w")
-        for i, (n, t, s) in enumerate(self.sugg):
-            img = next(o for nn, tt, o, _ in self.official if nn == n and tt == t)
-            ph = to_photo(cv2.resize(img, (48, 48)))
-            b = tk.Button(self.sugg_box, text=f"F{i + 1}  {n}  ({t}, {s:.2f})", image=ph, compound="left",
+        for i, (n, t, s, img, src) in enumerate(self.sugg):
+            # official art first (as before); a footage suggestion also shows its template beside it
+            art = next((o for nn, tt, o, _ in self.official if nn == n and tt == t), None)
+            if art is None:
+                art = next((o for nn, _, o, _ in self.official if nn == n), None)
+            blank = np.full((48, 48, 3), 43, np.uint8)
+            pics = [cv2.resize(art, (48, 48)) if art is not None else blank, np.full((48, 4, 3), 30, np.uint8),
+                    cv2.resize(img, (48, 48)) if src == "footage" else blank]
+            ph = to_photo(np.hstack(pics))
+            b = tk.Button(self.sugg_box, text=f"F{i + 1}  {n}  ({t}, {src} {s:.2f})", image=ph, compound="left",
                           anchor="w", font=self.big, bg="#2b2d35", fg=ACCENT if i == 0 else FG, relief="flat",
                           command=lambda n=n, t=t: self.choose(n, t))
             b.image = ph
