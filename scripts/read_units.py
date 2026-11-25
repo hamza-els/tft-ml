@@ -36,16 +36,19 @@ from tqdm import tqdm
 
 from src.utils.config import vision_cfg
 from src.vision.arena import combat_vetoed, home_board_rows, is_planning, planning_rows, pve_round
-from src.vision.unit_reader import UnitReader
 
 
 _READER = None
 
 
-def _reader() -> UnitReader:
-    """One UnitReader per process (models load once per worker)."""
+def _reader():
+    """
+    One UnitReader per process (models load once per worker). Imported here so that with
+    --jobs the parent, which only hands out games, doesn't load torch (~1.5 GB of commit).
+    """
     global _READER
     if _READER is None:
+        from src.vision.unit_reader import UnitReader
         _READER = UnitReader()
     return _READER
 

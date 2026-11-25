@@ -31,7 +31,6 @@ from tqdm import tqdm
 from src.data_collection.frame_dedup import frame_folders
 from src.data_collection.frame_game_splitter import frame_number
 from src.utils import paths
-from src.vision.state_extractor import StateExtractor
 
 OUT_DIR = paths.STATES     # local disk; only finished states are copied to the repo
 
@@ -54,8 +53,13 @@ def replace_with_retry(src: Path, dst: Path, tries: int = 30, wait: float = 2.0)
 _EXTRACTOR = None
 
 
-def _extractor() -> StateExtractor:
-    """One StateExtractor (EasyOCR, templates) per process."""
+def _extractor():
+    """
+    One StateExtractor (EasyOCR, templates) per process. Imported here, not at the top:
+    with --jobs the parent only hands out games, and importing it there loaded torch for
+    nothing (~2 GB of commit, 2026-11-24; commit running out is what stalls and kills runs).
+    """
+    from src.vision.state_extractor import StateExtractor
     global _EXTRACTOR
     if _EXTRACTOR is None:
         _EXTRACTOR = StateExtractor.from_config()
