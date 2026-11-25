@@ -183,6 +183,33 @@ AUGMENT_CONFIRM = 2       # share of the readings that show the bar show the slo
                           # this many readings show it (one phantom icon is not a pick)
 
 
+PICK_ROUNDS = [(2, 1), (3, 2), (4, 2)]   # the three augment picks; a 4th (from effects) comes after the 3rd
+
+
+def floor_picks(picked: list, rounds: list[tuple]) -> list:
+    """
+    No augment slot shows before its pick round (Hamza's checks, 2026-11-25: a 2nd augment
+    at 3-1, a 3rd at 1-4). game_augments() starts a slot where the readings from then to
+    the game's end mostly show it, and the long late game outweighs early misreads, so a
+    start can slide far too early (35,700 of 337,069 cleaned rows on 2026-11-25). Slot k
+    starts at the earliest at the first row of its pick round (cleaned stage and round);
+    a 4th slot not before the 3rd. Without any stage reading the picks are kept as found.
+    """
+    if all(None in r for r in rounds):
+        return list(picked)
+    out = []
+    for k, p in enumerate(picked):
+        if p is None:
+            out.append(None)
+            continue
+        if k < len(PICK_ROUNDS):
+            first = next((i for i, r in enumerate(rounds) if None not in r and r >= PICK_ROUNDS[k]), len(rounds))
+        else:
+            first = out[-1] if out and out[-1] is not None else len(rounds)
+        out.append(max(p, first))
+    return out
+
+
 def game_augments(rows: list[dict], home: list[bool], label: dict | None = None) -> tuple[list, list, list]:
     """
     The game's augments, decided once per game instead of per frame.
@@ -405,6 +432,7 @@ def clean_game(rows: list[dict], augment_label: dict | None = None) -> list[dict
     # Augments: decided once per game, per bar position (game_augments);
     # readings off someone else's board are ignored.
     aug_names, aug_tiers, aug_picked = game_augments(rows, home, augment_label)
+    aug_picked = floor_picks(aug_picked, rounds)
     held_augments = [[a for a, p in zip(aug_names, aug_picked) if i >= p] for i in range(len(rows))]
     bought = bought_by_row(rows, load_game_data())              # src/state/events.py
     units, _ = clean_units(rows, final["level"], load_game_data(), rounds, checked["gold"], held_augments, bought)

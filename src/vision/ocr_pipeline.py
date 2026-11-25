@@ -38,6 +38,18 @@ _OCR_CFG = vision_cfg["ocr"]
 REGIONS: dict[str, tuple[int, int, int, int]] = {
     k: tuple(v) for k, v in _OCR_CFG["regions"].items()
 }
+
+
+def field_region(key: str, hud: HudState) -> tuple[int, int, int, int]:
+    """Where a bottom-bar number is on this frame: gold right of the gold icon found
+    (gold_text_dx), the others at their calibrated place moved with the bar (bottom_dx)."""
+    region = REGIONS[key]
+    if key == "gold" and hud.gold_x is not None:
+        x, y, w, h = region
+        return hud.gold_x + int(_OCR_CFG["gold_text_dx"]), y, w, h
+    return shift(region, hud.bottom_dx)
+
+
 SHOP_SLOTS: list[tuple[int, int, int, int]] = [tuple(v) for v in _OCR_CFG["shop_slots"]]
 CHAMPIONS: list[str] = _load_champion_list(_OCR_CFG.get("champion_list"))
 
@@ -135,6 +147,7 @@ class OcrCache:
 
     HP_AGREE = 2               # own-HP readings that must agree before HP stops being read this round
     HP_MAX_READS = 4           # ...or give up after this many and take the most common
+    HP_ROWS = 7                # ...and all seven other players were read (else the fullest list)
 
     def reset(self):
         self.seen: dict[str, tuple[np.ndarray, object, bool]] = {}   # key -> (text pixels, value, confirmed)
@@ -169,7 +182,7 @@ class OcrCache:
     def read_hp(self, frame: np.ndarray, stage_round: tuple) -> tuple[float | None, list[float]]:
         """
         HP for this round, read on its first frames until two own-HP readings
-        agree and the lobby's HP was found (a panel can hide the list on the
+        agree and all seven other players' HP were read (a panel can hide the list on the
         first frames), at most HP_MAX_READS times.
         """
         if None in stage_round:
@@ -177,7 +190,7 @@ class OcrCache:
         if stage_round != self.hp_round:
             self.hp_round, self.hp, self.hp_votes, self.hp_reads = stage_round, (None, []), [], 0
         own, others = self.hp
-        settled = own is not None and self.hp_votes.count(own) >= self.HP_AGREE and others
+        settled = own is not None and self.hp_votes.count(own) >= self.HP_AGREE and len(others) >= self.HP_ROWS
         if settled or self.hp_reads >= self.HP_MAX_READS:
             self.skips += 1
             return self.hp
@@ -187,7 +200,8 @@ class OcrCache:
         if new_own is not None:
             self.hp_votes.append(new_own)
             own = max(set(self.hp_votes), key=self.hp_votes.count)
-        self.hp = (own, new_others or others)
+        # the fullest list of the round's reads (a row missed on one read is often there on the next)
+        self.hp = (own, new_others if len(new_others) >= len(others) else others)
         return self.hp
 
 
@@ -232,8 +246,8 @@ def extract_ui_and_lobby(
             results["hp"], others = cache.read_hp(frame, (results["stage"], results["round"]))
 
     if hud.shop_visible:
-        for key, region in REGIONS.items():
-            region = shift(region, hud.bottom_dx)
+        for key in REGIONS:
+            region = field_region(key, hud)
             text = read(key, region, _ALLOWLIST.get(key, _ALLOWLIST["default"]))
             if key == "xp":
                 parsed = parse_xp(text)
@@ -269,7 +283,61 @@ def read_hp(frame: np.ndarray) -> tuple[float | None, list[float]]:
         boxes = _read_boxes(frame, tuple(_OCR_CFG["hp_top_band"]), _ALLOWLIST["default"], scale=2)
         return pick_hp(boxes)[0], []
     boxes = _read_boxes(frame, tuple(_OCR_CFG["hp_strip"]), _ALLOWLIST["default"], scale=2)
-    return pick_hp(boxes)
+    own, others = pick_hp(boxes, rows=True)
+    return (own[2] if own else None), [v for _, v in sorted(fill_hp_rows(frame, own, others))]
+
+
+# Player list rows (2026-11-25): eight rows ROW_PITCH apart, the first number at HP_ROW0; the own
+# row is taller and pushes the rows below it down by OWN_ROW_EXTRA. Measured on the 14 full-frame VODs.
+HP_ROW0, HP_ROW_PITCH, OWN_ROW_EXTRA = 193, 80, 10
+HP_ROW_BOX = (1820, -6, 44, 26)      # one row's number: x, y offset from the row, w, h
+
+
+def fill_hp_rows(frame: np.ndarray, own, others: list[tuple[int, float]]) -> list[tuple[int, float]]:
+    """
+    Rows the whole-strip OCR missed, read one by one (Hamza's checks, 2026-11-25: lobby HP right
+    on 29 of 43 frames; 100s and faint rows went missing, and a row missing on the round's first
+    reads stayed missing all round). Each missing row's number box is OCR'd alone at 4x; a value is
+    kept only if it fits the list's order (players are listed by HP, highest first). Needs the own
+    row (it fixes where the others are). On 151 random frames: all 7 others read on 70 -> 97;
+    14 marked frames: 10 now equal to what the frame shows, 2 more where the frame differs from the mark.
+    """
+    if own is None:
+        return others
+    own_i = round((own[1] - HP_ROW0) / HP_ROW_PITCH)
+    known = sorted(others + [(own[1], own[2])])
+    out = list(others)
+    for i in range(8):
+        if i == own_i:
+            continue
+        y = HP_ROW0 + HP_ROW_PITCH * i + (OWN_ROW_EXTRA if i > own_i else 0)
+        if any(abs(y - oy) <= 20 for oy, _ in out):
+            continue
+        x, dy, w, h = HP_ROW_BOX
+        boxes = [(b, _hp_value(t), c) for b, t, c in _read_boxes(frame, (x, y + dy, w, h), _ALLOWLIST["default"], 4)]
+        boxes = [b for b in boxes if b[1] is not None and b[2] >= 0.3]
+        if not boxes:
+            continue
+        v = max(boxes, key=lambda b: b[2])[1]
+        above = [hv for hy, hv in known if hy < y]
+        below = [hv for hy, hv in known if hy > y]
+        if (above and v > above[-1]) or (below and v < below[0]):
+            continue                                   # out of order: a misread
+        out.append((y, v))
+        known = sorted(known + [(y, v)])
+    return out
+
+
+def _hp_value(text: str) -> float | None:
+    """An HP number, or None. "1001": the portrait ring's edge read as a trailing 1 after 100."""
+    if not text.isdigit():
+        return None
+    mx = _OCR_CFG["hp_max"]
+    if int(text) <= mx:
+        return float(text)
+    if len(text) == 4 and int(text[:3]) <= mx:
+        return float(text[:3])
+    return None
 
 
 def hp_panel_open(frame: np.ndarray) -> bool:
@@ -279,7 +347,7 @@ def hp_panel_open(frame: np.ndarray) -> bool:
     return bool((diff < _OCR_CFG["hp_panel_tolerance"]).mean() > _OCR_CFG["hp_panel_share"])
 
 
-def pick_hp(boxes: list[TextBox]) -> tuple[float | None, list[float]]:
+def pick_hp(boxes: list[TextBox], rows: bool = False):
     """
     Split player-list OCR boxes into the player's own HP and everyone else's.
 
@@ -291,8 +359,7 @@ def pick_hp(boxes: list[TextBox]) -> tuple[float | None, list[float]]:
     min_h = _OCR_CFG["hp_own_min_height"]
     others_x = _OCR_CFG["hp_others_min_x"]
 
-    def value(text: str) -> float | None:
-        return float(text) if text.isdigit() and int(text) <= _OCR_CFG["hp_max"] else None
+    value = _hp_value
 
     # Rows are ~80 px apart. The win/loss mark under a player's HP sometimes
     # reads as "7"; keep only the most confident number in each row.
@@ -303,12 +370,14 @@ def pick_hp(boxes: list[TextBox]) -> tuple[float | None, list[float]]:
             others.append((y, value(t), c))
     other_rows = [y for y, _, _ in others]
 
-    own = [(h, value(t)) for (x, y, w, h), t, c in boxes
+    own = [(h, y, value(t)) for (x, y, w, h), t, c in boxes
            if own_lo <= x <= own_hi and h >= min_h and c >= 0.5 and value(t) is not None
            # the own row has no small number, so a box sharing a row with one is junk
            and all(abs(y - oy) > 20 for oy in other_rows)]
 
-    own_hp = max(own)[1] if own else None
+    if rows:          # (height, y, value) of the own number, and (y, value) of the others
+        return (max(own) if own else None), [(y, v) for y, v, _ in others]
+    own_hp = max(own)[2] if own else None
     return own_hp, [v for _, v, _ in sorted(others)]
 
 

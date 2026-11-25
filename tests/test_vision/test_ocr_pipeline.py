@@ -168,8 +168,15 @@ def test_ocr_cache_skips_unchanged_regions_once_confirmed():
     from src.vision.ocr_pipeline import OcrCache
     frame = cv2.imread(str(FIXTURES / "frame_030059.jpg"))
     cache = OcrCache()
-    first = [extract_ui_and_lobby(frame, cache=cache)[0] for _ in range(3)]
-    assert first[0] == first[1] == first[2] == extract_ui_and_lobby(frame)[0]
+    # HP keeps being read until all 7 other players were read, at most HP_MAX_READS times a round
+    first = [extract_ui_and_lobby(frame, cache=cache)[0] for _ in range(OcrCache.HP_MAX_READS)]
+    assert all(f == first[0] for f in first) and first[0] == extract_ui_and_lobby(frame)[0]
     reads = cache.reads
     extract_ui_and_lobby(frame, cache=cache)
     assert cache.reads == reads          # everything confirmed: nothing read again
+
+
+def test_hp_value_drops_the_rings_edge_after_100():
+    from src.vision.ocr_pipeline import _hp_value
+    assert _hp_value("1001") == 100.0 and _hp_value("106") == 106.0 and _hp_value("4536") is None
+    assert pick_hp([((1792, 273, 30, 22), "30", 0.9), ((1826, 193, 20, 13), "1001", 0.9)]) == (30.0, [100.0])

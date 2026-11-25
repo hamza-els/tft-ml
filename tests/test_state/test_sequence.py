@@ -105,6 +105,19 @@ def test_augments_carry_forward_when_bar_hidden():
     assert "augments" in cleaned[2]["filled"] and "augments" not in cleaned[3]["filled"]
 
 
+def test_no_augment_before_its_pick_round():
+    # Hamza's checks (2026-11-25): a 2nd augment shown at 3-1, a 3rd at 1-4. Picks are at
+    # 2-1, 3-2 and 4-2; early misreads must not move a slot's start before its round.
+    stages = [(1, 4), (2, 1), (2, 5), (3, 1), (3, 2), (4, 1), (4, 2), (4, 3), (5, 1), (5, 2)]
+    rows = _rows(hp=[100] * len(stages), stage=[s for s, _ in stages], round_num=[r for _, r in stages])
+    seen = [["a", "b", "c"], ["a"], ["a", "b"], ["a", "b"], ["a", "b"], ["a", "b", "c"],
+            ["a", "b", "c"], ["a", "b", "c"], ["a", "b", "c"], ["a", "b", "c"]]
+    for row, augs in zip(rows, seen):
+        row["augments"], row["augment_tiers"] = augs, ["gold"] * len(augs)
+    held = [len(r["augments"]) for r in clean_game(rows)]
+    assert held == [0, 1, 1, 1, 2, 2, 3, 3, 3, 3]
+
+
 def test_augment_name_is_the_most_common_reading_and_labels_win():
     rows = _rows(hp=[100] * 5)
     seen = [["a"], ["a"], ["x"], ["a"], ["a"]]          # one misread

@@ -28,10 +28,16 @@ hud:
 ocr:
   # All regions are (x, y, w, h) for 1920x1080
   regions:
-    gold:   [1028, 878, 56, 32]
+    gold:   [1028, 878, 56, 32]   # x is not used: the text is cut from the gold icon found on the frame (gold_text_dx)
     level:  [386, 878, 38, 32]    # digit only, after "Lvl."
     streak: [1140, 876, 44, 34]   # number only; icon colour gives the sign
     xp:     [462, 880, 62, 28]    # text format "X/Y"
+
+  # Gold text starts this far right of the gold icon's matched x. The icon moves left with
+  # the number of digits (1002 for one digit, 995 for two) and the old fixed x=1028 cut the
+  # left edge of the first of two digits: 4 read as 1, 6 as 5, 8 as 3 (Hamza's checks,
+  # 2026-11-25; every VOD since the start: 40-49/60-69/80-89 almost never read).
+  gold_text_dx: 24
 
   # Stage text ("3-2") sits right of the stage icon, which moves in stage 1,
   # so its region is an offset (dx, dy, w, h) from the icon's top-left corner.
@@ -136,7 +142,13 @@ item_column:
   slot_size: 46
   slot_pitch: 54                       # measured from empty slots: tops at 261, 315, 369, ...
   outline: 2
-  slots: 9                             # the 10th slot is rarely used and overlays cover it
+  slots: 10
+  # Slots from this index on are left out unless their outline shows (not read as an unknown
+  # item): stream overlays sit on the 10th (BoxBox's cardboard-box mascot covers its lower-left
+  # corner; non-game screens). Read again from 2026-11-25 (Hamza): on ~4,400 sampled frames the
+  # 10th held an item on ~1.7%, all 80 sampled ones named at 0.91-0.98 (checked by eye), and a
+  # slot without its outline was scenery every time.
+  outline_needed_from: 9
   empty_below: 25                      # mean brightness of an empty (black) slot
   min_contrast: 30                     # below this the slot shows flat scenery, not an icon
   match_margin: 4                      # px trimmed from each edge before matching

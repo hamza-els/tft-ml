@@ -30,7 +30,7 @@ from tqdm import tqdm
 
 from src.utils import paths
 from src.vision.hud import HudDetector, shift
-from src.vision.ocr_pipeline import REGIONS, SHOP_SLOTS, _OCR_CFG, crop_region
+from src.vision.ocr_pipeline import REGIONS, SHOP_SLOTS, _OCR_CFG, crop_region, field_region
 from src.vision.text_bank import BANK_DIR, INK, LEVEL
 
 TOL = {"stage": 8, "gold": 8, "level": 8, "streak": 8, "xp": 8, "shop": 20}
@@ -69,8 +69,8 @@ def collect(per_game: int, exclude: set[str]) -> dict[str, list]:
                 add("stage", (ix + dx, iy + dy, w, h), f"{int(r['stage'])}-{int(r['round_num'])}")
             if not hud.shop_visible:
                 continue
-            for key, region in REGIONS.items():
-                region = shift(region, hud.bottom_dx)
+            for key in REGIONS:
+                region = field_region(key, hud)
                 if key == "xp":
                     if r.get("xp_current") is not None and r.get("xp_current") == c.get("xp_current") \
                             and r.get("xp_needed") == c.get("xp_needed"):

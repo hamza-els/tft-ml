@@ -80,6 +80,7 @@ class ItemColumnReader:
         self.outline = int(cfg["outline"])
         self.icon_size = self.size - 2 * self.outline
         self.slots = int(cfg["slots"])
+        self.outline_needed_from = int(cfg.get("outline_needed_from", self.slots))
         self.empty_below = float(cfg["empty_below"])
         self.min_contrast = float(cfg["min_contrast"])
         self.seen_threshold = float(cfg["seen_threshold"])
@@ -175,7 +176,8 @@ class ItemColumnReader:
         """The column's offset (dx, dy) in this frame from the calibrated place: the shift that
         puts the strongest outline edges where the filled slots' edges should be."""
         g, y0 = strip if strip is not None else self._strip(frame)
-        slots = [i for i in range(self.slots) if self._filled(frame, i)]
+        # the overlay-prone last slot(s) would pull the fit towards whatever covers them
+        slots = [i for i in range(self.outline_needed_from) if self._filled(frame, i)]
         if not slots:
             return 0, 0
         d = np.arange(-self.align_search, self.align_search + 1)
@@ -205,6 +207,8 @@ class ItemColumnReader:
             x, y, w, h = self.icon_region(i, dx, dy)
             sx, sy = self.slot_region(i, dx, dy)[:2]
             ok = bool((self._edges(g, sx, sy - y0) >= self.edge_min).all())
+            if not ok and i >= self.outline_needed_from:
+                continue                     # an overlay over the last slot, not an item
             out.append((frame[y:y + h, x:x + w], ok))
         return out if any(ok for _, ok in out) else []
 

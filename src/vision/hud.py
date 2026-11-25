@@ -33,6 +33,7 @@ class HudState:
     stage_icon_xy: tuple[int, int] | None   # top-left of the stage icon match
     stage_one_layout: bool                  # True while the bar is in its stage-1 position
     bottom_dx: int = 0                      # shift of the bottom bar from its calibrated x
+    gold_x: int | None = None               # x of the gold icon match (its text sits right of it)
 
 
 class HudDetector:
@@ -75,6 +76,7 @@ class HudDetector:
             stage_one_layout=stage_visible and sx >= self.stage_one_min_x,
             bottom_dx=min(self.bottom_offsets, key=lambda o: abs(o - (gx - self.gold_icon_x)))
             if shop_visible else 0,
+            gold_x=gx if shop_visible else None,
         )
 
 
