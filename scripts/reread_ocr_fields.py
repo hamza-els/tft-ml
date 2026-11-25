@@ -1,11 +1,11 @@
 """
-Read gold and/or HP (own and lobby) again in existing state files, leaving every other field
+Read gold, XP and/or HP (own and lobby) again in existing state files, leaving every other field
 (units, augments, items, planning ...) as it is. For fixes to those readers without a whole
 re-read, which would also drop the unit readings (units_raw) and need read_units.py again.
 
 Usage:
     python scripts/reread_ocr_fields.py --frames ~/tft_frames_temp/VOD --states ~/tft_data/state_vectors/VOD
-    python scripts/reread_ocr_fields.py ... --fields gold        # only gold
+    python scripts/reread_ocr_fields.py ... --fields gold xp     # not HP
     python scripts/reread_ocr_fields.py ... --games game_03 game_05
 
 Same code path as extract_states.py: one OcrCache per game (gold re-read only when its text
@@ -25,11 +25,11 @@ import time
 
 import cv2
 
-FIELDS = ("gold", "hp")
+FIELDS = ("gold", "xp", "hp")
 
 
 def reread_game(frames: Path, states: Path, fields: set[str]) -> str:
-    from src.vision.ocr_pipeline import OcrCache, _ALLOWLIST, _parse_number, _read_text, field_region
+    from src.vision.ocr_pipeline import OcrCache, _ALLOWLIST, _parse_number, _read_text, field_region, parse_xp
     from src.vision.hud import HudDetector
     from src.vision.text_bank import text_bank
 
@@ -60,6 +60,23 @@ def reread_game(frames: Path, states: Path, fields: set[str]) -> str:
                 gold = _parse_number(cache.get("gold", frame, region, look))
             changed["gold"] += gold != row.get("gold")
             row["gold"] = gold
+        if "xp" in fields:
+            xp = (None, None)
+            if hud.shop_visible:
+                region = field_region("xp", hud)
+
+                def look_xp(region=region):
+                    bank = text_bank()
+                    if bank is not None:
+                        v = bank.lookup("xp", cv2.cvtColor(frame[region[1]:region[1] + region[3],
+                                                                 region[0]:region[0] + region[2]], cv2.COLOR_BGR2GRAY))
+                        if v:
+                            return v
+                    return _read_text(frame, region, _ALLOWLIST["xp"])
+                xp = parse_xp(cache.get("xp", frame, region, look_xp)) or (None, None)
+            xp = tuple(None if v is None else float(v) for v in xp)
+            changed["xp"] += xp != (row.get("xp_current"), row.get("xp_needed"))
+            row["xp_current"], row["xp_needed"] = xp
         if "hp" in fields and hud.stage_visible:
             hp, others = cache.read_hp(frame, (row.get("stage"), row.get("round_num")))
             changed["hp"] += (hp, others) != (row.get("hp"), row.get("other_hp"))

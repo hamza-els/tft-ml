@@ -141,6 +141,8 @@ class OcrCache:
     """
     TEXT_LEVEL = 170
     CHANGED_PIXELS = 12        # text pixels that must differ to count as a change
+    MIN_TEXT = 20              # fewer text pixels than this at TEXT_LEVEL: the text is dim, use DIM_LEVEL
+    DIM_LEVEL = 120
 
     def __init__(self):
         self.reset()
@@ -168,6 +170,10 @@ class OcrCache:
         """
         gray = cv2.cvtColor(crop_region(frame, region), cv2.COLOR_BGR2GRAY)
         text = gray > self.TEXT_LEVEL
+        if int(text.sum()) < self.MIN_TEXT:
+            # dim text (QLRxiF-_y_4's XP: 2-11 pixels above TEXT_LEVEL, so every frame looked
+            # unchanged and one early value stayed for the whole game): compare it at DIM_LEVEL
+            text = gray > self.DIM_LEVEL
         old = self.seen.get(key)
         same = (old is not None and old[0].shape == text.shape
                 and int((old[0] != text).sum()) < self.CHANGED_PIXELS)
@@ -443,4 +449,16 @@ def parse_xp(text: str) -> tuple[int, int] | None:
     match = re.search(r"(\d+)\s*/\s*(\d+)", text)
     if match:
         return int(match.group(1)), int(match.group(2))
+    # The slash read as a digit ("6720" = 6/20, "16736" = 16/36; dim XP text in QLRxiF-_y_4,
+    # 2026-11-25): split at a 7 or 1 where the rest is an XP-to-level value and more than the head.
+    digits = re.sub(r"\s", "", text)
+    if digits.isdigit():
+        found = {(int(digits[:p]), int(digits[p + 1:])) for p in range(1, len(digits) - 1)
+                 if digits[p] in "71" and int(digits[p + 1:]) in XP_NEEDED and int(digits[:p]) < int(digits[p + 1:])}
+        if len(found) == 1:
+            return found.pop()
     return None
+
+
+# XP to the next level as seen in footage (with XP augments; levels 2-10), for parse_xp's fallback.
+XP_NEEDED = {2, 4, 6, 8, 10, 18, 20, 34, 36, 54, 56, 58, 60, 62, 64, 66, 68}

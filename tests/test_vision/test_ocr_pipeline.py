@@ -17,6 +17,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import cv2
+import numpy as np
 import pytest
 
 from src.vision.hud import HudDetector
@@ -180,3 +181,21 @@ def test_hp_value_drops_the_rings_edge_after_100():
     from src.vision.ocr_pipeline import _hp_value
     assert _hp_value("1001") == 100.0 and _hp_value("106") == 106.0 and _hp_value("4536") is None
     assert pick_hp([((1792, 273, 30, 22), "30", 0.9), ((1826, 193, 20, 13), "1001", 0.9)]) == (30.0, [100.0])
+
+
+def test_parse_xp_slash_read_as_a_digit():
+    from src.vision.ocr_pipeline import parse_xp
+    assert parse_xp("6720") == (6, 20) and parse_xp("16736") == (16, 36) and parse_xp("4110") == (4, 10)
+    assert parse_xp("052") is None and parse_xp("05") is None and parse_xp("13/36") == (13, 36)
+
+
+def test_ocr_cache_sees_changes_in_dim_text():
+    # QLRxiF-_y_4's XP text peaks at grey ~185: at the normal level every frame looked unchanged
+    from src.vision.ocr_pipeline import OcrCache
+    a = np.zeros((100, 200, 3), np.uint8); b = a.copy()
+    a[10:30, 10:40] = 150; b[10:30, 60:90] = 150             # different text, all of it below 170
+    cache, calls = OcrCache(), []
+    read = lambda v: (lambda: calls.append(v) or v)
+    for img, v in ((a, "x"), (a, "x"), (a, "x"), (b, "y")):
+        cache.get("xp", img, (0, 0, 200, 100), read(v))
+    assert calls == ["x", "x", "y"]
